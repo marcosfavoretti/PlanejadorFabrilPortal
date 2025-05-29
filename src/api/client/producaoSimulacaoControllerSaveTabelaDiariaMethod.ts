@@ -1,0 +1,28 @@
+import client from '@kubb/plugin-client/clients/axios'
+import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import type {
+  ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest,
+  ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse,
+} from '../models/ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+
+export function getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl() {
+  return `http://192.168.99.129:3000/simulacao/gen` as const
+}
+
+/**
+ * @summary Salva a tabela diária de produção para a data informada
+ * {@link /simulacao/gen}
+ */
+export async function producaoSimulacaoControllerSaveTabelaDiariaMethod(
+  data: ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest,
+  config: Partial<RequestConfig<ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest>> & { client?: typeof client } = {},
+) {
+  const { client: request = client, ...requestConfig } = config
+
+  const res = await request<
+    ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse,
+    ResponseErrorConfig<Error>,
+    ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest
+  >({ method: 'POST', url: getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl().toString(), data, ...requestConfig })
+  return res.data
+}

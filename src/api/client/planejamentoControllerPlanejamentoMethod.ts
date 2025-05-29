@@ -1,0 +1,21 @@
+import client from '@kubb/plugin-client/clients/axios'
+import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import type { PlanejamentoControllerPlanejamentoMethodMutationResponse } from '../models/PlanejamentoControllerPlanejamentoMethod.ts'
+
+export function getPlanejamentoControllerPlanejamentoMethodUrl() {
+  return `http://192.168.99.129:3000/plan` as const
+}
+
+/**
+ * {@link /plan}
+ */
+export async function planejamentoControllerPlanejamentoMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
+  const { client: request = client, ...requestConfig } = config
+
+  const res = await request<PlanejamentoControllerPlanejamentoMethodMutationResponse, ResponseErrorConfig<Error>, unknown>({
+    method: 'POST',
+    url: getPlanejamentoControllerPlanejamentoMethodUrl().toString(),
+    ...requestConfig,
+  })
+  return res.data
+}

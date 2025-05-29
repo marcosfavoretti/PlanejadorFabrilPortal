@@ -1,0 +1,16 @@
+import type { SalvarTabelaProducaoDiarioDTO } from './SalvarTabelaProducaoDiarioDTO.ts'
+
+/**
+ * @description Salvar tabela
+ */
+export type ProducaoSimulacaoControllerSaveTabelaDiariaMethod200 = any
+
+export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest = SalvarTabelaProducaoDiarioDTO
+
+export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse = ProducaoSimulacaoControllerSaveTabelaDiariaMethod200
+
+export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation = {
+  Response: ProducaoSimulacaoControllerSaveTabelaDiariaMethod200
+  Request: ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest
+  Errors: any
+}

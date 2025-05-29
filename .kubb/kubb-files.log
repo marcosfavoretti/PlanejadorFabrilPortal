@@ -1,0 +1,507 @@
+[29/05/2025, 11:06:00]: {
+  "files": [
+    {
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\index.ts",
+      "baseName": "index.ts",
+      "exports": [
+        {
+          "name": [
+            "GetTabelaProducaoDiarioDTO"
+          ],
+          "path": "./models/GetTabelaProducaoDiarioDTO.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "PlanejamentoControllerPlanejamentoMethod201",
+            "PlanejamentoControllerPlanejamentoMethodMutationResponse",
+            "PlanejamentoControllerPlanejamentoMethodMutation"
+          ],
+          "path": "./models/PlanejamentoControllerPlanejamentoMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams",
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethod200",
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse",
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethodQuery"
+          ],
+          "path": "./models/ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200",
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest",
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse",
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation"
+          ],
+          "path": "./models/ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "SalvarTabelaProducaoDiarioDTO"
+          ],
+          "path": "./models/SalvarTabelaProducaoDiarioDTO.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "getPlanejamentoControllerPlanejamentoMethodUrl",
+            "planejamentoControllerPlanejamentoMethod"
+          ],
+          "path": "./client/planejamentoControllerPlanejamentoMethod.ts"
+        },
+        {
+          "name": [
+            "getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl",
+            "producaoSimulacaoControllerGenTabelaDiariaMethod"
+          ],
+          "path": "./client/producaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+        },
+        {
+          "name": [
+            "getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl",
+            "producaoSimulacaoControllerSaveTabelaDiariaMethod"
+          ],
+          "path": "./client/producaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+        }
+      ],
+      "sources": [],
+      "meta": {},
+      "id": "ebdcc38e17e306f17c7728046722e8da8cc2431f",
+      "name": "index",
+      "extname": ".ts",
+      "imports": []
+    },
+    {
+      "baseName": "GetTabelaProducaoDiarioDTO.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetTabelaProducaoDiarioDTO.ts",
+      "sources": [
+        {
+          "name": "GetTabelaProducaoDiarioDTO",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type GetTabelaProducaoDiarioDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type string\n    */\n    codigo_pedido: string;\n    /**\n     * @type string, date-time\n    */\n    dia: string;\n    /**\n     * @type string\n    */\n    item: string;\n    /**\n     * @type string\n    */\n    operation: string;\n    /**\n     * @type number\n    */\n    planejado: number;\n    /**\n     * @type number\n    */\n    produzido: number;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "GetTabelaProducaoDiarioDTO"
+      },
+      "id": "c5bb8295e4328e42335c453af854783ffa335d08",
+      "name": "GetTabelaProducaoDiarioDTO",
+      "extname": ".ts"
+    },
+    {
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\getTabelaProducaoDiarioDTO.json",
+      "baseName": "getTabelaProducaoDiarioDTO.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "getTabelaProducaoDiarioDTO",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo_pedido\":{\"type\":\"string\"},\"dia\":{\"format\":\"date-time\",\"type\":\"string\"},\"item\":{\"type\":\"string\"},\"operation\":{\"type\":\"string\"},\"planejado\":{\"type\":\"number\"},\"produzido\":{\"type\":\"number\"}},\"required\":[\"id\",\"codigo_pedido\",\"dia\",\"item\",\"operation\",\"planejado\",\"produzido\"],\"x-readme-ref-name\":\"GetTabelaProducaoDiarioDTO\"}"
+        }
+      ],
+      "id": "130415b493aad55119c86f4b54328f2cbc0fe084",
+      "name": "getTabelaProducaoDiarioDTO",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "baseName": "SalvarTabelaProducaoDiarioDTO.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SalvarTabelaProducaoDiarioDTO.ts",
+      "sources": [
+        {
+          "name": "SalvarTabelaProducaoDiarioDTO",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type SalvarTabelaProducaoDiarioDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type number\n    */\n    produzido: number;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "SalvarTabelaProducaoDiarioDTO"
+      },
+      "id": "8e9d907e8e48c7daae988ef9477586cdc9ab59a7",
+      "name": "SalvarTabelaProducaoDiarioDTO",
+      "extname": ".ts"
+    },
+    {
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\salvarTabelaProducaoDiarioDTO.json",
+      "baseName": "salvarTabelaProducaoDiarioDTO.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "salvarTabelaProducaoDiarioDTO",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"produzido\":{\"type\":\"number\"}},\"required\":[\"id\",\"produzido\"],\"x-readme-ref-name\":\"SalvarTabelaProducaoDiarioDTO\"}"
+        }
+      ],
+      "id": "27a2b8e15f07a09d59b00bce56affac4f4fe01b8",
+      "name": "salvarTabelaProducaoDiarioDTO",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "baseName": "PlanejamentoControllerPlanejamentoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts",
+      "sources": [
+        {
+          "name": "PlanejamentoControllerPlanejamentoMethod201",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PlanejamentoControllerPlanejamentoMethod201 = any;"
+        },
+        {
+          "name": "PlanejamentoControllerPlanejamentoMethodMutationResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PlanejamentoControllerPlanejamentoMethodMutationResponse = PlanejamentoControllerPlanejamentoMethod201;"
+        },
+        {
+          "name": "PlanejamentoControllerPlanejamentoMethodMutation",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PlanejamentoControllerPlanejamentoMethodMutation = {\n    Response: PlanejamentoControllerPlanejamentoMethod201;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "PlanejamentoControllerPlanejamentoMethod",
+        "group": {
+          "tag": "Planejamento",
+          "path": "/plan"
+        }
+      },
+      "id": "a0d855e2ad8eacef6a8f3b41282b7494b9997e91",
+      "name": "PlanejamentoControllerPlanejamentoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "planejamentoControllerPlanejamentoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerPlanejamentoMethod.ts",
+      "sources": [
+        {
+          "name": "getPlanejamentoControllerPlanejamentoMethodUrl",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export function getPlanejamentoControllerPlanejamentoMethodUrl() {\n  return `http://192.168.99.129:3000/plan` as const\n}"
+        },
+        {
+          "name": "planejamentoControllerPlanejamentoMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /plan}\n */\nexport async function planejamentoControllerPlanejamentoMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<PlanejamentoControllerPlanejamentoMethodMutationResponse, ResponseErrorConfig<Error>, unknown>({ method : \"POST\", url : getPlanejamentoControllerPlanejamentoMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerPlanejamentoMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "planejamentoControllerPlanejamentoMethod",
+        "group": {
+          "tag": "Planejamento",
+          "path": "/plan"
+        }
+      },
+      "id": "5e1e0a48412ff18eddd343e9992a47a3a42b027d",
+      "name": "planejamentoControllerPlanejamentoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+      "sources": [
+        {
+          "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams = {\n    /**\n     * @description Data no formato dd/MM/yyyy\n     * @type string\n    */\n    data: string;\n};"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @description Tabela de produção gerada com sucesso\n*/\nexport type ProducaoSimulacaoControllerGenTabelaDiariaMethod200 = GetTabelaProducaoDiarioDTO;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse = ProducaoSimulacaoControllerGenTabelaDiariaMethod200;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerGenTabelaDiariaMethodQuery = {\n    Response: ProducaoSimulacaoControllerGenTabelaDiariaMethod200;\n    QueryParams: ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "GetTabelaProducaoDiarioDTO"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetTabelaProducaoDiarioDTO.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen"
+        }
+      },
+      "id": "6e129ebbaddb5fcea75129a7d4669e2d39cd3a06",
+      "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "producaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+      "sources": [
+        {
+          "name": "getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export function getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
+        },
+        {
+          "name": "producaoSimulacaoControllerGenTabelaDiariaMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @summary Gera a tabela diária de produção para a data informada\n * {@link /simulacao/gen}\n */\nexport async function producaoSimulacaoControllerGenTabelaDiariaMethod(params: ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams, config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl().toString(), params, ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse",
+            "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "producaoSimulacaoControllerGenTabelaDiariaMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen"
+        }
+      },
+      "id": "1ecda44fe2dc1fe2a878ba80e9e472faeb42924c",
+      "name": "producaoSimulacaoControllerGenTabelaDiariaMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+      "sources": [
+        {
+          "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @description Salvar tabela\n*/\nexport type ProducaoSimulacaoControllerSaveTabelaDiariaMethod200 = any;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest = SalvarTabelaProducaoDiarioDTO;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse = ProducaoSimulacaoControllerSaveTabelaDiariaMethod200;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation = {\n    Response: ProducaoSimulacaoControllerSaveTabelaDiariaMethod200;\n    Request: ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "SalvarTabelaProducaoDiarioDTO"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SalvarTabelaProducaoDiarioDTO.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen"
+        }
+      },
+      "id": "181b072c328f6aba4313c18e8fc999f83aaa6b93",
+      "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "producaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+      "sources": [
+        {
+          "name": "getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export function getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
+        },
+        {
+          "name": "producaoSimulacaoControllerSaveTabelaDiariaMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @summary Salva a tabela diária de produção para a data informada\n * {@link /simulacao/gen}\n */\nexport async function producaoSimulacaoControllerSaveTabelaDiariaMethod(data: ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, config: Partial<RequestConfig<ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest>> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse, ResponseErrorConfig<Error>, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest>({ method : \"POST\", url : getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl().toString(), data, ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest",
+            "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "producaoSimulacaoControllerSaveTabelaDiariaMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen"
+        }
+      },
+      "id": "b911b5d9aa900632645e46ef1035bf6ddaaafda6",
+      "name": "producaoSimulacaoControllerSaveTabelaDiariaMethod",
+      "extname": ".ts"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"id":{"type":"number"},"codigo_pedido":{"type":"string"},"dia":{"format":"date-time","type":"string"},"item":{"type":"string"},"operation":{"type":"string"},"planejado":{"type":"number"},"produzido":{"type":"number"}},"required":["id","codigo_pedido","dia","item","operation","planejado","produzido"],"x-readme-ref-name":"GetTabelaProducaoDiarioDTO"}

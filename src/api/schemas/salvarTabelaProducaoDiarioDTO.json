@@ -1,0 +1,1 @@
+{"type":"object","properties":{"id":{"type":"number"},"produzido":{"type":"number"}},"required":["id","produzido"],"x-readme-ref-name":"SalvarTabelaProducaoDiarioDTO"}
