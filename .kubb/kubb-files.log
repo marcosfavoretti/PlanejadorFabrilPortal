@@ -1,9 +1,16 @@
-[29/05/2025, 11:06:00]: {
+[02/06/2025, 15:09:12]: {
   "files": [
     {
       "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\index.ts",
       "baseName": "index.ts",
       "exports": [
+        {
+          "name": [
+            "GetGanttInformationDto"
+          ],
+          "path": "./models/GetGanttInformationDto.ts",
+          "isTypeOnly": true
+        },
         {
           "name": [
             "GetTabelaProducaoDiarioDTO"
@@ -13,11 +20,29 @@
         },
         {
           "name": [
+            "PlanejamentoControllerDatasPlanejadasMethod200",
+            "PlanejamentoControllerDatasPlanejadasMethodQueryResponse",
+            "PlanejamentoControllerDatasPlanejadasMethodQuery"
+          ],
+          "path": "./models/PlanejamentoControllerDatasPlanejadasMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "PlanejamentoControllerPlanejamentoMethod201",
             "PlanejamentoControllerPlanejamentoMethodMutationResponse",
             "PlanejamentoControllerPlanejamentoMethodMutation"
           ],
           "path": "./models/PlanejamentoControllerPlanejamentoMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerConsultarMercadoMethodError",
+            "ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse",
+            "ProducaoSimulacaoControllerConsultarMercadoMethodQuery"
+          ],
+          "path": "./models/ProducaoSimulacaoControllerConsultarMercadoMethod.ts",
           "isTypeOnly": true
         },
         {
@@ -32,12 +57,30 @@
         },
         {
           "name": [
+            "ProducaoSimulacaoControllerGetGanttInformationMethod200",
+            "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse",
+            "ProducaoSimulacaoControllerGetGanttInformationMethodQuery"
+          ],
+          "path": "./models/ProducaoSimulacaoControllerGetGanttInformationMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200",
             "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest",
             "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse",
             "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation"
           ],
           "path": "./models/ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ReplanejamentoControllerReplanejamentoMethod200",
+            "ReplanejamentoControllerReplanejamentoMethodMutationResponse",
+            "ReplanejamentoControllerReplanejamentoMethodMutation"
+          ],
+          "path": "./models/ReplanejamentoControllerReplanejamentoMethod.ts",
           "isTypeOnly": true
         },
         {
@@ -49,24 +92,90 @@
         },
         {
           "name": [
-            "getPlanejamentoControllerPlanejamentoMethodUrl",
+            "SetorSnapshot"
+          ],
+          "path": "./models/SetorSnapshot.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "VirtualDateControllerConsultDateMethod200",
+            "VirtualDateControllerConsultDateMethodQueryResponse",
+            "VirtualDateControllerConsultDateMethodQuery"
+          ],
+          "path": "./models/VirtualDateControllerConsultDateMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "VirtualDateControllerHandleDateMethodPathParamsParamEnum",
+            "VirtualDateControllerHandleDateMethodPathParams",
+            "VirtualDateControllerHandleDateMethod200",
+            "VirtualDateControllerHandleDateMethodMutationResponse",
+            "VirtualDateControllerHandleDateMethodMutation"
+          ],
+          "path": "./models/VirtualDateControllerHandleDateMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "planejamentoControllerDatasPlanejadasMethod"
+          ],
+          "path": "./client/planejamentoControllerDatasPlanejadasMethod.ts"
+        },
+        {
+          "name": [
             "planejamentoControllerPlanejamentoMethod"
           ],
           "path": "./client/planejamentoControllerPlanejamentoMethod.ts"
         },
         {
           "name": [
-            "getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl",
+            "producaoSimulacaoControllerConsultarMercadoMethod"
+          ],
+          "path": "./client/producaoSimulacaoControllerConsultarMercadoMethod.ts"
+        },
+        {
+          "name": [
             "producaoSimulacaoControllerGenTabelaDiariaMethod"
           ],
           "path": "./client/producaoSimulacaoControllerGenTabelaDiariaMethod.ts"
         },
         {
           "name": [
-            "getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl",
+            "producaoSimulacaoControllerGetGanttInformationMethod"
+          ],
+          "path": "./client/producaoSimulacaoControllerGetGanttInformationMethod.ts"
+        },
+        {
+          "name": [
             "producaoSimulacaoControllerSaveTabelaDiariaMethod"
           ],
           "path": "./client/producaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+        },
+        {
+          "name": [
+            "replanejamentoControllerReplanejamentoMethod"
+          ],
+          "path": "./client/replanejamentoControllerReplanejamentoMethod.ts"
+        },
+        {
+          "name": [
+            "virtualDateControllerConsultDateMethod"
+          ],
+          "path": "./client/virtualDateControllerConsultDateMethod.ts"
+        },
+        {
+          "name": [
+            "virtualDateControllerHandleDateMethod"
+          ],
+          "path": "./client/virtualDateControllerHandleDateMethod.ts"
+        },
+        {
+          "name": [
+            "virtualDateControllerHandleDateMethodPathParamsParamEnum"
+          ],
+          "path": "./models/VirtualDateControllerHandleDateMethod.ts"
         }
       ],
       "sources": [],
@@ -77,6 +186,106 @@
       "imports": []
     },
     {
+      "baseName": "SetorSnapshot.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SetorSnapshot.ts",
+      "sources": [
+        {
+          "name": "SetorSnapshot",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type SetorSnapshot = {\n    /**\n     * @type string, date-time\n    */\n    dia: string;\n    /**\n     * @type string\n    */\n    item: string;\n    /**\n     * @type string\n    */\n    operacao: string;\n    /**\n     * @type number\n    */\n    qtdmercado: number;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "SetorSnapshot"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "361fc5168b7982d441428cabe21aa75901b4bf50",
+      "name": "SetorSnapshot",
+      "extname": ".ts"
+    },
+    {
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\setorSnapshot.json",
+      "baseName": "setorSnapshot.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "setorSnapshot",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"dia\":{\"format\":\"date-time\",\"type\":\"string\"},\"item\":{\"type\":\"string\"},\"operacao\":{\"type\":\"string\"},\"qtdmercado\":{\"type\":\"number\"}},\"required\":[\"dia\",\"item\",\"operacao\",\"qtdmercado\"],\"x-readme-ref-name\":\"SetorSnapshot\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "6b1fb3f6d442065825813aa257800c519b559539",
+      "name": "setorSnapshot",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "baseName": "GetGanttInformationDto.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetGanttInformationDto.ts",
+      "sources": [
+        {
+          "name": "GetGanttInformationDto",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type GetGanttInformationDto = {\n    /**\n     * @description ID da tarefa\n     * @type string | undefined\n    */\n    id?: string;\n    /**\n     * @description Nome da tarefa\n     * @type string\n    */\n    name: string;\n    /**\n     * @description Data de início da tarefa (formato ISO)\n     * @type string\n    */\n    start: string;\n    /**\n     * @description Data de término da tarefa (formato ISO)\n     * @type string | undefined\n    */\n    end?: string;\n    /**\n     * @description Duração da tarefa\n     * @type string | undefined\n    */\n    duration?: string;\n    /**\n     * @description Progresso da tarefa de 0 a 100\n     * @type number\n    */\n    progress: number;\n    /**\n     * @description Dependências da tarefa (ID de outras tarefas)\n     * @type array | undefined\n    */\n    dependencies?: string[];\n    /**\n     * @description Classe CSS customizada para estilização\n     * @type string | undefined\n    */\n    custom_class?: string;\n    /**\n     * @description Cor principal da barra (hex ou nome CSS)\n     * @type string | undefined\n    */\n    color?: string;\n    /**\n     * @description Cor da barra de progresso\n     * @type string | undefined\n    */\n    color_progress?: string;\n    /**\n     * @description Índice da tarefa (uso interno)\n     * @type number | undefined\n    */\n    _index?: number;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "GetGanttInformationDto"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "bb65055d8fb6db37bde874325fbd7c349e2f6dd9",
+      "name": "GetGanttInformationDto",
+      "extname": ".ts"
+    },
+    {
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\getGanttInformationDto.json",
+      "baseName": "getGanttInformationDto.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "getGanttInformationDto",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"description\":\"ID da tarefa\"},\"name\":{\"type\":\"string\",\"description\":\"Nome da tarefa\"},\"start\":{\"type\":\"string\",\"description\":\"Data de início da tarefa (formato ISO)\"},\"end\":{\"type\":\"string\",\"description\":\"Data de término da tarefa (formato ISO)\"},\"duration\":{\"type\":\"string\",\"description\":\"Duração da tarefa\"},\"progress\":{\"type\":\"number\",\"description\":\"Progresso da tarefa de 0 a 100\"},\"dependencies\":{\"description\":\"Dependências da tarefa (ID de outras tarefas)\",\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"custom_class\":{\"type\":\"string\",\"description\":\"Classe CSS customizada para estilização\"},\"color\":{\"type\":\"string\",\"description\":\"Cor principal da barra (hex ou nome CSS)\"},\"color_progress\":{\"type\":\"string\",\"description\":\"Cor da barra de progresso\"},\"_index\":{\"type\":\"number\",\"description\":\"Índice da tarefa (uso interno)\"}},\"required\":[\"name\",\"start\",\"progress\"],\"x-readme-ref-name\":\"GetGanttInformationDto\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "8ab085293232f4552cbbd12916c64f576b9ccabf",
+      "name": "getGanttInformationDto",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
       "baseName": "GetTabelaProducaoDiarioDTO.ts",
       "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetTabelaProducaoDiarioDTO.ts",
       "sources": [
@@ -85,7 +294,7 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type GetTabelaProducaoDiarioDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type string\n    */\n    codigo_pedido: string;\n    /**\n     * @type string, date-time\n    */\n    dia: string;\n    /**\n     * @type string\n    */\n    item: string;\n    /**\n     * @type string\n    */\n    operation: string;\n    /**\n     * @type number\n    */\n    planejado: number;\n    /**\n     * @type number\n    */\n    produzido: number;\n};"
+          "value": "export type GetTabelaProducaoDiarioDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type string, date-time\n    */\n    date_planej: string;\n    /**\n     * @type string\n    */\n    item: string;\n    /**\n     * @type string\n    */\n    setor: string;\n    /**\n     * @type number\n    */\n    planejamento: number;\n    /**\n     * @type number\n    */\n    produzido: number;\n};"
         }
       ],
       "exports": [],
@@ -97,6 +306,7 @@
         ],
         "name": "GetTabelaProducaoDiarioDTO"
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "c5bb8295e4328e42335c453af854783ffa335d08",
       "name": "GetTabelaProducaoDiarioDTO",
       "extname": ".ts"
@@ -115,9 +325,10 @@
           "name": "getTabelaProducaoDiarioDTO",
           "isExportable": false,
           "isIndexable": false,
-          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo_pedido\":{\"type\":\"string\"},\"dia\":{\"format\":\"date-time\",\"type\":\"string\"},\"item\":{\"type\":\"string\"},\"operation\":{\"type\":\"string\"},\"planejado\":{\"type\":\"number\"},\"produzido\":{\"type\":\"number\"}},\"required\":[\"id\",\"codigo_pedido\",\"dia\",\"item\",\"operation\",\"planejado\",\"produzido\"],\"x-readme-ref-name\":\"GetTabelaProducaoDiarioDTO\"}"
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"date_planej\":{\"format\":\"date-time\",\"type\":\"string\"},\"item\":{\"type\":\"string\"},\"setor\":{\"type\":\"string\"},\"planejamento\":{\"type\":\"number\"},\"produzido\":{\"type\":\"number\"}},\"required\":[\"id\",\"date_planej\",\"item\",\"setor\",\"planejamento\",\"produzido\"],\"x-readme-ref-name\":\"GetTabelaProducaoDiarioDTO\"}"
         }
       ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "130415b493aad55119c86f4b54328f2cbc0fe084",
       "name": "getTabelaProducaoDiarioDTO",
       "extname": ".json",
@@ -145,6 +356,7 @@
         ],
         "name": "SalvarTabelaProducaoDiarioDTO"
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "8e9d907e8e48c7daae988ef9477586cdc9ab59a7",
       "name": "SalvarTabelaProducaoDiarioDTO",
       "extname": ".ts"
@@ -166,11 +378,235 @@
           "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"produzido\":{\"type\":\"number\"}},\"required\":[\"id\",\"produzido\"],\"x-readme-ref-name\":\"SalvarTabelaProducaoDiarioDTO\"}"
         }
       ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "27a2b8e15f07a09d59b00bce56affac4f4fe01b8",
       "name": "salvarTabelaProducaoDiarioDTO",
       "extname": ".json",
       "imports": [],
       "exports": []
+    },
+    {
+      "baseName": "VirtualDateControllerHandleDateMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\VirtualDateControllerHandleDateMethod.ts",
+      "sources": [
+        {
+          "name": "virtualDateControllerHandleDateMethodPathParamsParamEnum",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export const virtualDateControllerHandleDateMethodPathParamsParamEnum = {\n    \"proxima\": \"proxima\",\n    \"anterior\": \"anterior\"\n} as const;"
+        },
+        {
+          "name": "VirtualDateControllerHandleDateMethodPathParamsParamEnum",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerHandleDateMethodPathParamsParamEnum = (typeof virtualDateControllerHandleDateMethodPathParamsParamEnum)[keyof typeof virtualDateControllerHandleDateMethodPathParamsParamEnum];"
+        },
+        {
+          "name": "VirtualDateControllerHandleDateMethodPathParams",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerHandleDateMethodPathParams = {\n    /**\n     * @description Parâmetro para alterar a data virtual: \\\"proxima\\\" ou \\\"anterior\\\"\n     * @type string\n    */\n    param: VirtualDateControllerHandleDateMethodPathParamsParamEnum;\n};"
+        },
+        {
+          "name": "VirtualDateControllerHandleDateMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @description Lista de datas planejadas\n*/\nexport type VirtualDateControllerHandleDateMethod200 = string;"
+        },
+        {
+          "name": "VirtualDateControllerHandleDateMethodMutationResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerHandleDateMethodMutationResponse = VirtualDateControllerHandleDateMethod200;"
+        },
+        {
+          "name": "VirtualDateControllerHandleDateMethodMutation",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerHandleDateMethodMutation = {\n    Response: VirtualDateControllerHandleDateMethod200;\n    PathParams: VirtualDateControllerHandleDateMethodPathParams;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "VirtualDateControllerHandleDateMethod",
+        "group": {
+          "tag": "VirtualDate",
+          "path": "/virtual-date/handle/{param}"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "f938ea5671c6190f25fe91ae0517f0e973f81707",
+      "name": "VirtualDateControllerHandleDateMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "virtualDateControllerHandleDateMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\virtualDateControllerHandleDateMethod.ts",
+      "sources": [
+        {
+          "name": "getVirtualDateControllerHandleDateMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getVirtualDateControllerHandleDateMethodUrl(param: VirtualDateControllerHandleDateMethodPathParams[\"param\"]) {\n  return `http://192.168.99.129:3000/virtual-date/handle/${param}` as const\n}"
+        },
+        {
+          "name": "virtualDateControllerHandleDateMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /virtual-date/handle/:param}\n */\nexport async function virtualDateControllerHandleDateMethod(param: VirtualDateControllerHandleDateMethodPathParams[\"param\"], config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<VirtualDateControllerHandleDateMethodMutationResponse, ResponseErrorConfig<Error>, unknown>({ method : \"POST\", url : getVirtualDateControllerHandleDateMethodUrl(param).toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "VirtualDateControllerHandleDateMethodMutationResponse",
+            "VirtualDateControllerHandleDateMethodPathParams"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\virtualDateControllerHandleDateMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\VirtualDateControllerHandleDateMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "virtualDateControllerHandleDateMethod",
+        "group": {
+          "tag": "VirtualDate",
+          "path": "/virtual-date/handle/{param}"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "871a01e0df63ed6f408f0f2c7748a94d6b3a0987",
+      "name": "virtualDateControllerHandleDateMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "VirtualDateControllerConsultDateMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\VirtualDateControllerConsultDateMethod.ts",
+      "sources": [
+        {
+          "name": "VirtualDateControllerConsultDateMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerConsultDateMethod200 = string;"
+        },
+        {
+          "name": "VirtualDateControllerConsultDateMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerConsultDateMethodQueryResponse = VirtualDateControllerConsultDateMethod200;"
+        },
+        {
+          "name": "VirtualDateControllerConsultDateMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type VirtualDateControllerConsultDateMethodQuery = {\n    Response: VirtualDateControllerConsultDateMethod200;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "VirtualDateControllerConsultDateMethod",
+        "group": {
+          "tag": "VirtualDate",
+          "path": "/virtual-date"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "795197cb2317f41d8f40c2f6783d78a9388efd1a",
+      "name": "VirtualDateControllerConsultDateMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "virtualDateControllerConsultDateMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\virtualDateControllerConsultDateMethod.ts",
+      "sources": [
+        {
+          "name": "getVirtualDateControllerConsultDateMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getVirtualDateControllerConsultDateMethodUrl() {\n  return `http://192.168.99.129:3000/virtual-date` as const\n}"
+        },
+        {
+          "name": "virtualDateControllerConsultDateMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /virtual-date}\n */\nexport async function virtualDateControllerConsultDateMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<VirtualDateControllerConsultDateMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getVirtualDateControllerConsultDateMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "VirtualDateControllerConsultDateMethodQueryResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\virtualDateControllerConsultDateMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\VirtualDateControllerConsultDateMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "virtualDateControllerConsultDateMethod",
+        "group": {
+          "tag": "VirtualDate",
+          "path": "/virtual-date"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "71b1364a21f948af15c7858df60196f5dced2bd2",
+      "name": "virtualDateControllerConsultDateMethod",
+      "extname": ".ts"
     },
     {
       "baseName": "PlanejamentoControllerPlanejamentoMethod.ts",
@@ -211,6 +647,7 @@
           "path": "/plan"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "a0d855e2ad8eacef6a8f3b41282b7494b9997e91",
       "name": "PlanejamentoControllerPlanejamentoMethod",
       "extname": ".ts"
@@ -221,9 +658,9 @@
       "sources": [
         {
           "name": "getPlanejamentoControllerPlanejamentoMethodUrl",
-          "isExportable": true,
-          "isIndexable": true,
-          "value": "export function getPlanejamentoControllerPlanejamentoMethodUrl() {\n  return `http://192.168.99.129:3000/plan` as const\n}"
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getPlanejamentoControllerPlanejamentoMethodUrl() {\n  return `http://192.168.99.129:3000/plan` as const\n}"
         },
         {
           "name": "planejamentoControllerPlanejamentoMethod",
@@ -267,8 +704,211 @@
           "path": "/plan"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "5e1e0a48412ff18eddd343e9992a47a3a42b027d",
       "name": "planejamentoControllerPlanejamentoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "PlanejamentoControllerDatasPlanejadasMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts",
+      "sources": [
+        {
+          "name": "PlanejamentoControllerDatasPlanejadasMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @description Lista de datas planejadas\n*/\nexport type PlanejamentoControllerDatasPlanejadasMethod200 = string[];"
+        },
+        {
+          "name": "PlanejamentoControllerDatasPlanejadasMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PlanejamentoControllerDatasPlanejadasMethodQueryResponse = PlanejamentoControllerDatasPlanejadasMethod200;"
+        },
+        {
+          "name": "PlanejamentoControllerDatasPlanejadasMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PlanejamentoControllerDatasPlanejadasMethodQuery = {\n    Response: PlanejamentoControllerDatasPlanejadasMethod200;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "PlanejamentoControllerDatasPlanejadasMethod",
+        "group": {
+          "tag": "Planejamento",
+          "path": "/plan/datas"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "343580f36e3cafa5286d4294a1846b7647541d41",
+      "name": "PlanejamentoControllerDatasPlanejadasMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "planejamentoControllerDatasPlanejadasMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerDatasPlanejadasMethod.ts",
+      "sources": [
+        {
+          "name": "getPlanejamentoControllerDatasPlanejadasMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getPlanejamentoControllerDatasPlanejadasMethodUrl() {\n  return `http://192.168.99.129:3000/plan/datas` as const\n}"
+        },
+        {
+          "name": "planejamentoControllerDatasPlanejadasMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /plan/datas}\n */\nexport async function planejamentoControllerDatasPlanejadasMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<PlanejamentoControllerDatasPlanejadasMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getPlanejamentoControllerDatasPlanejadasMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerDatasPlanejadasMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "planejamentoControllerDatasPlanejadasMethod",
+        "group": {
+          "tag": "Planejamento",
+          "path": "/plan/datas"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "e70d52bc452b57520439a9be8121846147acd8b8",
+      "name": "planejamentoControllerDatasPlanejadasMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "ReplanejamentoControllerReplanejamentoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ReplanejamentoControllerReplanejamentoMethod.ts",
+      "sources": [
+        {
+          "name": "ReplanejamentoControllerReplanejamentoMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ReplanejamentoControllerReplanejamentoMethod200 = any;"
+        },
+        {
+          "name": "ReplanejamentoControllerReplanejamentoMethodMutationResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ReplanejamentoControllerReplanejamentoMethodMutationResponse = ReplanejamentoControllerReplanejamentoMethod200;"
+        },
+        {
+          "name": "ReplanejamentoControllerReplanejamentoMethodMutation",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ReplanejamentoControllerReplanejamentoMethodMutation = {\n    Response: ReplanejamentoControllerReplanejamentoMethod200;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ReplanejamentoControllerReplanejamentoMethod",
+        "group": {
+          "tag": "Replanejamento",
+          "path": "/replanejamento"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "503bdc7491904525b5f99c93bb8669eca180185f",
+      "name": "ReplanejamentoControllerReplanejamentoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "replanejamentoControllerReplanejamentoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\replanejamentoControllerReplanejamentoMethod.ts",
+      "sources": [
+        {
+          "name": "getReplanejamentoControllerReplanejamentoMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getReplanejamentoControllerReplanejamentoMethodUrl() {\n  return `http://192.168.99.129:3000/replanejamento` as const\n}"
+        },
+        {
+          "name": "replanejamentoControllerReplanejamentoMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /replanejamento}\n */\nexport async function replanejamentoControllerReplanejamentoMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<ReplanejamentoControllerReplanejamentoMethodMutationResponse, ResponseErrorConfig<Error>, unknown>({ method : \"POST\", url : getReplanejamentoControllerReplanejamentoMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ReplanejamentoControllerReplanejamentoMethodMutationResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\replanejamentoControllerReplanejamentoMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ReplanejamentoControllerReplanejamentoMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "replanejamentoControllerReplanejamentoMethod",
+        "group": {
+          "tag": "Replanejamento",
+          "path": "/replanejamento"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "2c4b9de62426dfe8152c303774da766898e57178",
+      "name": "replanejamentoControllerReplanejamentoMethod",
       "extname": ".ts"
     },
     {
@@ -280,14 +920,14 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams = {\n    /**\n     * @description Data no formato dd/MM/yyyy\n     * @type string\n    */\n    data: string;\n};"
+          "value": "export type ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams = {\n    /**\n     * @description inicio no dia\n     * @type string\n    */\n    startDate: string;\n    /**\n     * @description finalizacao no dia\n     * @type string\n    */\n    endDate: string;\n};"
         },
         {
           "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethod200",
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "/**\n * @description Tabela de produção gerada com sucesso\n*/\nexport type ProducaoSimulacaoControllerGenTabelaDiariaMethod200 = GetTabelaProducaoDiarioDTO;"
+          "value": "/**\n * @description Tabela de produção gerada com sucesso\n*/\nexport type ProducaoSimulacaoControllerGenTabelaDiariaMethod200 = GetTabelaProducaoDiarioDTO[];"
         },
         {
           "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse",
@@ -326,6 +966,7 @@
           "path": "/simulacao/gen"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "6e129ebbaddb5fcea75129a7d4669e2d39cd3a06",
       "name": "ProducaoSimulacaoControllerGenTabelaDiariaMethod",
       "extname": ".ts"
@@ -336,9 +977,9 @@
       "sources": [
         {
           "name": "getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl",
-          "isExportable": true,
-          "isIndexable": true,
-          "value": "export function getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
         },
         {
           "name": "producaoSimulacaoControllerGenTabelaDiariaMethod",
@@ -383,6 +1024,7 @@
           "path": "/simulacao/gen"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "1ecda44fe2dc1fe2a878ba80e9e472faeb42924c",
       "name": "producaoSimulacaoControllerGenTabelaDiariaMethod",
       "extname": ".ts"
@@ -442,8 +1084,62 @@
           "path": "/simulacao/gen"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "181b072c328f6aba4313c18e8fc999f83aaa6b93",
       "name": "ProducaoSimulacaoControllerSaveTabelaDiariaMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "ProducaoSimulacaoControllerConsultarMercadoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerConsultarMercadoMethod.ts",
+      "sources": [
+        {
+          "name": "ProducaoSimulacaoControllerConsultarMercadoMethodError",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerConsultarMercadoMethodError = SetorSnapshot[];"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse = any;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerConsultarMercadoMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerConsultarMercadoMethodQuery = {\n    Response: any;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "SetorSnapshot"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerConsultarMercadoMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SetorSnapshot.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ProducaoSimulacaoControllerConsultarMercadoMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen/mercado"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "9e9126786dbbec04806a48a74b5143d3c7d50b8e",
+      "name": "ProducaoSimulacaoControllerConsultarMercadoMethod",
       "extname": ".ts"
     },
     {
@@ -452,9 +1148,9 @@
       "sources": [
         {
           "name": "getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl",
-          "isExportable": true,
-          "isIndexable": true,
-          "value": "export function getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen` as const\n}"
         },
         {
           "name": "producaoSimulacaoControllerSaveTabelaDiariaMethod",
@@ -499,8 +1195,176 @@
           "path": "/simulacao/gen"
         }
       },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "b911b5d9aa900632645e46ef1035bf6ddaaafda6",
       "name": "producaoSimulacaoControllerSaveTabelaDiariaMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "producaoSimulacaoControllerConsultarMercadoMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerConsultarMercadoMethod.ts",
+      "sources": [
+        {
+          "name": "getProducaoSimulacaoControllerConsultarMercadoMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getProducaoSimulacaoControllerConsultarMercadoMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen/mercado` as const\n}"
+        },
+        {
+          "name": "producaoSimulacaoControllerConsultarMercadoMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /simulacao/gen/mercado}\n */\nexport async function producaoSimulacaoControllerConsultarMercadoMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getProducaoSimulacaoControllerConsultarMercadoMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerConsultarMercadoMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerConsultarMercadoMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "producaoSimulacaoControllerConsultarMercadoMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen/mercado"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "654f6a58d42ccbf98acd5b0cd4a3d1e46a04f73e",
+      "name": "producaoSimulacaoControllerConsultarMercadoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "ProducaoSimulacaoControllerGetGanttInformationMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts",
+      "sources": [
+        {
+          "name": "ProducaoSimulacaoControllerGetGanttInformationMethod200",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @description Tabela de produção gerada com sucesso\n*/\nexport type ProducaoSimulacaoControllerGetGanttInformationMethod200 = GetGanttInformationDto[];"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse = ProducaoSimulacaoControllerGetGanttInformationMethod200;"
+        },
+        {
+          "name": "ProducaoSimulacaoControllerGetGanttInformationMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ProducaoSimulacaoControllerGetGanttInformationMethodQuery = {\n    Response: ProducaoSimulacaoControllerGetGanttInformationMethod200;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "GetGanttInformationDto"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetGanttInformationDto.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ProducaoSimulacaoControllerGetGanttInformationMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen/gannt"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "6736053a25a970a4ad23ba1c671f0eb2f7a1a820",
+      "name": "ProducaoSimulacaoControllerGetGanttInformationMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "producaoSimulacaoControllerGetGanttInformationMethod.ts",
+      "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGetGanttInformationMethod.ts",
+      "sources": [
+        {
+          "name": "getProducaoSimulacaoControllerGetGanttInformationMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getProducaoSimulacaoControllerGetGanttInformationMethodUrl() {\n  return `http://192.168.99.129:3000/simulacao/gen/gannt` as const\n}"
+        },
+        {
+          "name": "producaoSimulacaoControllerGetGanttInformationMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * @summary Gera informações para o gráfico\n * {@link /simulacao/gen/gannt}\n */\nexport async function producaoSimulacaoControllerGetGanttInformationMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getProducaoSimulacaoControllerGetGanttInformationMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@kubb/plugin-client/clients/axios",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+          ],
+          "root": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGetGanttInformationMethod.ts",
+          "path": "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "producaoSimulacaoControllerGetGanttInformationMethod",
+        "group": {
+          "tag": "ProducaoSimulacao",
+          "path": "/simulacao/gen/gannt"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "c12a0bb5dfa189e53dad31ddab4d695d3bca216a",
+      "name": "producaoSimulacaoControllerGetGanttInformationMethod",
       "extname": ".ts"
     }
   ]

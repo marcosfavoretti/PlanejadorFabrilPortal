@@ -3,6 +3,7 @@ export interface tableColumns{
     field: string;
     isImg?: boolean;
     isCheckBox?: boolean;
+    isInputText?: boolean,
     toTotalize?: boolean;
 }
 export interface ghostControllColumn{

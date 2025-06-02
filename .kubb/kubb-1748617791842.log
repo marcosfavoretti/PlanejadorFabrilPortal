@@ -1,0 +1,455 @@
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-oas.1 | buildStart
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-ts.1 | buildStart
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-client.1 | buildStart
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-oas.1 | Resolving path 'getTabelaProducaoDiarioDTO.json'
+[30/05/2025, 12:09:51]: Executed pluginKey plugin-oas.1 | Resolving path 'getTabelaProducaoDiarioDTO.json' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\getTabelaProducaoDiarioDTO.json"
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-oas.1 | Resolving path 'getGanttInformationDto.json'
+[30/05/2025, 12:09:51]: Executed pluginKey plugin-oas.1 | Resolving path 'getGanttInformationDto.json' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\getGanttInformationDto.json"
+[30/05/2025, 12:09:51]: Executing pluginKey plugin-oas.1 | Resolving path 'salvarTabelaProducaoDiarioDTO.json'
+[30/05/2025, 12:09:51]: Executed pluginKey plugin-oas.1 | Resolving path 'salvarTabelaProducaoDiarioDTO.json' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\schemas\\salvarTabelaProducaoDiarioDTO.json"
+[30/05/2025, 12:09:51]: Executed pluginKey plugin-oas.1 | buildStart |  undefined
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'function' |  "GetTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'type' |  "GetTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'file' |  "GetTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'GetTabelaProducaoDiarioDTO.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'GetTabelaProducaoDiarioDTO.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetTabelaProducaoDiarioDTO.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'function' |  "GetGanttInformationDto"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'type' |  "GetGanttInformationDto"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'file' |  "GetGanttInformationDto"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'GetGanttInformationDto.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'GetGanttInformationDto.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetGanttInformationDto.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'function' |  "SalvarTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'type' |  "SalvarTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'file' |  "SalvarTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'SalvarTabelaProducaoDiarioDTO.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'SalvarTabelaProducaoDiarioDTO.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SalvarTabelaProducaoDiarioDTO.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'undefined' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'undefined' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'function' |  "GetTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetTabelaProducaoDiarioDTO' and type 'file' |  "GetTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'GetTabelaProducaoDiarioDTO.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'GetTabelaProducaoDiarioDTO.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetTabelaProducaoDiarioDTO.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod200.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'undefined' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'undefined' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'function' |  "SalvarTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'SalvarTabelaProducaoDiarioDTO' and type 'file' |  "SalvarTabelaProducaoDiarioDTO"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'SalvarTabelaProducaoDiarioDTO.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'SalvarTabelaProducaoDiarioDTO.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\SalvarTabelaProducaoDiarioDTO.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod200.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file' |  "ProducaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'undefined' |  "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'undefined' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'function' |  "GetGanttInformationDto"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'GetGanttInformationDto' and type 'file' |  "GetGanttInformationDto"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'GetGanttInformationDto.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'GetGanttInformationDto.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\GetGanttInformationDto.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod' and type 'file' |  "ProducaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'file' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod200.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod200.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod200.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod' and type 'file' |  "ProducaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file' |  "PlanejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'undefined' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'undefined' |  "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'undefined' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'function' |  "PlanejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod' and type 'file' |  "PlanejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'file' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod201.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod201.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod201.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type' |  "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type' |  "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod' and type 'file' |  "PlanejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file' |  "PlanejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'undefined' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'undefined' |  "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'undefined'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'undefined' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod' and type 'file' |  "PlanejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'file' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod200.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod200.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod200.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod' and type 'file' |  "PlanejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Start barrel generation for pluginKey plugin-ts.1 and root 'C:\workspace\PlanejamentoEthosPortal\src\api\models'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | buildStart |  undefined
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'function' |  "producaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file' |  "producaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_genTabelaDiariaMethod url' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_genTabelaDiariaMethod url' and type 'function' |  "getProducaoSimulacaoControllerGenTabelaDiariaMethodUrl"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file' |  "producaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGenTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_genTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoController_genTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: No hook 'resolvePath' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_genTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_genTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\ProducaoSimulacaoController_genTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryResponse"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGenTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerGenTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'function' |  "producaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file' |  "producaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_saveTabelaDiariaMethod url' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_saveTabelaDiariaMethod url' and type 'function' |  "getProducaoSimulacaoControllerSaveTabelaDiariaMethodUrl"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file' |  "producaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerSaveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'type' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_saveTabelaDiariaMethod ' and type 'file' |  "ProducaoSimulacaoController_saveTabelaDiariaMethod"
+[30/05/2025, 12:09:52]: No hook 'resolvePath' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_saveTabelaDiariaMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_saveTabelaDiariaMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\ProducaoSimulacaoController_saveTabelaDiariaMethod.ts"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationResponse"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerSaveTabelaDiariaMethod200' and type 'function' |  "ProducaoSimulacaoControllerSaveTabelaDiariaMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'function' |  "producaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file' |  "producaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_getGanttInformationMethod url' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name 'get ProducaoSimulacaoController_getGanttInformationMethod url' and type 'function' |  "getProducaoSimulacaoControllerGetGanttInformationMethodUrl"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file' |  "producaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'producaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\producaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file' |  "ProducaoSimulacaoControllerGetGanttInformationMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'ProducaoSimulacaoControllerGetGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\ProducaoSimulacaoControllerGetGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'type' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name ' ProducaoSimulacaoController_getGanttInformationMethod ' and type 'file' |  "ProducaoSimulacaoController_getGanttInformationMethod"
+[30/05/2025, 12:09:52]: No hook 'resolvePath' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_getGanttInformationMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving path 'ProducaoSimulacaoController_getGanttInformationMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\ProducaoSimulacaoController_getGanttInformationMethod.ts"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'ProducaoSimulacaoControllerGetGanttInformationMethod200' and type 'function' |  "ProducaoSimulacaoControllerGetGanttInformationMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'function' |  "planejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file' |  "planejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'planejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'planejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name 'get PlanejamentoController_planejamentoMethod url' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name 'get PlanejamentoController_planejamentoMethod url' and type 'function' |  "getPlanejamentoControllerPlanejamentoMethodUrl"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file' |  "planejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'planejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'planejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file' |  "PlanejamentoControllerPlanejamentoMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerPlanejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerPlanejamentoMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'type' |  "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'type' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name ' PlanejamentoController_planejamentoMethod ' and type 'file' |  "PlanejamentoController_planejamentoMethod"
+[30/05/2025, 12:09:52]: No hook 'resolvePath' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving path 'PlanejamentoController_planejamentoMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving path 'PlanejamentoController_planejamentoMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\PlanejamentoController_planejamentoMethod.ts"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethodMutationResponse' and type 'function' |  "PlanejamentoControllerPlanejamentoMethodMutationResponse"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerPlanejamentoMethod201' and type 'function' |  "PlanejamentoControllerPlanejamentoMethod201"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'function' |  "planejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file' |  "planejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'planejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'planejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name 'get PlanejamentoController_datasPlanejadasMethod url' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name 'get PlanejamentoController_datasPlanejadasMethod url' and type 'function' |  "getPlanejamentoControllerDatasPlanejadasMethodUrl"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file' |  "planejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-client.1 | Resolving path 'planejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | Resolving path 'planejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\client\\planejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file' |  "PlanejamentoControllerDatasPlanejadasMethod"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving path 'PlanejamentoControllerDatasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+[30/05/2025, 12:09:52]: Executing pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-ts.1 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'type' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name ' PlanejamentoController_datasPlanejadasMethod ' and type 'file' |  "PlanejamentoController_datasPlanejadasMethod"
+[30/05/2025, 12:09:52]: No hook 'resolvePath' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving path 'PlanejamentoController_datasPlanejadasMethod.ts'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving path 'PlanejamentoController_datasPlanejadasMethod.ts' |  "C:\\workspace\\PlanejamentoEthosPortal\\src\\api\\PlanejamentoController_datasPlanejadasMethod.ts"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethodQueryResponse' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethodQueryResponse"
+[30/05/2025, 12:09:52]: No hook 'resolveName' for pluginKey '["plugin-zod"]' found, falling back on the '@kubb/core' plugin
+[30/05/2025, 12:09:52]: Executing pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function'
+[30/05/2025, 12:09:52]: Executed pluginKey core.2 | Resolving name 'PlanejamentoControllerDatasPlanejadasMethod200' and type 'function' |  "PlanejamentoControllerDatasPlanejadasMethod200"
+[30/05/2025, 12:09:52]: Start barrel generation for pluginKey plugin-client.1 and root 'C:\workspace\PlanejamentoEthosPortal\src\api\client'
+[30/05/2025, 12:09:52]: Executed pluginKey plugin-client.1 | buildStart |  undefined

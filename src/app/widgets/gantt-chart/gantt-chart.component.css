@@ -1,0 +1,5 @@
+.cc-red .bar-progress { fill: red !important; }
+
+:ng-deep .bar-wrapper{
+  background-color: black !important;
+}

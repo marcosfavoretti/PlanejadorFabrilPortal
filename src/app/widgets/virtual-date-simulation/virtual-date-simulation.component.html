@@ -1,0 +1,8 @@
+<div class="p-3 d-flex flex-column gap-3">
+    <div class="d-flex gap-2">
+        <button (click)="onLast()" class="btn btn-group btn-secondary"><i class="pi pi-angle-left"></i></button>
+        <span>{{ (date$ | async) | date: 'dd/MM/yyyy' }}</span>
+        <button (click)="onNext()" class="btn btn-group btn-secondary"><i class="pi pi-angle-right"></i></button>
+    </div>
+    <button class="btn btn-group btn-success" (click)="onReplanejar()">REPLANEJAMENTO</button>
+</div>

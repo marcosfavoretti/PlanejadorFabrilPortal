@@ -1,0 +1,8 @@
+<app-table-dynamic (OnChecked)="onNewChangeOnTable($event)" [tableModel]="tableModel"
+    [data]="(tabela$ | async) ?? []"></app-table-dynamic>
+<button class="btn btn-group btn-success" (click)="submitChanges()">Salvar</button>
+@if (tabelaProducaoStore.checkAlteracao()>0) {
+<span class="text-danger">
+    * Existem {{tabelaProducaoStore.checkAlteracao()}} alterações não salvas
+</span>
+}

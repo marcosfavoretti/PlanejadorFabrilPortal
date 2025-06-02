@@ -7,7 +7,7 @@ import { LoadingPopUpComponent } from '../widgets/loading-pop-up/loading-pop-up.
 
 @Injectable({ providedIn: 'root' })
 export class LoadingPopupService {
-  private modalRef?: NgbModalRef;
+  // private modalRef?: NgbModalRef;
 
   constructor(private modalService: NgbModal) { }
 
@@ -27,20 +27,20 @@ export class LoadingPopupService {
   }
 
 showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
-  this.modalRef = this.modalService.open(component, {
+  const modalRef = this.modalService.open(component, {
     backdrop: 'static',
     centered: true,
     keyboard: true,
   });
 
   if (inputs) {
-    Object.assign(this.modalRef.componentInstance,);
+    Object.assign(modalRef.componentInstance,);
   }
-  return this.modalRef
+  return modalRef
 
 }
   showWhile(...observables: Observable<any>[]): Observable<any> {
-    this.modalRef = this.modalService.open(LoadingPopUpComponent, {
+    const modalRef = this.modalService.open(LoadingPopUpComponent, {
       backdrop: 'static',
       centered: true,
       keyboard: false
@@ -70,12 +70,11 @@ showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
     );
 
     const resultObservable = forkJoin(safeObservables).pipe(
-      finalize(() => this.modalRef?.close())
+      finalize(() => modalRef?.close())
     );
 
     resultObservable.subscribe(results => {
       console.log('Todas as requisições terminaram:', results);
-      // Emit an event or handle the resolution logic here
       const event = new CustomEvent('loadingPopupResolved', { detail: results });
       window.dispatchEvent(event);
     });

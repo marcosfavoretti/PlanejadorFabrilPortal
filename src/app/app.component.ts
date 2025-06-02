@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TabelaProducaoSimulacaoComponent } from "./widgets/tabela-producao-simulacao/tabela-producao-simulacao.component";
 
 @Component({
   selector: 'app-root',

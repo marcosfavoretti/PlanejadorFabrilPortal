@@ -8,7 +8,7 @@ import { tableColumns, TableModel } from './@core/table.model';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { LoadingPopupService } from '../services/LoadingPopup.service';
-
+import { InputNumberModule } from 'primeng/inputnumber'
 @Component({
   standalone: true,
   selector: 'app-table-dynamic',
@@ -16,6 +16,7 @@ import { LoadingPopupService } from '../services/LoadingPopup.service';
   styleUrls: ['./table-dynamic.component.css'],
   imports: [
     TableModule,
+    InputNumberModule,
     ButtonModule,
     CommonModule,
     FormsModule,
@@ -25,7 +26,7 @@ import { LoadingPopupService } from '../services/LoadingPopup.service';
 export class TableDynamicComponent implements OnChanges {
   @Input() data: any[] = []; // O array de objetos a ser exibido na tabela
   @Input() tableModel!: TableModel
-  @Output('OnChecked') onChecked: EventEmitter<{ row: any, column: any, checked: boolean }> = new EventEmitter();
+  @Output('OnChecked') onChecked: EventEmitter<{ row: any, column: any, checked: any, oldValue: any }> = new EventEmitter();
   @Input() Externalfilter?: { value: string, filed: string, method: 'contains' }
   // Função auxiliar
 
@@ -33,17 +34,17 @@ export class TableDynamicComponent implements OnChanges {
   Array = Array;
   Object = Object;
 
-  constructor(private popupService: LoadingPopupService) { }
-
-
 
   onNewCheckEvent(row: any, column: any, event: any): void {
-    const oldValue = this.getNestedValue(row, column.path);
-    this.setNestedValue(row, column.path, !oldValue)
+    console.log(event)
+    const oldValue = row[column];
+    console.log(oldValue)
+    this.setNestedValue(row, column , event)
     this.onChecked.emit({
       row: row,
       column: column,
-      checked: !oldValue
+      checked: row[column],
+      oldValue: oldValue
     })
   }
   public applyFilterGlobal($event: any, stringVal: any) {

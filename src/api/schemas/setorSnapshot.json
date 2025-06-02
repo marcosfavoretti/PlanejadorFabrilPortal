@@ -1,0 +1,1 @@
+{"type":"object","properties":{"dia":{"format":"date-time","type":"string"},"item":{"type":"string"},"operacao":{"type":"string"},"qtdmercado":{"type":"number"}},"required":["dia","item","operacao","qtdmercado"],"x-readme-ref-name":"SetorSnapshot"}

@@ -1,0 +1,8 @@
+::ng-deep .p-datepicker {
+    overflow: visible;
+}
+
+::ng-deep .p-datepicker td>span {
+    overflow: visible;
+}
+

@@ -16,12 +16,11 @@
 <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data" groupRowsBy="atr_group" dataKey="atr_group"
   [paginator]="tableModel.paginator? true: false" [rows]="10" [columns]="tableModel.columns"
   [rowsPerPageOptions]="30 < (data ? data.length : 0) ? [10, 20, 30, data ? data.length : 0 ]: [10,20,30]"
- [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined">
+  [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined">
   <ng-template #caption class="bg-white">
     <div class="d-flex justify-content-between">
       <div class="d-flex gap-2 justify-content-start align-items-center">
-        <input pInputText type="text" placeholder="pesquisa..."
-          (input)="applyFilterGlobal($event, 'contains')" />
+        <input pInputText type="text" placeholder="pesquisa..." (input)="applyFilterGlobal($event, 'contains')" />
         <i class="pi pi-search"></i>
       </div>
       <div class="d-flex gap-2">
@@ -103,11 +102,20 @@
         </div>
         }
         @else if (key?.isCheckBox) {
-        <!-- <input type="checkbox" [checked]="getNestedValue(item, key.field)"
-          (change)="onNewCheckEvent(item, key, $event)"> -->
-          <button class="btn btn-group" (click)="openManager(item)">
-            <i class="pi pi-ellipsis-v"></i>
-          </button>
+        <input type="checkbox" [checked]="getNestedValue(item, key.field)"
+          (change)="onNewCheckEvent(item, key, $event)">
+
+        }
+        @else if (key?.isInputText) {
+        <p-inputnumber [ngModel]="getNestedValue(item, key.field)" [showButtons]="true" buttonLayout="vertical"
+          spinnerMode="vertical" inputId="vertical" [inputStyle]="{ width: '3rem' }" (ngModelChange)="onNewCheckEvent(item, key.field, $event)">
+          <ng-template #incrementbuttonicon>
+            <span class="pi pi-plus"></span>
+          </ng-template>
+          <ng-template #decrementbuttonicon>
+            <span class="pi pi-minus"></span>
+          </ng-template>
+        </p-inputnumber>
         }
         @else {
         {{getNestedValue(item, key.field)}}
