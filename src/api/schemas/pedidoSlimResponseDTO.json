@@ -1,0 +1,1 @@
+{"type":"object","properties":{"id":{"type":"number"},"codigo":{"type":"string"},"dataEntrega":{"format":"date-time","type":"string"},"lote":{"type":"number"},"item":{"type":"string"}},"required":["id","codigo","dataEntrega","lote","item"],"x-readme-ref-name":"PedidoSlimResponseDTO"}

@@ -1,0 +1,8 @@
+<div class="d-flex flex-column h-100 p-2" style="min-height: 30vh;">
+    <button class="btn btn-group btn-close align-self-end" (click)="closeButtonFn()"></button>
+    <div class="container flex-grow-1 d-flex flex-column">
+        <app-form-dinamico (formSubmitted)="efetivarCriacao($event)" [inColumn]="true" class="w-100 h-100 flex-grow-1"
+            [fields]="formsFields">
+        </app-form-dinamico>
+    </div>
+</div>

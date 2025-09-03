@@ -1,0 +1,12 @@
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="card broder rounded p-3">
+        <h1>Cadatro</h1>
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+            <input placeholder="user" type="text" name="user" class="input-group" ngModel required>
+            <input placeholder="password" type="password" name="password" class="input-group"  ngModel required>
+            <input placeholder="email" type="email" name="email" class="input-group"  ngModel required>
+            <button type="submit">cadastrar</button>
+        </form>
+    </div>
+</div>
+

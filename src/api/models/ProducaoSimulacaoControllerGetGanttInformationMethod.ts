@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { GetGanttInformationDto } from './GetGanttInformationDto.ts'
+import type { GetGanttInformationDto } from './GetGanttInformationDto.js'
 
 /**
  * @description Tabela de produção gerada com sucesso

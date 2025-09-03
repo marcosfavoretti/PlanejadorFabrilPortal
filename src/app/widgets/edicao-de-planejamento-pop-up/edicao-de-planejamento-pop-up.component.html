@@ -1,0 +1,32 @@
+<div class="d-flex flex-column h-100 p-2" style="min-height: 30vh;">
+    <button class="btn btn-group btn-close align-self-end" (click)="closeButtonFn()"></button>
+    <div class="container flex-grow-1 d-flex flex-column">
+        <p-tabs value="0" class="flex-grow-1 d-flex flex-column">
+            <p-tablist>
+                <p-tab value="0" class="text-primary">Edição</p-tab>
+                <p-tab value="1" class="text-danger">Remoção</p-tab>
+            </p-tablist>
+            <p-tabpanels class="d-flex flex-column">
+                <p-tabpanel value="0" class="flex-grow-1 d-flex flex-column">
+                    <app-form-dinamico (formSubmitted)="atualizaPlanejamento($event)" [inColumn]="true"
+                        class="w-100 h-100 flex-grow-1" [fields]="formsFields">
+                    </app-form-dinamico>
+                </p-tabpanel>
+                <p-tabpanel value="1" class="flex-grow-1">
+                    <div class="d-flex flex-column justify-content-center align-items-center w-100">
+                        <p class="text-center">
+                            Deseja apagar o planejamentos do pedido {{planejamento.pedido}}
+                            para o dia {{planejamento.dia | date : 'dd/MM/yyyy' : "UTC"}}?
+                            <br>
+                            A <span class="text-danger">remoção</span> desse planejamento não irá replanejar os proximos
+                            setores automaticamente
+                        </p>
+                        <button (click)="removePlanejamento()" class="btn btn-group btn-danger w-100 d-flex justify-content-center align-items-center">
+                            <i class="pi pi-trash"></i>
+                        </button>
+                    </div>
+                </p-tabpanel>
+            </p-tabpanels>
+        </p-tabs>
+    </div>
+</div>

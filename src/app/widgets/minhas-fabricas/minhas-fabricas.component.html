@@ -1,0 +1,2 @@
+<app-table-dynamic (OnChecked)="oncheck()" [tableModel]="tableShema" [data]="(fabricas$ | async) || []"
+    [exportable]="false"></app-table-dynamic>

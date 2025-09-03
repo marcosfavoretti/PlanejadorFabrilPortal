@@ -1,0 +1,2 @@
+<button class="btn btn-group btn-secondary" (click)="refresh()">refresh</button>
+<app-table-dynamic [tableModel]="tabelModel" [data]="(mercado$ | async)||[]"> </app-table-dynamic>

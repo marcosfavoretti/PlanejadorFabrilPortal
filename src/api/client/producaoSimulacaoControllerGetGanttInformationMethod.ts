@@ -3,17 +3,17 @@
  * Do not edit manually.
  */
 
-import client from '@kubb/plugin-client/clients/axios'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
-import type { ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse } from '../models/ProducaoSimulacaoControllerGetGanttInformationMethod.ts'
+import client from '@/client'
+import type { RequestConfig, ResponseErrorConfig } from '@/client'
+import type { ProducaoSimulacaoControllerGetGanttInformationMethodQueryResponse } from '../models/ProducaoSimulacaoControllerGetGanttInformationMethod.js'
 
 function getProducaoSimulacaoControllerGetGanttInformationMethodUrl() {
-  return `http://192.168.99.129:3000/simulacao/gen/gannt` as const
+  return `http://192.168.99.129:3000/api/simulacao/gen/gannt` as const
 }
 
 /**
  * @summary Gera informações para o gráfico
- * {@link /simulacao/gen/gannt}
+ * {@link /api/simulacao/gen/gannt}
  */
 export async function producaoSimulacaoControllerGetGanttInformationMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config

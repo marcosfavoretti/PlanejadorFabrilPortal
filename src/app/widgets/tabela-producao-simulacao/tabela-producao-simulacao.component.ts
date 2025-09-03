@@ -9,6 +9,7 @@ import { TabelaProducaoStoreService } from '../../services/TabelaProducaoStore.s
 import { TableDynamicComponent } from '../../table-dynamic/table-dynamic.component';
 import { TableModel } from '../../table-dynamic/@core/table.model';
 
+
 @Component({
   selector: 'app-tabela-producao-simulacao',
   imports: [TableDynamicComponent, AsyncPipe],
@@ -19,6 +20,8 @@ export class TabelaProducaoSimulacaoComponent implements OnInit, OnChanges {
 
   @Input('contextDate') contextDate!: Date;
 
+
+  
   constructor(
     private api: PlanejamentoAPIService,
     private popup: LoadingPopupService,
@@ -74,7 +77,7 @@ export class TabelaProducaoSimulacaoComponent implements OnInit, OnChanges {
     })
       .pipe(
         tap(table =>
-          table.map(t => t.produzido = this.tabelaProducaoStore.getTableProducaoPending(t.id)?.produzido || t.produzido))
+          table.map(t => t.produzido = this.tabelaProducaoStore.getTableProducaoPending(t.tabelaProducaoId)?.produzido || t.produzido))
       )
     this.laodTable();
     this.popup.showWhile(this.tabela$)

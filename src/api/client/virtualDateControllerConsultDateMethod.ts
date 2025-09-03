@@ -3,16 +3,16 @@
  * Do not edit manually.
  */
 
-import client from '@kubb/plugin-client/clients/axios'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import client from '@/client'
+import type { RequestConfig, ResponseErrorConfig } from '@/client'
 import type { VirtualDateControllerConsultDateMethodQueryResponse } from '../models/VirtualDateControllerConsultDateMethod.ts'
 
 function getVirtualDateControllerConsultDateMethodUrl() {
-  return `http://192.168.99.129:3000/virtual-date` as const
+  return `http://192.168.99.129:9279/api/virtual-date` as const
 }
 
 /**
- * {@link /virtual-date}
+ * {@link /api/virtual-date}
  */
 export async function virtualDateControllerConsultDateMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config

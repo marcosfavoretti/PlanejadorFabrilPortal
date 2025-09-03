@@ -1,0 +1,48 @@
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="container mt-4">
+    <div class="row">
+        <ng-container *ngFor="let field of fields">
+            <div [class]="inColumn? 'col-12 mb-3':'col-md-3 mb-3' ">
+                <label [for]="field.name" class="form-label fw-semibold">{{ field.label }}</label>
+                <br>
+                <!-- Campo de texto -->
+                <input *ngIf="field.type === 'text'" pInputText type="text" class="form-control" [id]="field.name"
+                    [name]="field.name" [disabled]="field.disable" [(ngModel)]="model[field.name]"
+                    [required]="!!field.required" #ctrl="ngModel" [class.is-invalid]="ctrl.invalid && ctrl.touched" />
+
+                <!-- Campo numérico -->
+                <input *ngIf="field.type === 'number'" pInputText type="number" class="form-control" [id]="field.name"
+                    [name]="field.name" [disabled]="field.disable" [(ngModel)]="model[field.name]"
+                    [required]="!!field.required" #ctrl="ngModel" [class.is-invalid]="ctrl.invalid && ctrl.touched" />
+
+                <!--select-->
+                <select *ngIf="field.type === 'select'" class="form-select" [id]="field.name" [name]="field.name"
+                    [(ngModel)]="model[field.name]" [disabled]="field.disable" [required]="!!field.required"
+                    #ctrl="ngModel" [class.is-invalid]="ctrl.invalid && ctrl.touched">
+                    <option [ngValue]="undefined" disabled selected>Selecione uma opção</option>
+                    <option *ngFor="let option of field.data" [ngValue]="option.k">
+                        {{ option.v }}
+                    </option>
+                </select>
+
+                <!-- Campo de data -->
+                <p-date-picker *ngIf="field.type === 'date'" class="w-100" inputStyleClass="form-control"
+                    [id]="field.name" [disabled]="field.disable" [name]="field.name" [showIcon]="true"
+                    [showButtonBar]="true"  dateFormat="dd/mm/yy" [required]="!!field.required"
+                    [(ngModel)]="model[field.name]" #ctrl="ngModel" #dateModel="ngModel"
+                    [class.ng-invalid]="ctrl.invalid && ctrl.touched">
+                </p-date-picker>
+
+                <div *ngIf="validationErrors[field.name]" class="text-danger small mt-1">
+                    Valor inválido com base nas regras do formulário.
+                </div>
+
+                <!-- <div *ngIf="ctrl.invalid && ctrl.touched" class="invalid-feedback d-block">
+          {{ field.label }} é obrigatório
+        </div> -->
+            </div>
+        </ng-container>
+        <div class="text-end">
+            <button pButton type="submit" class="btn btn-secondary"><i [class]="buttonIcon"></i></button>
+        </div>
+    </div>
+</form>

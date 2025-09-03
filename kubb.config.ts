@@ -9,10 +9,17 @@ export default defineConfig(() => ({
     output: { path: './src/api' },
     plugins: [
         pluginOas(),
-        pluginTs({ output: { path: 'models' } }),
+        pluginTs({
+            output:
+                { path: 'models' },
+            dateType: 'date',
+            enumType: 'enum',
+            syntaxType: 'type'
+        }),
         pluginClient({
             output: { path: 'client' },
             client: 'axios',
+            importPath: '@/client',
             baseURL: enviorment.__API,
         }),
     ],

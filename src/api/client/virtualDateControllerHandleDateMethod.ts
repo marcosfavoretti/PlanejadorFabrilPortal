@@ -3,19 +3,19 @@
  * Do not edit manually.
  */
 
-import client from '@kubb/plugin-client/clients/axios'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import client from '@/client'
+import type { RequestConfig, ResponseErrorConfig } from '@/client'
 import type {
   VirtualDateControllerHandleDateMethodMutationResponse,
   VirtualDateControllerHandleDateMethodPathParams,
 } from '../models/VirtualDateControllerHandleDateMethod.ts'
 
 function getVirtualDateControllerHandleDateMethodUrl(param: VirtualDateControllerHandleDateMethodPathParams['param']) {
-  return `http://192.168.99.129:3000/virtual-date/handle/${param}` as const
+  return `http://192.168.99.129:9279/api/virtual-date/handle/${param}` as const
 }
 
 /**
- * {@link /virtual-date/handle/:param}
+ * {@link /api/virtual-date/handle/:param}
  */
 export async function virtualDateControllerHandleDateMethod(
   param: VirtualDateControllerHandleDateMethodPathParams['param'],

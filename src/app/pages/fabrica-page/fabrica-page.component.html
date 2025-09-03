@@ -1,0 +1,15 @@
+<global-header />
+@if(loadFinish){
+<div class="container">
+    <app-fabrica-apresentacao></app-fabrica-apresentacao>
+    <div class="row py-4">
+        <div class="col-md-5">
+            <app-pedidos-planejados-tabela></app-pedidos-planejados-tabela>
+        </div>
+        <div class="col-md-7">
+            <app-tabela-planejamento [estrategia]="'editavel'"></app-tabela-planejamento>
+        </div>
+    </div>
+    <app-gantt-chart [editavel]="true"></app-gantt-chart>
+</div>
+}

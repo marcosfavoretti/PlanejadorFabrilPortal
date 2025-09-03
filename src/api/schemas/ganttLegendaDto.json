@@ -1,0 +1,1 @@
+{"type":"object","properties":{"legenda":{"type":"string"},"cor":{"type":"string"}},"required":["legenda","cor"],"x-readme-ref-name":"GanttLegendaDto"}

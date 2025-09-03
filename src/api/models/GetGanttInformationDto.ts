@@ -3,60 +3,16 @@
  * Do not edit manually.
  */
 
+import type { GanttData } from './GanttData.ts'
+import type { GanttLegendaDto } from './GanttLegendaDto.ts'
+
 export type GetGanttInformationDto = {
   /**
-   * @description ID da tarefa
-   * @type string | undefined
+   * @type array
    */
-  id?: string
+  data: GanttData[]
   /**
-   * @description Nome da tarefa
-   * @type string
+   * @type array
    */
-  name: string
-  /**
-   * @description Data de início da tarefa (formato ISO)
-   * @type string
-   */
-  start: string
-  /**
-   * @description Data de término da tarefa (formato ISO)
-   * @type string | undefined
-   */
-  end?: string
-  /**
-   * @description Duração da tarefa
-   * @type string | undefined
-   */
-  duration?: string
-  /**
-   * @description Progresso da tarefa de 0 a 100
-   * @type number
-   */
-  progress: number
-  /**
-   * @description Dependências da tarefa (ID de outras tarefas)
-   * @type array | undefined
-   */
-  dependencies?: string[]
-  /**
-   * @description Classe CSS customizada para estilização
-   * @type string | undefined
-   */
-  custom_class?: string
-  /**
-   * @description Cor principal da barra (hex ou nome CSS)
-   * @type string | undefined
-   */
-  color?: string
-  /**
-   * @description Cor da barra de progresso
-   * @type string | undefined
-   */
-  color_progress?: string
-  /**
-   * @description Índice da tarefa (uso interno)
-   * @type number | undefined
-   */
-  _index?: number
+  legenda: GanttLegendaDto[]
 }

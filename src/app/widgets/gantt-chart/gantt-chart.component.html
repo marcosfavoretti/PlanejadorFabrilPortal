@@ -1,1 +1,10 @@
-<div #gantt class="w-100 h-100"></div>
+<div class="bg-secondary-subtle p-4 rounded-3">
+    <div class="d-flex gap-2 p-2">
+        <p>colorir Gantt por:</p>
+        @for (item of viewModeOp; track $index) {
+        <button (click)="setViewMode(item[1])" class="btn btn-group "
+            [ngClass]="item[1]!==viewMode? 'btn-outline-success': 'btn-success'">{{item[0]}}</button>
+        }
+    </div>
+    <div #gantt class="gant-target dark"></div>
+</div>

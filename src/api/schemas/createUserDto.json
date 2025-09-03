@@ -1,0 +1,1 @@
+{"type":"object","properties":{"name":{"type":"string","example":"admin"},"password":{"type":"string","example":"admin"},"email":{"type":"string","example":"admin@gmail.com"}},"required":["name","password","email"],"x-readme-ref-name":"CreateUserDto"}

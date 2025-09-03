@@ -31,7 +31,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/frappe-gantt/dist/frappe-gantt.css",
               "src/styles.css"
-            ],
+                        ],
             "scripts": []
           },
           "configurations": {
@@ -40,7 +40,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -89,7 +89,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/@syncfusion/ej2-material-theme/styles/material.css"
             ],
             "scripts": []
           }
@@ -98,7 +99,9 @@
     }
   },
   "cli": {
-    "cache": {"enabled": false},
+    "cache": {
+      "enabled": false
+    },
     "analytics": "86eb9537-1454-4ac8-a3da-f9d528e61d45"
   }
 }

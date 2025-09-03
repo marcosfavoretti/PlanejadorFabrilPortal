@@ -17,28 +17,31 @@ export class LoadingPopupService {
       centered: true,
       keyboard: true,
     });
-  
+
     errorRef.result.catch(() => {
       console.log('ErroPopupComponent foi fechado.');
     });
-  
+
     errorRef.componentInstance.erroMessage = message;
     errorRef.componentInstance.closeButtonFn = () => errorRef.close();
   }
 
-showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
-  const modalRef = this.modalService.open(component, {
-    backdrop: 'static',
-    centered: true,
-    keyboard: true,
-  });
+  showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
+    const modalRef = this.modalService.open(component, {
+      backdrop: 'static',
+      centered: true,
+      keyboard: true,
+    });
+    
+    if (inputs) {
+      for (const [key, value] of Object.entries(inputs)) {
+        modalRef.componentInstance[key] = value;
+      }
+    }
+    modalRef.componentInstance.closeButtonFn = () => modalRef.close();
+    return modalRef
 
-  if (inputs) {
-    Object.assign(modalRef.componentInstance,);
   }
-  return modalRef
-
-}
   showWhile(...observables: Observable<any>[]): Observable<any> {
     const modalRef = this.modalService.open(LoadingPopUpComponent, {
       backdrop: 'static',
@@ -61,8 +64,8 @@ showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
             console.log('ErroPopupComponent foi fechado.');
           });
           console.log(err);
-          errorRef.componentInstance.erroMessage = err.response?.data?.message ;
-          errorRef.componentInstance.erroMessageErr = err.response?.data?.error ;
+          errorRef.componentInstance.erroMessage = err.response?.data?.message || `${err.code} ${err.message}`;
+          errorRef.componentInstance.erroMessageErr = err.response?.data?.error;
           errorRef.componentInstance.closeButtonFn = () => errorRef.close(); // Passa a função de fechar para o input closeButtonFn
           return of(null);
         })

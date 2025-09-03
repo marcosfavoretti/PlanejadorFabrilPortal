@@ -3,16 +3,16 @@
  * Do not edit manually.
  */
 
-import client from '@kubb/plugin-client/clients/axios'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import client from '@/client'
+import type { RequestConfig, ResponseErrorConfig } from '@/client'
 import type { PlanejamentoControllerDatasPlanejadasMethodQueryResponse } from '../models/PlanejamentoControllerDatasPlanejadasMethod.ts'
 
 function getPlanejamentoControllerDatasPlanejadasMethodUrl() {
-  return `http://192.168.99.129:3000/plan/datas` as const
+  return `http://192.168.99.129:9279/api/plan/datas` as const
 }
 
 /**
- * {@link /plan/datas}
+ * {@link /api/plan/datas}
  */
 export async function planejamentoControllerDatasPlanejadasMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config

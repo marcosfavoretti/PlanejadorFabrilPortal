@@ -3,9 +3,9 @@
  * Do not edit manually.
  */
 
-import type { SetorSnapshot } from './SetorSnapshot.ts'
+import type { GetMercadosEntreSetoresTabelaDto } from './GetMercadosEntreSetoresTabelaDto.ts'
 
-export type ProducaoSimulacaoControllerConsultarMercadoMethodError = SetorSnapshot[]
+export type ProducaoSimulacaoControllerConsultarMercadoMethodError = GetMercadosEntreSetoresTabelaDto[]
 
 export type ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse = any
 

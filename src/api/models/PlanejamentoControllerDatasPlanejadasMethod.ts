@@ -6,7 +6,7 @@
 /**
  * @description Lista de datas planejadas
  */
-export type PlanejamentoControllerDatasPlanejadasMethod200 = string[]
+export type PlanejamentoControllerDatasPlanejadasMethod200 = Date[]
 
 export type PlanejamentoControllerDatasPlanejadasMethodQueryResponse = PlanejamentoControllerDatasPlanejadasMethod200
 

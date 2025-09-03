@@ -1,0 +1,51 @@
+<p-confirm-popup></p-confirm-popup>
+@if (fabrica) {
+<div class="d-flex flex-column border border-bottom border-0 py-2">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column">
+            <h1 class="display-6">
+                Fábrica
+                <span [class]="
+                fabrica.principal?
+                'text-success' : 'text-info'">
+                    {{fabrica.principal? 'Principal' : 'Privada'}}
+                </span>
+            </h1>
+            <p class="small fst-italic">~ gerada por <span class="text-success">{{fabrica.autor}}</span> </p>
+        </div>
+        <span class="text-muted small">
+            {{ fabrica.date | date : 'dd/MM/yyyy HH:mm' }}
+        </span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-2">
+            <button [disabled]="!fabrica.principal" (click)="forkFabrica()"
+                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+                <i
+                tooltipPosition="bottom"
+                [tooltipDisabled]="!fabrica.principal"
+                [pTooltip]="fabrica.principal? 'editar fábrica': ''"
+                [class]="fabrica.principal? 'pi pi-reply': 'pi pi-lock'"></i>
+            </button>
+            @if (!fabrica.principal) {
+            <button (click)="confirmacaoPullRequest($event)"
+                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+                <i class="pi pi-link"></i>
+            </button>
+            <button (click)="confirmarRestartFabrica($event)"
+                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+                <i class="pi pi-refresh"></i>
+            </button>
+            <button (click)="confirmacaoDelecao($event)"
+                class="btn btn-group btn-outline-danger border-0 d-flex gap-2 align-items-center">
+                <i class="pi pi-trash"></i>
+            </button>
+            }
+        </div>
+        <span class="small text-secondary">{{fabrica.fabricaId}}</span>
+    </div>
+</div>
+}
+@else {
+<!-- skeleton -->
+}

@@ -1,0 +1,75 @@
+<h1 class="display-6">
+    Pedidos Planejados
+</h1>
+<p-tree class="custom-tree border rounded shadow-sm" [value]="treeData()">
+    <ng-template let-node pTemplate="default">
+        @if (node.top) {
+        <div class="tree-node px-3 py-2 d-flex align-items-center gap-2">
+            <span pBadge [severity]="node.data.dividas.length? 'danger': 'success'"></span>
+            <div class="d-flex gap-3 px-2">
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">id</span>
+                    <span class="">
+                        {{ node.data.pedido.id }}
+                    </span>
+                </div>
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Pedido</span>
+                    <span class="">
+                        {{ node.data.pedido.codigo }}
+                    </span>
+                </div>
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Lote</span>
+                    <span class="">
+                        {{ node.data.pedido.lote }}
+                    </span>
+                </div>
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Entrega</span>
+                    <span class="">
+                        {{ node.data.pedido.dataEntrega | date : 'dd/MM/yyyy' : 'UTC'}}
+                    </span>
+                </div>
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Item</span>
+                    <span class="">
+                        {{ node.data.pedido.item }}
+                    </span>
+                </div>
+                <!-- @if(!(fabricaStore.item()?.principal)){ -->
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <button pTooltip="replanejar pedido inteiro" class="btn btn-group btn-outline-dark border-0"
+                        (click)="replanejarPedido(node.data.pedido.id)">
+                        <i class="pi pi-reply"></i>
+                    </button>
+                    <button pTooltip="apaga pedido no planejamento" class="btn btn-group btn-outline-danger border-0"
+                        (click)="desplanejarPedido(node.data.pedido.id)">
+                        <i class="pi pi-trash"></i>
+                    </button>
+                </div>
+                <!-- } -->
+
+            </div>
+        </div>
+        }
+        @else {
+        <div class="tree-node-child px-3 py-1 ">
+            <div class="d-flex gap-3">
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Setor</span>
+                    <span class="">
+                        {{ node.data.setorCodigo }}
+                    </span>
+                </div>
+                <div class="d-flex flex-column ">
+                    <span class="fw-semibold text-dark">Divida</span>
+                    <span class="">
+                        {{ node.data.qtd }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        }
+    </ng-template>
+</p-tree>

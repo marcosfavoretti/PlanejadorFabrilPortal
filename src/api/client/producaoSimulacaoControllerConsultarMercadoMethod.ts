@@ -3,16 +3,16 @@
  * Do not edit manually.
  */
 
-import client from '@kubb/plugin-client/clients/axios'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
+import client from '@/client'
+import type { RequestConfig, ResponseErrorConfig } from '@/client'
 import type { ProducaoSimulacaoControllerConsultarMercadoMethodQueryResponse } from '../models/ProducaoSimulacaoControllerConsultarMercadoMethod.ts'
 
 function getProducaoSimulacaoControllerConsultarMercadoMethodUrl() {
-  return `http://192.168.99.129:3000/simulacao/gen/mercado` as const
+  return `http://192.168.99.129:9279/api/simulacao/gen/mercado` as const
 }
 
 /**
- * {@link /simulacao/gen/mercado}
+ * {@link /api/simulacao/gen/mercado}
  */
 export async function producaoSimulacaoControllerConsultarMercadoMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const { client: request = client, ...requestConfig } = config

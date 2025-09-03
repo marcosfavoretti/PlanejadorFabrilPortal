@@ -1,7 +1,16 @@
 <!-- <h1>Planejamento</h1>
 <app-tabela-producao-simulacao [contextDate]="date"></app-tabela-producao-simulacao> -->
-<app-contexto-simulacao></app-contexto-simulacao>
-<app-virtual-date-simulation></app-virtual-date-simulation>
-<div class="min-vh-100">
-    <app-gantt-chart></app-gantt-chart>
-</div>
+<!-- <app-contexto-simulacao></app-contexto-simulacao> -->
+<!-- <app-produzidos-entre-setores></app-produzidos-entre-setores> -->
+<global-header />
+
+@if(loadFinish){<div class="container">
+    <app-home-page-navigator></app-home-page-navigator>
+    <!-- <app-minhas-fabricas id="fabricas" name="fabricas"></app-minhas-fabricas> -->
+    <app-fabrica-apresentacao></app-fabrica-apresentacao>
+    <!-- <app-gantt-chart></app-gantt-chart> -->
+    <app-pedidos-planejados-tabela></app-pedidos-planejados-tabela>
+    <app-tabela-planejamento id="planejamentos" name="planejamentos"></app-tabela-planejamento>
+    <app-gantt-chart id="gantt" name="gantt"></app-gantt-chart>
+    <app-pedidos-tabela id="pedidos" name="pedidos"></app-pedidos-tabela>
+</div>}

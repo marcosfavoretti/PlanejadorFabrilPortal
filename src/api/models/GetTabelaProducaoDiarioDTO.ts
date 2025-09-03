@@ -7,19 +7,15 @@ export type GetTabelaProducaoDiarioDTO = {
   /**
    * @type number
    */
-  id: number
-  /**
-   * @type string, date-time
-   */
-  date_planej: string
+  tabelaProducaoId: number
   /**
    * @type string
    */
   item: string
   /**
-   * @type string
+   * @type object
    */
-  setor: string
+  setor: object
   /**
    * @type number
    */

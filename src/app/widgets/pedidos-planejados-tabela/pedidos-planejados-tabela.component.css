@@ -1,0 +1,22 @@
+.custom-tree {
+  background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+}
+
+.tree-node {
+  transition: all 0.2s ease-in-out;
+}
+
+.tree-node:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.01);
+}
+
+.tree-node-child {
+  padding-left: 2rem;
+}
+
+.p-tree .p-treenode-content {
+  border: none !important;
+}

@@ -1,0 +1,6 @@
+@if(pedido$){
+    <app-table-dynamic 
+    (OnChecked)="onPedidoEscolhido($event)"
+    [tableModel]="schema"
+    [data]="(pedido$ | async) || []"></app-table-dynamic>
+}

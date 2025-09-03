@@ -1,0 +1,12 @@
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="card broder rounded p-3">
+        <h1>Login</h1>
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+            <input type="text" name="user" class="input-group" ngModel required="">
+            <input type="password" name="password" class="input-group"  ngModel required="">
+            <button type="submit">login</button>
+        </form>
+        <a href="/register">cadastre-se</a>
+    </div>
+</div>
+

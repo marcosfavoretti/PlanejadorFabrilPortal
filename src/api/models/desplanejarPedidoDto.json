@@ -1,0 +1,1 @@
+{"type":"object","properties":{"pedidoIds":{"type":"array","items":{"type":"number"}},"fabricaId":{"type":"string"}},"required":["pedidoIds","fabricaId"],"x-readme-ref-name":"DesplanejarPedidoDto"}

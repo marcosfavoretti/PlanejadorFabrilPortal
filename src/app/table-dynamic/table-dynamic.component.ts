@@ -1,14 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FormsModule } from '@angular/forms';
 import { tableColumns, TableModel } from './@core/table.model';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { LoadingPopupService } from '../services/LoadingPopup.service';
 import { InputNumberModule } from 'primeng/inputnumber'
+import { debounceTime, Subject } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'app-table-dynamic',
@@ -16,6 +16,7 @@ import { InputNumberModule } from 'primeng/inputnumber'
   styleUrls: ['./table-dynamic.component.css'],
   imports: [
     TableModule,
+    DatePipe,
     InputNumberModule,
     ButtonModule,
     CommonModule,
@@ -23,30 +24,48 @@ import { InputNumberModule } from 'primeng/inputnumber'
     ImageModule,
   ]
 })
-export class TableDynamicComponent implements OnChanges {
+export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() data: any[] = []; // O array de objetos a ser exibido na tabela
   @Input() tableModel!: TableModel
   @Output('OnChecked') onChecked: EventEmitter<{ row: any, column: any, checked: any, oldValue: any }> = new EventEmitter();
   @Input() Externalfilter?: { value: string, filed: string, method: 'contains' }
+  @Input() exportable: boolean = true;
+  private inputChanged$ = new Subject<{ row: any; column: any; value: any }>();
   // Função auxiliar
 
   @ViewChild('dt2') dt2!: Table
   Array = Array;
   Object = Object;
 
+  ngOnInit() {
+    // Debounce já existente
+    this.inputChanged$
+      // .pipe(debounceTime(1000))
+      .subscribe(({ row, column, value }) => {
+        this.onNewCheckEvent(row, column, value);
+      });
+
+  }
+
+  onInputChangeDebounced(row: any, column: any, value: any) {
+    console.log(row, column, value)
+    this.inputChanged$.next({ row, column, value });
+  }
 
   onNewCheckEvent(row: any, column: any, event: any): void {
-    console.log(event)
     const oldValue = row[column];
-    console.log(oldValue)
-    this.setNestedValue(row, column , event)
+    this.setNestedValue(row, column, event)
+    const value = this.getNestedValue(row, column);
+    console.log(value)
+    if (!value === null || value === undefined) return;
     this.onChecked.emit({
       row: row,
       column: column,
       checked: row[column],
       oldValue: oldValue
-    })
+    });
   }
+
   public applyFilterGlobal($event: any, stringVal: any) {
     this.dt2!.filterGlobal(($event.target as HTMLInputElement).value.trim(), stringVal.trim());
   }
@@ -57,6 +76,7 @@ export class TableDynamicComponent implements OnChanges {
       this.filterTable(changes['filter'].currentValue as { value: string, field: string, method: 'contains' | 'notEquals' });
     }
   }
+
   getTotalOfColumn(column: tableColumns): number | undefined {
     // Verificar se os dados existem e são um array de objetos
     if (!column.toTotalize) return;
@@ -96,21 +116,22 @@ export class TableDynamicComponent implements OnChanges {
     return result;
   }
 
-  setNestedValue(object: any, key: any, newValue: any): void {
-    const result = key.split('.').reduce((acc: any, curr: any) => {
-      if (Array.isArray(acc)) {
-        return acc.map(item => {
-          if (Array.isArray(item)) {
-            return item[0][curr]
-          }
-          else {
-            return item[curr];
-          }
-        });
+  setNestedValue(obj: any, key: string, value: any): void {
+    const keys = key.split('.');
+    let current = obj;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+      const k = keys[i];
+
+      // Se não existir ou não for objeto, cria um objeto vazio
+      if (!current[k] || typeof current[k] !== 'object') {
+        current[k] = {};
       }
-      return acc ? acc[curr] = newValue : null;
-    }, object);
-    return result;
+
+      current = current[k];
+    }
+
+    current[keys[keys.length - 1]] = value;
   }
 
   checkHighLight(data: any): { [key: string]: string } | undefined {

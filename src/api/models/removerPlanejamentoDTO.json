@@ -1,0 +1,1 @@
+{"type":"object","properties":{"planejamentoId":{"type":"number"},"fabricaId":{"type":"string"}},"required":["planejamentoId","fabricaId"],"x-readme-ref-name":"RemoverPlanejamentoDTO"}

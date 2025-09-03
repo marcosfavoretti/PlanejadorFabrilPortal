@@ -1,5 +1,5 @@
 import { from, Observable } from "rxjs";
-import { GetGanttInformationDto, GetTabelaProducaoDiarioDTO, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200, producaoSimulacaoControllerGenTabelaDiariaMethod, ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams, producaoSimulacaoControllerGetGanttInformationMethod, producaoSimulacaoControllerSaveTabelaDiariaMethod, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutation, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, replanejamentoControllerReplanejamentoMethod } from "../../api";
+import { GetGanttInformationDto, GetTabelaProducaoDiarioDTO, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200, producaoSimulacaoControllerConsultarMercadoMethod, producaoSimulacaoControllerGenTabelaDiariaMethod, ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams,  producaoSimulacaoControllerSaveTabelaDiariaMethod, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, replanejamentoControllerReplanejamentoMethod, GetMercadosEntreSetoresTabelaDto, KPIControllerGetGanttInformationMethod, KPIControllerGetGanttInformationMethodQueryParams } from "../../api";
 import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root'
@@ -9,6 +9,14 @@ export class PlanejamentoAPIService {
         return from(
             producaoSimulacaoControllerGenTabelaDiariaMethod(filter)
                 .then(d => d)
+                .catch(err => { throw err })
+        )
+    }
+
+    requestMercado(): Observable<GetMercadosEntreSetoresTabelaDto[]> {
+        return from(
+            producaoSimulacaoControllerConsultarMercadoMethod()
+                .then((d) => d)
                 .catch(err => { throw err })
         )
     }
@@ -29,9 +37,9 @@ export class PlanejamentoAPIService {
         )
     }
 
-    requestGanttData(): Observable<GetGanttInformationDto[]> {
+    requestGanttData(dto: KPIControllerGetGanttInformationMethodQueryParams): Observable<GetGanttInformationDto> {
         return from(
-            producaoSimulacaoControllerGetGanttInformationMethod()
+            KPIControllerGetGanttInformationMethod(dto)
                 .then((d) => d)
                 .catch(err => { throw err })
         )

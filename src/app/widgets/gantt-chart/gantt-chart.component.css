@@ -3,3 +3,8 @@
 :ng-deep .bar-wrapper{
   background-color: black !important;
 }
+
+:host ::ng-deep .gantt-atrasado .bar {
+  stroke: red !important;
+  stroke-width: 3px !important;
+}

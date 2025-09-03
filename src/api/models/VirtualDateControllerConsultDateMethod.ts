@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-export type VirtualDateControllerConsultDateMethod200 = string
+export type VirtualDateControllerConsultDateMethod200 = Date
 
 export type VirtualDateControllerConsultDateMethodQueryResponse = VirtualDateControllerConsultDateMethod200
 

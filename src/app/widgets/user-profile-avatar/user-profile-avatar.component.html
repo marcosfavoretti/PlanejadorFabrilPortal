@@ -1,0 +1,10 @@
+<p-avatar [size]="size" [style]="{'overflow': 'visible', 'backgroundColor': 'green'}" shape="circle">
+  <span class="text-white small">
+    {{
+      userAvatarLetter.includes(' ') && userAvatarLetter.indexOf(' ') + 1 < userAvatarLetter.length
+        ? userAvatarLetter[0].toUpperCase() + userAvatarLetter[userAvatarLetter.indexOf(' ') + 1]
+        : userAvatarLetter.slice(0, 2).toUpperCase()
+    }}
+  </span>
+</p-avatar>
+<!-- avatarLetter.indexOf(' ')+1 !== avatarLetter.length valida se o espaco nao esta no ult index -->

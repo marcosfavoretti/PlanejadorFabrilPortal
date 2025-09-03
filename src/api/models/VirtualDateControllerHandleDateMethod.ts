@@ -3,13 +3,10 @@
  * Do not edit manually.
  */
 
-export const virtualDateControllerHandleDateMethodPathParamsParamEnum = {
-  proxima: 'proxima',
-  anterior: 'anterior',
-} as const
-
-export type VirtualDateControllerHandleDateMethodPathParamsParamEnum =
-  (typeof virtualDateControllerHandleDateMethodPathParamsParamEnum)[keyof typeof virtualDateControllerHandleDateMethodPathParamsParamEnum]
+export enum VirtualDateControllerHandleDateMethodPathParamsParamEnum {
+  'proxima' = 'proxima',
+  'anterior' = 'anterior',
+}
 
 export type VirtualDateControllerHandleDateMethodPathParams = {
   /**
@@ -22,7 +19,7 @@ export type VirtualDateControllerHandleDateMethodPathParams = {
 /**
  * @description Lista de datas planejadas
  */
-export type VirtualDateControllerHandleDateMethod200 = string
+export type VirtualDateControllerHandleDateMethod200 = Date
 
 export type VirtualDateControllerHandleDateMethodMutationResponse = VirtualDateControllerHandleDateMethod200
 

@@ -1,5 +1,26 @@
 @import '../node_modules/frappe-gantt/dist/frappe-gantt.css';
-@import '../node_modules/frappe-gantt/src/styles/gantt.css';
-
 @import "primeicons/primeicons.css";
 /* You can add global styles to this file, and also import other style files */
+
+
+html {
+  font-size: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 1.4rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 1.6rem;
+  }
+}
