@@ -1,3 +1,4 @@
+import { Signal } from "@angular/core";
 import { NgForm } from "@angular/forms";
 
 export type DynamicField = {
@@ -6,6 +7,7 @@ export type DynamicField = {
   defaultValue?: any,
   type: 'text' | 'number' | 'date' | 'select';
   data?: {k: string, v: string}[];
+  trigger?: (input: any) => void | Promise<void>;
   required?: boolean;
   disable: boolean;
   simpleValidation?: ((formSnapshot: NgForm) => boolean)[]

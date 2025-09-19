@@ -1,0 +1,18 @@
+<nav class="d-flex flex-column border-end vh-100 p-2">
+  <ul class="list-unstyled mt-3 p-0">
+    @if (items()) {
+    <li *ngFor="let item of items()!; let i = index"
+      class="d-flex align-items-center rounded mb-1 py-2" style="cursor: pointer;"
+      (click)="onClick(item, i)"
+      [routerLink]="[item.route]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:false}"    
+      >
+      @if (item.icon) {
+        <span  class="me-2"><i [class]="item.icon"></i></span>
+      }
+      {{ item.label }}
+    </li>
+    }
+  </ul>
+</nav>

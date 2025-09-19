@@ -1,75 +1,146 @@
-<h1 class="display-6">
-    Pedidos Planejados
-</h1>
-<p-tree class="custom-tree border rounded shadow-sm" [value]="treeData()">
-    <ng-template let-node pTemplate="default">
-        @if (node.top) {
-        <div class="tree-node px-3 py-2 d-flex align-items-center gap-2">
-            <span pBadge [severity]="node.data.dividas.length? 'danger': 'success'"></span>
-            <div class="d-flex gap-3 px-2">
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">id</span>
-                    <span class="">
-                        {{ node.data.pedido.id }}
-                    </span>
-                </div>
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Pedido</span>
-                    <span class="">
-                        {{ node.data.pedido.codigo }}
-                    </span>
-                </div>
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Lote</span>
-                    <span class="">
-                        {{ node.data.pedido.lote }}
-                    </span>
-                </div>
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Entrega</span>
-                    <span class="">
-                        {{ node.data.pedido.dataEntrega | date : 'dd/MM/yyyy' : 'UTC'}}
-                    </span>
-                </div>
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Item</span>
-                    <span class="">
-                        {{ node.data.pedido.item }}
-                    </span>
-                </div>
-                <!-- @if(!(fabricaStore.item()?.principal)){ -->
-                <div class="d-flex flex-column justify-content-center align-items-center">
-                    <button pTooltip="replanejar pedido inteiro" class="btn btn-group btn-outline-dark border-0"
-                        (click)="replanejarPedido(node.data.pedido.id)">
-                        <i class="pi pi-reply"></i>
-                    </button>
-                    <button pTooltip="apaga pedido no planejamento" class="btn btn-group btn-outline-danger border-0"
-                        (click)="desplanejarPedido(node.data.pedido.id)">
-                        <i class="pi pi-trash"></i>
-                    </button>
-                </div>
-                <!-- } -->
+<h2 class="display-6">Pedidos planejados</h2>
 
-            </div>
-        </div>
-        }
-        @else {
-        <div class="tree-node-child px-3 py-1 ">
-            <div class="d-flex gap-3">
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Setor</span>
-                    <span class="">
-                        {{ node.data.setorCodigo }}
-                    </span>
-                </div>
-                <div class="d-flex flex-column ">
-                    <span class="fw-semibold text-dark">Divida</span>
-                    <span class="">
-                        {{ node.data.qtd }}
-                    </span>
-                </div>
-            </div>
-        </div>
-        }
+<p-table #dt [value]="pedidoStore.item()||[]" dataKey="pedido.id"
+         [tableStyle]="{ 'min-width': '60rem' }"
+         [expandedRowKeys]="expandedRows"
+         [paginator]="true"
+         [rowsPerPageOptions]="[5,20,30]"
+         [rows]="5">
+
+    <!-- Table Header -->
+    <ng-template #header>
+        <tr>
+            <th></th>
+
+            <th pSortableColumn="pedido.id">
+                ID
+                <p-sortIcon field="pedido.id"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="pedido.codigo">
+                Código
+                <p-sortIcon field="pedido.codigo"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="pedido.lote">
+                Lote
+                <p-sortIcon field="pedido.lote"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="pedido.dataEntrega">
+                Data
+                <p-sortIcon field="pedido.dataEntrega"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="pedido.item.Item">
+                Item
+                <p-sortIcon field="pedido.item.Item"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="pedido.item.tipo_item">
+                Tipo Item
+                <p-sortIcon field="pedido.item.tipo_item"></p-sortIcon>
+            </th>
+
+            @if(isEditable()){<th></th>}
+
+            <th>Status</th>
+        </tr>
     </ng-template>
-</p-tree>
+
+    <!-- Table Body -->
+    <ng-template #body let-product let-expanded="expanded">
+        <tr>
+            <td>
+                <p-button type="button" pRipple [pRowToggler]="product" [text]="true" severity="secondary"
+                          [rounded]="true"
+                          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></p-button>
+            </td>
+
+            <td>{{ product.pedido.id }}</td>
+            <td>{{ product.pedido.codigo }}</td>
+            <td>{{ product.pedido.lote }}</td>
+            <td>{{ product.pedido.dataEntrega | date:'dd/MM/yyyy':'UTC' }}</td>
+            <td>{{ product.pedido.item.Item }}</td>
+            <td>{{ product.pedido.item.tipo_item }}</td>
+
+            @if(isEditable()){<td>
+                <button class="btn btn-group btn-outline-secondary border-0"
+                        (click)="replanejarPedido(product.pedido.id)"
+                        >
+                    <i class="pi pi-refresh"></i>
+                </button>
+            </td>}
+
+            <td>
+                <p-tag *ngIf="product.atrasos.length" severity="warn">A</p-tag>
+                <p-tag *ngIf="product.dividas.length" severity="danger">D</p-tag>
+                <p-tag *ngIf="!product.atrasos.length && !product.dividas.length" severity="success">OK</p-tag>
+            </td>
+        </tr>
+    </ng-template>
+
+    <!-- Expanded Row Template -->
+    <ng-template #expandedrow let-product>
+        <tr>
+            <td colspan="8">
+                <div class="p-4">
+
+                    <!-- Dívidas -->
+                    <h5>📌 Dívidas do {{ product.pedido.item.tipo_item }}</h5>
+                    <p-table [value]="product.dividas" dataKey="id" class="mb-4">
+                        <ng-template #header>
+                            <tr>
+                                <th>Setor</th>
+                                <th>Item</th>
+                                <th>Tipo Item</th>
+                                <th>Qtd</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-divida>
+                            <tr>
+                                <td>{{ divida.setorCodigo }}</td>
+                                <td>{{ divida.item.Item }}</td>
+                                <td>{{ divida.item.tipo_item }}</td>
+                                <td>{{ divida.qtd }}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="4">Não tem dívidas.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                    <!-- Atrasos -->
+                    <h5>⏳ Atrasos do {{ product.pedido.item.tipo_item }}</h5>
+                    <p-table [value]="product.atrasos" dataKey="id">
+                        <ng-template #header>
+                            <tr>
+                                <th>Setor</th>
+                                <th>Item</th>
+                                <th>Tipo Item</th>
+                                <th>Qtd</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-atraso>
+                            <tr>
+                                <td>{{ atraso.setorCodigo }}</td>
+                                <td>{{ atraso.item.Item }}</td>
+                                <td>{{ atraso.item.tipo_item }}</td>
+                                <td>{{ atraso.qtd }}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="4">Não tem atrasos.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>

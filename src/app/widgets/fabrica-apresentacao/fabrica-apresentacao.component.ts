@@ -2,7 +2,7 @@ import { FabricaResponseDto } from '@/api';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit, Signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { tap } from 'rxjs';
@@ -10,29 +10,29 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.service';
+import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-fabrica-apresentacao',
-  imports: [DatePipe, ConfirmPopupModule, TooltipModule],
+  imports: [DatePipe, ConfirmPopupModule, TooltipModule, Skeleton],
   providers: [ConfirmationService],
   templateUrl: './fabrica-apresentacao.component.html',
   styleUrl: './fabrica-apresentacao.component.css'
 })
-export class FabricaApresentacaoComponent implements OnInit {
+export class FabricaApresentacaoComponent
+  implements OnInit {
 
-  constructor(
-    private fabricaService: FabricaService,
-    private contextoFabricaService: ContextoFabricaService,
-    private popup: LoadingPopupService,
-    private router: Router,
-    private syncService: FabricaMudancaSyncService,
-    private confirmPopUp: ConfirmationService
-  ) { }
+  fabricaService = inject(FabricaService);
+  contextoFabricaService = inject(ContextoFabricaService);
+  router = inject(Router);
+  syncService = inject(FabricaMudancaSyncService);
+  confirmPopUp = inject(ConfirmationService)
+  popup = inject(LoadingPopupService)
 
-  fabrica?: FabricaResponseDto
+  fabrica!: Signal<FabricaResponseDto | null>
 
-  setFabrica(fabrica: FabricaResponseDto): void {
-    this.fabrica = fabrica;
+  ngOnInit(): void {
+    this.fabrica = this.contextoFabricaService.item;
   }
 
   requestMerge(): void {
@@ -45,12 +45,6 @@ export class FabricaApresentacaoComponent implements OnInit {
         )
       );
     this.popup.showWhile(merge$);
-  }
-
-  ngOnInit(): void {
-    this.fabrica = this.contextoFabricaService.getFabrica();
-    this.contextoFabricaService
-      .subscribeFabricaChange((fabrica) => this.setFabrica(fabrica));
   }
 
 
@@ -117,6 +111,31 @@ export class FabricaApresentacaoComponent implements OnInit {
     });
   }
 
+
+
+  confirmacaoFork(event: Event):void{
+    this.confirmPopUp.confirm({
+      target: event.currentTarget as EventTarget,
+      message: 'Deseja mesmo fazer uma cópia dessa fábrica para edição?',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'aceitar',
+        severity: 'success'
+      },
+      accept: () => {
+        this.forkFabrica();
+      },
+      reject: () => {
+        return;
+      }
+    });
+  }
+
   confirmacaoPullRequest(event: Event): void {
     this.confirmPopUp.confirm({
       target: event.currentTarget as EventTarget,
@@ -145,7 +164,7 @@ export class FabricaApresentacaoComponent implements OnInit {
       .pipe(
         tap((fabrica) => {
           this.contextoFabricaService.setFabrica(fabrica);
-          this.router.navigate(['/', 'fabrica', `${fabrica.fabricaId}`])
+          this.router.navigate(['app', 'fabrica', `${fabrica.fabricaId}`])
         })
       );
     this.popup.showWhile(fork$)

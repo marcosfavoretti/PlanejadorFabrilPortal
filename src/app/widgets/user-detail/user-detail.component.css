@@ -1,0 +1,10 @@
+.user-popup-card {
+  width: 280px;
+  max-width: 100%;
+}
+
+.user-popup-card .avatar {
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+}

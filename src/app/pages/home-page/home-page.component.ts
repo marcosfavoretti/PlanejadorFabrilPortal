@@ -1,47 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { GanttChartComponent } from "../../widgets/gantt-chart/gantt-chart.component";
+import { Component, inject } from '@angular/core';
 import { GlobalHeaderComponent } from "../../widgets/global-header/global-header.component";
-import { HomeStartUpService } from '../../services/HomeStartup.service';
-import { FabricaApresentacaoComponent } from "../../widgets/fabrica-apresentacao/fabrica-apresentacao.component";
-import { TabelaPlanejamentoComponent } from "../../widgets/tabela-planejamento/tabela-planejamento.component";
-import { HomePageNavigatorComponent } from "../../widgets/home-page-navigator/home-page-navigator.component";
-import { PedidosTabelaComponent } from "../../widgets/pedidos-tabela/pedidos-tabela.component";
-import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
-import { FabricaService } from '@/app/services/Fabrica.service';
+import { SplitterModule } from 'primeng/splitter';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SideBarComponent } from "@/app/widgets/side-bar/side-bar.component";
+import { SidebarItem } from '@/@core/type/SidebarItem';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
-import { tap } from 'rxjs';
-import { PedidosPlanejadosTabelaComponent } from '@/app/widgets/pedidos-planejados-tabela/pedidos-planejados-tabela.component';
+import { MinhasFabricasPopUpComponent } from '@/app/widgets/minhas-fabricas-pop-up/minhas-fabricas-pop-up.component';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
   imports: [
-    GanttChartComponent,
+    RouterOutlet,
+    SplitterModule,
     GlobalHeaderComponent,
-    FabricaApresentacaoComponent,
-    TabelaPlanejamentoComponent,
-    HomePageNavigatorComponent,
-    PedidosTabelaComponent,
-    PedidosPlanejadosTabelaComponent
+    FormsModule,
+    CommonModule,
+    SideBarComponent,
+    RouterOutlet
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
-export class HomePageComponent implements OnInit {
-  constructor(
-    private popUpService: LoadingPopupService,
-    private fabricaService: FabricaService,
-    private homeStartUpService: HomeStartUpService,
-    private contextoFabrica: ContextoFabricaService
-  ) { }
-  loadFinish: boolean = false;
-  ngOnInit(): void {
-    this.homeStartUpService.startUp();
-    const contextoFabrica$ = this.fabricaService.getFabricaPrincipal()
-      .pipe(
-        tap(
-          (fabrica) => { this.contextoFabrica.setFabrica(fabrica); this.loadFinish = true }
-        )
-      )
-    this.popUpService.showWhile(contextoFabrica$);
+export class HomePageComponent {
+
+  popup = inject(LoadingPopupService);
+  router = inject(Router);
+  loadFinish: boolean = true;
+  menuItems: SidebarItem[] = [
+    { label: 'Fábrica Principal', icon: 'pi pi-star', route: '/app/fabricaPrincipal' },
+    { label: 'Minhas Fábrica', action: () => this.openMinhasFabricas(), icon: 'pi pi-warehouse', route: 'app/fabrica' },
+    { label: 'Fábricas para Avaliação', action: () => console.log('Fábricas clicked'), icon: 'pi pi-hourglass', route: '/app/fabricaAvaliacao' },
+    { label: 'Relatórios', action: () => console.log('Relatórios clicked'), icon: 'pi pi-wave-pulse', disabled: true },
+    { label: 'Pedidos', action: () => console.log('Relatórios clicked'), icon: 'pi pi-receipt', disabled: true, route: '/app/pedidos'},
+  ];
+
+  openMinhasFabricas(): void {
+    this.popup.showPopUpComponent(MinhasFabricasPopUpComponent);
   }
+
 }

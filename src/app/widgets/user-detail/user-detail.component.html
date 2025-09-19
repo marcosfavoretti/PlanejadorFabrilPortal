@@ -1,16 +1,26 @@
 @if (user()) {
-<div class="user-info-card">
-    <div class="user-info">
-        <p><strong>ID:</strong> {{ user()!.id }}</p>
-        <p><strong>Nome:</strong> {{ user()!.name }}</p>
-        <p><strong>Email:</strong> {{ user()!.email }}</p>
+<div class="user-popup-card p-3 bg-dark-gree">
+    <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
+        <div class="avatar bg-dark-green text-white rounded-circle d-flex align-items-center justify-content-center">
+            <i class="pi pi-user text-xl"></i>
+        </div>
+        <div>
+            <h6 class="m-0 fw-bold">{{ user()!.name }}</h6>
+            <small class="text-muted">{{ user()!.email }}</small>
+        </div>
     </div>
-    <div class="d-flex justify-content-end">
-        <button (click)="logout()" class="btn btn-group btn-danger d-flex gap-2">
-            <span><i class="pi pi-user-minus"></i></span>
-            <span>logout</span>
+
+    <div class="mb-3 d-flex flex-wrap gap-2">
+        @for (cargo of user()?.cargosList; track $index) {
+        <p-tag severity="success" [value]="cargo"></p-tag>
+        }
+    </div>
+
+    <div class="text-end">
+        <button (click)="logout()" class="btn btn-danger rounded-pill d-flex align-items-center gap-2 px-3">
+            <i class="pi pi-sign-out"></i>
+            <span>Logout</span>
         </button>
     </div>
 </div>
-
 }

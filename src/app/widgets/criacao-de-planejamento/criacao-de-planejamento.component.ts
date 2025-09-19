@@ -1,5 +1,5 @@
-import { AdicionarPlanejamentoDTO, AdicionarPlanejamentoDTOSetorEnum, PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO, PlanejamentoResponseDTO } from '@/api';
-import { Component, Input, OnInit } from '@angular/core';
+import { AdicionarPlanejamentoDTO, AdicionarPlanejamentoDTOSetorEnum, ItemResDto, PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO, PlanejamentoResponseDTO } from '@/api';
+import { Component, Input, OnInit, signal, Signal } from '@angular/core';
 import { DynamicField } from '../form-dinamico/@core/DynamicField';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
@@ -17,6 +17,7 @@ import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.ser
 export class CriacaoDePlanejamentoComponent implements OnInit {
   @Input() planejamento!: PlanejamentoResponseDTO;
   @Input() closeButtonFn!: () => void;
+  private itensAvaiable = signal<{ k: string, v: string }[]>([]);
 
   formsFields: DynamicField[] = [];
   constructor(
@@ -29,10 +30,10 @@ export class CriacaoDePlanejamentoComponent implements OnInit {
 
   efetivarCriacao(ev: any): void {
     const pedido = JSON.parse(ev.pedido);
-    console.log(pedido)
+    const item = JSON.parse(ev.item) as ItemResDto;
     const payload: AdicionarPlanejamentoDTO = {
       fabricaId: this.fabricaStore.getFabrica().fabricaId,
-      item: pedido.item,
+      item: item.Item,
       qtd: ev.quantidade,
       setor: ev.setor,
       pedidoId: pedido.id,
@@ -49,7 +50,7 @@ export class CriacaoDePlanejamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const pedidos$ = this.pedidoService.getFabricaPrincipal({
+    const pedidos$ = this.pedidoService.consultaPedido({
       tipoConsulta: PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum.planejados
     })
       .pipe(
@@ -68,7 +69,30 @@ export class CriacaoDePlanejamentoComponent implements OnInit {
         type: 'select',
         required: true,
         disable: false,
-        data: pedidos.map(p => ({ k: JSON.stringify(p), v: `id: ${p.id} | codigo: ${p.codigo} | item: ${p.item}` }))
+        data: pedidos.map(p => ({ k: JSON.stringify(p), v: `id: ${p.id} | codigo: ${p.codigo} | item: ${p.item}` })),
+        trigger: (input: string) => {
+          const pedido = JSON.parse(input) as PedidoResponseDTO;
+          this.pedidoService.consultaItensDoPedido({
+            fabricaId: this.fabricaStore.item()!.fabricaId,
+            pedidoId: pedido.id
+          })
+            .pipe(
+              tap(res => {
+                const op = res.map(p => ({ k: JSON.stringify(p), v: `item: ${p.Item} desc: ${p.tipo_item}` }))
+                this.itensAvaiable.set(op)
+                this.geraForms(pedidos)
+              })
+            ).subscribe()
+        },
+
+      },
+      {
+        label: 'Item',
+        name: 'item',
+        type: 'select',
+        required: true,
+        disable: false,
+        data: this.itensAvaiable()
       },
       {
         label: 'Setor',

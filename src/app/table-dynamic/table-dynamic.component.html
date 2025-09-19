@@ -28,8 +28,22 @@
       @for (key of columns ; track $index) {
       <th pSortableColumn="{{ key.field }}" class="text-responsive text-center small">
         @if (!key.isButton) {
-        <p-columnFilter [field]="key.field" [type]="key.isDate ? 'date' : (key.isCheckBox ? 'boolean' : 'text')"
-          display="menu" class="small"></p-columnFilter>
+        @if (key.isDate) {
+        <p-columnFilter [field]="key.field" type="date"
+          display="menu" class="small">
+          @if (key.isDate) {
+          <ng-template pTemplate="filter" let-filter="filterCallback">
+            <p-date-picker
+              dateFormat="dd/mm/yy" 
+              (onSelect)="onDateSelect($event, filter)"
+              ></p-date-picker>
+          </ng-template>
+          }
+        </p-columnFilter>
+        }
+        @else {
+        <p-columnFilter [field]="key.field" [type]="key.isCheckBox ? 'boolean' : 'text'" display="menu" class="small" />
+        }
         <p-sortIcon [field]="key.field"></p-sortIcon>
         {{ key.alias || key.field }}
         }
@@ -107,7 +121,7 @@
           class="small">
         }
         @else if(key?.isButton){
-        <button (click)="key.button.command(item); onNewCheckEvent(item, key.field, $event)"
+        <button (click)="key.button.command(item, $event); onNewCheckEvent(item, key.field, $event)"
           class="btn btn-group border border-0 btn-outline-secondary">
           <span>{{key.button.label}}</span>
           <i [class]="key.button.icon || ''"></i>
@@ -121,7 +135,8 @@
         }
         @else {
         @if (key.isDate) {
-        {{ getNestedValue(item, key.field) ? (getNestedValue(item, key.field) | date : 'dd/MM/yyyy HH:mm' : 'UTC') : ''}}
+        {{ getNestedValue(item, key.field) ? (getNestedValue(item, key.field) | date : 'dd/MM/yyyy HH:mm' : 'UTC') :
+        ''}}
         }
         @else {
         {{getNestedValue(item, key.field)}}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, Signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgForm, Validators } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker'
 import { DynamicField } from './@core/DynamicField';
@@ -23,19 +23,30 @@ export class FormDinamicoComponent {
   @ViewChild('form') formRef!: NgForm;
 
 
+  
+
   model: { [key: string]: any } = {};
   validationErrors: { [key: string]: boolean } = {};
+  onFieldChange(field: DynamicField, value: any) {
+    if (field.trigger) {
+      // passa o valor do campo para a função configurada
+      const result = field.trigger(value);
 
+      if (result instanceof Promise) {
+        result.catch(err => console.error(`Trigger error on ${field.name}:`, err));
+      }
+    }
+  }
   ngOnInit(): void {
     this.fields.forEach(field => {
       if (field.type === 'date') {
         const value = field.defaultValue ?? '';
         if (typeof value === 'string') {
           // Se for string ISO
-          const parts = value.split('T')[0].split('-'); 
+          const parts = value.split('T')[0].split('-');
           if (parts.length === 3) {
             const year = +parts[0];
-            const month = +parts[1] - 1; 
+            const month = +parts[1] - 1;
             const day = +parts[2];
             this.model[field.name] = new Date(year, month, day); // cria data local
           } else {

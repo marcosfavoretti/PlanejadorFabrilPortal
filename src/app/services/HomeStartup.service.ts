@@ -1,25 +1,47 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { UserstoreService } from "./userstore.service";
 import { UserService } from "./User.service";
 import { LoadingPopupService } from "./LoadingPopup.service";
-import { tap } from "rxjs";
+import { forkJoin, switchMap, tap } from "rxjs";
+import { PedidoPlanejadosStoreService } from "./PedidoPlanejadoStore.service";
+import { ContextoFabricaService } from "./ContextoFabrica.service";
+import { FabricaResponseDto } from "@/api";
+import { GanttStoreService } from "./GanttStore.service";
+import { IStartUp } from "@/@core/abstract/IStartUp";
+import { IShutDown } from "@/@core/abstract/IShutDown";
+import { GlobalFilterInputText } from "./GlobalInputText.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class HomeStartUpService {
-    constructor(
-        private userService: UserService,
-        private userStore: UserstoreService,
-        private popUpService: LoadingPopupService,
-    ) { }
+export class HomeStartUpService implements IStartUp, IShutDown {
+    userService = inject(UserService);
+    popUpService = inject(LoadingPopupService);
+    //
+    userStore = inject(UserstoreService);
+    fabricaStore = inject(ContextoFabricaService);
+    pedidoPlenejadoStore = inject(PedidoPlanejadosStoreService);
+    ganttStore = inject(GanttStoreService);
+    globalFilter = inject(GlobalFilterInputText);
 
     startUp(): void {
-        const userDetail$ = this.userService.detail()
+        const flow$ = this.fabricaStore
+            .initialize()
             .pipe(
-                tap((data) => this.userStore.updateUser(data))
-            );
-        this.popUpService.showWhile(userDetail$)
-            .subscribe();
+                switchMap(() =>
+                    forkJoin([
+                        this.pedidoPlenejadoStore.initialize(this.fabricaStore.item()?.fabricaId),
+                        this.ganttStore.initialize(this.fabricaStore.item()?.fabricaId)
+                    ])
+                )
+            )
+        flow$.subscribe();
+    }
+
+    shutDown(): void {
+        this.fabricaStore.resetStore();
+        this.pedidoPlenejadoStore.resetStore();
+        this.ganttStore.resetStore();
+        this.globalFilter.resetText();
     }
 }

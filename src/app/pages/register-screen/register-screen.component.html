@@ -1,12 +1,58 @@
 <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-    <div class="card broder rounded p-3">
-        <h1>Cadatro</h1>
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-            <input placeholder="user" type="text" name="user" class="input-group" ngModel required>
-            <input placeholder="password" type="password" name="password" class="input-group"  ngModel required>
-            <input placeholder="email" type="email" name="email" class="input-group"  ngModel required>
-            <button type="submit">cadastrar</button>
-        </form>
-    </div>
-</div>
+  <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 450px; width: 100%;">
+    <h1 class="text-center mb-4 display-6">Cadastro</h1>
 
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <!-- Usuário -->
+      <div class="mb-3">
+        <label for="user" class="form-label">Usuário</label>
+        <input 
+          type="text" 
+          id="user" 
+          name="user" 
+          class="form-control" 
+          placeholder="Digite seu usuário"
+          ngModel 
+          required>
+      </div>
+
+      <!-- Senha -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          placeholder="Digite sua senha"
+          ngModel 
+          required>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          class="form-control" 
+          placeholder="Digite seu e-mail"
+          ngModel 
+          required>
+      </div>
+
+      <!-- Botão -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success">
+          Cadastrar
+        </button>
+      </div>
+    </form>
+
+    <!-- Link para login -->
+    <div class="text-center mt-3">
+      <a href="/login" class="text-decoration-none">Já tem conta? Faça login</a>
+    </div>
+  </div>
+</div>

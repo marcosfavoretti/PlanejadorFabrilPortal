@@ -1,2 +1,18 @@
-<app-table-dynamic (OnChecked)="oncheck()" [tableModel]="tableShema" [data]="(fabricas$ | async) || []"
-    [exportable]="false"></app-table-dynamic>
+<h1 class="display-6 text-success">
+    Minhas Fábricas
+</h1>
+@if (fabricas$ | async; as fabrica) {
+    <app-table-dynamic
+        (OnChecked)="oncheck()"
+        [tableModel]="tableShema"
+        [data]="fabrica"
+        [exportable]="false"
+    ></app-table-dynamic>
+} @else {
+    <div class="d-flex flex-column gap-1">
+        <p-skeleton class="mb-2" borderRadius="16px" />
+        <p-skeleton class="mb-1" width="10vw" borderRadius="16px" />
+        <p-skeleton class="mb-1" width="10vw" borderRadius="16px" />
+        <p-skeleton class="mb-2" borderRadius="16px" />
+    </div>
+}

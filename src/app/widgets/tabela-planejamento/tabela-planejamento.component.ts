@@ -1,11 +1,9 @@
 import { TableModel } from '@/app/table-dynamic/@core/table.model';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, Input, OnInit } from '@angular/core';
 import { TableDynamicComponent } from "../../table-dynamic/table-dynamic.component";
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
-import { FabricaControllerConsultaPlanejamentosMethodQueryParams, PlanejamentoResponseDTO } from '@/api';
-import { addDays, format, startOfDay } from 'date-fns';
-import { tap } from 'rxjs';
+import { addDays, startOfDay } from 'date-fns';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { EdicaoDePlanejamentoPopUpComponent } from '../edicao-de-planejamento-pop-up/edicao-de-planejamento-pop-up.component';
 import { CriacaoDePlanejamentoComponent } from '../criacao-de-planejamento/criacao-de-planejamento.component';
@@ -22,6 +20,9 @@ export class TabelaPlanejamentoComponent implements OnInit {
   @Input() dataInicial: Date = startOfDay(new Date());
   @Input() dataFinal: Date = addDays(startOfDay(new Date()), 30);
 
+  planejamentoEffect = effect(() => {
+    this.loadTabela()
+  });
   //
   /**
    * injecoes de dependencia
@@ -34,11 +35,14 @@ export class TabelaPlanejamentoComponent implements OnInit {
   planejamentos = this.planejamento.item;
 
   public tabelaSchema!: TableModel;
-  //\\//
 
-  loadTabela(fabricaId: string): void {
-    const planejamentos$ = this.planejamento.refreshPlanejamentos(fabricaId);
-    this.popup.showWhile(planejamentos$);
+  loadTabela(): void {
+    const fabricaId = this.fabricaStore.item()?.fabricaId;
+    if (!fabricaId) return;
+    this.planejamento.initialize(fabricaId)
+      .subscribe();
+
+    // this.popup.showWhile(planejamentos$);
   }
 
   abreCadastro(): void {
@@ -56,8 +60,8 @@ export class TabelaPlanejamentoComponent implements OnInit {
         },
         {
           field: 'dia',
+          isDate: true,
           alias: 'dia',
-          isDate: true
         },
         {
           field: 'pedido',
@@ -89,10 +93,11 @@ export class TabelaPlanejamentoComponent implements OnInit {
       },
     }));
 
-    this.fabricaStore.subscribeFabricaChange(
-      (fabrica) =>
-        this.loadTabela(fabrica.fabricaId)
-    );
+
+    // this.fabricaStore.subscribeFabricaChange(
+    //   (fabrica) =>
+    //     this.loadTabela(fabrica.fabricaId)
+    // );
 
   }
 

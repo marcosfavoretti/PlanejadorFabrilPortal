@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ItemResDto } from './ItemResDto.ts'
+
 export type PedidoSlimResponseDTO = {
   /**
    * @type number
@@ -21,7 +23,7 @@ export type PedidoSlimResponseDTO = {
    */
   lote: number
   /**
-   * @type string
+   * @type object
    */
-  item: string
+  item: ItemResDto
 }

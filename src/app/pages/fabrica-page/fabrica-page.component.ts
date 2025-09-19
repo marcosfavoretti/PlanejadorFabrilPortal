@@ -1,72 +1,86 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { TabelaPlanejamentoComponent } from "../../widgets/tabela-planejamento/tabela-planejamento.component";
 import { FabricaApresentacaoComponent } from "../../widgets/fabrica-apresentacao/fabrica-apresentacao.component";
-import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, of, tap } from 'rxjs';
-import { FabricaService } from '@/app/services/Fabrica.service';
-import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
+import { tap } from 'rxjs';
 import { GanttChartComponent } from "../../widgets/gantt-chart/gantt-chart.component";
 import { GlobalHeaderComponent } from "@/app/widgets/global-header/global-header.component";
 import { PedidosPlanejadosTabelaComponent } from "@/app/widgets/pedidos-planejados-tabela/pedidos-planejados-tabela.component";
-import { HomeStartUpService } from '@/app/services/HomeStartup.service';
+import { FabricaPageStartUpService } from '@/app/services/FabricaPageStartup.service';
+import { ContadorDividaComponent } from "@/app/widgets/contador-divida/contador-divida.component";
+import { ContadorAtrasoComponent } from "@/app/widgets/contador-atraso/contador-atraso.component";
+import { ToggleSwitch } from "primeng/toggleswitch";
+import { PedidosTabelaComponent } from "@/app/widgets/pedidos-tabela/pedidos-tabela.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-fabrica-page',
-  imports: [TabelaPlanejamentoComponent, FabricaApresentacaoComponent, GanttChartComponent, GlobalHeaderComponent, PedidosPlanejadosTabelaComponent],
+  imports: [
+    TabelaPlanejamentoComponent,
+    FabricaApresentacaoComponent,
+    GanttChartComponent,
+    GlobalHeaderComponent,
+    PedidosPlanejadosTabelaComponent,
+    ContadorDividaComponent,
+    ContadorAtrasoComponent,
+    ToggleSwitch,
+    PedidosTabelaComponent,
+    FormsModule
+  ],
   templateUrl: './fabrica-page.component.html',
   styleUrl: './fabrica-page.component.css'
 })
-export class FabricaPageComponent implements OnInit {
+export class FabricaPageComponent implements OnInit, OnDestroy {
 
   constructor(
-    private fabricaService: FabricaService,
-    private contextFabrica: ContextoFabricaService,
     private activatedRoute: ActivatedRoute,
-    private popup: LoadingPopupService,
-    private startUp: HomeStartUpService,
-    private router: Router
+    private startUp: FabricaPageStartUpService,
   ) { }
 
+  checked = signal<boolean>(false);
   loadFinish: boolean = false
 
-  loadFabrica(fabricaId: string): void {
-    const fabrica$ = this.fabricaService.consultaFabrica({
-      fabricaId: fabricaId
-    })
-      .pipe(
-        tap(
-          fab => {
-            this.contextFabrica.setFabrica(fab);
-            this.loadFinish = true;
-          }
-        ),
-        catchError(
-          err => {
-            this.router.navigate(['/', 'app']);
-            console.log(err)
-            if(err.status = 403){
-              alert('não é possível ainda visualizar uma area de trabalho de terceiros')
-            }
-            return of();
-          }
-        )
-      )
-
-    this.popup.showWhile(fabrica$);
-  }
+  // loadFabrica(fabricaId: string): void {
+  //   console.log("LOAD DA FABRICA NOVO")
+  //   const fabrica$ = this.fabricaService.consultaFabrica({
+  //     fabricaId: fabricaId
+  //   })
+  //     .pipe(
+  //       tap(
+  //         fab => {
+  //           this.contextFabrica.setFabrica(fab);
+  //         }
+  //       ),
+  //       catchError(
+  //         err => {
+  //           this.router.navigate(['/', 'app']);
+  //           console.log(err)
+  //           if (err.status === 403) {
+  //             alert('não é possível ainda visualizar uma area de trabalho de terceiros')
+  //           }
+  //           return of();
+  //         }
+  //       )
+  //     ).subscribe()
+  // }
 
   ngOnInit(): void {
-    this.startUp.startUp();
     const currentParameter = this.activatedRoute.snapshot.params
+    this.startUp.startUp(currentParameter['fabricaId']);
     this.activatedRoute.params
       .pipe(
         tap(param => {
+          this.startUp.shutDown();
           if ('fabricaId' in param) {
-            this.loadFabrica(param['fabricaId']);
+            this.startUp.startUp(param['fabricaId']);
           }
         })
       )
-    this.loadFabrica(currentParameter['fabricaId']);
+      .subscribe();
+    this.loadFinish = true;
+  }
+
+  ngOnDestroy(): void {
+    this.startUp.shutDown();
   }
 }

@@ -1,15 +1,20 @@
 // services/userstore.service.ts
-import { Injectable, effect, computed, signal } from '@angular/core';
-import { User } from '../../api';
+import { Injectable, effect, computed, signal, inject } from '@angular/core';
+import { UserResponseDTO } from '../../api';
 import { SignalStore } from '@/@core/abstract/SignalStore.abstract';
+import { catchError, Observable, of, tap } from 'rxjs';
+import { UserService } from './User.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserstoreService extends SignalStore<User> {
+export class UserstoreService
+  extends SignalStore<UserResponseDTO> {
+
+  userService = inject(UserService);
+
   constructor() {
     super();
-
     // Exemplo de log automático quando o user muda
     effect(() => {
       const user = this.item();
@@ -19,12 +24,27 @@ export class UserstoreService extends SignalStore<User> {
     });
   }
 
-  updateUser(user: User) {
+  override refresh(): Observable<UserResponseDTO> {
+    return this.userService.detail()
+      .pipe(
+        tap(
+          user => this.set(user)
+        ),
+        catchError(
+          () => {
+            this.initialized = false;
+            throw new Error('Erro ao autenticar usuario');
+          }
+        )
+      );
+  }
+
+  updateUser(user: UserResponseDTO) {
     console.log(user)
     this.set(user);
   }
 
-  getUser(): User {
+  getUser(): UserResponseDTO {
     console.log(this.get())
     return this.get()!;
   }

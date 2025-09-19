@@ -1,12 +1,45 @@
 <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-    <div class="card broder rounded p-3">
-        <h1>Login</h1>
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-            <input type="text" name="user" class="input-group" ngModel required="">
-            <input type="password" name="password" class="input-group"  ngModel required="">
-            <button type="submit">login</button>
-        </form>
-        <a href="/register">cadastre-se</a>
-    </div>
-</div>
+  <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 400px; width: 100%;">
+    <h1 class="text-center mb-4 display-6">Login Planejador</h1>
 
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <!-- Usuário -->
+      <div class="mb-3">
+        <label for="user" class="form-label">Usuário</label>
+        <input 
+          type="text" 
+          id="user" 
+          name="user" 
+          class="form-control" 
+          ngModel 
+          required
+          placeholder="Digite seu usuário">
+      </div>
+
+      <!-- Senha -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          ngModel 
+          required
+          placeholder="Digite sua senha">
+      </div>
+
+      <!-- Botão -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success">
+          Entrar
+        </button>
+      </div>
+    </form>
+
+    <!-- Link cadastro -->
+    <div class="text-center mt-3">
+      <a href="/register" class="text-decoration-none">Cadastre-se</a>
+    </div>
+  </div>
+</div>

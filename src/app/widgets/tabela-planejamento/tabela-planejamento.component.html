@@ -6,5 +6,7 @@
     </span>
 </button>
 }
-<app-table-dynamic [tableModel]="tabelaSchema" [data]="planejamentos()||[]">
+@if (planejamentos()) {
+<app-table-dynamic [tableModel]="tabelaSchema" [data]="planejamentos()||[]"/>
+}
     <!-- (OnChecked)="mudancaRealizada($event)" -->

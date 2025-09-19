@@ -1,5 +1,5 @@
 // context/contexto-fabrica.service.ts
-import { Injectable, effect, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FabricaResponseDto } from '@/api';
 import { SignalStore } from '@/@core/abstract/SignalStore.abstract';
 import { FabricaService } from './Fabrica.service';
@@ -14,20 +14,23 @@ export class ContextoFabricaService extends SignalStore<FabricaResponseDto> {
   constructor() {
     super();
 
-    effect(() => {
-      const fabrica = this.item();
-      if (fabrica) {
-        this.fabricaListeners.forEach(fn => fn(fabrica));
-      }
-    });
   }
 
   getFabrica(): FabricaResponseDto {
     return this.get()!;
   }
 
-  refreshFabricaPrincipal(): Observable<FabricaResponseDto> {
-    return this.fabricaService.getFabricaPrincipal().pipe(
+  refresh(fabricaId?: string): Observable<FabricaResponseDto> {
+    if (!fabricaId) {
+      console.log('entrou aqui na fabrica principa')
+      return this.fabricaService.getFabricaPrincipal()
+        .pipe(
+          tap(fabrica => this.set(fabrica))
+        );
+    }
+    return this.fabricaService.consultaFabrica({
+      fabricaId
+    }).pipe(
       tap(fabrica => this.set(fabrica))
     );
   }
@@ -37,16 +40,4 @@ export class ContextoFabricaService extends SignalStore<FabricaResponseDto> {
     this.set(fabrica);
   }
 
-  subscribeFabricaChange(listener: (fabrica: FabricaResponseDto) => void): () => void {
-    this.fabricaListeners.push(listener);
-
-    const current = this.get();
-    if (current) {
-      listener(current);
-    }
-
-    return () => {
-      this.fabricaListeners = this.fabricaListeners.filter(l => l !== listener);
-    };
-  }
 }

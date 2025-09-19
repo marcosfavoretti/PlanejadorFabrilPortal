@@ -1,4 +1,4 @@
-import { AdicionarPlanejamentoDTO, AtualizarPlanejamentoDTO, ConsutlarFabricaDTO, fabricaControllerAtualizarPlanejamentoMethod, fabricaControllerConsultaFabricaMethod, FabricaControllerConsultaFabricaMethodQueryParams, fabricaControllerConsultaFabricaPrincipalMethod, fabricaControllerConsultaPlanejamentosMethod, FabricaControllerConsultaPlanejamentosMethodQueryParams, fabricaControllerConsultarPedidosPlanejadosMethod, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams, fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod, fabricaControllerDeletarFabricaMethod, fabricaControllerDesplanejarPedidoNaFabricaMethod, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, fabricaControllerForkFabricaMethod, fabricaControllerMergeFabricaMethod, FabricaControllerMergeFabricaMethodMutationRequest, fabricaControllerPlanejarManualMethod, fabricaControllerPlanejarPedidoMethod, FabricaControllerPlanejarPedidoMethodMutationRequest, fabricaControllerRemoverPlanejamentoMethod, FabricaControllerRemoverPlanejamentoMethodMutationRequest, fabricaControllerReplanejarPedidoUseCase, fabricaControllerRequestFabricaMergeMethod, FabricaControllerRequestFabricaMergeMethodMutationRequest, fabricaControllerResetaFabricaMethod, FabricaResponseDto, PedidosPlanejadosResponseDTO, PlanejamentoResponseDTO, RemoverPlanejamentoDTO, ReplanejarPedidoDTO, ResetaFabricaDTO, UserFabricaResponseDto } from "@/api";
+import { AdicionarPlanejamentoDTO, AtualizarPlanejamentoDTO, ConsutlarFabricaDTO, fabricaControllerAtualizarPlanejamentoMethod, fabricaControllerConsultaFabricaMethod, FabricaControllerConsultaFabricaMethodQueryParams, fabricaControllerConsultaFabricaPrincipalMethod, fabricaControllerConsultaPlanejamentosMethod, FabricaControllerConsultaPlanejamentosMethodQueryParams, fabricaControllerConsultarPedidosPlanejadosMethod, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams, fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod, fabricaControllerDeletarFabricaMethod, fabricaControllerDesplanejarPedidoNaFabricaMethod, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, fabricaControllerForkFabricaMethod, fabricaControllerGetRequestsFabricaMergeMethod, fabricaControllerMergeFabricaMethod, FabricaControllerMergeFabricaMethodMutationRequest, fabricaControllerPlanejarManualMethod, fabricaControllerPlanejarPedidoMethod, FabricaControllerPlanejarPedidoMethodMutationRequest, fabricaControllerRemoverPlanejamentoMethod, FabricaControllerRemoverPlanejamentoMethodMutationRequest, fabricaControllerReplanejarPedidoUseCase, fabricaControllerRequestFabricaMergeMethod, FabricaControllerRequestFabricaMergeMethodMutationRequest, fabricaControllerResetaFabricaMethod, FabricaResponseDto, MergeRequestPendingDto, PedidosPlanejadosResponseDTO, PlanejamentoResponseDTO, RemoverPlanejamentoDTO, ReplanejarPedidoDTO, ResetaFabricaDTO, UserFabricaResponseDto } from "@/api";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 import { UserstoreService } from "./userstore.service";
@@ -21,6 +21,8 @@ export class FabricaService {
                 })
         );
     }
+
+
 
     replanejamentoPedido(dto: ReplanejarPedidoDTO): Observable<void> {
         return from(
@@ -83,6 +85,33 @@ export class FabricaService {
                 )
         )
     }
+
+
+    mergeRequest(dto: FabricaControllerRequestFabricaMergeMethodMutationRequest): Observable<void> {
+        return from(
+            fabricaControllerRequestFabricaMergeMethod(dto)
+                .then(
+                    response => response
+                )
+                .catch(err => {
+                    throw err;
+                })
+        )
+    }
+
+    getMergeRequests(): Observable<MergeRequestPendingDto[]> {
+        return from(
+            fabricaControllerGetRequestsFabricaMergeMethod()
+                .then(
+                    response => response
+                )
+                .catch(err => {
+                    throw err;
+                })
+        )
+    }
+
+
 
     mergeFabrica(dto: FabricaControllerMergeFabricaMethodMutationRequest): Observable<void> {
         return from(

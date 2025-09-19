@@ -1,5 +1,5 @@
 import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
-import { FabricaControllerConsultaPlanejamentosMethodQueryParams, PlanejamentoResponseDTO } from "@/api";
+import { PlanejamentoResponseDTO } from "@/api";
 import { inject, Injectable } from "@angular/core";
 import { FabricaService } from "./Fabrica.service";
 import { Observable, tap } from "rxjs";
@@ -18,7 +18,8 @@ export class PlanejamentoStoreService extends SignalStore<PlanejamentoResponseDT
         this.set(value);
     }
 
-    refreshPlanejamentos(fabricaId: string, dataIncial?: Date, dataFinal?: Date): Observable<PlanejamentoResponseDTO[]> {
+
+    refresh(fabricaId: string, dataIncial?: Date, dataFinal?: Date): Observable<PlanejamentoResponseDTO[]> {
         return this.fabricaSevice.getPlanejamentos({
             fabricaId: fabricaId,
             dataInicial: dataIncial || this.DEFAULT_INIT_DATA,

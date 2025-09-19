@@ -3,12 +3,15 @@ import { UserService } from '../../services/User.service';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
-import { User } from '../../../api';
+import { User, UserResponseDTO } from '../../../api';
 import { UserstoreService } from '../../services/userstore.service';
+import { Tag, TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-user-detail',
-  imports: [],
+  imports: [
+    TagModule
+  ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css'
 })
@@ -19,8 +22,7 @@ export class UserDetailComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) { }
-
-  user !: Signal<User | null>;
+  user !: Signal<UserResponseDTO | null>;
   loadFinish: boolean = false;
 
   logout(): void {
@@ -28,7 +30,7 @@ export class UserDetailComponent implements OnInit {
       .pipe(
         tap(() => {
           this.router.navigate(['/login']);
-          this.userStore.clearUser();
+          this.userStore.resetStore();
         })
       )
     this.popUpService.showWhile(logout$);

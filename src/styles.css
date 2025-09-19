@@ -24,3 +24,8 @@ html {
     font-size: 1.6rem;
   }
 }
+
+
+.bg-dark-green{
+  background-color: rgba(35, 117, 35, 0.438);
+}

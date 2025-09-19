@@ -9,6 +9,7 @@ import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { InputNumberModule } from 'primeng/inputnumber'
 import { debounceTime, Subject } from 'rxjs';
+import { DatePicker } from 'primeng/datepicker'
 @Component({
   standalone: true,
   selector: 'app-table-dynamic',
@@ -22,6 +23,7 @@ import { debounceTime, Subject } from 'rxjs';
     CommonModule,
     FormsModule,
     ImageModule,
+    DatePicker
   ]
 })
 export class TableDynamicComponent implements OnChanges, OnInit {
@@ -37,16 +39,32 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   Array = Array;
   Object = Object;
 
+  onDateSelect(event: Date, filter: Function) {
+    const utcDate = new Date(Date.UTC(event.getFullYear(), event.getMonth(), event.getDate(),
+      event.getHours(), event.getMinutes(), event.getSeconds()));
+    filter(utcDate);
+  }
+  // Converter todas as datas para Date
   ngOnInit() {
+    this.data = this.data.map(row => {
+      const newRow = { ...row };
+      this.tableModel.columns.forEach(col => {
+        if (col.isDate) {
+          const val = this.getNestedValue(newRow, col.field);
+          if (val && !(val instanceof Date)) {
+            this.setNestedValue(newRow, col.field, new Date(val));
+          }
+        }
+      });
+      return newRow;
+    });
+
     // Debounce já existente
     this.inputChanged$
-      // .pipe(debounceTime(1000))
       .subscribe(({ row, column, value }) => {
         this.onNewCheckEvent(row, column, value);
       });
-
   }
-
   onInputChangeDebounced(row: any, column: any, value: any) {
     console.log(row, column, value)
     this.inputChanged$.next({ row, column, value });

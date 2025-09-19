@@ -10,7 +10,7 @@ export interface tableColumns {
     button?: {
         label: string,
         icon: string
-        command: (row: any) => void
+        command: (row: any, el: any) => void
     }
 }
 export interface ghostControllColumn {

@@ -28,6 +28,7 @@ export class EdicaoDePlanejamentoPopUpComponent
 
 
   formsFields: DynamicField[] = [];
+  
   constructor(
     private fabricaservice: FabricaService,
     private fabricaStore: ContextoFabricaService,

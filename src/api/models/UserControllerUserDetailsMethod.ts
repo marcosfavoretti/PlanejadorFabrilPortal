@@ -3,9 +3,9 @@
  * Do not edit manually.
  */
 
-import type { User } from './User.ts'
+import type { UserResponseDTO } from './UserResponseDTO.ts'
 
-export type UserControllerUserDetailsMethod200 = User
+export type UserControllerUserDetailsMethod200 = UserResponseDTO
 
 /**
  * @description Invalid credentials

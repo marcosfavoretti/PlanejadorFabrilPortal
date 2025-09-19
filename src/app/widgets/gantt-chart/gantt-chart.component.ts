@@ -1,70 +1,109 @@
-import { Component, effect, ElementRef, inject, Input, OnInit, viewChild, ViewChild } from '@angular/core';
-import { FabricaResponseDto, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from '../../../api';
+import { Component, effect, ElementRef, inject, input, Input, OnInit, viewChild, ViewChild } from '@angular/core';
+import { GanttData, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from '../../../api';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { tap } from 'rxjs';
 import Gantt from 'frappe-gantt';
 import { EdicaoDePlanejamentoPopUpComponent } from '../edicao-de-planejamento-pop-up/edicao-de-planejamento-pop-up.component';
 import { GanttStoreService } from '@/app/services/GanttStore.service';
-import { OqColorirGantt } from '@/@core/enum/OqColorirGantt.enum';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from "@angular/forms";
+import { addMonths, min, startOfToday } from 'date-fns';
+import { Skeleton } from 'primeng/skeleton';
 @Component({
   selector: 'app-gantt-chart',
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    Skeleton
   ],
   templateUrl: './gantt-chart.component.html',
   styleUrl: './gantt-chart.component.css'
 })
 export class GanttChartComponent implements OnInit {
 
+  public readonly ganttStore = inject(GanttStoreService);
+  private readonly popup = inject(LoadingPopupService);
+  private readonly contextoFabrica = inject(ContextoFabricaService);
+
   ganttElement = viewChild<ElementRef>('gantt');
-  ganttStore = inject(GanttStoreService);
-  popup = inject(LoadingPopupService);
-  fabricaContext = inject(ContextoFabricaService);
-  //
+
   viewModeOp = Object.entries(KPIControllerGetGanttInformationMethodQueryParamsColorirEnum);
+
   viewMode: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum = KPIControllerGetGanttInformationMethodQueryParamsColorirEnum.operacao;
-  //
 
-  @Input() editavel: boolean = false;
-  @Input('Fabrica') fabrica!: FabricaResponseDto;
-
-  setViewMode(ev: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum): void {
-    this.ganttStore.viewMode = ev;
-    this.viewMode = ev;
-    this.consultarGantt();
-  }
+  loadingRequest: boolean = false
 
   ganttEffect = effect(() => {
-    this.generateChart();
+    const data = this.ganttStore.item()?.data || [];
+    this.generateChart(data);
   });
 
-  private generateChart(): void {
+  editavel = input<boolean>(false);
+
+  setViewMode(ev: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum): void {
+    [this.ganttStore.viewMode, this.viewMode] = [ev, ev];
+    if (!this.contextoFabrica.item()) return;
+    this.loadingRequest = true
+    this.ganttStore.refresh(this.contextoFabrica.item()!.fabricaId)
+      .pipe(
+        tap(() => {
+          this.loadingRequest = false
+        })
+      )
+      .subscribe();
+  }
+
+  private generateChart(fiterData?: GanttData[]): void {
     const el = this.ganttElement()?.nativeElement;
     el.innerHTML = '';
     if (!el) return;
-
+    const dates = (fiterData?.map(f => new Date(f.start))
+      || this.ganttStore.item()?.data.map(b => new Date(b.start))
+    ) || [];
+    const minDate = dates.length > 0
+      ? new Date(Math.min(...dates.map(d => d.getTime())))
+      : undefined;
     const gantt = new Gantt(
       el,
-      this.ganttStore.item()?.data || [],
+      (fiterData || this.ganttStore.item()?.data || [])
+        .concat(this.archorTask(addMonths(startOfToday(), 2))),
       {
         view_mode: 'Day',
         date_format: 'YYYY-MM-DD',
-        column_width: 500,
+        column_width: 400,
         bar_height: 15,
-        container_height: 1500,
+        container_height: 400,
         infinite_padding: false,
+        on_date_change: (task, start, end) => console.log(`data mudou para ${task} ${start} `),
+        move_dependencies: true,
         lines: 'both',
-        auto_move_label: false,
+        auto_move_label: true,
+        snap_at: '1d',
+        view_mode_select: true,
         padding: 0,
-        
+        scroll_to: minDate
       }
     );
-    if (this.editavel) {
-      gantt.options.on_click = (ev) => 
+    if (this.editavel()) {
+      gantt.options.on_click = (ev) => {
         this.showEdicaoPopUP(JSON.parse(ev.dependencies as string));
+      }
     }
+  }
+
+  private archorTask(lastDay: Date): GanttData {
+    return {
+      
+      id: 'anchor_task_for_view_extension',
+      color: 'transparent', 
+      name: '', 
+      dependencies: [],
+      start: lastDay.toISOString(),
+      end: lastDay.toISOString(),
+      custom_class: 'gantt-bar-hidden', 
+      progress: 0,
+    } as GanttData;
   }
 
   private showEdicaoPopUP(row: any): void {
@@ -73,18 +112,7 @@ export class GanttChartComponent implements OnInit {
     })
   }
 
-  consultarGantt(): void {
-    const gantt$ = this.ganttStore
-      .refreshGantt(
-        this.fabricaContext.getFabrica().fabricaId
-      )
-      .pipe(
-        tap(() => this.generateChart())
-      );
-    this.popup.showWhile(gantt$);
-  }
-
   ngOnInit(): void {
-    this.consultarGantt();
+    this.generateChart();
   }
 }

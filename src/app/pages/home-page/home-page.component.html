@@ -1,16 +1,23 @@
-<!-- <h1>Planejamento</h1>
-<app-tabela-producao-simulacao [contextDate]="date"></app-tabela-producao-simulacao> -->
-<!-- <app-contexto-simulacao></app-contexto-simulacao> -->
-<!-- <app-produzidos-entre-setores></app-produzidos-entre-setores> -->
-<global-header />
+<div style="height: 90vh; overflow: hidden;">
+  <global-header></global-header>
 
-@if(loadFinish){<div class="container">
-    <app-home-page-navigator></app-home-page-navigator>
-    <!-- <app-minhas-fabricas id="fabricas" name="fabricas"></app-minhas-fabricas> -->
-    <app-fabrica-apresentacao></app-fabrica-apresentacao>
-    <!-- <app-gantt-chart></app-gantt-chart> -->
-    <app-pedidos-planejados-tabela></app-pedidos-planejados-tabela>
-    <app-tabela-planejamento id="planejamentos" name="planejamentos"></app-tabela-planejamento>
-    <app-gantt-chart id="gantt" name="gantt"></app-gantt-chart>
-    <app-pedidos-tabela id="pedidos" name="pedidos"></app-pedidos-tabela>
-</div>}
+  <div *ngIf="loadFinish" class="container-fluid m-0 p-0 h-100">
+    <p-splitter [panelSizes]="[20, 80]" styleClass="rounded-0 border-0 h-100">
+
+      <!-- Painel esquerdo: sidebar -->
+      <ng-template #panel>
+        <div class="h-100 w-100 m-0 p-0 bg-dark-green">
+          <app-side-bar [items]="menuItems"></app-side-bar>
+        </div>
+      </ng-template>
+
+      <!-- Painel direito: conteúdo dinâmico -->
+      <ng-template #panel>
+        <div class="h-100 overflow-y-auto">
+          <router-outlet></router-outlet>
+        </div>
+      </ng-template>
+
+    </p-splitter>
+  </div>
+</div>

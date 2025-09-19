@@ -1,1 +1,1 @@
-{"type":"object","properties":{"qtd":{"type":"number"},"setorCodigo":{"type":"string"}},"required":["qtd","setorCodigo"],"x-readme-ref-name":"DividaSlimResponseDTO"}
+{"type":"object","properties":{"qtd":{"type":"number"},"setorCodigo":{"type":"string"},"item":{"type":"object","properties":{"Item":{"type":"string"},"tipo_item":{"type":"string"}},"required":["Item","tipo_item"],"x-readme-ref-name":"ItemResDto"}},"required":["qtd","setorCodigo","item"],"x-readme-ref-name":"DividaSlimResponseDTO"}

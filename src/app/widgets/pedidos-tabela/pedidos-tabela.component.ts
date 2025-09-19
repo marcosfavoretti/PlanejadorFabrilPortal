@@ -1,61 +1,96 @@
 import { TableModel } from '@/app/table-dynamic/@core/table.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TableDynamicComponent } from "../../table-dynamic/table-dynamic.component";
-import { PedidoService } from '@/app/services/Pedido.service';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
-import { Observable, switchMap, tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO } from '@/api';
-import { AsyncPipe } from '@angular/common';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.service';
+import { PedidoStoreService } from '@/app/services/PedidoStore.service';
 
 @Component({
   selector: 'app-pedidos-tabela',
-  imports: [TableDynamicComponent, AsyncPipe],
+  imports: [TableDynamicComponent],
   templateUrl: './pedidos-tabela.component.html',
   styleUrl: './pedidos-tabela.component.css'
 })
-export class PedidosTabelaComponent implements OnInit {
+export class PedidosTabelaComponent {
   constructor(
-    private pedidoService: PedidoService,
     private contextoFabricaService: ContextoFabricaService,
     private fabricaService: FabricaService,
     private syncService: FabricaMudancaSyncService,
     private popup: LoadingPopupService
   ) { }
 
-  public pedido$!: Observable<PedidoResponseDTO[]>;
+  pedidoStore = inject(PedidoStoreService);
+
 
   ngOnInit(): void {
-    this.pedido$ = this.pedidoService.getFabricaPrincipal({
-      tipoConsulta: PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum.planejados
-    });
-    this.popup.showWhile(this.pedido$);
+    this.pedidoStore
+      .initialize(
+        PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum.todos
+      )
+      .subscribe();
   }
 
   onPedidoEscolhido($event: any): void {
     const pedidoId = $event.row.id;
-
-    const plan$ = this.fabricaService.planejamentos({ pedidoIds: [pedidoId] }).pipe(
-      tap(() => console.log('[Planejamentos] Carregados para pedido:', pedidoId)),
-      switchMap(() =>
-        this.contextoFabricaService.refreshFabricaPrincipal()
-      ),
-      tap(fabrica => {
-        console.log('[Fábrica atualizada]:', fabrica.fabricaId);
-        this.syncService.sync(fabrica.fabricaId);
-      })
-    );
-
-    this.popup.showWhile(plan$);
+    if (!Boolean($event.row.processado)) {//se o pedido ainda nao foi processado ele planeja o pedido
+      const plan$ = this.fabricaService
+        .planejamentos({ pedidoIds: [pedidoId] }).pipe(
+          tap(() => console.log('[Planejamentos] Carregados para pedido:', pedidoId)),
+          switchMap(() =>
+            this.contextoFabricaService.refresh()
+          ),
+          tap(
+            fabrica => {
+              console.log('[Fábrica atualizada]:', fabrica.fabricaId);
+              this.syncService.sync(fabrica.fabricaId);
+            })
+        );
+      this.popup.showWhile(plan$);
+    }
+    else {//se o pedido ja foi planejado ele bate no endpoint de replanejamento
+      const plan$ = this.fabricaService
+        .replanejamentoPedido({ pedidoId: pedidoId, fabricaId: this.contextoFabricaService.item()?.fabricaId! }).pipe(
+          tap(() => console.log('[Planejamentos] Carregados para pedido:', pedidoId)),
+          switchMap(() =>
+            this.contextoFabricaService.refresh()
+          ),
+          tap(
+            fabrica => {
+              console.log('[Fábrica atualizada]:', fabrica.fabricaId);
+              this.syncService.sync(fabrica.fabricaId);
+            })
+        );
+      this.popup.showWhile(plan$);
+    }
   }
 
   public schema: TableModel = {
     title: 'Todos os pedidos',
     totalize: false,
     paginator: true,
+    ghostControll: [
+      {
+        color: '#93ffa3c9',
+        desc: 'itens planejados',
+        field: 'processado',
+        ifValueEqual: true
+      },
+      {
+        color: '#eb5c5c95',
+        desc: 'itens não planejados',
+        field: 'processado',
+        ifValueEqual: false
+      }
+    ],
     columns: [
+      {
+        alias: 'id',
+        field: 'id'
+      },
       {
         alias: 'codigo',
         field: 'codigo'

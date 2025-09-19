@@ -1,4 +1,4 @@
-[02/09/2025, 11:11:42]: {
+[10/09/2025, 13:43:50]: {
   "files": [
     {
       "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\index.ts",
@@ -13,6 +13,13 @@
         },
         {
           "name": [
+            "AtrasoSlimResponseDTO"
+          ],
+          "path": "./models/AtrasoSlimResponseDTO.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "AtualizarPlanejamentoDTO"
           ],
           "path": "./models/AtualizarPlanejamentoDTO.ts",
@@ -23,6 +30,16 @@
             "AuthDto"
           ],
           "path": "./models/AuthDto.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "CargoControllerSetUserCargoMethod201",
+            "CargoControllerSetUserCargoMethodMutationRequest",
+            "CargoControllerSetUserCargoMethodMutationResponse",
+            "CargoControllerSetUserCargoMethodMutation"
+          ],
+          "path": "./models/CargoControllerSetUserCargoMethod.ts",
           "isTypeOnly": true
         },
         {
@@ -146,6 +163,15 @@
             "FabricaControllerForkFabricaMethodMutation"
           ],
           "path": "./models/FabricaControllerForkFabricaMethod.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "FabricaControllerGetRequestsFabricaMergeMethodError",
+            "FabricaControllerGetRequestsFabricaMergeMethodQueryResponse",
+            "FabricaControllerGetRequestsFabricaMergeMethodQuery"
+          ],
+          "path": "./models/FabricaControllerGetRequestsFabricaMergeMethod.ts",
           "isTypeOnly": true
         },
         {
@@ -295,6 +321,13 @@
         },
         {
           "name": [
+            "ItemResDto"
+          ],
+          "path": "./models/ItemResDto.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "KPIControllerGetGanttInformationMethodQueryParams",
             "KPIControllerGetGanttInformationMethod200",
             "KPIControllerGetGanttInformationMethodQueryResponse",
@@ -308,6 +341,23 @@
             "MergeFabricaDto"
           ],
           "path": "./models/MergeFabricaDto.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "MergeRequestPendingDto"
+          ],
+          "path": "./models/MergeRequestPendingDto.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "PedidoControllerConsultaItensDoPedidoMethodQueryParams",
+            "PedidoControllerConsultaItensDoPedidoMethodError",
+            "PedidoControllerConsultaItensDoPedidoMethodQueryResponse",
+            "PedidoControllerConsultaItensDoPedidoMethodQuery"
+          ],
+          "path": "./models/PedidoControllerConsultaItensDoPedidoMethod.ts",
           "isTypeOnly": true
         },
         {
@@ -425,6 +475,13 @@
         },
         {
           "name": [
+            "SetUserCargoDTO"
+          ],
+          "path": "./models/SetUserCargoDTO.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "User"
           ],
           "path": "./models/User.ts",
@@ -488,6 +545,20 @@
         },
         {
           "name": [
+            "UserResDto"
+          ],
+          "path": "./models/UserResDto.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "UserResponseDTO"
+          ],
+          "path": "./models/UserResponseDTO.ts",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
             "VirtualDateControllerConsultDateMethod200",
             "VirtualDateControllerConsultDateMethodQueryResponse",
             "VirtualDateControllerConsultDateMethodQuery"
@@ -504,6 +575,12 @@
           ],
           "path": "./models/VirtualDateControllerHandleDateMethod.ts",
           "isTypeOnly": true
+        },
+        {
+          "name": [
+            "cargoControllerSetUserCargoMethod"
+          ],
+          "path": "./client/cargoControllerSetUserCargoMethod.ts"
         },
         {
           "name": [
@@ -558,6 +635,12 @@
             "fabricaControllerForkFabricaMethod"
           ],
           "path": "./client/fabricaControllerForkFabricaMethod.ts"
+        },
+        {
+          "name": [
+            "fabricaControllerGetRequestsFabricaMergeMethod"
+          ],
+          "path": "./client/fabricaControllerGetRequestsFabricaMergeMethod.ts"
         },
         {
           "name": [
@@ -618,6 +701,12 @@
             "KPIControllerGetGanttInformationMethod"
           ],
           "path": "./client/KPIControllerGetGanttInformationMethod.ts"
+        },
+        {
+          "name": [
+            "pedidoControllerConsultaItensDoPedidoMethod"
+          ],
+          "path": "./client/pedidoControllerConsultaItensDoPedidoMethod.ts"
         },
         {
           "name": [
@@ -716,6 +805,13 @@
             "PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum"
           ],
           "path": "./models/PedidoControllerConsultaPedidoMethod.ts",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "SetUserCargoDTOCargoEnum"
+          ],
+          "path": "./models/SetUserCargoDTO.ts",
           "isTypeOnly": false
         },
         {
@@ -860,6 +956,58 @@
       "exports": []
     },
     {
+      "baseName": "ItemResDto.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\ItemResDto.ts",
+      "sources": [
+        {
+          "name": "ItemResDto",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type ItemResDto = {\n    /**\n     * @type string\n    */\n    Item: string;\n    /**\n     * @type string\n    */\n    tipo_item: string;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "ItemResDto"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "45c0fb330332e25810a9b57c26cc7d4354fa416b",
+      "name": "ItemResDto",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "UserResDto.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\UserResDto.ts",
+      "sources": [
+        {
+          "name": "UserResDto",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type UserResDto = {\n    /**\n     * @type string\n    */\n    id: string;\n    /**\n     * @type string\n    */\n    name: string;\n    /**\n     * @type string\n    */\n    email: string;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "UserResDto"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "35b727a3c09bb031346f35a94fb867b103196c76",
+      "name": "UserResDto",
+      "extname": ".ts"
+    },
+    {
       "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\ganttData.json",
       "baseName": "ganttData.json",
       "meta": {
@@ -879,6 +1027,54 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "d87f3cba4b3a3a9e6a93b0eba31b2c2ad66f4a47",
       "name": "ganttData",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\itemResDto.json",
+      "baseName": "itemResDto.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "itemResDto",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "d80b4c3fec440b963db5921c05f9d7850fc1c3c5",
+      "name": "itemResDto",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\userResDto.json",
+      "baseName": "userResDto.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "userResDto",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"email\"],\"x-readme-ref-name\":\"UserResDto\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "5398d2b348cebf9370c43cc4090a82c1dac04404",
+      "name": "userResDto",
       "extname": ".json",
       "imports": [],
       "exports": []
@@ -1011,6 +1207,65 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "7521bf7cde7a4e27f7df98a099de34603eb68be7",
       "name": "MergeFabricaDto",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "UserResponseDTO.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\UserResponseDTO.ts",
+      "sources": [
+        {
+          "name": "UserResponseDTO",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type UserResponseDTO = {\n    /**\n     * @type string\n    */\n    id: string;\n    /**\n     * @type string\n    */\n    name: string;\n    /**\n     * @type string\n    */\n    email: string;\n    /**\n     * @type string\n    */\n    avatar: string;\n    /**\n     * @type array\n    */\n    cargosList: string[];\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "UserResponseDTO"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "535b7d0965a031db03653359f6d7e7a230f39642",
+      "name": "UserResponseDTO",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "SetUserCargoDTO.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\SetUserCargoDTO.ts",
+      "sources": [
+        {
+          "name": "SetUserCargoDTOCargoEnum",
+          "isTypeOnly": false,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export enum SetUserCargoDTOCargoEnum {\n    \"ADMIN\" = \"ADMIN\",\n    \"PCP\" = \"PCP\",\n    \"USER\" = \"USER\"\n}"
+        },
+        {
+          "name": "SetUserCargoDTO",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type SetUserCargoDTO = {\n    /**\n     * @type string\n    */\n    cargo: SetUserCargoDTOCargoEnum;\n    /**\n     * @type string\n    */\n    userId: string;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "SetUserCargoDTO"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "51c98d0c82af064cd61706d768af4aee604d84c4",
+      "name": "SetUserCargoDTO",
       "extname": ".ts"
     },
     {
@@ -1181,6 +1436,54 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "2f58e0105a90f432e5e070d6e526c85f507dad4f",
       "name": "mergeFabricaDto",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\userResponseDTO.json",
+      "baseName": "userResponseDTO.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "userResponseDTO",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"},\"avatar\":{\"type\":\"string\"},\"cargosList\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"required\":[\"id\",\"name\",\"email\",\"avatar\",\"cargosList\"],\"x-readme-ref-name\":\"UserResponseDTO\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "e75ebb7e1161a1c3c1b170692369213185f304ce",
+      "name": "userResponseDTO",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\setUserCargoDTO.json",
+      "baseName": "setUserCargoDTO.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "setUserCargoDTO",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"cargo\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"PCP\",\"USER\"]},\"userId\":{\"type\":\"string\"}},\"required\":[\"cargo\",\"userId\"],\"x-readme-ref-name\":\"SetUserCargoDTO\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "93d238840187f46f835c88c22c383052f7497b66",
+      "name": "setUserCargoDTO",
       "extname": ".json",
       "imports": [],
       "exports": []
@@ -1370,11 +1673,20 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type PedidoSlimResponseDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type string\n    */\n    codigo: string;\n    /**\n     * @type string, date-time\n    */\n    dataEntrega: Date;\n    /**\n     * @type number\n    */\n    lote: number;\n    /**\n     * @type string\n    */\n    item: string;\n};"
+          "value": "export type PedidoSlimResponseDTO = {\n    /**\n     * @type number\n    */\n    id: number;\n    /**\n     * @type string\n    */\n    codigo: string;\n    /**\n     * @type string, date-time\n    */\n    dataEntrega: Date;\n    /**\n     * @type number\n    */\n    lote: number;\n    /**\n     * @type object\n    */\n    item: ItemResDto;\n};"
         }
       ],
       "exports": [],
-      "imports": [],
+      "imports": [
+        {
+          "name": [
+            "ItemResDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PedidoSlimResponseDTO.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\ItemResDto.ts",
+          "isTypeOnly": true
+        }
+      ],
       "meta": {
         "pluginKey": [
           "plugin-ts",
@@ -1396,11 +1708,20 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type DividaSlimResponseDTO = {\n    /**\n     * @type number\n    */\n    qtd: number;\n    /**\n     * @type string\n    */\n    setorCodigo: string;\n};"
+          "value": "export type DividaSlimResponseDTO = {\n    /**\n     * @type number\n    */\n    qtd: number;\n    /**\n     * @type string\n    */\n    setorCodigo: string;\n    /**\n     * @type object\n    */\n    item: ItemResDto;\n};"
         }
       ],
       "exports": [],
-      "imports": [],
+      "imports": [
+        {
+          "name": [
+            "ItemResDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\DividaSlimResponseDTO.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\ItemResDto.ts",
+          "isTypeOnly": true
+        }
+      ],
       "meta": {
         "pluginKey": [
           "plugin-ts",
@@ -1411,6 +1732,41 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "0a2bf2e84faf5effe50e267018b0afc6f68039d5",
       "name": "DividaSlimResponseDTO",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "AtrasoSlimResponseDTO.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\AtrasoSlimResponseDTO.ts",
+      "sources": [
+        {
+          "name": "AtrasoSlimResponseDTO",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type AtrasoSlimResponseDTO = {\n    /**\n     * @type number\n    */\n    qtd: number;\n    /**\n     * @type string\n    */\n    setorCodigo: string;\n    /**\n     * @type object\n    */\n    item: ItemResDto;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "ItemResDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\AtrasoSlimResponseDTO.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\ItemResDto.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "AtrasoSlimResponseDTO"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "35d0a963c4a0571793065bbb4c323ff3b5992461",
+      "name": "AtrasoSlimResponseDTO",
       "extname": ".ts"
     },
     {
@@ -1566,6 +1922,41 @@
       "extname": ".ts"
     },
     {
+      "baseName": "MergeRequestPendingDto.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\MergeRequestPendingDto.ts",
+      "sources": [
+        {
+          "name": "MergeRequestPendingDto",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type MergeRequestPendingDto = {\n    /**\n     * @type string\n    */\n    fabricaId: string;\n    /**\n     * @type number\n    */\n    mergeRequestId: number;\n    /**\n     * @type object\n    */\n    user: UserResDto;\n    /**\n     * @type string, date-time\n    */\n    criadaEm: Date;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "UserResDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\MergeRequestPendingDto.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\UserResDto.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "MergeRequestPendingDto"
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "b791e70a2e7f4caf7481bfb0bc905197ec2cd05a",
+      "name": "MergeRequestPendingDto",
+      "extname": ".ts"
+    },
+    {
       "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\desplanejarPedidoDto.json",
       "baseName": "desplanejarPedidoDto.json",
       "meta": {
@@ -1629,7 +2020,7 @@
           "name": "pedidoSlimResponseDTO",
           "isExportable": false,
           "isIndexable": false,
-          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo\":{\"type\":\"string\"},\"dataEntrega\":{\"format\":\"date-time\",\"type\":\"string\"},\"lote\":{\"type\":\"number\"},\"item\":{\"type\":\"string\"}},\"required\":[\"id\",\"codigo\",\"dataEntrega\",\"lote\",\"item\"],\"x-readme-ref-name\":\"PedidoSlimResponseDTO\"}"
+          "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo\":{\"type\":\"string\"},\"dataEntrega\":{\"format\":\"date-time\",\"type\":\"string\"},\"lote\":{\"type\":\"number\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"id\",\"codigo\",\"dataEntrega\",\"lote\",\"item\"],\"x-readme-ref-name\":\"PedidoSlimResponseDTO\"}"
         }
       ],
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
@@ -1653,12 +2044,36 @@
           "name": "dividaSlimResponseDTO",
           "isExportable": false,
           "isIndexable": false,
-          "value": "{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"}},\"required\":[\"qtd\",\"setorCodigo\"],\"x-readme-ref-name\":\"DividaSlimResponseDTO\"}"
+          "value": "{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"qtd\",\"setorCodigo\",\"item\"],\"x-readme-ref-name\":\"DividaSlimResponseDTO\"}"
         }
       ],
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "c3a731df61aa8c30554b308c62647d6beda850dc",
       "name": "dividaSlimResponseDTO",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\atrasoSlimResponseDTO.json",
+      "baseName": "atrasoSlimResponseDTO.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "atrasoSlimResponseDTO",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"qtd\",\"setorCodigo\",\"item\"],\"x-readme-ref-name\":\"AtrasoSlimResponseDTO\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "a75bc29a796092e96b6fcfdc511ef5b0e915baa0",
+      "name": "atrasoSlimResponseDTO",
       "extname": ".json",
       "imports": [],
       "exports": []
@@ -1790,6 +2205,30 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "36af6d787c55a215506ec1484d6db1b6228c9023",
       "name": "userFabricaResponseDto",
+      "extname": ".json",
+      "imports": [],
+      "exports": []
+    },
+    {
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\schemas\\mergeRequestPendingDto.json",
+      "baseName": "mergeRequestPendingDto.json",
+      "meta": {
+        "pluginKey": [
+          "plugin-oas",
+          1
+        ]
+      },
+      "sources": [
+        {
+          "name": "mergeRequestPendingDto",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "{\"type\":\"object\",\"properties\":{\"fabricaId\":{\"type\":\"string\"},\"mergeRequestId\":{\"type\":\"number\"},\"user\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"email\"],\"x-readme-ref-name\":\"UserResDto\"},\"criadaEm\":{\"format\":\"date-time\",\"type\":\"string\"}},\"required\":[\"fabricaId\",\"mergeRequestId\",\"user\",\"criadaEm\"],\"x-readme-ref-name\":\"MergeRequestPendingDto\"}"
+        }
+      ],
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "99956bfb8553312d72fae6df5ab6481ad8cdf584",
+      "name": "mergeRequestPendingDto",
       "extname": ".json",
       "imports": [],
       "exports": []
@@ -2229,11 +2668,19 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type PedidosPlanejadosResponseDTO = {\n    /**\n     * @type object\n    */\n    pedido: PedidoSlimResponseDTO;\n    /**\n     * @type array\n    */\n    dividas: DividaSlimResponseDTO[];\n};"
+          "value": "export type PedidosPlanejadosResponseDTO = {\n    /**\n     * @type object\n    */\n    pedido: PedidoSlimResponseDTO;\n    /**\n     * @type array\n    */\n    dividas: DividaSlimResponseDTO[];\n    /**\n     * @type array\n    */\n    atrasos: AtrasoSlimResponseDTO[];\n};"
         }
       ],
       "exports": [],
       "imports": [
+        {
+          "name": [
+            "AtrasoSlimResponseDTO"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PedidosPlanejadosResponseDTO.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\AtrasoSlimResponseDTO.ts",
+          "isTypeOnly": true
+        },
         {
           "name": [
             "DividaSlimResponseDTO"
@@ -2479,7 +2926,7 @@
           "name": "pedidosPlanejadosResponseDTO",
           "isExportable": false,
           "isIndexable": false,
-          "value": "{\"type\":\"object\",\"properties\":{\"pedido\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo\":{\"type\":\"string\"},\"dataEntrega\":{\"format\":\"date-time\",\"type\":\"string\"},\"lote\":{\"type\":\"number\"},\"item\":{\"type\":\"string\"}},\"required\":[\"id\",\"codigo\",\"dataEntrega\",\"lote\",\"item\"],\"x-readme-ref-name\":\"PedidoSlimResponseDTO\"},\"dividas\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"}},\"required\":[\"qtd\",\"setorCodigo\"],\"x-readme-ref-name\":\"DividaSlimResponseDTO\"}}},\"required\":[\"pedido\",\"dividas\"],\"x-readme-ref-name\":\"PedidosPlanejadosResponseDTO\"}"
+          "value": "{\"type\":\"object\",\"properties\":{\"pedido\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\"},\"codigo\":{\"type\":\"string\"},\"dataEntrega\":{\"format\":\"date-time\",\"type\":\"string\"},\"lote\":{\"type\":\"number\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"id\",\"codigo\",\"dataEntrega\",\"lote\",\"item\"],\"x-readme-ref-name\":\"PedidoSlimResponseDTO\"},\"dividas\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"qtd\",\"setorCodigo\",\"item\"],\"x-readme-ref-name\":\"DividaSlimResponseDTO\"}},\"atrasos\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"qtd\":{\"type\":\"number\"},\"setorCodigo\":{\"type\":\"string\"},\"item\":{\"type\":\"object\",\"properties\":{\"Item\":{\"type\":\"string\"},\"tipo_item\":{\"type\":\"string\"}},\"required\":[\"Item\",\"tipo_item\"],\"x-readme-ref-name\":\"ItemResDto\"}},\"required\":[\"qtd\",\"setorCodigo\",\"item\"],\"x-readme-ref-name\":\"AtrasoSlimResponseDTO\"}}},\"required\":[\"pedido\",\"dividas\",\"atrasos\"],\"x-readme-ref-name\":\"PedidosPlanejadosResponseDTO\"}"
         }
       ],
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
@@ -2498,7 +2945,7 @@
           "isTypeOnly": true,
           "isExportable": true,
           "isIndexable": true,
-          "value": "export type UserControllerUserDetailsMethod200 = User;"
+          "value": "export type UserControllerUserDetailsMethod200 = UserResponseDTO;"
         },
         {
           "name": "UserControllerUserDetailsMethod401",
@@ -2526,10 +2973,10 @@
       "imports": [
         {
           "name": [
-            "User"
+            "UserResponseDTO"
           ],
           "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\UserControllerUserDetailsMethod.ts",
-          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\User.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\UserResponseDTO.ts",
           "isTypeOnly": true
         }
       ],
@@ -2680,6 +3127,124 @@
       "extname": ".json",
       "imports": [],
       "exports": []
+    },
+    {
+      "baseName": "CargoControllerSetUserCargoMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\CargoControllerSetUserCargoMethod.ts",
+      "sources": [
+        {
+          "name": "CargoControllerSetUserCargoMethod201",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type CargoControllerSetUserCargoMethod201 = any;"
+        },
+        {
+          "name": "CargoControllerSetUserCargoMethodMutationRequest",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type CargoControllerSetUserCargoMethodMutationRequest = SetUserCargoDTO;"
+        },
+        {
+          "name": "CargoControllerSetUserCargoMethodMutationResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type CargoControllerSetUserCargoMethodMutationResponse = CargoControllerSetUserCargoMethod201;"
+        },
+        {
+          "name": "CargoControllerSetUserCargoMethodMutation",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type CargoControllerSetUserCargoMethodMutation = {\n    Response: CargoControllerSetUserCargoMethod201;\n    Request: CargoControllerSetUserCargoMethodMutationRequest;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "SetUserCargoDTO"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\CargoControllerSetUserCargoMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\SetUserCargoDTO.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "CargoControllerSetUserCargoMethod",
+        "group": {
+          "tag": "User",
+          "path": "/api/user/cargo"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "7cd712b068b5a7cffb64f18e7ee7652f7416b000",
+      "name": "CargoControllerSetUserCargoMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "cargoControllerSetUserCargoMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\cargoControllerSetUserCargoMethod.ts",
+      "sources": [
+        {
+          "name": "getCargoControllerSetUserCargoMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getCargoControllerSetUserCargoMethodUrl() {\n  return `http://192.168.99.129:9279/api/user/cargo` as const\n}"
+        },
+        {
+          "name": "cargoControllerSetUserCargoMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /api/user/cargo}\n */\nexport async function cargoControllerSetUserCargoMethod(data: CargoControllerSetUserCargoMethodMutationRequest, config: Partial<RequestConfig<CargoControllerSetUserCargoMethodMutationRequest>> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<CargoControllerSetUserCargoMethodMutationResponse, ResponseErrorConfig<Error>, CargoControllerSetUserCargoMethodMutationRequest>({ method : \"POST\", url : getCargoControllerSetUserCargoMethodUrl().toString(), data, ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@/client",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@/client",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "CargoControllerSetUserCargoMethodMutationRequest",
+            "CargoControllerSetUserCargoMethodMutationResponse"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\cargoControllerSetUserCargoMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\CargoControllerSetUserCargoMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "cargoControllerSetUserCargoMethod",
+        "group": {
+          "tag": "User",
+          "path": "/api/user/cargo"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "d280c55e728fb7c87a1f6c3d68c3d5eabf402da0",
+      "name": "cargoControllerSetUserCargoMethod",
+      "extname": ".ts"
     },
     {
       "baseName": "FabricaControllerForkFabricaMethod.ts",
@@ -4495,6 +5060,66 @@
       "extname": ".ts"
     },
     {
+      "baseName": "PedidoControllerConsultaItensDoPedidoMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PedidoControllerConsultaItensDoPedidoMethod.ts",
+      "sources": [
+        {
+          "name": "PedidoControllerConsultaItensDoPedidoMethodQueryParams",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PedidoControllerConsultaItensDoPedidoMethodQueryParams = {\n    /**\n     * @type string\n    */\n    fabricaId: string;\n    /**\n     * @type number\n    */\n    pedidoId: number;\n};"
+        },
+        {
+          "name": "PedidoControllerConsultaItensDoPedidoMethodError",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PedidoControllerConsultaItensDoPedidoMethodError = ItemResDto[];"
+        },
+        {
+          "name": "PedidoControllerConsultaItensDoPedidoMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PedidoControllerConsultaItensDoPedidoMethodQueryResponse = any;"
+        },
+        {
+          "name": "PedidoControllerConsultaItensDoPedidoMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type PedidoControllerConsultaItensDoPedidoMethodQuery = {\n    Response: any;\n    QueryParams: PedidoControllerConsultaItensDoPedidoMethodQueryParams;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "ItemResDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PedidoControllerConsultaItensDoPedidoMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\ItemResDto.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "PedidoControllerConsultaItensDoPedidoMethod",
+        "group": {
+          "tag": "Pedido",
+          "path": "/api/pedido/itens"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "17967d921167b42dd49a9dbee73551a7d726cfde",
+      "name": "PedidoControllerConsultaItensDoPedidoMethod",
+      "extname": ".ts"
+    },
+    {
       "baseName": "PlanejamentoControllerDatasPlanejadasMethod.ts",
       "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PlanejamentoControllerDatasPlanejadasMethod.ts",
       "sources": [
@@ -4536,6 +5161,64 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "3a4f5d334d94af3eef00e32df13fcce1b5521986",
       "name": "PlanejamentoControllerDatasPlanejadasMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "pedidoControllerConsultaItensDoPedidoMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\pedidoControllerConsultaItensDoPedidoMethod.ts",
+      "sources": [
+        {
+          "name": "getPedidoControllerConsultaItensDoPedidoMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getPedidoControllerConsultaItensDoPedidoMethodUrl() {\n  return `http://192.168.99.129:9279/api/pedido/itens` as const\n}"
+        },
+        {
+          "name": "pedidoControllerConsultaItensDoPedidoMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /api/pedido/itens}\n */\nexport async function pedidoControllerConsultaItensDoPedidoMethod(params: PedidoControllerConsultaItensDoPedidoMethodQueryParams, config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<PedidoControllerConsultaItensDoPedidoMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getPedidoControllerConsultaItensDoPedidoMethodUrl().toString(), params, ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@/client",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@/client",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "PedidoControllerConsultaItensDoPedidoMethodQueryResponse",
+            "PedidoControllerConsultaItensDoPedidoMethodQueryParams"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\pedidoControllerConsultaItensDoPedidoMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\PedidoControllerConsultaItensDoPedidoMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "pedidoControllerConsultaItensDoPedidoMethod",
+        "group": {
+          "tag": "Pedido",
+          "path": "/api/pedido/itens"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "663824be7e3cff7f4c6a3954e59c06846ea20505",
+      "name": "pedidoControllerConsultaItensDoPedidoMethod",
       "extname": ".ts"
     },
     {
@@ -5048,6 +5731,116 @@
       "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
       "id": "f71c33d9eda521175ef6bbb33f5da48dec931adc",
       "name": "itemControllerCadastrarItemCapabilidadeMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "FabricaControllerGetRequestsFabricaMergeMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\FabricaControllerGetRequestsFabricaMergeMethod.ts",
+      "sources": [
+        {
+          "name": "FabricaControllerGetRequestsFabricaMergeMethodError",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type FabricaControllerGetRequestsFabricaMergeMethodError = MergeRequestPendingDto;"
+        },
+        {
+          "name": "FabricaControllerGetRequestsFabricaMergeMethodQueryResponse",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type FabricaControllerGetRequestsFabricaMergeMethodQueryResponse = any;"
+        },
+        {
+          "name": "FabricaControllerGetRequestsFabricaMergeMethodQuery",
+          "isTypeOnly": true,
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "export type FabricaControllerGetRequestsFabricaMergeMethodQuery = {\n    Response: any;\n    Errors: any;\n};"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": [
+            "MergeRequestPendingDto"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\FabricaControllerGetRequestsFabricaMergeMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\MergeRequestPendingDto.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-ts",
+          1
+        ],
+        "name": "FabricaControllerGetRequestsFabricaMergeMethod",
+        "group": {
+          "tag": "Fabrica",
+          "path": "/api/fabrica/merge/request"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "42f7d9b099fbb45b57a9d0a592c424239145b6d4",
+      "name": "FabricaControllerGetRequestsFabricaMergeMethod",
+      "extname": ".ts"
+    },
+    {
+      "baseName": "fabricaControllerGetRequestsFabricaMergeMethod.ts",
+      "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\fabricaControllerGetRequestsFabricaMergeMethod.ts",
+      "sources": [
+        {
+          "name": "getFabricaControllerGetRequestsFabricaMergeMethodUrl",
+          "isExportable": false,
+          "isIndexable": false,
+          "value": "function getFabricaControllerGetRequestsFabricaMergeMethodUrl() {\n  return `http://192.168.99.129:9279/api/fabrica/merge/request` as const\n}"
+        },
+        {
+          "name": "fabricaControllerGetRequestsFabricaMergeMethod",
+          "isExportable": true,
+          "isIndexable": true,
+          "value": "/**\n * {@link /api/fabrica/merge/request}\n */\nexport async function fabricaControllerGetRequestsFabricaMergeMethod(config: Partial<RequestConfig> & { client?: typeof client } = {}) {\n  const { client:request = client, ...requestConfig } = config\n\nconst res = await request<FabricaControllerGetRequestsFabricaMergeMethodQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : \"GET\", url : getFabricaControllerGetRequestsFabricaMergeMethodUrl().toString(), ... requestConfig })\nreturn res.data\n}"
+        }
+      ],
+      "exports": [],
+      "imports": [
+        {
+          "name": "client",
+          "path": "@/client",
+          "isTypeOnly": false
+        },
+        {
+          "name": [
+            "RequestConfig",
+            "ResponseErrorConfig"
+          ],
+          "path": "@/client",
+          "isTypeOnly": true
+        },
+        {
+          "name": [
+            "FabricaControllerGetRequestsFabricaMergeMethodQueryResponse"
+          ],
+          "root": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\client\\fabricaControllerGetRequestsFabricaMergeMethod.ts",
+          "path": "C:\\workspace\\planejador\\PlanejamentoEthosPortal\\src\\api\\models\\FabricaControllerGetRequestsFabricaMergeMethod.ts",
+          "isTypeOnly": true
+        }
+      ],
+      "meta": {
+        "pluginKey": [
+          "plugin-client",
+          1
+        ],
+        "name": "fabricaControllerGetRequestsFabricaMergeMethod",
+        "group": {
+          "tag": "Fabrica",
+          "path": "/api/fabrica/merge/request"
+        }
+      },
+      "banner": "/**\n* Generated by Kubb (https://kubb.dev/).\n* Do not edit manually.\n*/\n",
+      "id": "f1b0b3615e8e53a3b9424b63a211230678f9a402",
+      "name": "fabricaControllerGetRequestsFabricaMergeMethod",
       "extname": ".ts"
     },
     {

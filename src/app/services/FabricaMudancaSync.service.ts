@@ -14,9 +14,9 @@ export class FabricaMudancaSyncService {
 
     sync(fabricaId: string): void {
         const syncObs = [
-            this.ganntStore.refreshGantt(fabricaId),
-            this.planejamentoStore.refreshPlanejamentos(fabricaId),
-            this.pedidoPlanejadoStore.refreshPedidos(fabricaId)
+            this.ganntStore.refresh(fabricaId),
+            this.planejamentoStore.refresh(fabricaId),
+            this.pedidoPlanejadoStore.refresh(fabricaId)
         ]
         forkJoin(syncObs).subscribe();
     }

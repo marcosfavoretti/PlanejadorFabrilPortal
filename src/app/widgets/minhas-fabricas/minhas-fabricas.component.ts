@@ -6,17 +6,18 @@ import { map, Observable } from 'rxjs';
 import { UserFabricaResponseDto } from '@/api';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-minhas-fabricas',
-  imports: [TableDynamicComponent, AsyncPipe],
+  imports: [TableDynamicComponent, AsyncPipe, Skeleton],
   templateUrl: './minhas-fabricas.component.html',
   styleUrl: './minhas-fabricas.component.css'
 })
 export class MinhasFabricasComponent implements OnInit {
   @Output() fabricaEscolhida: EventEmitter<void> = new EventEmitter();
   public readonly tableShema: TableModel = {
-    title: 'Minhas Fábricas',
+    title: '',
     columns: [
       {
         alias: 'FabricaId',
@@ -32,7 +33,7 @@ export class MinhasFabricasComponent implements OnInit {
         field: '',
         isButton: true,
         button: {
-          command: (row) => this.router.navigate(['/', 'fabrica', `${row.fabrica.fabricaId}`]),
+          command: (row) => this.router.navigate(['app', 'fabrica', `${row.fabrica.fabricaId}`]),
           icon: 'pi pi-arrow-up-right-and-arrow-down-left-from-center',
           label: ''
         }

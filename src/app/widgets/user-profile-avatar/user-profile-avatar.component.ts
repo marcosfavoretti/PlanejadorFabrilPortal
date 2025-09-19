@@ -2,7 +2,7 @@ import { Component, inject, Injectable, Input, OnInit, Signal } from '@angular/c
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from "primeng/avatar";
 import { UserstoreService } from '../../services/userstore.service';
-import { User } from '@/api';
+import { User, UserResponseDTO } from '@/api';
 
 @Component({
   selector: 'app-user-profile-avatar',
@@ -16,7 +16,7 @@ export class UserProfileAvatarComponent implements OnInit {
   @Input() size: "normal" | 'large' | 'xlarge' = 'normal';
 
   userStore = inject(UserstoreService);
-  user!: Signal<User | null>;
+  user!: Signal<UserResponseDTO | null>;
 
   ngOnInit(): void {
     this.user = this.userStore.item;

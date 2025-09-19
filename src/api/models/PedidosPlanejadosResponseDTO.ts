@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import type { AtrasoSlimResponseDTO } from './AtrasoSlimResponseDTO.ts'
 import type { DividaSlimResponseDTO } from './DividaSlimResponseDTO.ts'
 import type { PedidoSlimResponseDTO } from './PedidoSlimResponseDTO.ts'
 
@@ -15,4 +16,8 @@ export type PedidosPlanejadosResponseDTO = {
    * @type array
    */
   dividas: DividaSlimResponseDTO[]
+  /**
+   * @type array
+   */
+  atrasos: AtrasoSlimResponseDTO[]
 }

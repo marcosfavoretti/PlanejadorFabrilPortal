@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ItemResDto } from './ItemResDto.ts'
+
 export type DividaSlimResponseDTO = {
   /**
    * @type number
@@ -12,4 +14,8 @@ export type DividaSlimResponseDTO = {
    * @type string
    */
   setorCodigo: string
+  /**
+   * @type object
+   */
+  item: ItemResDto
 }

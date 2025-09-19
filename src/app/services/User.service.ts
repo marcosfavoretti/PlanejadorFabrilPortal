@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthDto, CreateUserDto, User, userControllerCheckUserAuth, userControllerCreateUserMethod, userControllerLoginMethod, userControllerLogoutMethod, userControllerUserDetailsMethod } from "../../api";
+import { AuthDto, CreateUserDto, User, userControllerCheckUserAuth, userControllerCreateUserMethod, userControllerLoginMethod, userControllerLogoutMethod, userControllerUserDetailsMethod, UserResDto, UserResponseDTO } from "../../api";
 import { from, Observable, of } from "rxjs";
 
 @Injectable({
@@ -30,7 +30,7 @@ export class UserService {
         )
     }
 
-    detail(): Observable<User> {
+    detail(): Observable<UserResponseDTO> {
         return from(
             userControllerUserDetailsMethod()
                 .then((data) => data)
@@ -53,7 +53,6 @@ export class UserService {
     ping(): Observable<void> {
         return from(
             userControllerCheckUserAuth()
-                .then(() => { })
                 .catch(err => {
                     throw err;
                 })

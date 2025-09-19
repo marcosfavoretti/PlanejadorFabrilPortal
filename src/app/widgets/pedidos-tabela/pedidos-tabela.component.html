@@ -1,6 +1,6 @@
-@if(pedido$){
+@if (pedidoStore.item()) {
     <app-table-dynamic 
-    (OnChecked)="onPedidoEscolhido($event)"
-    [tableModel]="schema"
-    [data]="(pedido$ | async) || []"></app-table-dynamic>
+        (OnChecked)="onPedidoEscolhido($event)"
+        [tableModel]="schema"
+        [data]="pedidoStore.item()!"></app-table-dynamic>
 }

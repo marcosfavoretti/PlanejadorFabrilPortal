@@ -1,0 +1,4 @@
+p-splitter {
+  height: calc(100vh - 56px); /* descontando o header fixo */
+}
+
