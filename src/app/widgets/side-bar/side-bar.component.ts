@@ -1,4 +1,5 @@
 import { SidebarItem } from '@/@core/type/SidebarItem';
+import { routes } from '@/app/app.routes';
 import { CommonModule } from '@angular/common';
 import { Component, input, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
 export class SideBarComponent {
   items = input<SidebarItem[]>();
 
+  actualRoutes = routes
   // Opcional: track do item ativo
   activeIndex = signal<number | null>(null);
 

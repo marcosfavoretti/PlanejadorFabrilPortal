@@ -36,7 +36,7 @@ export class RegisterScreenComponent {
         tap(() => {
           firstValueFrom(this.userService.login({ user, password }))
             .then(
-              () => this.router.navigate(['/', 'chat'])
+              () => this.router.navigate(['/', 'login'])
             )
         }),
       ).subscribe();

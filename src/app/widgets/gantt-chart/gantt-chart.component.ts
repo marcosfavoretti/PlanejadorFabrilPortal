@@ -75,7 +75,8 @@ export class GanttChartComponent implements OnInit {
         bar_height: 15,
         container_height: 400,
         infinite_padding: false,
-        on_date_change: (task, start, end) => console.log(`data mudou para ${task} ${start} `),
+        on_date_change: (task, start, end) =>
+          console.log(`data mudou para ${task} ${start} `),
         move_dependencies: true,
         lines: 'both',
         auto_move_label: true,
@@ -94,14 +95,14 @@ export class GanttChartComponent implements OnInit {
 
   private archorTask(lastDay: Date): GanttData {
     return {
-      
+
       id: 'anchor_task_for_view_extension',
-      color: 'transparent', 
-      name: '', 
+      color: 'transparent',
+      name: '',
       dependencies: [],
       start: lastDay.toISOString(),
       end: lastDay.toISOString(),
-      custom_class: 'gantt-bar-hidden', 
+      custom_class: 'gantt-bar-hidden',
       progress: 0,
     } as GanttData;
   }

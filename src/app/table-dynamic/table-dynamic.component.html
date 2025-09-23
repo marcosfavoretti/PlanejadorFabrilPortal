@@ -148,6 +148,13 @@
   </ng-template>
   }
 
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="columns.length" class="text-center p-3">
+        Não há dados para exibir.
+      </td>
+    </tr>
+  </ng-template>
   <ng-template pTemplate="footer">
     <span class="text-secondary small">
       total de linhas: {{ data ? data.length : 0 }}
