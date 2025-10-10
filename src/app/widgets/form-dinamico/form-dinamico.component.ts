@@ -3,13 +3,15 @@ import { Component, EventEmitter, Input, OnChanges, Output, Signal, ViewChild } 
 import { FormBuilder, FormGroup, FormsModule, NgForm, Validators } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker'
 import { DynamicField } from './@core/DynamicField';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-form-dinamico',
   imports: [
     DatePicker,
     FormsModule,
-    CommonModule
+    CommonModule,
+    DropdownModule
   ],
   templateUrl: './form-dinamico.component.html',
   styleUrl: './form-dinamico.component.css'

@@ -10,7 +10,7 @@ import { MinhasFabricasPopUpComponent } from '@/app/widgets/minhas-fabricas-pop-
 import { Router, RouterOutlet } from '@angular/router';
 import { computed } from '@angular/core';
 import { UserstoreService } from '@/app/services/userstore.service';
-import { CargoEnum } from '@/@core/enum/Cargo.enum';
+import { CargoEnum } from '@/@core/enum/CARGO.enum';
 @Component({
   selector: 'app-home-page',
   imports: [
