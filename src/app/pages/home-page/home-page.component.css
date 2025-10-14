@@ -1,4 +1,11 @@
-p-splitter {
-  height: calc(100vh - 56px); /* descontando o header fixo */
+:host, .home-page-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
 }
 
+.page-content-wrapper {
+  flex-grow: 1;
+  overflow: hidden;
+}

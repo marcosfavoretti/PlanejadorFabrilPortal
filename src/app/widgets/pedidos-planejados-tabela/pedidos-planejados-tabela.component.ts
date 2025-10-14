@@ -21,7 +21,6 @@ import { TagModule } from 'primeng/tag';
     TableModule,
     ButtonModule,
     TagModule,
-    DatePicker
   ],
   templateUrl: './pedidos-planejados-tabela.component.html',
   styleUrl: './pedidos-planejados-tabela.component.css'

@@ -3,10 +3,9 @@
     @if (items()) {
     <li *ngFor="let item of items()!; let i = index" class="mb-1">
   <a 
-    class="d-flex align-items-center rounded link-secondary py-2 px-2 text-decoration-none w-100"
-    style="cursor: pointer;"
+    class="d-flex align-items-center rounded link-secondary link-underline-opacity-0 py-2 px-2 w-100"
     [routerLink]="[item.route]"
-    routerLinkActive="active"
+    routerLinkActive="active-link"
     [routerLinkActiveOptions]="{exact:false}"
     (click)="onClick(item, i)"
   >

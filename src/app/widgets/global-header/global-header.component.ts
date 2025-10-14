@@ -21,30 +21,11 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
   templateUrl: './global-header.component.html',
   styleUrl: './global-header.component.css'
 })
-export class GlobalHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class GlobalHeaderComponent implements OnInit, OnDestroy {
   user!: Signal<UserResponseDTO | null>;
   userStore = inject(UserstoreService);
   popup = inject(LoadingPopupService);
-  globalHeaderHtml = viewChild<ElementRef>('globalHeader');
   globalFilter = inject(GlobalFilterInputText);
-
-  ngAfterViewInit() {
-    const el = this.globalHeaderHtml()?.nativeElement;
-    if (el) {
-      const observer = new ResizeObserver(() => this.resizeHeader());
-      observer.observe(el);
-      this.destroy$.subscribe(() => observer.disconnect());
-    }
-    else {
-      document.body.style.paddingTop = `0px`;
-    }
-    this.resizeHeader();
-  }
-
-  resizeHeader() {
-    const headerHeight = this.globalHeaderHtml()?.nativeElement.clientHeight || 0;
-    document.body.style.paddingTop = `${headerHeight}px`;
-  }
 
   private destroy$ = new Subject<void>();
   private input$ = new Subject<string>();
@@ -67,6 +48,6 @@ export class GlobalHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.user = this.userStore.item;
     this.input$
       .pipe(debounceTime(1000), takeUntil(this.destroy$))
-      .subscribe(text => { this.globalFilter.setText(text); this.resizeHeader() });
+      .subscribe(text => { this.globalFilter.setText(text)});
   }
 }

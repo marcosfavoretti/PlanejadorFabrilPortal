@@ -1,4 +1,6 @@
 .background{
+    height: 100vh;
+    overflow: hidden;
     background-repeat: no-repeat;     /* evita que a imagem repita */
     background-size: cover;           /* cobre toda a área (mantendo proporção) */
     background-position: center;      /* centraliza horizontal e verticalmente */

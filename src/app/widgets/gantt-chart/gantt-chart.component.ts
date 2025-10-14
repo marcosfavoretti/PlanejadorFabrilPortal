@@ -73,7 +73,7 @@ export class GanttChartComponent implements OnInit {
         date_format: 'YYYY-MM-DD',
         column_width: 400,
         bar_height: 15,
-        container_height: 400,
+        container_height: 500,
         infinite_padding: false,
         on_date_change: (task, start, end) =>
           console.log(`data mudou para ${task} ${start} `),

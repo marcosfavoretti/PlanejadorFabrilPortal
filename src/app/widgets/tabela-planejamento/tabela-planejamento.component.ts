@@ -24,6 +24,7 @@ export class TabelaPlanejamentoComponent implements OnInit {
     this.loadTabela()
   });
   //
+  
   /**
    * injecoes de dependencia
    */

@@ -1,5 +1,5 @@
 import { TableModel } from '@/app/table-dynamic/@core/table.model';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { TableDynamicComponent } from "../../table-dynamic/table-dynamic.component";
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { switchMap, tap } from 'rxjs';
@@ -15,7 +15,7 @@ import { PedidoStoreService } from '@/app/services/PedidoStore.service';
   templateUrl: './pedidos-tabela.component.html',
   styleUrl: './pedidos-tabela.component.css'
 })
-export class PedidosTabelaComponent {
+export class PedidosTabelaComponent implements OnInit {
   constructor(
     private contextoFabricaService: ContextoFabricaService,
     private fabricaService: FabricaService,
@@ -24,18 +24,22 @@ export class PedidosTabelaComponent {
   ) { }
 
   pedidoStore = inject(PedidoStoreService);
-
+  planejavel = input<boolean>(false);
 
   ngOnInit(): void {
     this.pedidoStore
       .initialize(
         PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum.todos
       )
+      .pipe(
+        tap(() => this.generateTable())
+      )
       .subscribe();
   }
 
   onPedidoEscolhido($event: any): void {
     const pedidoId = $event.row.id;
+    if (!this.planejavel()) return;
     if (!Boolean($event.row.processado)) {//se o pedido ainda nao foi processado ele planeja o pedido
       const plan$ = this.fabricaService
         .planejamentos({ pedidoIds: [pedidoId] }).pipe(
@@ -66,6 +70,19 @@ export class PedidosTabelaComponent {
         );
       this.popup.showWhile(plan$);
     }
+  }
+
+  generateTable() {
+    if (this.planejavel()) this.schema.columns.push({
+      isButton: true,
+      alias: '',
+      field: '',
+      button: {
+        command: () => console.log('feito'),
+        icon: 'pi pi-plus-circle',
+        label: ''
+      }
+    });
   }
 
   public schema: TableModel = {
@@ -112,16 +129,6 @@ export class PedidosTabelaComponent {
         alias: 'processado',
         field: 'processado'
       },
-      {
-        isButton: true,
-        alias: '',
-        field: '',
-        button: {
-          command: () => console.log('feito'),
-          icon: 'pi pi-plus-circle',
-          label: ''
-        }
-      }
     ]
   }
 }

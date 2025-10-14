@@ -1,6 +1,7 @@
 import { from, Observable } from "rxjs";
-import { GetGanttInformationDto, GetTabelaProducaoDiarioDTO, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200, producaoSimulacaoControllerConsultarMercadoMethod, producaoSimulacaoControllerGenTabelaDiariaMethod, ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams,  producaoSimulacaoControllerSaveTabelaDiariaMethod, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, replanejamentoControllerReplanejamentoMethod, GetMercadosEntreSetoresTabelaDto, KPIControllerGetGanttInformationMethod, KPIControllerGetGanttInformationMethodQueryParams } from "../../api";
+import { GetGanttInformationDto, GetTabelaProducaoDiarioDTO, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200, producaoSimulacaoControllerConsultarMercadoMethod, producaoSimulacaoControllerGenTabelaDiariaMethod, ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams,  producaoSimulacaoControllerSaveTabelaDiariaMethod, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, GetMercadosEntreSetoresTabelaDto, KPIControllerGetGanttInformationMethod, KPIControllerGetGanttInformationMethodQueryParams } from "../../api";
 import { Injectable } from "@angular/core";
+import { replanejamentoControllerReplanejamentoMethod } from "@/api/client/replanejamentoControllerReplanejamentoMethod";
 @Injectable({
     providedIn: 'root'
 })
@@ -25,7 +26,7 @@ export class PlanejamentoAPIService {
         return from(
             replanejamentoControllerReplanejamentoMethod()
                 .then(() => { })
-                .catch(err => { throw err })
+                .catch((err: any) => { throw err })
         )
     }
 

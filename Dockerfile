@@ -1,23 +1,33 @@
-# Etapa 1: Build da aplicação Angular
-FROM node:22 AS build
+# Etapa 1: Preparação do ambiente
+# Esta etapa instala as dependências e copia o código-fonte
+FROM node:22.12.0-alpine AS builder
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+# Etapa 2: Imagem final de Produção
+# Usamos uma imagem Node para ter as ferramentas (npm) e instalamos o Nginx nela
+FROM node:22.12.0-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# Instala o Nginx e o curl
+RUN apk add --no-cache nginx curl
 
-COPY . .
-RUN npm run build --prod
+# Copia as dependências e o código-fonte da etapa de preparação
+COPY --from=builder /app /app
 
-# Etapa 2: Servir com Nginx
-FROM nginx:alpine
-
-# Remove o conteúdo padrão do Nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-
+# Copia a configuração do Nginx e o novo script de inicialização
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY entrypoint.sh .
 
-# Expor a porta padrão do Nginx
-EXPOSE 80
+# Dá permissão de execução para o script
+RUN chmod +x ./entrypoint.sh
 
-CMD ["nginx", "-g", "daemon off;"]
+# Expõe a porta do Nginx
+EXPOSE 8085
+
+# Define o script como o ponto de entrada do contêiner
+ENTRYPOINT ["./entrypoint.sh"]
