@@ -44,16 +44,20 @@ export class ItemCapabilidadeTabelaComponent
     columns: [
       {
         alias: 'item',
-        field: 'item'
+        field: 'item.Item'
       },
       {
-        alias: 'CAP. LIXA',
-        field: 'capabilidade.00017',
-        isInputText: true,
+        alias: 'item',
+        field: 'item.tipo_item'
       },
       {
         alias: 'CAP. SOLDA',
         field: 'capabilidade.00015',
+        isInputText: true,
+      },
+      {
+        alias: 'CAP. LIXA',
+        field: 'capabilidade.00017',
         isInputText: true,
       },
       {
@@ -67,18 +71,23 @@ export class ItemCapabilidadeTabelaComponent
         isInputText: true,
       },
       {
+        alias: 'CAP. PINTURA PÓ',
+        field: 'capabilidade.00020',
+        isInputText: true,
+      },
+      {
         alias: 'CAP. MONTAGEM',
         field: 'capabilidade.00025',
         isInputText: true,
       },
       {
-        alias: 'LEAD. LIXA',
-        field: 'leadtime.00017',
+        alias: 'LEAD. SOLDA',
+        field: 'leadtime.00015',
         isInputText: true,
       },
       {
-        alias: 'LEAD. SOLDA',
-        field: 'leadtime.00015',
+        alias: 'LEAD. LIXA',
+        field: 'leadtime.00017',
         isInputText: true,
       },
       {
@@ -89,6 +98,11 @@ export class ItemCapabilidadeTabelaComponent
       {
         alias: 'LEAD. PINTURA',
         field: 'leadtime.00050',
+        isInputText: true,
+      },
+      {
+        alias: 'CAP. PINTURA PÓ',
+        field: 'leadtime.00020',
         isInputText: true,
       },
       {

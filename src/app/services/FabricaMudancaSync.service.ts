@@ -5,6 +5,7 @@ import { PedidoPlanejadosStoreService } from "./PedidoPlanejadoStore.service";
 import { forkJoin } from "rxjs";
 import { PedidoStoreService } from "./PedidoStore.service";
 import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from "@/api";
+import { FabricaMudancaStore } from "./FabricaMudancaStore.service";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,11 @@ export class FabricaMudancaSyncService {
     ganntStore = inject(GanttStoreService);
     pedidoPlanejadoStore = inject(PedidoPlanejadosStoreService);
     pedido = inject(PedidoStoreService);
+    mudancaStore = inject(FabricaMudancaStore);
+
     sync(fabricaId: string): void {
         const syncObs = [
+            this.mudancaStore.refresh(),
             this.pedido.refresh(PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum.todos),
             this.ganntStore.refresh(fabricaId),
             this.planejamentoStore.refresh(fabricaId),

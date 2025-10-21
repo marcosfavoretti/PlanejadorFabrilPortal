@@ -10,6 +10,7 @@ import { PedidosFabricaViewComponent } from './widgets/pedidos-fabrica-view/pedi
 import { SetUserCargoDTOCargoEnum } from '@/api';
 import { CargoGuard } from './guard/Cargo.guard';
 import { FabricasParaAvaliacaoViewComponent } from './widgets/fabricas-para-avaliacao-view/fabricas-para-avaliacao-view.component';
+import { FabricaPageReadOnlyComponent } from './widgets/fabrica-page-read-only/fabrica-page-read-only.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,16 @@ export const routes: Routes = [
                 path: 'fabrica/:fabricaId',
                 canActivate: [CargoGuard],
                 loadComponent: () => FabricaPageComponent,
+                data: {
+                    roles: [
+                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
+                    ]
+                }
+            },
+            {
+                path: 'RO/fabrica/:fabricaId',
+                canActivate: [CargoGuard],
+                loadComponent: () => FabricaPageReadOnlyComponent,
                 data: {
                     roles: [
                         SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER

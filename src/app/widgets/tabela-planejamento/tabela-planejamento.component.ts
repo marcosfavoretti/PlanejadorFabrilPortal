@@ -24,7 +24,7 @@ export class TabelaPlanejamentoComponent implements OnInit {
     this.loadTabela()
   });
   //
-  
+
   /**
    * injecoes de dependencia
    */
@@ -46,9 +46,7 @@ export class TabelaPlanejamentoComponent implements OnInit {
     // this.popup.showWhile(planejamentos$);
   }
 
-  abreCadastro(): void {
-    this.popup.showPopUpComponent(CriacaoDePlanejamentoComponent);
-  }
+
 
   ngOnInit(): void {
     this.tabelaSchema = {
@@ -57,24 +55,32 @@ export class TabelaPlanejamentoComponent implements OnInit {
       columns: [
         {
           field: 'planejamentoId',
-          alias: '_id'
+          alias: 'PlanejamentoId'
+        },
+        {
+          field: 'pedido',
+          alias: 'pedidoId'
+        },
+        {
+          field: 'setor.nome',
+          alias: 'setor'
+        },
+        {
+          field: 'setor.codigo',
+          alias: 'setorId'
         },
         {
           field: 'dia',
           isDate: true,
-          alias: 'dia',
+          alias: 'Dia',
         },
         {
-          field: 'pedido',
-          alias: 'pedido'
-        },
-        {
-          field: 'item',
+          field: 'item.Item',
           alias: 'item'
         },
         {
-          field: 'setor',
-          alias: 'setor'
+          field: 'item.tipo_item',
+          alias: 'desc'
         },
         {
           field: 'qtd',

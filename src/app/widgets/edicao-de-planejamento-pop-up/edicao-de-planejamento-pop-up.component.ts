@@ -52,7 +52,7 @@ export class EdicaoDePlanejamentoPopUpComponent
           }
         )
       )
-    this.popup.showWhile(atualizar$).subscribe();
+    this.popup.showWhile(atualizar$);
   }
 
   removePlanejamento(): void {
@@ -83,7 +83,7 @@ export class EdicaoDePlanejamentoPopUpComponent
         name: 'item',
         disable: true,
         type: 'text',
-        defaultValue: this.planejamento.item,
+        defaultValue: this.planejamento.item.Item,
         required: true
       },
       {
@@ -91,7 +91,7 @@ export class EdicaoDePlanejamentoPopUpComponent
         name: 'setor',
         type: 'text',
         disable: true,
-        defaultValue: this.planejamento.setor
+        defaultValue: this.planejamento.setor.nome
       },
 
       {

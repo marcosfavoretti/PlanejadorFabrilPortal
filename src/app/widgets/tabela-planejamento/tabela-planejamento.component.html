@@ -1,11 +1,4 @@
-@if (estrategia==='editavel') {
-<button (click)="abreCadastro()" class="btn btn-group btn-success p-2">
-    <span class="fst-italic">
-        <i class="pi pi-plus "></i>
-        planejamento
-    </span>
-</button>
-}
+
 @if (planejamentos()) {
 <app-table-dynamic [tableModel]="tabelaSchema" [data]="planejamentos()||[]"/>
 }

@@ -1,17 +1,15 @@
 <div class="home-page-layout">
-  <global-header></global-header>
+  <global-header class="sticky-top"></global-header>
   <div class="page-content-wrapper">
     <div *ngIf="loadFinish" class="container-fluid m-0 p-0 h-100">
       <p-splitter [panelSizes]="[20, 80]" styleClass="rounded-0 border-0 h-100">
-        <!-- Painel esquerdo: sidebar -->
         <ng-template pTemplate="panel">
-          <div class="h-100 w-100 m-0 p-0 bg-dark-green">
+          <div class=" h-100 w-100 m-0 p-0 bg-dark-green">
             <app-side-bar [items]="menu()"></app-side-bar>
           </div>
         </ng-template>
-        <!-- Painel direito: conteúdo dinâmico -->
         <ng-template pTemplate="panel">
-          <div class="h-100 overflow-y-auto">
+          <div class="container-fluid overflow-y-auto">
             <router-outlet></router-outlet>
           </div>
         </ng-template>

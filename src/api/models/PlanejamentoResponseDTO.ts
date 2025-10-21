@@ -3,6 +3,8 @@
 * Do not edit manually.
 */
 
+import type { ItemResDto } from "./ItemResDto";
+import type { SetorResDTO } from "./SetorResDTO";
 
 export type PlanejamentoResponseDTO = {
     /**
@@ -10,13 +12,13 @@ export type PlanejamentoResponseDTO = {
     */
     planejamentoId: number;
     /**
-     * @type string
+     * @type object
     */
-    item: string;
+    item: ItemResDto;
     /**
-     * @type string
+     * @type object
     */
-    setor: string;
+    setor: SetorResDTO;
     /**
      * @type string
     */

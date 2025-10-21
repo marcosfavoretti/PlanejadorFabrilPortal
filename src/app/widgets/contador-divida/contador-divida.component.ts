@@ -10,6 +10,7 @@ import { SimpleCardComponent } from "../simple-card/simple-card.component";
 })
 export class ContadorDividaComponent {
   pedidosPlenejadosService = inject(PedidoPlanejadosStoreService);
+  title = 'Planejamentos faltantes'
 
   getData(): string | undefined {
     const dados = this.pedidosPlenejadosService.item();

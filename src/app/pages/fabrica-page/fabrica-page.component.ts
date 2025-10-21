@@ -1,17 +1,16 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { TabelaPlanejamentoComponent } from "../../widgets/tabela-planejamento/tabela-planejamento.component";
 import { FabricaApresentacaoComponent } from "../../widgets/fabrica-apresentacao/fabrica-apresentacao.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { GanttChartComponent } from "../../widgets/gantt-chart/gantt-chart.component";
-import { GlobalHeaderComponent } from "@/app/widgets/global-header/global-header.component";
 import { PedidosPlanejadosTabelaComponent } from "@/app/widgets/pedidos-planejados-tabela/pedidos-planejados-tabela.component";
 import { FabricaPageStartUpService } from '@/app/services/FabricaPageStartup.service';
 import { ContadorDividaComponent } from "@/app/widgets/contador-divida/contador-divida.component";
 import { ContadorAtrasoComponent } from "@/app/widgets/contador-atraso/contador-atraso.component";
-import { ToggleSwitch } from "primeng/toggleswitch";
-import { PedidosTabelaComponent } from "@/app/widgets/pedidos-tabela/pedidos-tabela.component";
 import { FormsModule } from '@angular/forms';
+import { FabricaMudancaStore } from '@/app/services/FabricaMudancaStore.service';
+import { VisualizadorMudancasComponent } from '@/app/widgets/visualizador-mudancas/visualizador-mudancas.component';
 
 @Component({
   selector: 'app-fabrica-page',
@@ -19,14 +18,12 @@ import { FormsModule } from '@angular/forms';
     TabelaPlanejamentoComponent,
     FabricaApresentacaoComponent,
     GanttChartComponent,
-    GlobalHeaderComponent,
     PedidosPlanejadosTabelaComponent,
     ContadorDividaComponent,
     ContadorAtrasoComponent,
-    ToggleSwitch,
-    PedidosTabelaComponent,
-    FormsModule
-  ],
+    FormsModule,
+    VisualizadorMudancasComponent
+],
   templateUrl: './fabrica-page.component.html',
   styleUrl: './fabrica-page.component.css'
 })
@@ -39,30 +36,7 @@ export class FabricaPageComponent implements OnInit, OnDestroy {
 
   checked = signal<boolean>(false);
   loadFinish: boolean = false
-
-  // loadFabrica(fabricaId: string): void {
-  //   console.log("LOAD DA FABRICA NOVO")
-  //   const fabrica$ = this.fabricaService.consultaFabrica({
-  //     fabricaId: fabricaId
-  //   })
-  //     .pipe(
-  //       tap(
-  //         fab => {
-  //           this.contextFabrica.setFabrica(fab);
-  //         }
-  //       ),
-  //       catchError(
-  //         err => {
-  //           this.router.navigate(['/', 'app']);
-  //           console.log(err)
-  //           if (err.status === 403) {
-  //             alert('não é possível ainda visualizar uma area de trabalho de terceiros')
-  //           }
-  //           return of();
-  //         }
-  //       )
-  //     ).subscribe()
-  // }
+  mudancaStore = inject(FabricaMudancaStore);
 
   ngOnInit(): void {
     const currentParameter = this.activatedRoute.snapshot.params

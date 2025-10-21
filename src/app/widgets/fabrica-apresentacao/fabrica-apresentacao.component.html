@@ -1,5 +1,5 @@
 <p-confirm-popup></p-confirm-popup>
-<div class="d-flex flex-column">
+<div class="d-flex flex-column border-0 p-2">
     <div class="d-flex justify-content-between">
         <div class="d-flex flex-column">
             <h1 class="display-6">
@@ -8,7 +8,7 @@
                 <span [class]="
                 fabrica.principal?
                 'text-success' : 'text-info'">
-                    {{fabrica.principal ? 'Principal' : 'Privada'}}
+                    {{fabrica.principal ? 'Operacional' : 'Simulação'}}
                 </span>
                 }
                 @else {
@@ -42,26 +42,12 @@
             <p-skeleton width="10rem" class="mb-2" borderRadius="16px" />
             }
             @else if(fabrica()!.principal){
-            <button [disabled]="fabrica() && !fabrica()!.principal" (click)="confirmacaoFork($event)"
-                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
-                <i tooltipPosition="bottom" [tooltipDisabled]="!(fabrica() && fabrica()!.principal)"
-                    [pTooltip]="fabrica() && fabrica()!.principal? 'editar fábrica': ''"
-                    [class]="fabrica() && fabrica()!.principal? 'pi pi-file-edit': 'pi pi-lock'"></i>
-            </button>
+                <app-fabrica-apresentacao-botoes [ehPrincipal]="true"></app-fabrica-apresentacao-botoes>
             }
             @else if (!fabrica()!.principal) {
-            <button (click)="confirmacaoPullRequest($event)"
-                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
-                <i class="pi pi-link"></i>
-            </button>
-            <button (click)="confirmarRestartFabrica($event)"
-                class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
-                <i class="pi pi-refresh"></i>
-            </button>
-            <button (click)="confirmacaoDelecao($event)"
-                class="btn btn-group btn-outline-danger border-0 d-flex gap-2 align-items-center">
-                <i class="pi pi-trash"></i>
-            </button>
+            <div class="p-2 rounded bg-light d-flex">
+                <app-fabrica-apresentacao-botoes [ehPrincipal]="false"></app-fabrica-apresentacao-botoes>
+            </div>
             }
         </div>
         @if(fabrica()) {

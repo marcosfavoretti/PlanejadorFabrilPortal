@@ -71,9 +71,16 @@ export class GanttChartComponent implements OnInit {
       {
         view_mode: 'Day',
         date_format: 'YYYY-MM-DD',
-        column_width: 400,
-        bar_height: 15,
+        
+        // ================== ALTERAÇÕES CRÍTICAS ==================
+        // 1. Reduza drasticamente a largura da coluna. Um valor entre 30 e 50 é o ideal para a visão diária.
+        column_width: 400, 
+        
+        // 2. Remova a altura do contêiner daqui. O CSS vai cuidar disso.
         container_height: 500,
+        // =========================================================
+
+        bar_height: 15,
         infinite_padding: false,
         on_date_change: (task, start, end) =>
           console.log(`data mudou para ${task} ${start} `),
@@ -91,6 +98,7 @@ export class GanttChartComponent implements OnInit {
         this.showEdicaoPopUP(JSON.parse(ev.dependencies as string));
       }
     }
+  
   }
 
   private archorTask(lastDay: Date): GanttData {

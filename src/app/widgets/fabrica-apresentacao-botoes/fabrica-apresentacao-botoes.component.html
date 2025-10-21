@@ -1,0 +1,36 @@
+@if(ehPrincipal()){
+<button (click)="confirmacaoFork($event)"
+    class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+    <i tooltipPosition="bottom" pTooltip="editar fábrica" [class]="'pi pi-file-edit'"></i>
+</button>
+}
+@else if (!ehPrincipal()) {
+<!-- 
+    - Adicionado 'flex-wrap' para permitir que os botões quebrem para a próxima linha em telas pequenas.
+    - Adicionado 'justify-content-center' para centralizar os botões quando eles quebram a linha.
+    - O gap foi ajustado para ser menor em telas pequenas e maior em telas grandes.
+-->
+<div class="p-2 rounded bg-light d-flex flex-wrap justify-content-center gap-1 sm:gap-2">
+    <button (click)="confirmacaoPullRequest($event)" tooltipPosition="bottom" pTooltip="subir fábrica para avaliação"
+        class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+        <i class="pi pi-link"></i>
+    </button>
+    <button (click)="confirmarRestartFabrica($event)" tooltipPosition="bottom" pTooltip="resetar alterações da fábrica"
+        class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+        <i class="pi pi-refresh"></i>
+    </button>
+    <button (click)="abreCadastro()" tooltipPosition="bottom" pTooltip="adicionar um planejamento manualmente"
+        class="btn btn-group btn-outline-success border-0 d-flex gap-2 align-items-center">
+        <i class="pi pi-plus"></i>
+    </button>
+    <button (click)="confirmacaoSync($event)" tooltipPosition="bottom"
+        pTooltip="Sincroniza o estado da fábrica referenciada por esta cópia"
+        class="btn btn-group btn-outline-primary border-0 d-flex gap-2 align-items-center">
+        <i class="pi pi-sync"></i>
+    </button>
+    <button (click)="confirmacaoDelecao($event)" tooltipPosition="bottom" pTooltip="deleção dessa cópia de fábrica"
+        class="btn btn-group btn-outline-danger border-0 d-flex gap-2 align-items-center">
+        <i class="pi pi-trash"></i>
+    </button>
+</div>
+}

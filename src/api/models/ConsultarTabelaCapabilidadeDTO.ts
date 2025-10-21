@@ -3,13 +3,13 @@
 * Do not edit manually.
 */
 
+import type { ItemResDto } from "./ItemResDto";
 
 export type ConsultarTabelaCapabilidadeDTO = {
     /**
-     * @description Código do item
-     * @type string
+     * @description item e apelido do item
     */
-    item: string;
+    item: ItemResDto;
     /**
      * @description Capabilidade por setor
      * @type object

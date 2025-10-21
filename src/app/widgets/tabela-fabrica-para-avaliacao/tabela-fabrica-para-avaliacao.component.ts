@@ -55,7 +55,7 @@ export class TabelaFabricaParaAvaliacaoComponent {
         field: '',
         isButton: true,
         button: {
-          command: (row) => this.router.navigate([`/app/fabrica/${row.fabricaId}`]),
+          command: (row) => this.router.navigate([`/app/RO/fabrica/${row.fabricaId}`]),
           icon: 'pi pi-eye',
           label: ''
         }

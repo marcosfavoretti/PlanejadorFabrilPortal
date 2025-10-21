@@ -8,7 +8,6 @@ import { FabricaService } from '@/app/services/Fabrica.service';
 import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.service';
 import { tap } from 'rxjs';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
-import { DatePicker } from 'primeng/datepicker'
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -34,11 +33,6 @@ export class PedidosPlanejadosTabelaComponent
   popup = inject(LoadingPopupService)
   resync = inject(FabricaMudancaSyncService);
   isEditable = input<boolean>(false);
-  // expandAll() {
-  //   this.expandedRows = (this.pedidoStore.item() || []).reduce(
-  //     (acc, p) => (acc[p.dividas] = true) && acc, {}
-  //   );
-  // }
 
 
   collapseAll() {
@@ -46,24 +40,23 @@ export class PedidosPlanejadosTabelaComponent
   }
 
 
-  treeData = this.pedidoStore.treeNodes; // signal computado
+  expandedRows: any = {};
+  pedidoDetalhes: { [key: number]: any } = {};
 
+  treeData = this.pedidoStore.treeNodes; 
+  
   ngOnInit(): void {
+    console.log(this.fabricaStore.getFabrica())
     const fabricaId = this.fabricaStore.getFabrica().fabricaId;
     this.pedidoStore.refresh(fabricaId)
       .subscribe();
   }
-
-  expandedRows: any = {};
-  pedidoDetalhes: { [key: number]: any } = {};
 
   toggleRow(pedido: any) {
     if (this.expandedRows[pedido.id]) {
       delete this.expandedRows[pedido.id];
     } else {
       this.expandedRows[pedido.id] = true;
-
-      // 🚀 Aqui você pode fazer a chamada HTTP para buscar os detalhes
       setTimeout(() => {
         this.pedidoDetalhes[pedido.id] = {
           dividas: 'R$ 1.200,00 em aberto',

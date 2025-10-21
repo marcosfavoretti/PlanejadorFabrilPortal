@@ -10,6 +10,7 @@ import { GanttStoreService } from "./GanttStore.service";
 import { IStartUp } from "@/@core/abstract/IStartUp";
 import { IShutDown } from "@/@core/abstract/IShutDown";
 import { GlobalFilterInputText } from "./GlobalInputText.service";
+import { FabricaMudancaStore } from "./FabricaMudancaStore.service";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,7 @@ export class HomeStartUpService implements IStartUp, IShutDown {
     fabricaStore = inject(ContextoFabricaService);
     pedidoPlenejadoStore = inject(PedidoPlanejadosStoreService);
     ganttStore = inject(GanttStoreService);
+    mudancaStore = inject(FabricaMudancaStore);
     globalFilter = inject(GlobalFilterInputText);
 
     startUp(): void {
@@ -30,6 +32,7 @@ export class HomeStartUpService implements IStartUp, IShutDown {
             .pipe(
                 switchMap(() =>
                     forkJoin([
+                        this.mudancaStore.initialize(),
                         this.pedidoPlenejadoStore.initialize(this.fabricaStore.item()?.fabricaId),
                         this.ganttStore.initialize(this.fabricaStore.item()?.fabricaId)
                     ])
@@ -39,6 +42,7 @@ export class HomeStartUpService implements IStartUp, IShutDown {
     }
 
     shutDown(): void {
+        this.mudancaStore.resetStore();
         this.fabricaStore.resetStore();
         this.pedidoPlenejadoStore.resetStore();
         this.ganttStore.resetStore();

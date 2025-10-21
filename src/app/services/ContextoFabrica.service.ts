@@ -22,7 +22,7 @@ export class ContextoFabricaService extends SignalStore<FabricaResponseDto> {
 
   refresh(fabricaId?: string): Observable<FabricaResponseDto> {
     if (!fabricaId) {
-      console.log('entrou aqui na fabrica principa')
+      console.log('entrou aqui na fabrica principal')
       return this.fabricaService.getFabricaPrincipal()
         .pipe(
           tap(fabrica => this.set(fabrica))

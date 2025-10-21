@@ -1,5 +1,5 @@
 <p-toast />
     <p class="font-bold text-danger">* considerar o valor de laed time do setor como 0 quando o fluxo demora menos de um dia para chegar no proximo setor</p>
 <div class="px-4">
-    <app-table-dynamic (OnChecked)="updateItem($event)" [tableModel]="tableSchema" [data]="(capabilidade$ | async)||[]"/>
+    <app-table-dynamic  (OnChecked)="updateItem($event)" [tableModel]="tableSchema" [data]="(capabilidade$ | async)||[]" />
 </div>

@@ -48,10 +48,11 @@ export class LoadingPopupService {
       centered: true,
       keyboard: false
     });
+    console.log(observables.length)
     const safeObservables = observables.map(obs =>
       obs.pipe(
         catchError(err => {
-          console.error('Erro durante execução:', err);
+          console.error(`>>>>>>>>>> ${observables.length} Erro durante execução:`, err);
           const errorRef = this.modalService.open(
             ErroPopupComponent,
             {
@@ -71,7 +72,8 @@ export class LoadingPopupService {
         })
       )
     );
-
+    console.log(`*********${safeObservables.length}`)
+    
     const resultObservable = forkJoin(safeObservables).pipe(
       finalize(() => modalRef?.close())
     );

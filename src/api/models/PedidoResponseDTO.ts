@@ -3,6 +3,7 @@
 * Do not edit manually.
 */
 
+import type { ItemResDto } from "./ItemResDto";
 
 export type PedidoResponseDTO = {
     /**
@@ -30,7 +31,7 @@ export type PedidoResponseDTO = {
     */
     processado: boolean;
     /**
-     * @type string
+     * @type object
     */
-    item: string;
+    item: ItemResDto;
 };

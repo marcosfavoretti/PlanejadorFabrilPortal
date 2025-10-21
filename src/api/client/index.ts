@@ -2,6 +2,7 @@ export { cargoControllerSetUserCargoMethod } from "./cargoControllerSetUserCargo
 export { fabricaControllerAtualizarPlanejamentoMethod } from "./fabricaControllerAtualizarPlanejamentoMethod";
 export { fabricaControllerConsultaFabricaMethod } from "./fabricaControllerConsultaFabricaMethod";
 export { fabricaControllerConsultaFabricaPrincipalMethod } from "./fabricaControllerConsultaFabricaPrincipalMethod";
+export { fabricaControllerConsultaHistoricoFabricaMethod } from "./fabricaControllerConsultaHistoricoFabricaMethod";
 export { fabricaControllerConsultaPlanejamentosMethod } from "./fabricaControllerConsultaPlanejamentosMethod";
 export { fabricaControllerConsultarPedidosPlanejadosMethod } from "./fabricaControllerConsultarPedidosPlanejadosMethod";
 export { fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod } from "./fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod";
@@ -17,6 +18,7 @@ export { fabricaControllerReplanejarPedidoUseCase } from "./fabricaControllerRep
 export { fabricaControllerRequestFabricaMergeMethod } from "./fabricaControllerRequestFabricaMergeMethod";
 export { fabricaControllerResetaFabricaMethod } from "./fabricaControllerResetaFabricaMethod";
 export { fabricaControllerSincronizarFabricaPrivadaMethod } from "./fabricaControllerSincronizarFabricaPrivadaMethod";
+export { healthControllerCheck } from "./healthControllerCheck";
 export { itemControllerCadastrarItemCapabilidadeMethod } from "./itemControllerCadastrarItemCapabilidadeMethod";
 export { itemControllerGetItemCapabilildadeMethod } from "./itemControllerGetItemCapabilildadeMethod";
 export { KPIControllerGetGanttInformationMethod } from "./KPIControllerGetGanttInformationMethod";

@@ -1,11 +1,13 @@
-:host, .home-page-layout {
+:host,
+.home-page-layout {
   display: flex;
   flex-direction: column;
   width: 100%;
-  overflow: hidden;
+  height: 100vh;
+
 }
 
 .page-content-wrapper {
   flex-grow: 1;
-  overflow: hidden;
+  height: 80vh;
 }

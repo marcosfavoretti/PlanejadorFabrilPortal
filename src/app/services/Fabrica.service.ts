@@ -1,4 +1,4 @@
-import { AdicionarPlanejamentoDTO, AtualizarPlanejamentoDTO, ConsutlarFabricaDTO, fabricaControllerAtualizarPlanejamentoMethod, fabricaControllerConsultaFabricaMethod, FabricaControllerConsultaFabricaMethodQueryParams, fabricaControllerConsultaFabricaPrincipalMethod, fabricaControllerConsultaPlanejamentosMethod, FabricaControllerConsultaPlanejamentosMethodQueryParams, fabricaControllerConsultarPedidosPlanejadosMethod, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams, fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod, fabricaControllerDeletarFabricaMethod, fabricaControllerDesplanejarPedidoNaFabricaMethod, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, fabricaControllerForkFabricaMethod, fabricaControllerGetRequestsFabricaMergeMethod, fabricaControllerMergeFabricaMethod, FabricaControllerMergeFabricaMethodMutationRequest, fabricaControllerPlanejarManualMethod, fabricaControllerPlanejarPedidoMethod, FabricaControllerPlanejarPedidoMethodMutationRequest, fabricaControllerRemoverPlanejamentoMethod, FabricaControllerRemoverPlanejamentoMethodMutationRequest, fabricaControllerReplanejarPedidoUseCase, fabricaControllerRequestFabricaMergeMethod, FabricaControllerRequestFabricaMergeMethodMutationRequest, fabricaControllerResetaFabricaMethod, FabricaResponseDto, MergeRequestPendingDto, PedidosPlanejadosResponseDTO, PlanejamentoResponseDTO, RemoverPlanejamentoDTO, ReplanejarPedidoDTO, ResetaFabricaDTO, UserFabricaResponseDto } from "@/api";
+import { AdicionarPlanejamentoDTO, AtualizarPlanejamentoDTO, ConsutlarFabricaDTO, fabricaControllerAtualizarPlanejamentoMethod, fabricaControllerConsultaFabricaMethod, FabricaControllerConsultaFabricaMethodQueryParams, fabricaControllerConsultaFabricaPrincipalMethod, fabricaControllerConsultaHistoricoFabricaMethod, fabricaControllerConsultaPlanejamentosMethod, FabricaControllerConsultaPlanejamentosMethodQueryParams, fabricaControllerConsultarPedidosPlanejadosMethod, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams, fabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod, fabricaControllerDeletarFabricaMethod, fabricaControllerDesplanejarPedidoNaFabricaMethod, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, fabricaControllerForkFabricaMethod, fabricaControllerGetRequestsFabricaMergeMethod, fabricaControllerMergeFabricaMethod, FabricaControllerMergeFabricaMethodMutationRequest, fabricaControllerPlanejarManualMethod, fabricaControllerPlanejarPedidoMethod, FabricaControllerPlanejarPedidoMethodMutationRequest, fabricaControllerRemoverPlanejamentoMethod, FabricaControllerRemoverPlanejamentoMethodMutationRequest, fabricaControllerReplanejarPedidoUseCase, fabricaControllerRequestFabricaMergeMethod, FabricaControllerRequestFabricaMergeMethodMutationRequest, fabricaControllerResetaFabricaMethod, fabricaControllerSincronizarFabricaPrivadaMethod, FabricaControllerSincronizarFabricaPrivadaMethodMutationRequest, FabricaResponseDto, MergeRequestPendingDto, MudancasResDto, PedidosPlanejadosResponseDTO, PlanejamentoResponseDTO, RemoverPlanejamentoDTO, ReplanejarPedidoDTO, ResetaFabricaDTO, UserFabricaResponseDto } from "@/api";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 import { UserstoreService } from "./userstore.service";
@@ -22,7 +22,31 @@ export class FabricaService {
         );
     }
 
+    sincronizaFabrica(dto: FabricaControllerSincronizarFabricaPrivadaMethodMutationRequest)
+        : Observable<void> {
+        return from(
+            fabricaControllerSincronizarFabricaPrivadaMethod(dto)
+                .then((response) => {
+                    return response
+                })
+                .catch(err => {
+                    throw err;
+                })
+        );
+    }
 
+    //--->
+    getMudancas(dto: ConsutlarFabricaDTO): Observable<MudancasResDto[]> {
+        return from(
+            fabricaControllerConsultaHistoricoFabricaMethod(dto)
+                .then((response) => {
+                    return response
+                })
+                .catch(err => {
+                    throw err;
+                })
+        );
+    }
 
     replanejamentoPedido(dto: ReplanejarPedidoDTO): Observable<void> {
         return from(
@@ -83,7 +107,7 @@ export class FabricaService {
                         throw err;
                     }
                 )
-        )
+        );
     }
 
 
@@ -166,9 +190,6 @@ export class FabricaService {
             fabricaControllerResetaFabricaMethod(dto)
                 .then((response) => {
                     return response
-                })
-                .catch(err => {
-                    throw err;
                 })
         )
     }

@@ -45,7 +45,7 @@ export class CriacaoDePlanejamentoComponent implements OnInit {
         this.closeButtonFn();
       })
     );
-    this.popup.showWhile(inserir$).subscribe();
+    this.popup.showWhile(inserir$);
     // window.location.reload();
   }
 
@@ -69,7 +69,7 @@ export class CriacaoDePlanejamentoComponent implements OnInit {
         type: 'select',
         required: true,
         disable: false,
-        data: pedidos.map(p => ({ k: JSON.stringify(p), v: `id: ${p.id} | codigo: ${p.codigo} | item: ${p.item}` })),
+        data: pedidos.map(p => ({ k: JSON.stringify(p), v: `id: ${p.id} | codigo: ${p.codigo} | item: ${p.item.Item} ${p.item.tipo_item}` })),
         trigger: (input: string) => {
           const pedido = JSON.parse(input) as PedidoResponseDTO;
           this.pedidoService.consultaItensDoPedido({

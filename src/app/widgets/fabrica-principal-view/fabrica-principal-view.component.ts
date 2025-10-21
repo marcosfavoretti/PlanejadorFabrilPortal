@@ -11,6 +11,7 @@ import { IShutDown } from '@/@core/abstract/IShutDown';
 import { HomeStartUpService } from '@/app/services/HomeStartup.service';
 import { IStartUp } from '@/@core/abstract/IStartUp';
 import { PedidosTabelaComponent } from "../pedidos-tabela/pedidos-tabela.component";
+import { VisualizadorMudancasComponent } from "../visualizador-mudancas/visualizador-mudancas.component";
 
 @Component({
   selector: 'app-fabrica-principal-view',
@@ -23,7 +24,8 @@ import { PedidosTabelaComponent } from "../pedidos-tabela/pedidos-tabela.compone
     PedidosPlanejadosTabelaComponent,
     ContadorAtrasoComponent,
     ContadorDividaComponent,
-    PedidosTabelaComponent
+    PedidosTabelaComponent,
+    VisualizadorMudancasComponent
 ],
   templateUrl: './fabrica-principal-view.component.html',
   styleUrl: './fabrica-principal-view.component.css'
