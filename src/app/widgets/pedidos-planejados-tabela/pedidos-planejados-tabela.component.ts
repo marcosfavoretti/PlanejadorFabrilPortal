@@ -11,10 +11,12 @@ import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { Skeleton } from 'primeng/skeleton';
 @Component({
   selector: 'app-pedidos-planejados-tabela',
   imports: [
     TreeModule,
+    Skeleton,
     BadgeModule,
     CommonModule,
     TableModule,
@@ -46,10 +48,10 @@ export class PedidosPlanejadosTabelaComponent
   treeData = this.pedidoStore.treeNodes; 
   
   ngOnInit(): void {
-    console.log(this.fabricaStore.getFabrica())
-    const fabricaId = this.fabricaStore.getFabrica().fabricaId;
-    this.pedidoStore.refresh(fabricaId)
-      .subscribe();
+    // console.log(this.fabricaStore.getFabrica())
+    // const fabricaId = this.fabricaStore.getFabrica().fabricaId;
+    // this.pedidoStore.refresh(fabricaId)
+    //   .subscribe();
   }
 
   toggleRow(pedido: any) {

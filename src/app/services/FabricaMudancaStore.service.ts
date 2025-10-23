@@ -17,15 +17,15 @@ export class FabricaMudancaStore
     api = inject(FabricaService);
     contextStore = inject(ContextoFabricaService);
 
-    logMudancas = computed<MudancaLog[]>(() => {
+    logMudancas = computed<MudancaLog[] | undefined>(() => {
         const applyPrefix = (mud: MudancasResDto) => {
             switch (mud.mudanca) {
                 case MudancasResDtoMudancaEnum.ATUALIZACAO:
-                    return {...mud, log: `<-/+>${mud.entidade}: ${mud.valorAntigo}->${mud.valorNovo}`}
+                    return { ...mud, log: `<-/+>${mud.entidade}: ${mud.valorAntigo}->${mud.valorNovo}` }
                 case MudancasResDtoMudancaEnum.REMOÇÃO:
-                    return {...mud, log: `-${mud.entidade}: ${mud.valorAntigo}`}
+                    return { ...mud, log: `-${mud.entidade}: ${mud.valorAntigo}` }
                 case MudancasResDtoMudancaEnum.INSERÇÃO:
-                    return {...mud, log: `+${mud.entidade}: ${mud.valorNovo}`}
+                    return { ...mud, log: `+${mud.entidade}: ${mud.valorNovo}` }
             }
         }
         return this.item()?.map(applyPrefix) as MudancaLog[];

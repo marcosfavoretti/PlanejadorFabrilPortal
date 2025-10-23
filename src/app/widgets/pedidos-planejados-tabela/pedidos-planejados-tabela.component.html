@@ -1,11 +1,7 @@
 <h2 class="display-6 text-success">Pedidos planejados</h2>
-
-<p-table #dt [value]="pedidoStore.item()||[]" dataKey="pedido.id"
-         [tableStyle]="{ 'min-width': '60rem' }"
-         [expandedRowKeys]="expandedRows"
-         [paginator]="true"
-         [rowsPerPageOptions]="[5,20,30]"
-         [rows]="5">
+@if(pedidoStore.item()?.length){
+<p-table #dt [value]="pedidoStore.item()||[]" dataKey="pedido.id" [tableStyle]="{ 'min-width': '60rem' }"
+    [expandedRowKeys]="expandedRows" [paginator]="true" [rowsPerPageOptions]="[5,20,30]" [rows]="5">
 
     <!-- Table Header -->
     <ng-template #header>
@@ -53,8 +49,7 @@
         <tr>
             <td>
                 <p-button type="button" pRipple [pRowToggler]="product" [text]="true" severity="secondary"
-                          [rounded]="true"
-                          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></p-button>
+                    [rounded]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></p-button>
             </td>
 
             <td>{{ product.pedido.id }}</td>
@@ -66,8 +61,7 @@
 
             @if(isEditable()){<td>
                 <button class="btn btn-group btn-outline-secondary border-0"
-                        (click)="replanejarPedido(product.pedido.id)"
-                        >
+                    (click)="replanejarPedido(product.pedido.id)">
                     <i class="pi pi-refresh"></i>
                 </button>
             </td>}
@@ -90,57 +84,67 @@
                     <h5>📌 Dívidas do {{ product.pedido.item.tipo_item }}</h5>
                     <p-table [value]="product.dividas" dataKey="id" class="mb-4">
                         <ng-template #header>
-                            <tr>
-                                <th>Setor</th>
-                                <th>Item</th>
-                                <th>Tipo Item</th>
-                                <th>Qtd</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template #body let-divida>
-                            <tr>
-                                <td>{{ divida.setorCodigo }}</td>
-                                <td>{{ divida.item.Item }}</td>
-                                <td>{{ divida.item.tipo_item }}</td>
-                                <td>{{ divida.qtd }}</td>
-                            </tr>
-                        </ng-template>
-                        <ng-template #emptymessage>
-                            <tr>
-                                <td colspan="4">Não tem dívidas.</td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-
-                    <!-- Atrasos -->
-                    <h5>⏳ Atrasos do {{ product.pedido.item.tipo_item }}</h5>
-                    <p-table [value]="product.atrasos" dataKey="id">
-                        <ng-template #header>
-                            <tr>
-                                <th>Setor</th>
-                                <th>Item</th>
-                                <th>Tipo Item</th>
-                                <th>Qtd</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template #body let-atraso>
-                            <tr>
-                                <td>{{ atraso.setorCodigo }}</td>
-                                <td>{{ atraso.item.Item }}</td>
-                                <td>{{ atraso.item.tipo_item }}</td>
-                                <td>{{ atraso.qtd }}</td>
-                            </tr>
-                        </ng-template>
-                        <ng-template #emptymessage>
-                            <tr>
-                                <td colspan="4">Não tem atrasos.</td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-
-                </div>
-            </td>
+        <tr>
+            <th>Setor</th>
+            <th>Item</th>
+            <th>Tipo Item</th>
+            <th>Qtd</th>
         </tr>
     </ng-template>
+    <ng-template #body let-divida>
+        <tr>
+            <td>{{ divida.setorCodigo }}</td>
+            <td>{{ divida.item.Item }}</td>
+            <td>{{ divida.item.tipo_item }}</td>
+            <td>{{ divida.qtd }}</td>
+        </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="4">Não tem dívidas.</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- Atrasos -->
+<h5>⏳ Atrasos do {{ product.pedido.item.tipo_item }}</h5>
+<p-table [value]="product.atrasos" dataKey="id">
+    <ng-template #header>
+        <tr>
+            <th>Setor</th>
+            <th>Item</th>
+            <th>Tipo Item</th>
+            <th>Qtd</th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-atraso>
+        <tr>
+            <td>{{ atraso.setorCodigo }}</td>
+            <td>{{ atraso.item.Item }}</td>
+            <td>{{ atraso.item.tipo_item }}</td>
+            <td>{{ atraso.qtd }}</td>
+        </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="4">Não tem atrasos.</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>
+</td>
+</tr>
+</ng-template>
 
 </p-table>
+}
+@else {
+<div class="d-flex flex-column gap-2">
+    <p-skeleton class="mb-2" width="10vw" borderRadius="16px" />
+    <p-skeleton width="4vw" class="mb-2" borderRadius="16px" />
+    <p-skeleton width="2vw" class="mb-2" borderRadius="16px" />
+    <p-skeleton class="mb-2" width="10vw" borderRadius="16px" />
+
+</div>
+}
