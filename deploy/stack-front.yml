@@ -22,18 +22,18 @@ services:
     environment:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
       # Configurações do Planejador
-      - API_URL_PLANEJADOR=https://app.prod.ethos
-      - API_SWAGGER_PLANEJADOR=https://app.prod.ethos/api/planejador/doc-json
+      - API_URL_PLANEJADOR=${API_URL_PLANEJADOR}
+      - API_SWAGGER_PLANEJADOR=${API_SWAGGER_PLANEJADOR}
       # Configurações de Rotas
-      - API_URL_ROUTES=https://app.prod.ethos
-      - API_SWAGGER_ROUTES=https://app.prod.ethos/api/route/doc-json
+      - API_URL_ROUTES=${API_URL_ROUTES}
+      - API_SWAGGER_ROUTES=${API_SWAGGER_ROUTES}
       # Configurações de Auth
-      - API_URL_AUTH=https://app.prod.ethos
-      - API_SWAGGER_AUTH=https://app.prod.ethos/api/auth/doc-json
+      - API_URL_AUTH=${API_URL_AUTH}
+      - API_SWAGGER_AUTH=${API_SWAGGER_AUTH}
       # Configurações de Ponto
-      - API_URL_RELOGIO=https://app.prod.ethos
-      - API_SWAGGER_RELOGIO=https://app.prod.ethos/api/ponto/doc-json
+      - API_URL_RELOGIO=${API_URL_RELOGIO}
+      - API_SWAGGER_RELOGIO=${API_SWAGGER_RELOGIO}
       # Configurações de Certificados
-      - API_URL_CERTIFICADOS=https://app.prod.ethos
+      - API_URL_CERTIFICADOS=${API_URL_CERTIFICADOS}
       # Nota: Manti o IP direto aqui pois estava assim no seu exemplo anterior
-      - API_SWAGGER_CERTIFICADOS=http://192.168.99.102:30003/api/doc-json
+      - API_SWAGGER_CERTIFICADOS=${API_SWAGGER_CERTIFICADOS}
