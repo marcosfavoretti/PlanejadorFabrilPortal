@@ -1,0 +1,1 @@
+{"type":"object","properties":{"matricula":{"type":"string"},"nome":{"type":"string"},"setor":{"type":"string"}},"required":["matricula","nome","setor"],"x-readme-ref-name":"ResPontoFuncionarioDTO"}

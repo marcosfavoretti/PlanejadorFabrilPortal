@@ -1,5 +1,5 @@
 import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
-import { PlanejamentoResponseDTO } from "@/api";
+import { PlanejamentoResponseDTO } from "@/api/planejador";
 import { inject, Injectable } from "@angular/core";
 import { FabricaService } from "./Fabrica.service";
 import { Observable, tap } from "rxjs";

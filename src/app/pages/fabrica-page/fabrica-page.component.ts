@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { TabelaPlanejamentoComponent } from "../../widgets/tabela-planejamento/tabela-planejamento.component";
 import { FabricaApresentacaoComponent } from "../../widgets/fabrica-apresentacao/fabrica-apresentacao.component";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,6 +34,7 @@ export class FabricaPageComponent implements OnInit, OnDestroy {
     private startUp: FabricaPageStartUpService,
   ) { }
 
+  _readonly = input<boolean>(false);
   checked = signal<boolean>(false);
   loadFinish: boolean = false
   mudancaStore = inject(FabricaMudancaStore);

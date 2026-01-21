@@ -1,0 +1,1 @@
+{"type":"object","properties":{"matricula":{"type":"string"},"nome":{"type":"string"},"setor":{"type":"string"},"horasIrregulares":{"type":"number"}},"required":["matricula","nome","setor","horasIrregulares"],"x-readme-ref-name":"ResHorasIrregularesDTO"}

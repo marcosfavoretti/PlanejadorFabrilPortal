@@ -32,6 +32,8 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   @Output('OnChecked') onChecked: EventEmitter<{ row: any, column: any, checked: any, oldValue: any }> = new EventEmitter();
   @Input() Externalfilter?: { value: string, filed: string, method: 'contains' }
   @Input() exportable: boolean = true;
+  @Input() scrollable: boolean = false;
+  @Input() scrollHeight: string = 'auto';
   private inputChanged$ = new Subject<{ row: any; column: any; value: any }>();
   // Função auxiliar
 
@@ -156,7 +158,13 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     if (!this.tableModel.ghostControll) return undefined;
     for (const controll of this.tableModel.ghostControll) {
       const value = this.getNestedValue(data, controll.field);
-      if (String(controll.ifValueEqual) === String(value)) {
+      if (controll.ifValueEqual && String(controll.ifValueEqual) === String(value)) {
+        return { 'background-color': controll.color };
+      }
+      else if (controll.ifValueGreater && controll.ifValueGreater(data)) {
+        return { 'background-color': controll.color };
+      }
+      else if (controll.ifRowFunction && controll.ifRowFunction(data)) {
         return { 'background-color': controll.color };
       }
     }

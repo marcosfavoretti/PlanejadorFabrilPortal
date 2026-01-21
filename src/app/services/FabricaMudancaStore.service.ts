@@ -1,8 +1,8 @@
 import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
 import { computed, inject, Injectable } from "@angular/core";
 import { FabricaService } from "./Fabrica.service";
-import { ConsutlarFabricaDTO, MudancasResDto, MudancasResDtoMudancaEnum } from "@/api";
-import { Observable, tap } from "rxjs";
+import { ConsutlarFabricaDTO, MudancasResDto, MudancasResDtoMudancaEnum } from "@/api/planejador";
+import { catchError, Observable, tap } from "rxjs";
 import { ContextoFabricaService } from "./ContextoFabrica.service";
 
 type MudancaLog = MudancasResDto & {
@@ -36,6 +36,13 @@ export class FabricaMudancaStore
             .pipe(
                 tap(
                     plan => this.set(plan)
+                ),
+                catchError(
+                    (err) => {
+                        console.error(err);
+                        this.initialized = false;
+                        return [];
+                    }
                 )
             );
     }

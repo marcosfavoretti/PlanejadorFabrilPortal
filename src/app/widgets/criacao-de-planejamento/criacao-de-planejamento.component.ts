@@ -1,4 +1,4 @@
-import { AdicionarPlanejamentoDTO, AdicionarPlanejamentoDTOSetorEnum, ItemResDto, PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO, PlanejamentoResponseDTO } from '@/api';
+import { AdicionarPlanejamentoDTO, AdicionarPlanejamentoDTOSetorEnum, ItemResDto, PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO, PlanejamentoResponseDTO } from '@/api/planejador';
 import { Component, Input, OnInit, signal, Signal } from '@angular/core';
 import { DynamicField } from '../form-dinamico/@core/DynamicField';
 import { FabricaService } from '@/app/services/Fabrica.service';

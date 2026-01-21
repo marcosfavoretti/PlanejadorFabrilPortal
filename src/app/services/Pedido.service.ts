@@ -1,4 +1,4 @@
-import { ItemResDto, pedidoControllerConsultaItensDoPedidoMethod, PedidoControllerConsultaItensDoPedidoMethodQueryParams, pedidoControllerConsultaPedidoMethod, PedidoControllerConsultaPedidoMethodQueryParams, PedidoResponseDTO } from "@/api";
+import { ItemResDto, pedidoControllerConsultaItensDoPedidoMethod, PedidoControllerConsultaItensDoPedidoMethodQueryParams, pedidoControllerConsultaPedidoMethod, PedidoControllerConsultaPedidoMethodQueryParams, PedidoResponseDTO } from "@/api/planejador";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 

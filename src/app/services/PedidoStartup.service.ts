@@ -9,7 +9,7 @@ import { GanttStoreService } from "./GanttStore.service";
 import { IStartUp } from "@/@core/abstract/IStartUp";
 import { IShutDown } from "@/@core/abstract/IShutDown";
 import { PedidoStoreService } from "./PedidoStore.service";
-import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from "@/api";
+import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from "@/api/planejador";
 import { GlobalFilterInputText } from "./GlobalInputText.service";
 
 @Injectable({

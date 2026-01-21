@@ -1,39 +1,35 @@
 <div class="container min-vh-100 d-flex justify-content-center align-items-center background">
   <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 400px; width: 100%;">
-    <h1 class="text-center mb-4 display-6">Login Planejador</h1>
+    
+    <h1 class="text-center display-6">Login</h1>
+    <hr>
+    <form #form="ngForm" class="gap-2 d-flex flex-column" (ngSubmit)="onSubmit(form)">
+      <div class="d-flex flex-column gap-3">
+        <!-- Usuário -->
+        <div>
+          <div class="gap-2 d-flex">
+            <i class="pi pi-user"></i>
+            <label for="user" class="form-label">Usuário</label>
+          </div>
+          <input pInputText id="user" name="user" class="w-100" placeholder="Digite seu usuário" ngModel required />
+        </div>
+        <!-- Senha -->
+        <div>
+          <div class="d-flex gap-2">
+            <i class="pi pi-key"></i>
+            <label for="password" class="form-label">Senha</label>
+          </div>
+          <p-password id="password" name="password" styleClass="w-100" placeholder="Digite sua senha" ngModel required
+          [toggleMask]="true" [feedback]="false">
+          </p-password>
+        </div>
 
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-      <!-- Usuário -->
-      <div class="mb-3">
-        <label for="user" class="form-label">Usuário</label>
-        <input 
-          type="text" 
-          id="user" 
-          name="user" 
-          class="form-control" 
-          ngModel 
-          required
-          placeholder="Digite seu usuário">
-      </div>
-
-      <!-- Senha -->
-      <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          class="form-control" 
-          ngModel 
-          required
-          placeholder="Digite sua senha">
-      </div>
-
-      <!-- Botão -->
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success">
-          Entrar
-        </button>
+        <!-- Botão -->
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success">
+            Entrar
+          </button>
+        </div>
       </div>
     </form>
 

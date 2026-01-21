@@ -1,4 +1,5 @@
 <h2 class="display-6 text-success">Pedidos planejados</h2>
+@if(pedidoStore.initialized){
 @if(pedidoStore.item()?.length){
 <p-table #dt [value]="pedidoStore.item()||[]" dataKey="pedido.id" [tableStyle]="{ 'min-width': '60rem' }"
     [expandedRowKeys]="expandedRows" [paginator]="true" [rowsPerPageOptions]="[5,20,30]" [rows]="5">
@@ -138,6 +139,10 @@
 </ng-template>
 
 </p-table>
+}
+@else {
+    <span class="text-secondary">nenhum pedido planejado encontrado</span>
+}
 }
 @else {
 <div class="d-flex flex-column gap-2">

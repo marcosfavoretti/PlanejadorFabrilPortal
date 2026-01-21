@@ -1,46 +1,45 @@
-<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+<div class="container min-vh-100 d-flex justify-content-center align-items-center background">
   <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 450px; width: 100%;">
-    <h1 class="text-center mb-4 display-6">Cadastro</h1>
-
+    <h1 class="text-center display-6">Cadastro</h1>
+    <hr>
     <form #form="ngForm" (ngSubmit)="onSubmit(form)">
       <!-- Usuário -->
       <div class="mb-3">
-        <label for="user" class="form-label">Usuário</label>
-        <input 
-          type="text" 
-          id="user" 
-          name="user" 
-          class="form-control" 
-          placeholder="Digite seu usuário"
-          ngModel 
-          required>
+        <div class="gap-2 d-flex">
+          <i class="pi pi-user"></i>
+          <label for="user" class="form-label">Usuário</label>
+        </div>
+        <input pInputText id="user" name="user" class="w-100" placeholder="Digite seu usuário" ngModel required />
       </div>
 
       <!-- Senha -->
       <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          class="form-control" 
-          placeholder="Digite sua senha"
-          ngModel 
-          required>
+        <div class="d-flex gap-2">
+          <i class="pi pi-key"></i>
+          <label for="password" class="form-label">Senha</label>
+        </div>
+        <p-password id="password" name="password" styleClass="w-100" placeholder="Digite sua senha" ngModel required
+          [toggleMask]="true" [feedback]="false">
+        </p-password>
       </div>
 
       <!-- Email -->
       <div class="mb-3">
-        <label for="email" class="form-label">E-mail</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          class="form-control" 
-          placeholder="Digite seu e-mail"
-          ngModel 
-          required>
+        <div class="d-flex gap-2">
+          <i class="pi pi-at"></i>
+          <label for="email" class="form-label">E-mail</label>
+        </div>
+        <input pInputText id="email" name="email" [email]="true" type="email" class="w-100"
+          placeholder="Digite seu e-mail" ngModel required />
+
       </div>
+
+      @if (registerSuccessfull) {
+        <div class="d-flex gap-2">
+          <i class="pi pi-info-circle text-success"></i>
+          <p class="text-success">Um email foi enviado para comprovarmos suas credenciais</p>
+        </div>
+      }
 
       <!-- Botão -->
       <div class="d-grid">
@@ -49,6 +48,7 @@
         </button>
       </div>
     </form>
+
 
     <!-- Link para login -->
     <div class="text-center mt-3">

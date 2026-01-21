@@ -1,4 +1,4 @@
-import { ConsultarTabelaCapabilidadeDTO, itemControllerCadastrarItemCapabilidadeMethod, itemControllerGetItemCapabilildadeMethod } from "@/api";
+import { ConsultarTabelaCapabilidadeDTO, itemControllerCadastrarItemCapabilidadeMethod, itemControllerGetItemCapabilildadeMethod } from "@/api/planejador";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 

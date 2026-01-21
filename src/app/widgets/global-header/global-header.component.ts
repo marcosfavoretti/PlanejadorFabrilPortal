@@ -3,12 +3,12 @@ import { UserProfileAvatarComponent } from "../user-profile-avatar/user-profile-
 import { UserstoreService } from '../../services/userstore.service';
 import { PopoverModule } from 'primeng/popover';
 import { UserDetailComponent } from "../user-detail/user-detail.component";
-import { User, UserResponseDTO } from '../../../api';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
-import { MinhasFabricasPopUpComponent } from '../minhas-fabricas-pop-up/minhas-fabricas-pop-up.component';
 import { RouterModule } from '@angular/router';
 import { GlobalFilterInputText } from '@/app/services/GlobalInputText.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { UserResponseDTO } from '@/api/auth';
+import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore.service';
 
 @Component({
   selector: 'global-header',
@@ -24,6 +24,7 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 export class GlobalHeaderComponent implements OnInit, OnDestroy {
   user!: Signal<UserResponseDTO | null>;
   userStore = inject(UserstoreService);
+  routerPermission = inject(RoutePermissionStoreService);
   popup = inject(LoadingPopupService);
   globalFilter = inject(GlobalFilterInputText);
 

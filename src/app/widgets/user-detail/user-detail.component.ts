@@ -1,16 +1,17 @@
 import { Component, OnInit, Signal } from '@angular/core';
 import { UserService } from '../../services/User.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { tap } from 'rxjs';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
-import { User, UserResponseDTO } from '../../../api';
 import { UserstoreService } from '../../services/userstore.service';
-import { Tag, TagModule } from 'primeng/tag';
+import {  TagModule } from 'primeng/tag';
+import { UserResponseDTO } from '@/api/auth';
 
 @Component({
   selector: 'app-user-detail',
   imports: [
-    TagModule
+    TagModule,
+    RouterModule
   ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css'

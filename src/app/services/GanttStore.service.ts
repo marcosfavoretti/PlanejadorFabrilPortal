@@ -1,5 +1,5 @@
 import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
-import { GetGanttInformationDto, KPIControllerGetGanttInformationMethodQueryParams, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from "@/api";
+import { GetGanttInformationDto, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from "@/api/planejador";
 import { inject, Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { PlanejamentoAPIService } from "./PlanejamentoAPI.service";

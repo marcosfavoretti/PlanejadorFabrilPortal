@@ -2,8 +2,7 @@ import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
 import { computed, inject, Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { PedidoService } from "./Pedido.service";
-import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO } from "@/api";
-import { ChartClasses } from "primeng/chart";
+import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum, PedidoResponseDTO } from "@/api/planejador";
 import { addDays, format } from "date-fns";
 
 @Injectable({

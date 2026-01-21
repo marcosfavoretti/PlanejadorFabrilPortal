@@ -1,5 +1,5 @@
-import { Component, effect, ElementRef, inject, input, Input, OnInit, viewChild, ViewChild } from '@angular/core';
-import { GanttData, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from '../../../api';
+import { Component, effect, ElementRef, inject, input, OnInit, viewChild, ViewChild } from '@angular/core';
+import { GanttData, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from '../../../api/planejador';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { tap } from 'rxjs';

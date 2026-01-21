@@ -1,1 +1,0 @@
-{"type":"object","properties":{"tabelaProducaoId":{"type":"number"},"item":{"type":"string"},"setor":{"type":"object"},"planejamento":{"type":"number"},"produzido":{"type":"number"}},"required":["tabelaProducaoId","item","setor","planejamento","produzido"],"x-readme-ref-name":"GetTabelaProducaoDiarioDTO"}

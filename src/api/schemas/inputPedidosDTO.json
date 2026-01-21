@@ -1,1 +1,0 @@
-{"type":"object","properties":{"pedidoIds":{"type":"array","items":{"type":"number"}}},"required":["pedidoIds"],"x-readme-ref-name":"InputPedidosDTO"}

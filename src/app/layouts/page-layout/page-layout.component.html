@@ -1,0 +1,19 @@
+<div class="page-layout">
+  <global-header class="sticky-top"></global-header>
+  <div class="page-content-wrapper">
+    <div class="container-fluid m-0 p-0 h-100">
+      <p-splitter [panelSizes]="hasSubRoutes() ? [20, 80] : [100]" styleClass="rounded-0 border-0 h-100">
+        <ng-template pTemplate="panel" *ngIf="hasSubRoutes()">
+          <div class="h-100 w-100 m-0 p-0 bg-dark-green">
+            <app-side-bar></app-side-bar>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="panel">
+          <div class="container-fluid overflow-y-auto">
+            <ng-content></ng-content>
+          </div>
+        </ng-template>
+      </p-splitter>
+    </div>
+  </div>
+</div>

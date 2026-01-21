@@ -4,7 +4,7 @@ import { GanttStoreService } from "./GanttStore.service";
 import { PedidoPlanejadosStoreService } from "./PedidoPlanejadoStore.service";
 import { forkJoin } from "rxjs";
 import { PedidoStoreService } from "./PedidoStore.service";
-import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from "@/api";
+import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from "@/api/planejador";
 import { FabricaMudancaStore } from "./FabricaMudancaStore.service";
 
 @Injectable({

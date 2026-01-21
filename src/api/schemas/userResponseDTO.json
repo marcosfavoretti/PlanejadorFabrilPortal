@@ -1,1 +1,0 @@
-{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"},"avatar":{"type":"string"},"cargosList":{"type":"array","items":{"type":"string"}}},"required":["id","name","email","avatar","cargosList"],"x-readme-ref-name":"UserResponseDTO"}

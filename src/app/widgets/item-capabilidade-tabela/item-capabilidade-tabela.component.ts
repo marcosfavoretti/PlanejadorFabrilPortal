@@ -1,4 +1,4 @@
-import { ConsultarTabelaCapabilidadeDTO } from '@/api';
+import { ConsultarTabelaCapabilidadeDTO } from '@/api/planejador';
 import { ItemService } from '@/app/services/Item.service';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { TableModel } from '@/app/table-dynamic/@core/table.model';

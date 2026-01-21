@@ -1,1 +1,0 @@
-{"type":"object","properties":{"mergeRequestId":{"type":"number"}},"required":["mergeRequestId"],"x-readme-ref-name":"MergeFabricaDto"}

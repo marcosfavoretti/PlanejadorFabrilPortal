@@ -1,0 +1,1 @@
+{"type":"object","properties":{"setor":{"type":"string"},"ccid":{"type":"number"}},"required":["setor","ccid"],"x-readme-ref-name":"ResCentroDeCustoDTO"}

@@ -1,5 +1,4 @@
-import { MudancasResDtoMudancaEnum } from '@/api';
-import { FabricaService } from '@/app/services/Fabrica.service';
+import { MudancasResDtoMudancaEnum } from '@/api/planejador';
 import { FabricaMudancaStore } from '@/app/services/FabricaMudancaStore.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { Skeleton } from 'primeng/skeleton';

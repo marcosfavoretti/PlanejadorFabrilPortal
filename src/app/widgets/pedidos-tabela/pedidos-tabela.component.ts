@@ -3,7 +3,7 @@ import { Component, effect, inject, input, OnInit } from '@angular/core';
 import { TableDynamicComponent } from "../../table-dynamic/table-dynamic.component";
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
 import { switchMap, tap } from 'rxjs';
-import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from '@/api';
+import { PedidoControllerConsultaPedidoMethodQueryParamsTipoConsultaEnum } from '@/api/planejador';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.service';

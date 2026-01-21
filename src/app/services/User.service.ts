@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthDto, CreateUserDto, User, userControllerCheckUserAuth, userControllerCreateUserMethod, userControllerLoginMethod, userControllerLogoutMethod, userControllerUserDetailsMethod, UserResDto, UserResponseDTO } from "../../api";
+import { authControllerCheckToken, authControllerDetail, authControllerLogin, authControllerLogout, authControllerRegister, AuthControllerRegisterMutationResponse, AuthDto, CreateUserDto, UserResponseDTO, } from "../../api/auth";
 import { from, Observable, of } from "rxjs";
 
 @Injectable({
@@ -8,7 +8,7 @@ import { from, Observable, of } from "rxjs";
 export class UserService {
     login(dto: AuthDto): Observable<void> {
         return from(
-            userControllerLoginMethod(dto)
+            authControllerLogin(dto)
                 .then((response: any) => {
                     if (response && response.token) {
                         localStorage.setItem('token', response.token);
@@ -22,7 +22,7 @@ export class UserService {
 
     logout(): Observable<void> {
         return from(
-            userControllerLogoutMethod()
+            authControllerLogout()
                 .then(() => { })
                 .catch(err => {
                     throw err;
@@ -32,7 +32,7 @@ export class UserService {
 
     detail(): Observable<UserResponseDTO> {
         return from(
-            userControllerUserDetailsMethod()
+            authControllerDetail()
                 .then((data) => data)
                 .catch(err => {
                     throw err;
@@ -40,9 +40,9 @@ export class UserService {
         );
     }
 
-    register(dto: CreateUserDto): Observable<User> {
+  register(dto: CreateUserDto): Observable<AuthControllerRegisterMutationResponse> {
         return from(
-            userControllerCreateUserMethod(dto)
+            authControllerRegister(dto)
                 .then((data) => data)
                 .catch(err => {
                     throw err;
@@ -52,7 +52,7 @@ export class UserService {
 
     ping(): Observable<void> {
         return from(
-            userControllerCheckUserAuth()
+            authControllerCheckToken()
                 .catch(err => {
                     throw err;
                 })

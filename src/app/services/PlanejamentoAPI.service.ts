@@ -1,43 +1,11 @@
 import { from, Observable } from "rxjs";
-import { GetGanttInformationDto, GetTabelaProducaoDiarioDTO, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200, producaoSimulacaoControllerConsultarMercadoMethod, producaoSimulacaoControllerGenTabelaDiariaMethod, ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams,  producaoSimulacaoControllerSaveTabelaDiariaMethod, ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest, GetMercadosEntreSetoresTabelaDto, KPIControllerGetGanttInformationMethod, KPIControllerGetGanttInformationMethodQueryParams } from "../../api";
+import { GetGanttInformationDto, planejamentoControllerDatasPlanejadasMethod, PlanejamentoControllerDatasPlanejadasMethod200,  KPIControllerGetGanttInformationMethod, KPIControllerGetGanttInformationMethodQueryParams } from "../../api/planejador";
 import { Injectable } from "@angular/core";
-import { replanejamentoControllerReplanejamentoMethod } from "@/api/client/replanejamentoControllerReplanejamentoMethod";
 @Injectable({
     providedIn: 'root'
 })
 export class PlanejamentoAPIService {
-    requestTabelaProducao(filter: ProducaoSimulacaoControllerGenTabelaDiariaMethodQueryParams): Observable<GetTabelaProducaoDiarioDTO[]> {
-        return from(
-            producaoSimulacaoControllerGenTabelaDiariaMethod(filter)
-                .then(d => d)
-                .catch(err => { throw err })
-        )
-    }
-
-    requestMercado(): Observable<GetMercadosEntreSetoresTabelaDto[]> {
-        return from(
-            producaoSimulacaoControllerConsultarMercadoMethod()
-                .then((d) => d)
-                .catch(err => { throw err })
-        )
-    }
-
-    requestReplanejamento(): Observable<void> {
-        return from(
-            replanejamentoControllerReplanejamentoMethod()
-                .then(() => { })
-                .catch((err: any) => { throw err })
-        )
-    }
-
-    requestSaveTable(dto: ProducaoSimulacaoControllerSaveTabelaDiariaMethodMutationRequest): Observable<void> {
-        return from(
-            producaoSimulacaoControllerSaveTabelaDiariaMethod(dto)
-                .then(() => { })
-                .catch(err => { throw err })
-        )
-    }
-
+ 
     requestGanttData(dto: KPIControllerGetGanttInformationMethodQueryParams): Observable<GetGanttInformationDto> {
         return from(
             KPIControllerGetGanttInformationMethod(dto)

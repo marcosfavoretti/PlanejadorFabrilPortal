@@ -5,11 +5,13 @@ import { finalize, switchMap, tap } from 'rxjs';
 import { UserService } from '../../services/User.service';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
 import { UserstoreService } from '@/app/services/userstore.service';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore.service';
 @Component({
   selector: 'app-login-screen',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, InputTextModule, PasswordModule,],
   templateUrl: './login-screen.component.html',
   styleUrls: ['./login-screen.component.css']
 })
@@ -17,6 +19,7 @@ export class LoginScreenComponent {
 
   private userService = inject(UserService);
   private router = inject(Router);
+  private routePermission = inject(RoutePermissionStoreService);
   private userStore = inject(UserstoreService);
   private popup = inject(LoadingPopupService);
 
@@ -30,7 +33,11 @@ export class LoginScreenComponent {
           switchMap(() =>
             this.userStore.initialize()
               .pipe(
-                finalize(() => this.router.navigate(['/', 'app']))
+                finalize(() => {
+                  this.routePermission.initialize()
+                  .subscribe();
+                  this.router.navigate(['/', 'app'])
+                })
               )
           ),
 

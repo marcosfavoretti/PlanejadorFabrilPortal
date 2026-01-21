@@ -1,0 +1,1 @@
+{"type":"object","properties":{"total":{"type":"number"},"page":{"type":"number"},"limit":{"type":"number"},"totalPages":{"type":"number"}},"required":["total","page","limit","totalPages"],"x-readme-ref-name":"ResponsePaginatorDTO"}

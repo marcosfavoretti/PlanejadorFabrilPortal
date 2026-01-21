@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FabricaPageComponent } from "@/app/pages/fabrica-page/fabrica-page.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fabrica-page-read-only',
@@ -8,5 +9,9 @@ import { FabricaPageComponent } from "@/app/pages/fabrica-page/fabrica-page.comp
   styleUrl: './fabrica-page-read-only.component.css'
 })
 export class FabricaPageReadOnlyComponent {
-
+  private readonly router = inject(Router);
+  //dequeue rota duas menos
+  goBack() {
+    this.router.navigate(['planejamentos', 'fabricaAvaliacao']);
+  }
 }

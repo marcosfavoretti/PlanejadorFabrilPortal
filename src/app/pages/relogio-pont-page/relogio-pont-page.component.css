@@ -1,0 +1,19 @@
+:host {
+    display: block;
+    height: 100%; /* Ou calc(100vh - tamanho_do_header_da_app_layout) */
+    overflow: hidden; /* Evita scroll na página inteira */
+}
+
+/* Garante que o container da tabela tenha contexto de posicionamento */
+.relative-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Opcional: Ajustes finos no paginator para ocupar menos espaço vertical */
+::ng-deep .custom-paginator-compact .p-paginator {
+    padding: 0.25rem !important;
+}
+::ng-deep .custom-paginator-compact .p-paginator-current {
+    margin-left: auto;
+}

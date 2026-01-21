@@ -1,0 +1,1 @@
+{"type":"object","properties":{"filepath":{"type":"string"}},"required":["filepath"],"x-readme-ref-name":"ProcessaCertificadoDTO"}

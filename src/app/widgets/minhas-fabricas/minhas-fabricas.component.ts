@@ -3,7 +3,7 @@ import { TableDynamicComponent } from "../../table-dynamic/table-dynamic.compone
 import { TableModel } from '@/app/table-dynamic/@core/table.model';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { map, Observable } from 'rxjs';
-import { UserFabricaResponseDto } from '@/api';
+import { UserFabricaResponseDto } from '@/api/planejador';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Skeleton } from 'primeng/skeleton';

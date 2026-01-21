@@ -1,2 +1,8 @@
-<div class="d-flex bg-primary justify-content-center align-items-center text-white gap-2 p-3"><i class="pi pi-eye"></i> <span>visual somente leitura</span></div>
-<app-fabrica-page></app-fabrica-page>
+<div class="d-flex bg-primary justify-content-center align-items-center text-white gap-2 p-3">
+    <button class="btn btn-light btn-sm" routerLink="/fabrica"
+    (click)="goBack()" >
+        <i class="pi pi-angle-double-left"></i>
+    </button>
+    <i class="pi pi-eye"></i> <span>visual somente leitura</span>
+</div>
+<app-fabrica-page [_readonly]="true"></app-fabrica-page>

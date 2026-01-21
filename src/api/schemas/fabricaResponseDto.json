@@ -1,1 +1,0 @@
-{"type":"object","properties":{"fabricaId":{"type":"string"},"date":{"format":"date-time","type":"string"},"principal":{"type":"boolean"},"checkPoint":{"type":"boolean"},"autor":{"type":"string"},"fabricaPai":{"type":"string","nullable":true}},"required":["fabricaId","date","principal","checkPoint","autor","fabricaPai"],"x-readme-ref-name":"FabricaResponseDto"}

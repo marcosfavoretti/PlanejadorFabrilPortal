@@ -1,1 +1,115 @@
-<p>relogio-pont-page works!</p>
+<app-page-layout>
+    <div class="d-flex flex-column h-100 p-2 gap-2">
+
+        <div class="card border-0 shadow-sm flex-shrink-0">
+            <div class="card-body py-3">
+                <form [formGroup]="filterForm" (ngSubmit)="search()">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-4 col-xl-3">
+                            <label for="Centro de custo" class="form-label text-secondary fw-bold small mb-1">Centro de
+                                custo</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="pi pi-hammer"></i>
+                                </span>
+                                <select type="text" id="ccid" class="form-control border-start-0 ps-0"
+                                    placeholder="centro de custo" formControlName="ccid">
+                                    <option value="" disabled>centro de custo</option>
+                                    @for (item of centroDeCusto; track $index) {
+                                    <option [value]="item.ccid">{{ item.setor }} - {{item.ccid}}</option>
+                                    }
+                                </select>
+                                <button type="button" class="btn btn-light border border-start-0"
+                                    (click)="filterForm.get('ccid')?.reset()"
+                                    [disabled]="!filterForm.get('ccid')?.value"> <i class="pi pi-eraser text-muted"></i>
+                                </button>
+                                <!-- <input> -->
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 col-xl-3">
+                            <label for="indetificador"
+                                class="form-label text-secondary fw-bold small mb-1">Identificador</label>
+                            <div class="input-group input-group-sm"> <span
+                                    class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="pi pi-user"></i>
+                                </span>
+                                <input type="text" id="indetificador" class="form-control border-start-0 ps-0"
+                                    placeholder="Ex: 000238" formControlName="indetificador">
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-xl-2">
+                            <label for="dataInicial" class="form-label text-secondary fw-bold small mb-1">Início</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="pi pi-calendar"></i>
+                                </span>
+                                <input type="date" id="dataInicial" class="form-control border-start-0 ps-0"
+                                    formControlName="dataInicio">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3 col-xl-2">
+                            <label for="dataFinal" class="form-label text-secondary fw-bold small mb-1">Fim</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="pi pi-calendar-plus"></i>
+                                </span>
+                                <input type="date" id="dataFinal" class="form-control border-start-0 ps-0"
+                                    formControlName="dataFim">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2 col-xl-2 d-grid">
+                            <button type="submit"
+                                class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                                <i class="pi pi-search"></i>
+                                <span>Filtrar</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm flex-grow-1 overflow-hidden">
+            <div class="card-header bg-white border-0 pt-3 pb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="text-success h5 m-0 fw-bold">
+                        <i class="pi pi-list me-2"></i>Relatório de Ponto
+                    </h2>
+                    <span class="badge bg-light text-secondary border">Total: {{ totalItems() }}</span>
+                </div>
+            </div>
+            <div id="pareto-canva">
+                @if(fetching.pareto){
+                    <!-- <p-skeleton></p-skeleton> -->
+                    <p-skeleton height="150px" styleClass="mb-2"></p-skeleton>   
+                }
+                @else {
+                    <app-horas-irregulares-pareto-chart
+                        [rawData]="chartHorasIrregulares()">
+                    </app-horas-irregulares-pareto-chart>
+                }
+            </div>
+            <div class="card-body p-0 d-flex flex-column overflow-hidden">
+
+                <div class="flex-grow-1 overflow-hidden relative-container">
+                    <app-table-dynamic scrollHeight="flex" [scrollable]="true" [tableModel]="tableModel"
+                        [data]="tableData()" styleClass="h-100 w-100 position-absolute"></app-table-dynamic>
+                </div>
+
+                <div class="border-top bg-light p-2 flex-shrink-0">
+                    <p-paginator 
+                    (onPageChange)="onPageChange($event)" 
+                        [first]="currentPage() * itemsPerPage"
+                        [rows]="itemsPerPage" 
+                        [totalRecords]="totalItems()" [rowsPerPageOptions]="[10, 20, 50, 100]"
+                        [showCurrentPageReport]="true" dropdownAppendTo="body"
+                        currentPageReportTemplate="{first} - {last} de {totalRecords}"
+                        styleClass="bg-transparent border-0 p-0 custom-paginator-compact">
+                    </p-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-page-layout>

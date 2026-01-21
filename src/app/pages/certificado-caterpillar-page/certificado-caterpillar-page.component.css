@@ -1,0 +1,60 @@
+$brand-green: #2e7d32;
+
+.page-container {
+  background-color: #f8f9fa;
+}
+
+.surface-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.search-wrapper {
+  width: 300px;
+  display: flex;
+  gap: 1%;
+  align-items: center;
+  .pi {
+    z-index: 1;
+    font-size: 1rem;
+  }
+}
+
+.custom-search-input {
+  width: 100%;
+  border-radius: 50px !important;
+  padding-left: 2.5rem !important;
+  background-color: #f8f9fa;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+
+  &:focus {
+    background-color: #fff;
+    border-color: lighten($brand-green, 20%);
+    box-shadow: 0 0 0 3px rgba($brand-green, 0.1);
+  }
+}
+
+
+::ng-deep .custom-paginator {
+  background: transparent !important;
+  border: none !important;
+  justify-content: flex-end;
+
+  .p-paginator-page.p-highlight {
+    background: rgba($brand-green, 0.1) !important;
+    color: $brand-green !important;
+    border-radius: 50%;
+  }
+
+  .p-paginator-page:not(.p-highlight):hover {
+    background: #f1f1f1 !important;
+    border-radius: 50%;
+  }
+}
+
+.border-bottom-subtle {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}

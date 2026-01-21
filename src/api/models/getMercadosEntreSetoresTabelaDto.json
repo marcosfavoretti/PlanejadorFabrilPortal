@@ -1,1 +1,0 @@
-{"type":"object","properties":{"dia":{"format":"date-time","type":"string"},"item":{"type":"string"},"operacao":{"type":"string"},"planejado":{"type":"number"},"produzido":{"type":"number"},"qtdmercado":{"type":"number"}},"required":["dia","item","operacao","planejado","produzido","qtdmercado"],"x-readme-ref-name":"GetMercadosEntreSetoresTabelaDto"}

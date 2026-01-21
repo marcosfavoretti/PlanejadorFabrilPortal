@@ -1,1 +1,0 @@
-{"type":"object","properties":{"planejamentoId":{"type":"number"},"item":{"type":"string"},"setor":{"type":"string"},"pedido":{"type":"string"},"dia":{"format":"date-time","type":"string"},"qtd":{"type":"number"}},"required":["planejamentoId","item","setor","pedido","dia","qtd"],"x-readme-ref-name":"PlanejamentoResponseDTO"}

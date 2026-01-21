@@ -1,14 +1,14 @@
 <nav class="d-flex flex-column border-end vh-100 p-2">
   <ul class="list-unstyled mt-3 p-0">
-    @if (items()) {
-    <li *ngFor="let item of items()!; let i = index" class="mb-1">
+    @if (currentSubRoutes; as routes) {
+    <li *ngFor="let item of routes; let i = index" class="mb-1">
       <a class="d-flex align-items-center rounded link-secondary link-underline-opacity-0 py-2 px-2 w-100"
         [routerLink]="[item.route]" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}"
-        (click)="onClick(item, i)">
-        <span *ngIf="item.icon" class="me-2">
+        (click)="sidebarItemClickEvent(i)">
+        <!-- <span *ngIf="item.icon" class="me-2">
           <i [class]="item.icon"></i>
-        </span>
-        {{ item.label }}
+        </span> -->
+        {{ item.name }}
       </a>
     </li>
     }

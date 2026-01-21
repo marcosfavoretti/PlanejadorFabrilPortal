@@ -5,7 +5,7 @@ import { TabelaPlanejamentoComponent } from '../tabela-planejamento/tabela-plane
 import { PedidosPlanejadosTabelaComponent } from '../pedidos-planejados-tabela/pedidos-planejados-tabela.component';
 import { ContadorAtrasoComponent } from '../contador-atraso/contador-atraso.component';
 import { ContadorDividaComponent } from '../contador-divida/contador-divida.component';
-import { ToggleSwitch } from 'primeng/toggleswitch';
+import {  ToggleSwitchModule } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
 import { IShutDown } from '@/@core/abstract/IShutDown';
 import { HomeStartUpService } from '@/app/services/HomeStartup.service';
@@ -18,7 +18,7 @@ import { VisualizadorMudancasComponent } from "../visualizador-mudancas/visualiz
   imports: [
     FormsModule,
     GanttChartComponent,
-    ToggleSwitch,
+    ToggleSwitchModule,
     FabricaApresentacaoComponent,
     TabelaPlanejamentoComponent,
     PedidosPlanejadosTabelaComponent,

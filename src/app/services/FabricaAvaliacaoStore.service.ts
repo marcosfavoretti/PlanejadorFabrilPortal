@@ -1,5 +1,5 @@
 import { SignalStore } from "@/@core/abstract/SignalStore.abstract";
-import { MergeRequestPendingDto } from "@/api";
+import { MergeRequestPendingDto } from "@/api/planejador";
 import { inject, Injectable } from "@angular/core";
 import { catchError, Observable, of, tap } from "rxjs";
 import { FabricaService } from "./Fabrica.service";

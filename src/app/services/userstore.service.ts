@@ -1,9 +1,9 @@
 // services/userstore.service.ts
 import { Injectable, effect, computed, signal, inject } from '@angular/core';
-import { UserResponseDTO } from '../../api';
 import { SignalStore } from '@/@core/abstract/SignalStore.abstract';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { UserService } from './User.service';
+import { UserResponseDTO } from '@/api/auth';
 
 @Injectable({
   providedIn: 'root'

@@ -18,6 +18,7 @@ export interface ghostControllColumn {
     desc: string;
     ifValueEqual?: any;
     ifValueGreater?: any;
+    ifRowFunction?: (row: any) => boolean;
     color: string;
 }
 export interface TableModel {

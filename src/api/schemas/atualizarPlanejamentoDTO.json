@@ -1,1 +1,0 @@
-{"type":"object","properties":{"planejamendoId":{"type":"number"},"fabricaId":{"type":"string"},"qtd":{"type":"number","minimum":0,"nullable":true},"dia":{"format":"date-time","type":"string","nullable":true}},"required":["planejamendoId","fabricaId","qtd","dia"],"x-readme-ref-name":"AtualizarPlanejamentoDTO"}

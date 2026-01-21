@@ -2,7 +2,7 @@ import { Component, inject, Injectable, Input, OnInit, Signal } from '@angular/c
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from "primeng/avatar";
 import { UserstoreService } from '../../services/userstore.service';
-import { User, UserResponseDTO } from '@/api';
+import { UserResponseDTO } from '@/api/auth';
 
 @Component({
   selector: 'app-user-profile-avatar',

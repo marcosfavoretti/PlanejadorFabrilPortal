@@ -5,12 +5,12 @@ import { LoadingPopupService } from "./LoadingPopup.service";
 import { forkJoin, switchMap, tap } from "rxjs";
 import { PedidoPlanejadosStoreService } from "./PedidoPlanejadoStore.service";
 import { ContextoFabricaService } from "./ContextoFabrica.service";
-import { FabricaResponseDto } from "@/api";
 import { GanttStoreService } from "./GanttStore.service";
 import { IStartUp } from "@/@core/abstract/IStartUp";
 import { IShutDown } from "@/@core/abstract/IShutDown";
 import { GlobalFilterInputText } from "./GlobalInputText.service";
 import { FabricaMudancaStore } from "./FabricaMudancaStore.service";
+import { RoutePermissionStoreService } from "./RoutePermissionStore.service";
 
 @Injectable({
     providedIn: 'root'
@@ -34,7 +34,7 @@ export class HomeStartUpService implements IStartUp, IShutDown {
                     forkJoin([
                         this.mudancaStore.initialize(),
                         this.pedidoPlenejadoStore.initialize(this.fabricaStore.item()?.fabricaId),
-                        this.ganttStore.initialize(this.fabricaStore.item()?.fabricaId)
+                        this.ganttStore.initialize(this.fabricaStore.item()?.fabricaId),
                     ])
                 )
             )

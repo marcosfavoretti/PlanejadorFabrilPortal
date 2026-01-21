@@ -7,21 +7,40 @@ import { AuthGuard } from './guard/Auth.guard';
 import { ItemPaginaComponent } from './pages/item-pagina/item-pagina.component';
 import { FabricaPrincipalViewComponent } from './widgets/fabrica-principal-view/fabrica-principal-view.component';
 import { PedidosFabricaViewComponent } from './widgets/pedidos-fabrica-view/pedidos-fabrica-view.component';
-import { SetUserCargoDTOCargoEnum } from '@/api';
 import { CargoGuard } from './guard/Cargo.guard';
 import { FabricasParaAvaliacaoViewComponent } from './widgets/fabricas-para-avaliacao-view/fabricas-para-avaliacao-view.component';
 import { FabricaPageReadOnlyComponent } from './widgets/fabrica-page-read-only/fabrica-page-read-only.component';
+import { RelogioPontPageComponent } from './pages/relogio-pont-page/relogio-pont-page.component';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
+import { CertificadoCaterpillarPageComponent } from './pages/certificado-caterpillar-page/certificado-caterpillar-page.component';
+import { FabricaPrincipalPageComponent } from './pages/fabrica-principal-page/fabrica-principal-page.component';
+import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas-fabricas-page.component';
+import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'app',
+        redirectTo: 'welcome',
         pathMatch: 'full',
     },
     {
         path: 'app',
+        redirectTo: 'welcome'
+    },
+    {
+        path: 'welcome',
         loadComponent: () => HomePageComponent,
         canActivate: [AuthGuard],
+        children: [
+            {
+                path: '', loadComponent: () => WelcomePageComponent
+            }
+        ]
+    },
+    {
+        path: 'planejamentos',
+        loadComponent: () => FabricaPrincipalPageComponent,
+        canActivate: [AuthGuard, CargoGuard],
         children: [
             {
                 path: '', redirectTo: 'fabricaPrincipal', pathMatch: 'full'
@@ -32,6 +51,18 @@ export const routes: Routes = [
                 loadComponent: () => FabricaPrincipalViewComponent,
                 data: {
                     roles: [
+                        SetUserCargoDTOCargoEnum.CATERPILLAR_USER,
+                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
+                    ]
+                }
+            },
+            {
+                path: 'minhas-fabricas',
+                canActivate: [CargoGuard],
+                loadComponent: () => MinhasFabricasPageComponent,
+                data: {
+                    roles: [
+                        SetUserCargoDTOCargoEnum.CATERPILLAR_USER,
                         SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
                     ]
                 }
@@ -76,7 +107,20 @@ export const routes: Routes = [
                     ]
                 }
             },
+            {
+                path: 'capabilidades',
+                canActivate: [CargoGuard],
+                loadComponent: () => ItemPaginaComponent,
+                data: {
+                    roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP]
+                }
+            }
         ]
+    },
+    {
+        path: 'certificados',
+        loadComponent: () => CertificadoCaterpillarPageComponent,
+        canActivate: [AuthGuard, CargoGuard]
     },
     {
         path: 'register',
@@ -96,8 +140,12 @@ export const routes: Routes = [
         }
     },
     {
-        path: 'fabrica/:fabricaId',
-        loadComponent: () => FabricaPageComponent,
-        canActivate: [AuthGuard]
-    }
+        path: 'ponto',
+        loadComponent: () => RelogioPontPageComponent,
+    },
+    // {
+    //     path: 'fabrica/:fabricaId',
+    //     loadComponent: () => FabricaPageComponent,
+    //     canActivate: [AuthGuard]
+    // }
 ];

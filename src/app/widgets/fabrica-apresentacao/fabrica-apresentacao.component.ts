@@ -1,4 +1,4 @@
-import { FabricaResponseDto } from '@/api';
+import { FabricaResponseDto } from '@/api/planejador';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { DatePipe } from '@angular/common';
@@ -22,12 +22,9 @@ export class FabricaApresentacaoComponent
   fabricaService = inject(FabricaService);
   contextoFabricaService = inject(ContextoFabricaService);
 
-
   fabrica!: Signal<FabricaResponseDto | null>
 
   ngOnInit(): void {
     this.fabrica = this.contextoFabricaService.item;
   }
-
-  
 }

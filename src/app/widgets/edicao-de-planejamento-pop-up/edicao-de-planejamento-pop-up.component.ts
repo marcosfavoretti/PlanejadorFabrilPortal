@@ -1,4 +1,4 @@
-import { PlanejamentoResponseDTO } from '@/api';
+import { PlanejamentoResponseDTO } from '@/api/planejador';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormDinamicoComponent } from '../form-dinamico/form-dinamico.component';
 import { DynamicField } from '../form-dinamico/@core/DynamicField';

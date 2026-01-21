@@ -1,0 +1,6 @@
+export type { CertificadosCatControllerConsultarCertificadosQueryParams, CertificadosCatControllerConsultarCertificados200, CertificadosCatControllerConsultarCertificadosQueryResponse, CertificadosCatControllerConsultarCertificadosQuery } from "./CertificadosCatControllerConsultarCertificados";
+export type { CertificadosCatControllerProcessarCertificado201, CertificadosCatControllerProcessarCertificadoMutationRequest, CertificadosCatControllerProcessarCertificadoMutationResponse, CertificadosCatControllerProcessarCertificadoMutation } from "./CertificadosCatControllerProcessarCertificado";
+export type { CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams, CertificadosCatControllerRetornaArquivoCertificadoTxt200, CertificadosCatControllerRetornaArquivoCertificadoTxtQueryResponse, CertificadosCatControllerRetornaArquivoCertificadoTxtQuery } from "./CertificadosCatControllerRetornaArquivoCertificadoTxt";
+export type { PaginatedResCertificadosDtoDto } from "./PaginatedResCertificadosDtoDto";
+export type { ProcessaCertificadoDTO } from "./ProcessaCertificadoDTO";
+export type { ResCertificadosDto } from "./ResCertificadosDto";

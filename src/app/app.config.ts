@@ -7,16 +7,24 @@ import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { UserstoreService } from './services/userstore.service';
-import { catchError, firstValueFrom, of } from 'rxjs';
+import { catchError, firstValueFrom, of, tap } from 'rxjs';
+import { RoutePermissionStoreService } from './services/RoutePermissionStore.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAppInitializer(async () => {
       const userStore = inject(UserstoreService);
+      const routePermission = inject(RoutePermissionStoreService);
       try {
         await firstValueFrom(
           userStore.initialize()
             .pipe(
+              tap(
+                () => {
+                  routePermission.initialize()
+                    .subscribe();
+                }
+              ),
               catchError(err => {
                 console.error('Falha ao inicializar usuário', err);
                 return of(null);

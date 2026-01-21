@@ -1,6 +1,6 @@
 // context/contexto-fabrica.service.ts
 import { Injectable, inject } from '@angular/core';
-import { FabricaResponseDto } from '@/api';
+import { FabricaResponseDto } from '@/api/planejador';
 import { SignalStore } from '@/@core/abstract/SignalStore.abstract';
 import { FabricaService } from './Fabrica.service';
 import { Observable, tap } from 'rxjs';

@@ -6,7 +6,7 @@
     <div class="row m-0 p-0">
         <div class="m-0 p-0 col-md-10 col-lg-10 col-12">
             <div class="card p-1">
-                <app-gantt-chart [editavel]="true" id="gantt" name="gantt"></app-gantt-chart>
+                <app-gantt-chart [editavel]="!_readonly()" id="gantt" name="gantt"></app-gantt-chart>
             </div>
         </div>
         <div class="col-md-2 col-lg-2 col-sm-12 p-0 m-0">
@@ -36,7 +36,7 @@
         <app-pedidos-planejados-tabela></app-pedidos-planejados-tabela>
     </div>
     <div class="d-flex card p-3">
-        <app-tabela-planejamento [estrategia]="'editavel'" id="planejamentos"
+        <app-tabela-planejamento [estrategia]="!_readonly()?'editavel':'estatico'" id="planejamentos"
             name="planejamentos"></app-tabela-planejamento>
     </div>
 </div>

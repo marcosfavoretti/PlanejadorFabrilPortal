@@ -1,0 +1,12 @@
+<div class="d-flex flex-column h-100 w-100 overflow-hidden p-3">
+  @if (fabricas$ | async; as fabricas) {
+  <app-table-dynamic [tableModel]="tableShema" [data]="fabricas" [exportable]="false"></app-table-dynamic>
+  } @else {
+  <div class="d-flex flex-column gap-2 p-3">
+    <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="4rem" styleClass="mb-2"></p-skeleton>
+  </div>
+  }
+</div>

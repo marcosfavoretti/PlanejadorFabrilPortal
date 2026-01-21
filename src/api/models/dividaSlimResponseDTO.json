@@ -1,1 +1,0 @@
-{"type":"object","properties":{"qtd":{"type":"number"},"setorCodigo":{"type":"string"}},"required":["qtd","setorCodigo"],"x-readme-ref-name":"DividaSlimResponseDTO"}

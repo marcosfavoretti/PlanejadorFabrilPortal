@@ -1,14 +1,11 @@
-import { FabricaResponseDto } from '@/api';
 import { ContextoFabricaService } from '@/app/services/ContextoFabrica.service';
 import { FabricaService } from '@/app/services/Fabrica.service';
 import { FabricaMudancaSyncService } from '@/app/services/FabricaMudancaSync.service';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
-import { DatePipe } from '@angular/common';
 import { Component, inject, input, Signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { Skeleton } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
 import { tap } from 'rxjs';
 import { CriacaoDePlanejamentoComponent } from '../criacao-de-planejamento/criacao-de-planejamento.component';
@@ -38,7 +35,7 @@ export class FabricaApresentacaoBotoesComponent {
     })
       .pipe(
         tap(() =>
-          this.router.navigate(['/', 'app'])
+          this.router.navigate(['/', 'planejamentos'])
         )
       );
     this.popup.showWhile(merge$);
@@ -197,7 +194,7 @@ export class FabricaApresentacaoBotoesComponent {
       .pipe(
         tap((fabrica) => {
           this.contextoFabricaService.setFabrica(fabrica);
-          this.router.navigate(['app', 'fabrica', `${fabrica.fabricaId}`])
+          this.router.navigate(['planejamentos', 'fabrica', `${fabrica.fabricaId}`])
         })
       );
     this.popup.showWhile(fork$)

@@ -11,12 +11,15 @@
     </div>
 
     <div class="mb-3 d-flex flex-wrap gap-2">
-        @for (cargo of user()?.cargosList; track $index) {
+        @for (cargo of user()?.cargosLista; track $index) {
         <p-tag severity="success" [value]="cargo"></p-tag>
         }
     </div>
 
-    <div class="text-end">
+    <div class="d-flex justify-content-end gap-2">
+        <!-- <button [routerLink]="['/planejamentos/minhas-fabricas']" class="btn btn-secondary rounded-pill d-flex align-items-center gap-2 px-3">
+            <i class="pi pi-cog"></i>
+        </button> -->
         <button (click)="logout()" class="btn btn-danger rounded-pill d-flex align-items-center gap-2 px-3">
             <i class="pi pi-sign-out"></i>
             <span>Logout</span>

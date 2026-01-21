@@ -1,0 +1,38 @@
+<app-page-layout>
+  <div class="page-container p-4 flex-grow-1">
+
+    <div class="surface-card h-100 d-flex flex-column shadow-sm p-2 rounded-4">
+
+      <div class="d-flex justify-content-between align-items-center p-4 border-bottom-subtle">
+        <div>
+          <h1 class="text-success display-6 m-0" style="font-size: 1.75rem; letter-spacing: -0.5px;">
+            Certificados
+          </h1>
+          <small class="text-muted">certificados do teste elétrico caterpillar</small>
+        </div>
+
+        <span class="p-input-icon-left search-wrapper">
+          <i class="pi pi-search text-muted"></i>
+          <input pInputText placeholder="Buscar por serial ou ROPS..." type="text" (input)="onSearchInput($event)"
+            class="custom-search-input">
+        </span>
+      </div>
+
+      <div class="flex-grow-1 p-0 position-relative">
+        <div class="table-wrapper h-100">
+          <app-table-dynamic [exportable]="false" [tableModel]="tableShema" [data]="certificados()" [scrollable]="true"
+            scrollHeight="50vh"> </app-table-dynamic>
+        </div>
+      </div>
+
+      <div class="p-3 border-top border-light">
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="(queryParams.page! * queryParams.limit!)"
+          [rows]="queryParams.limit!" [totalRecords]="totalRecords" [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+          [showCurrentPageReport]="true" dropdownAppendTo="body"
+          currentPageReportTemplate="{first} - {last} de {totalRecords}" styleClass="custom-paginator">
+        </p-paginator>
+      </div>
+
+    </div>
+  </div>
+</app-page-layout>

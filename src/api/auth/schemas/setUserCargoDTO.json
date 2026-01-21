@@ -1,0 +1,1 @@
+{"type":"object","properties":{"cargo":{"type":"string","enum":["ADMIN","PCP","USER","CATERPILLAR_USER"]},"userId":{"type":"string"}},"required":["cargo","userId"],"x-readme-ref-name":"SetUserCargoDTO"}
