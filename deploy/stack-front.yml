@@ -9,7 +9,7 @@ services:
     container_name: ethosfront
     restart: always # Importante para produção/homologação
     ports:
-      - "8080:8085"
+      - "${DEPLOY_PORT}:8085"
     
     # Se você quiser que o Docker sempre verifique se há uma versão nova na main
     pull_policy: always
