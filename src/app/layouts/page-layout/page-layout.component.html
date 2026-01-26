@@ -1,5 +1,5 @@
 <div class="page-layout">
-  <global-header class="sticky-top"></global-header>
+  <global-header></global-header>
   <div class="page-content-wrapper">
     <div class="container-fluid m-0 p-0 h-100">
       <p-splitter [panelSizes]="hasSubRoutes() ? [20, 80] : [100]" styleClass="rounded-0 border-0 h-100">
@@ -9,7 +9,7 @@
           </div>
         </ng-template>
         <ng-template pTemplate="panel">
-          <div class="container-fluid overflow-y-auto">
+          <div class="container-fluid scrollable-content">
             <ng-content></ng-content>
           </div>
         </ng-template>

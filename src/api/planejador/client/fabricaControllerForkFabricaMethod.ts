@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { FabricaControllerForkFabricaMethodMutationRequest, FabricaControllerForkFabricaMethodMutationResponse } from "../models/FabricaControllerForkFabricaMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { FabricaControllerForkFabricaMethodMutationRequest, FabricaControllerForkFabricaMethodMutationResponse } from "../models/FabricaControllerForkFabricaMethod";
 
 function getFabricaControllerForkFabricaMethodUrl() {
   return `https://app.prod.ethos/api/planejador/fabrica/fork` as const

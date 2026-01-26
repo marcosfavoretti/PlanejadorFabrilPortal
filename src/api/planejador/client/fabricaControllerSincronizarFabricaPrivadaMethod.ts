@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { FabricaControllerSincronizarFabricaPrivadaMethodMutationRequest, FabricaControllerSincronizarFabricaPrivadaMethodMutationResponse } from "../models/FabricaControllerSincronizarFabricaPrivadaMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { FabricaControllerSincronizarFabricaPrivadaMethodMutationRequest, FabricaControllerSincronizarFabricaPrivadaMethodMutationResponse } from "../models/FabricaControllerSincronizarFabricaPrivadaMethod";
 
 function getFabricaControllerSincronizarFabricaPrivadaMethodUrl() {
   return `https://app.prod.ethos/api/planejador/fabrica/sincronizar` as const

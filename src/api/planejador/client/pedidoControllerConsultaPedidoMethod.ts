@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { PedidoControllerConsultaPedidoMethodQueryResponse, PedidoControllerConsultaPedidoMethodQueryParams } from "../models/PedidoControllerConsultaPedidoMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { PedidoControllerConsultaPedidoMethodQueryResponse, PedidoControllerConsultaPedidoMethodQueryParams } from "../models/PedidoControllerConsultaPedidoMethod";
 
 function getPedidoControllerConsultaPedidoMethodUrl() {
   return `https://app.prod.ethos/api/planejador/pedido` as const

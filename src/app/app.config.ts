@@ -1,5 +1,5 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, Router, withInMemoryScrolling } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAppInitializer(async () => {
       const userStore = inject(UserstoreService);
+      const router = inject(Router);
       const routePermission = inject(RoutePermissionStoreService);
       try {
         await firstValueFrom(

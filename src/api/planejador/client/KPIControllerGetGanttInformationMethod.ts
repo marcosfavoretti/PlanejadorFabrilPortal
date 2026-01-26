@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { KPIControllerGetGanttInformationMethodQueryResponse, KPIControllerGetGanttInformationMethodQueryParams } from "../models/KPIControllerGetGanttInformationMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { KPIControllerGetGanttInformationMethodQueryResponse, KPIControllerGetGanttInformationMethodQueryParams } from "../models/KPIControllerGetGanttInformationMethod";
 
 function getKPIControllerGetGanttInformationMethodUrl() {
   return `https://app.prod.ethos/api/planejador/kpi/gannt` as const

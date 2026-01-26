@@ -10,7 +10,6 @@ import { IStartUp } from "@/@core/abstract/IStartUp";
 import { IShutDown } from "@/@core/abstract/IShutDown";
 import { GlobalFilterInputText } from "./GlobalInputText.service";
 import { FabricaMudancaStore } from "./FabricaMudancaStore.service";
-import { RoutePermissionStoreService } from "./RoutePermissionStore.service";
 
 @Injectable({
     providedIn: 'root'

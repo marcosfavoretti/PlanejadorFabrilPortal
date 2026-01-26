@@ -34,7 +34,7 @@ export class RegisterScreenComponent implements OnDestroy {
       this.userService.register({ name: user, email, password })
         .pipe(
           catchError(err => {
-            this.popup.showErrorMessage('Erro ao registrar. Tente novamente.');
+            this.popup.showErrorMessage(err.response?.data?.error ?? 'Erro ao registrar usuário');
             return of(null);
           }),
           filter(res => res !== null), 

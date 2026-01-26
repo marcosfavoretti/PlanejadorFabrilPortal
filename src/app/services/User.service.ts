@@ -53,9 +53,6 @@ export class UserService {
     ping(): Observable<void> {
         return from(
             authControllerCheckToken()
-                .catch(err => {
-                    throw err;
-                })
         )
     }
 

@@ -16,7 +16,6 @@ import { CertificadoCaterpillarPageComponent } from './pages/certificado-caterpi
 import { FabricaPrincipalPageComponent } from './pages/fabrica-principal-page/fabrica-principal-page.component';
 import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas-fabricas-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
-
 export const routes: Routes = [
     {
         path: '',
@@ -47,7 +46,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabricaPrincipal',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => FabricaPrincipalViewComponent,
                 data: {
                     roles: [
@@ -58,7 +57,7 @@ export const routes: Routes = [
             },
             {
                 path: 'minhas-fabricas',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => MinhasFabricasPageComponent,
                 data: {
                     roles: [
@@ -69,7 +68,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabrica/:fabricaId',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => FabricaPageComponent,
                 data: {
                     roles: [
@@ -79,7 +78,7 @@ export const routes: Routes = [
             },
             {
                 path: 'RO/fabrica/:fabricaId',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => FabricaPageReadOnlyComponent,
                 data: {
                     roles: [
@@ -89,7 +88,7 @@ export const routes: Routes = [
             },
             {
                 path: 'pedidos',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => PedidosFabricaViewComponent,
                 data: {
                     roles: [
@@ -99,7 +98,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabricaAvaliacao',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => FabricasParaAvaliacaoViewComponent,
                 data: {
                     roles: [
@@ -109,7 +108,7 @@ export const routes: Routes = [
             },
             {
                 path: 'capabilidades',
-                canActivate: [CargoGuard],
+                canActivate: [AuthGuard,CargoGuard],
                 loadComponent: () => ItemPaginaComponent,
                 data: {
                     roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP]
@@ -142,6 +141,7 @@ export const routes: Routes = [
     {
         path: 'ponto',
         loadComponent: () => RelogioPontPageComponent,
+        canActivate: [AuthGuard],
     },
     // {
     //     path: 'fabrica/:fabricaId',

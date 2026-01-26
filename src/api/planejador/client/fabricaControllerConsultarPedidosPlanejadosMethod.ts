@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { FabricaControllerConsultarPedidosPlanejadosMethodQueryResponse, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams } from "../models/FabricaControllerConsultarPedidosPlanejadosMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { FabricaControllerConsultarPedidosPlanejadosMethodQueryResponse, FabricaControllerConsultarPedidosPlanejadosMethodQueryParams } from "../models/FabricaControllerConsultarPedidosPlanejadosMethod";
 
 function getFabricaControllerConsultarPedidosPlanejadosMethodUrl() {
   return `https://app.prod.ethos/api/planejador/fabrica/planejamentos/pedidos` as const

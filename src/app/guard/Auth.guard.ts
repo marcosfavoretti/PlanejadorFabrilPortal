@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
       const ping$ = this.userService
         .ping();
       await firstValueFrom(ping$);
-      console.log('voltoou tru')
       return true;
     } catch (error) {
       console.error('Error occurred during authentication check:', error);

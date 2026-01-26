@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { PlanejamentoControllerDatasPlanejadasMethodQueryResponse } from "../models/PlanejamentoControllerDatasPlanejadasMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { PlanejamentoControllerDatasPlanejadasMethodQueryResponse } from "../models/PlanejamentoControllerDatasPlanejadasMethod";
 
 function getPlanejamentoControllerDatasPlanejadasMethodUrl() {
   return `https://app.prod.ethos/api/planejador/plan/datas` as const

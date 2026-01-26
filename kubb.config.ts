@@ -72,17 +72,17 @@ export default defineConfig(() => [
         baseUrl: API_URL_ROUTES
     }),
     createApiConfig({
-        name: 'app-routes-api',
+        name: 'certificados-api',
         swaggerPath: API_SWAGGER_CERTIFICADOS,
         outputPath: './src/api/certificados',
         baseUrl: API_URL_CERTIFICADOS
     }),
-    // createApiConfig({
-    //     name: 'planejador-api',
-    //     swaggerPath: API_SWAGGER_PLANEJADOR,
-    //     outputPath: './src/api/planejador',
-    //     baseUrl: API_URL_PLANEJADOR
-    // }),
+    createApiConfig({
+        name: 'planejador-api',
+        swaggerPath: API_SWAGGER_PLANEJADOR,
+        outputPath: './src/api/planejador',
+        baseUrl: API_URL_PLANEJADOR
+    }),
     createApiConfig({
         name: 'relogio-api',
         swaggerPath: API_SWAGGER_RELOGIO,

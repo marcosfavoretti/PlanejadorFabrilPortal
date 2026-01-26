@@ -25,7 +25,8 @@ export class SideBarComponent
   ngOnInit(): void {
     this.router.events
       .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd)
       )
       .subscribe((event: NavigationEnd) => {
         this.processRoute(event.urlAfterRedirects);
