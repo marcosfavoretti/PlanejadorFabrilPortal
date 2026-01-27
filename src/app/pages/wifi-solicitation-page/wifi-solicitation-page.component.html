@@ -1,0 +1,47 @@
+
+<div class="wifi-solicitation-container">
+  <div class="card">
+    <img src="ethos35.png" alt="Logo" class="logo">
+    <h2 class="card-title">Solicitação de Acesso Wi-Fi</h2>
+    <p class="card-description">
+      Para iniciar o cadastro de geração do codigo da rede Wi-Fi, por favor, insira seu e-mail corporativo abaixo. 
+      Um link para as próximas etapas será enviado para o endereço fornecido.
+    </p>
+    <form [formGroup]="wifiAccessForm" (ngSubmit)="requestWifiAccess()" novalidate>
+      <div class="form-group">
+        <label for="email" class="form-label">E-mail</label>
+        <input 
+          id="email"
+          type="email" 
+          formControlName="email" 
+          class="form-control"
+          placeholder="seu.email@ethos.ind.br"
+          [ngClass]="{ 
+            'is-invalid': wifiAccessForm.get('email')?.invalid && wifiAccessForm.get('email')?.touched,
+            'is-valid': wifiAccessForm.get('email')?.valid && wifiAccessForm.get('email')?.touched
+          }"
+        />
+        <div *ngIf="wifiAccessForm.get('email')?.invalid && wifiAccessForm.get('email')?.touched" class="invalid-feedback">
+          <span *ngIf="wifiAccessForm.get('email')?.errors?.['required']">O e-mail é obrigatório.</span>
+          <span *ngIf="wifiAccessForm.get('email')?.errors?.['email']">Por favor, insira um e-mail válido.</span>
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        class="submit-btn" 
+        [disabled]="wifiAccessForm.invalid || submissionStatus() === 'loading'">
+        <span *ngIf="submissionStatus() !== 'loading'">Solicitar Acesso</span>
+        <span *ngIf="submissionStatus() === 'loading'">Enviando...</span>
+      </button>
+    </form>
+
+    <div *ngIf="submissionStatus() === 'success'" class="alert alert-success mt-3">
+      <strong>Solicitação enviada com sucesso!</strong> Verifique sua caixa de entrada no email informado para continuar.
+    </div>
+
+    <div *ngIf="submissionStatus() === 'error' && wifiAccessForm.invalid" class="alert alert-danger mt-3">
+      <strong>Erro na solicitação.</strong> Por favor, verifique o e-mail inserido e tente novamente.
+    </div>
+  </div>
+</div>

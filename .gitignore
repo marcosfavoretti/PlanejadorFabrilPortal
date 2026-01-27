@@ -21,7 +21,7 @@ yarn-error.log
 .settings/
 *.sublime-workspace
 #pasta gerada automaticamente
-src/api/*
+# src/api/*
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json

@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { PontoKPIControllerConsultarMaisHorasIrregularesQueryResponse, PontoKPIControllerConsultarMaisHorasIrregularesQueryParams } from "../models/PontoKPIControllerConsultarMaisHorasIrregulares";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { PontoKPIControllerConsultarMaisHorasIrregularesQueryResponse, PontoKPIControllerConsultarMaisHorasIrregularesQueryParams } from "../models/PontoKPIControllerConsultarMaisHorasIrregulares";
 
 function getPontoKPIControllerConsultarMaisHorasIrregularesUrl() {
-  return `https://app.prod.ethos/api/ponto/kpi/mais-horas-irregulares` as const
+  return `https://app.ethos.ind.br/api/ponto/kpi/mais-horas-irregulares` as const
 }
 
 /**

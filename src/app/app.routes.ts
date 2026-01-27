@@ -16,6 +16,8 @@ import { CertificadoCaterpillarPageComponent } from './pages/certificado-caterpi
 import { FabricaPrincipalPageComponent } from './pages/fabrica-principal-page/fabrica-principal-page.component';
 import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas-fabricas-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
+import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wifi-solicitation-page.component';
+import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
 export const routes: Routes = [
     {
         path: '',
@@ -143,9 +145,12 @@ export const routes: Routes = [
         loadComponent: () => RelogioPontPageComponent,
         canActivate: [AuthGuard],
     },
-    // {
-    //     path: 'fabrica/:fabricaId',
-    //     loadComponent: () => FabricaPageComponent,
-    //     canActivate: [AuthGuard]
-    // }
+    {
+        path: 'wifi',
+        loadComponent: ()=> WifiSolicitationPageComponent
+    },
+    {
+        path: 'wifi/:id',
+        loadComponent: ()=> WifiConfirmationPageComponent
+    }
 ];

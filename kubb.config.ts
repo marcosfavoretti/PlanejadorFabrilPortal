@@ -16,7 +16,9 @@ const {
     API_URL_CERTIFICADOS,
     API_SWAGGER_CERTIFICADOS,
     API_URL_ROUTES,
-    API_SWAGGER_ROUTES
+    API_SWAGGER_ROUTES,
+    API_URL_WIFI,
+    API_SWAGGER_WIFI
 } = process.env as Record<string, string>;
 
 interface ApiConfigParams {
@@ -59,34 +61,46 @@ const createApiConfig = ({ name, swaggerPath, outputPath, baseUrl }: ApiConfigPa
 };
 
 export default defineConfig(() => [
-    createApiConfig({
-        name: 'auth-api',
-        swaggerPath: API_SWAGGER_AUTH,
-        outputPath: './src/api/auth',
-        baseUrl: API_URL_AUTH
-    }),
-    createApiConfig({
-        name: 'app-routes-api',
-        swaggerPath: API_SWAGGER_ROUTES,
-        outputPath: './src/api/routes',
-        baseUrl: API_URL_ROUTES
-    }),
-    createApiConfig({
-        name: 'certificados-api',
-        swaggerPath: API_SWAGGER_CERTIFICADOS,
-        outputPath: './src/api/certificados',
-        baseUrl: API_URL_CERTIFICADOS
-    }),
-    createApiConfig({
-        name: 'planejador-api',
-        swaggerPath: API_SWAGGER_PLANEJADOR,
-        outputPath: './src/api/planejador',
-        baseUrl: API_URL_PLANEJADOR
-    }),
+    // createApiConfig({
+    //     name: 'auth-api',
+    //     swaggerPath: API_SWAGGER_AUTH,
+    //     outputPath: './src/api/auth',
+    //     baseUrl: API_URL_AUTH
+    // }),
+    // createApiConfig({
+    //     name: 'app-routes-api',
+    //     swaggerPath: API_SWAGGER_ROUTES,
+    //     outputPath: './src/api/routes',
+    //     baseUrl: API_URL_ROUTES
+    // }),
+    // createApiConfig({
+    //     name: 'certificados-api',
+    //     swaggerPath: API_SWAGGER_CERTIFICADOS,
+    //     outputPath: './src/api/certificados',
+    //     baseUrl: API_URL_CERTIFICADOS
+    // }),
+    // createApiConfig({
+    //     name: 'planejador-api',
+    //     swaggerPath: API_SWAGGER_PLANEJADOR,
+    //     outputPath: './src/api/planejador',
+    //     baseUrl: API_URL_PLANEJADOR
+    // }),
+    // createApiConfig({
+    //     name: 'relogio-api',
+    //     swaggerPath: API_SWAGGER_RELOGIO,
+    //     outputPath: './src/api/relogio',
+    //     baseUrl: API_URL_RELOGIO
+    // }),
     createApiConfig({
         name: 'relogio-api',
         swaggerPath: API_SWAGGER_RELOGIO,
         outputPath: './src/api/relogio',
         baseUrl: API_URL_RELOGIO
+    }),
+    createApiConfig({
+        name: 'wifi-api',
+        swaggerPath: API_SWAGGER_WIFI,
+        outputPath: './src/api/wifi',
+        baseUrl: API_URL_WIFI
     }),
 ]);

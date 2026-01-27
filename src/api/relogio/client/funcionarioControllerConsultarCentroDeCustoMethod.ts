@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { FuncionarioControllerConsultarCentroDeCustoMethodQueryResponse } from "../models/FuncionarioControllerConsultarCentroDeCustoMethod";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { FuncionarioControllerConsultarCentroDeCustoMethodQueryResponse } from "../models/FuncionarioControllerConsultarCentroDeCustoMethod";
 
 function getFuncionarioControllerConsultarCentroDeCustoMethodUrl() {
-  return `https://app.prod.ethos/api/ponto/funcionario/centro-custo` as const
+  return `https://app.ethos.ind.br/api/ponto/funcionario/centro-custo` as const
 }
 
 /**

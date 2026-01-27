@@ -3,7 +3,6 @@ export type { FuncionarioControllerConsultarCentroDeCustoMethodError, Funcionari
 export type { PaginatedResPontoFuncionarioDTODto } from "./PaginatedResPontoFuncionarioDTODto";
 export type { PaginatedResRegistroPontoTurnoPontoDTODto } from "./PaginatedResRegistroPontoTurnoPontoDTODto";
 export type { PontoControllerConsultaMarcacaoMethodQueryParams, PontoControllerConsultaMarcacaoMethodError, PontoControllerConsultaMarcacaoMethodQueryResponse, PontoControllerConsultaMarcacaoMethodQuery } from "./PontoControllerConsultaMarcacaoMethod";
-export type { PontoControllerProcessaTipoMarcacaoMethodError, PontoControllerProcessaTipoMarcacaoMethodMutationRequest, PontoControllerProcessaTipoMarcacaoMethodMutationResponse, PontoControllerProcessaTipoMarcacaoMethodMutation } from "./PontoControllerProcessaTipoMarcacaoMethod";
 export type { PontoControllerSicnronizaPontoMethodError, PontoControllerSicnronizaPontoMethodMutationResponse, PontoControllerSicnronizaPontoMethodMutation } from "./PontoControllerSicnronizaPontoMethod";
 export type { PontoKPIControllerConsultarMaisHorasIrregularesQueryParams, PontoKPIControllerConsultarMaisHorasIrregularesError, PontoKPIControllerConsultarMaisHorasIrregularesQueryResponse, PontoKPIControllerConsultarMaisHorasIrregularesQuery } from "./PontoKPIControllerConsultarMaisHorasIrregulares";
 export type { ResCentroDeCustoDTO } from "./ResCentroDeCustoDTO";

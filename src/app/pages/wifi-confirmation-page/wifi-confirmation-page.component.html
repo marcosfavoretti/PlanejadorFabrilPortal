@@ -1,0 +1,139 @@
+<div class="wifi-confirmation-container">
+  <div class="card">
+    <img src="ethos35.png" alt="Logo" class="logo">
+
+    <!-- Seção do Formulário -->
+    <ng-container *ngIf="submissionStatus() === 'form'">
+      <h2 class="card-title">Finalize seu Cadastro</h2>
+      <p class="card-description">
+        Este é o último passo para gerar o seu acesso à nossa rede Wi-Fi. Por
+        favor, preencha os campos abaixo.
+      </p>
+
+      <form
+        [formGroup]="visitorForm"
+        (ngSubmit)="finalizeRegistration()"
+        novalidate
+      >
+        <!-- Campo Nome -->
+        <div class="form-group">
+          <label for="name" class="form-label">Nome do visitante</label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            class="form-control"
+            placeholder="Seu nome"
+            [ngClass]='{
+              "is-invalid": f["name"].invalid && f["name"].touched,
+            }'
+          >
+          <div
+            *ngIf="f['name'].invalid && f['name'].touched"
+            class="invalid-feedback"
+          >
+            <span *ngIf="f['name'].errors?.['required']"
+            >O nome é obrigatório.</span>
+            <span *ngIf="f['name'].errors?.['minlength']"
+            >O nome deve ter pelo menos 3 caracteres.</span>
+          </div>
+        </div>
+
+        <!-- Campo Empresa -->
+        <div class="form-group">
+          <label for="company" class="form-label">Empresa do visitante</label>
+          <input
+            id="company"
+            type="text"
+            formControlName="company"
+            class="form-control"
+            placeholder="Nome da sua empresa"
+            [ngClass]='{
+              "is-invalid": f["company"].invalid &&
+                f["company"].touched,
+            }'
+          >
+          <div
+            *ngIf="f['company'].invalid && f['company'].touched"
+            class="invalid-feedback"
+          >
+            <span *ngIf="f['company'].errors?.['required']"
+            >A empresa é obrigatória.</span>
+          </div>
+        </div>
+
+        <!-- Campo E-mail -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email do visitante</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="seu.email@exemplo.com"
+            [ngClass]='{
+              "is-invalid": f["email"].invalid &&
+                f["email"].touched,
+            }'
+          >
+          <div
+            *ngIf="f['email'].invalid && f['email'].touched"
+            class="invalid-feedback"
+          >
+            <span *ngIf="f['email'].errors?.['required']"
+            >O e-mail é obrigatório.</span>
+            <span *ngIf="f['email'].errors?.['email']"
+            >Formato de e-mail inválido.</span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]='visitorForm.invalid || submissionStatus() === "loading"'
+        >
+          <span *ngIf="submissionStatus() !== 'loading'"
+          >Concluir Cadastro</span>
+          <span *ngIf="submissionStatus() === 'loading'">Salvando...</span>
+        </button>
+      </form>
+    </ng-container>
+
+    <!-- Estado de Carregamento -->
+    <div *ngIf="submissionStatus() === 'loading'" class="status-section">
+      <h2 class="card-title">Finalizando...</h2>
+      <p class="card-description">
+        Estamos salvando suas informações. Por favor, aguarde.
+      </p>
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Estado de Sucesso -->
+    <div *ngIf="submissionStatus() === 'success'" class="status-section">
+      <h2 class="card-title text-success">Cadastro Concluído!</h2>
+      <p class="card-description">
+        Seu acesso à rede Wi-Fi foi configurado com sucesso. Bem-vindo(a)!
+      </p>
+      <div class="code-box">
+        <span class="code-label">Sua Senha de Acesso</span>
+        <span class="wifi-code">{{wifiCode()}}</span>
+      </div>
+      <div class="icon-success">&#10004;</div>
+    </div>
+
+    <!-- Estado de Erro -->
+    <div *ngIf="submissionStatus() === 'error'" class="status-section">
+      <h2 class="card-title text-danger">Falha no Cadastro</h2>
+      <p class="card-description">
+        Não foi possível completar seu cadastro.
+      </p>
+      <p class="error-message">{{ errorMessage() }}</p>
+      <div class="icon-error">&#10006;</div>
+      <a
+        [routerLink]='["/wifi"]'
+        (click)='submissionStatus.set("form")'
+        class="back-link"
+      >Tentar Novamente</a>
+    </div>
+  </div>
+</div>
