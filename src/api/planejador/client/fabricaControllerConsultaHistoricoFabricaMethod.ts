@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerConsultaHistoricoFabricaMethodQueryResponse, FabricaControllerConsultaHistoricoFabricaMethodQueryParams } from "../models/FabricaControllerConsultaHistoricoFabricaMethod";
 
 function getFabricaControllerConsultaHistoricoFabricaMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/historico` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/historico` as const
 }
 
 /**

@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { WifiEthosControllerCheckarMagicLinkMethodMutationResponse, WifiEthosControllerCheckarMagicLinkMethodPathParams } from "../models/WifiEthosControllerCheckarMagicLinkMethod";
 
 function getWifiEthosControllerCheckarMagicLinkMethodUrl(id: WifiEthosControllerCheckarMagicLinkMethodPathParams["id"]) {
-  return `http://192.168.99.129:3000/api/wifi/check/${id}` as const
+  return `https://app.ethos.ind.br/api/wifi/check/${id}` as const
 }
 
 /**

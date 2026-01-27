@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AppEthosControllerDeletaRoutesMutationResponse, AppEthosControllerDeletaRoutesPathParams } from "../models/AppEthosControllerDeletaRoutes";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AppEthosControllerDeletaRoutesMutationResponse, AppEthosControllerDeletaRoutesPathParams } from "../models/AppEthosControllerDeletaRoutes";
 
 function getAppEthosControllerDeletaRoutesUrl(id: AppEthosControllerDeletaRoutesPathParams["id"]) {
-  return `https://app.prod.ethos/api/route/app/routes/${id}` as const
+  return `https://app.ethos.ind.br/api/route/app/routes/${id}` as const
 }
 
 /**

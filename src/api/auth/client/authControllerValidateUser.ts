@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AuthControllerValidateUserQueryResponse, AuthControllerValidateUserPathParams, AuthControllerValidateUser404 } from "../models/AuthControllerValidateUser";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AuthControllerValidateUserQueryResponse, AuthControllerValidateUserPathParams, AuthControllerValidateUser404 } from "../models/AuthControllerValidateUser";
 
 function getAuthControllerValidateUserUrl(token: AuthControllerValidateUserPathParams["token"]) {
-  return `https://app.prod.ethos/api/auth/validate-user/${token}` as const
+  return `https://app.ethos.ind.br/api/auth/validate-user/${token}` as const
 }
 
 /**

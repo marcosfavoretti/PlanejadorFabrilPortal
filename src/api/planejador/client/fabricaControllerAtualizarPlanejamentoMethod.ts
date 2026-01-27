@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerAtualizarPlanejamentoMethodMutationRequest, FabricaControllerAtualizarPlanejamentoMethodMutationResponse } from "../models/FabricaControllerAtualizarPlanejamentoMethod";
 
 function getFabricaControllerAtualizarPlanejamentoMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/planejamentos` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos` as const
 }
 
 /**

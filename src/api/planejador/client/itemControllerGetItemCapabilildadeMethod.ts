@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { ItemControllerGetItemCapabilildadeMethodQueryResponse } from "../models/ItemControllerGetItemCapabilildadeMethod";
 
 function getItemControllerGetItemCapabilildadeMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/item/capabiliade` as const
+  return `https://app.ethos.ind.br/api/planejador/item/capabiliade` as const
 }
 
 /**

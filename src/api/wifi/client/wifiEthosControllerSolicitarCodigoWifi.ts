@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { WifiEthosControllerSolicitarCodigoWifiMutationRequest, WifiEthosControllerSolicitarCodigoWifiMutationResponse } from "../models/WifiEthosControllerSolicitarCodigoWifi";
 
 function getWifiEthosControllerSolicitarCodigoWifiUrl() {
-  return `http://192.168.99.129:3000/api/wifi/new` as const
+  return `https://app.ethos.ind.br/api/wifi/new` as const
 }
 
 /**

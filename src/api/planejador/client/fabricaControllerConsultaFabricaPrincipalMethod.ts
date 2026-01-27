@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerConsultaFabricaPrincipalMethodQueryResponse } from "../models/FabricaControllerConsultaFabricaPrincipalMethod";
 
 function getFabricaControllerConsultaFabricaPrincipalMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/principal` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/principal` as const
 }
 
 /**

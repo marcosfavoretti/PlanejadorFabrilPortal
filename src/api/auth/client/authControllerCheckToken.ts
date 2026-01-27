@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AuthControllerCheckTokenMutationRequest, AuthControllerCheckTokenMutationResponse } from "../models/AuthControllerCheckToken";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AuthControllerCheckTokenMutationRequest, AuthControllerCheckTokenMutationResponse } from "../models/AuthControllerCheckToken";
 
 function getAuthControllerCheckTokenUrl() {
-  return `https://app.prod.ethos/api/auth/check-token` as const
+  return `https://app.ethos.ind.br/api/auth/check-token` as const
 }
 
 /**

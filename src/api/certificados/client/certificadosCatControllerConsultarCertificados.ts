@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { CertificadosCatControllerConsultarCertificadosQueryResponse, CertificadosCatControllerConsultarCertificadosQueryParams } from "../models/CertificadosCatControllerConsultarCertificados";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { CertificadosCatControllerConsultarCertificadosQueryResponse, CertificadosCatControllerConsultarCertificadosQueryParams } from "../models/CertificadosCatControllerConsultarCertificados";
 
 function getCertificadosCatControllerConsultarCertificadosUrl() {
-  return `https://app.prod.ethos/api/certificados` as const
+  return `https://app.ethos.ind.br/api/certificados` as const
 }
 
 /**

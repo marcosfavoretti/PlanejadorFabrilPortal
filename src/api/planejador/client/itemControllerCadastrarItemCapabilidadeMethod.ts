@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { ItemControllerCadastrarItemCapabilidadeMethodMutationRequest, ItemControllerCadastrarItemCapabilidadeMethodMutationResponse } from "../models/ItemControllerCadastrarItemCapabilidadeMethod";
 
 function getItemControllerCadastrarItemCapabilidadeMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/item/capabilidade` as const
+  return `https://app.ethos.ind.br/api/planejador/item/capabilidade` as const
 }
 
 /**

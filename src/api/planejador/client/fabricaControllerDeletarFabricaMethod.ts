@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerDeletarFabricaMethodMutationRequest, FabricaControllerDeletarFabricaMethodMutationResponse } from "../models/FabricaControllerDeletarFabricaMethod";
 
 function getFabricaControllerDeletarFabricaMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/fabrica` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/fabrica` as const
 }
 
 /**

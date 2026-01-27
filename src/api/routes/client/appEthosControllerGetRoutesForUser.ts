@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AppEthosControllerGetRoutesForUserQueryResponse } from "../models/AppEthosControllerGetRoutesForUser";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AppEthosControllerGetRoutesForUserQueryResponse } from "../models/AppEthosControllerGetRoutesForUser";
 
 function getAppEthosControllerGetRoutesForUserUrl() {
-  return `https://app.prod.ethos/api/route/app/routes` as const
+  return `https://app.ethos.ind.br/api/route/app/routes` as const
 }
 
 /**

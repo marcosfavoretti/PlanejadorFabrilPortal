@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationResponse } from "../models/FabricaControllerDesplanejarPedidoNaFabricaMethod";
 
 function getFabricaControllerDesplanejarPedidoNaFabricaMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/fabrica/pedido` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/fabrica/pedido` as const
 }
 
 /**

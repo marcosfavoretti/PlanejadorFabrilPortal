@@ -8,7 +8,7 @@ import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerResetaFabricaMethodMutationRequest, FabricaControllerResetaFabricaMethodMutationResponse } from "../models/FabricaControllerResetaFabricaMethod";
 
 function getFabricaControllerResetaFabricaMethodUrl() {
-  return `https://app.prod.ethos/api/planejador/fabrica/reset` as const
+  return `https://app.ethos.ind.br/api/planejador/fabrica/reset` as const
 }
 
 /**

@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AuthControllerLogoutMutationResponse } from "../models/AuthControllerLogout";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AuthControllerLogoutMutationResponse } from "../models/AuthControllerLogout";
 
 function getAuthControllerLogoutUrl() {
-  return `https://app.prod.ethos/api/auth/logout` as const
+  return `https://app.ethos.ind.br/api/auth/logout` as const
 }
 
 /**

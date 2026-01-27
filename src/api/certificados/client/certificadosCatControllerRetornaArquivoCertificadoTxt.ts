@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { CertificadosCatControllerRetornaArquivoCertificadoTxtQueryResponse, CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams } from "../models/CertificadosCatControllerRetornaArquivoCertificadoTxt";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { CertificadosCatControllerRetornaArquivoCertificadoTxtQueryResponse, CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams } from "../models/CertificadosCatControllerRetornaArquivoCertificadoTxt";
 
 function getCertificadosCatControllerRetornaArquivoCertificadoTxtUrl(id: CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams["id"]) {
-  return `https://app.prod.ethos/api/certificados/file/${id}` as const
+  return `https://app.ethos.ind.br/api/certificados/file/${id}` as const
 }
 
 /**

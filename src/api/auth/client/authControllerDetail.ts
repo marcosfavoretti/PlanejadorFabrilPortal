@@ -4,11 +4,11 @@
 */
 
 import client from "@/client";
-import type { AuthControllerDetailQueryResponse, AuthControllerDetail401 } from "../models/AuthControllerDetail";
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
+import type { AuthControllerDetailQueryResponse, AuthControllerDetail401 } from "../models/AuthControllerDetail";
 
 function getAuthControllerDetailUrl() {
-  return `https://app.prod.ethos/api/auth/detail` as const
+  return `https://app.ethos.ind.br/api/auth/detail` as const
 }
 
 /**
