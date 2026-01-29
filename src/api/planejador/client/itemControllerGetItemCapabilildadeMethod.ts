@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { ItemControllerGetItemCapabilildadeMethodQueryResponse } from "../models/ItemControllerGetItemCapabilildadeMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getItemControllerGetItemCapabilildadeMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/item/capabiliade` as const

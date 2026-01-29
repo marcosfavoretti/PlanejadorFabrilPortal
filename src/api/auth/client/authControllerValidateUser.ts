@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { AuthControllerValidateUserQueryResponse, AuthControllerValidateUserPathParams, AuthControllerValidateUser404 } from "../models/AuthControllerValidateUser";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getAuthControllerValidateUserUrl(token: AuthControllerValidateUserPathParams["token"]) {
   return `https://app.ethos.ind.br/api/auth/validate-user/${token}` as const

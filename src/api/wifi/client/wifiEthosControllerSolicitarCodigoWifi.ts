@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { WifiEthosControllerSolicitarCodigoWifiMutationRequest, WifiEthosControllerSolicitarCodigoWifiMutationResponse } from "../models/WifiEthosControllerSolicitarCodigoWifi";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getWifiEthosControllerSolicitarCodigoWifiUrl() {
   return `https://app.ethos.ind.br/api/wifi/new` as const

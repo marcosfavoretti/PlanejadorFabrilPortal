@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerAtualizarPlanejamentoMethodMutationRequest, FabricaControllerAtualizarPlanejamentoMethodMutationResponse } from "../models/FabricaControllerAtualizarPlanejamentoMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerAtualizarPlanejamentoMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos` as const

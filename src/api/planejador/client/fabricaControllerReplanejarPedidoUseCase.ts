@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerReplanejarPedidoUseCaseMutationRequest, FabricaControllerReplanejarPedidoUseCaseMutationResponse } from "../models/FabricaControllerReplanejarPedidoUseCase";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerReplanejarPedidoUseCaseUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/fabrica/replanejamento` as const

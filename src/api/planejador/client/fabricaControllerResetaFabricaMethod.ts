@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerResetaFabricaMethodMutationRequest, FabricaControllerResetaFabricaMethodMutationResponse } from "../models/FabricaControllerResetaFabricaMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerResetaFabricaMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/reset` as const

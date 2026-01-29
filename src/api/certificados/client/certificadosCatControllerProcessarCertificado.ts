@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { CertificadosCatControllerProcessarCertificadoMutationRequest, CertificadosCatControllerProcessarCertificadoMutationResponse } from "../models/CertificadosCatControllerProcessarCertificado";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getCertificadosCatControllerProcessarCertificadoUrl() {
   return `https://app.ethos.ind.br/api/certificados` as const

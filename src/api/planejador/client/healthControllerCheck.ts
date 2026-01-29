@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { HealthControllerCheckQueryResponse, HealthControllerCheck503 } from "../models/HealthControllerCheck";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getHealthControllerCheckUrl() {
   return `https://app.ethos.ind.br/api/planejador/health` as const

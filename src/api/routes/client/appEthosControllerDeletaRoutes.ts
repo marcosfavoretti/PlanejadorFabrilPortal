@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { AppEthosControllerDeletaRoutesMutationResponse, AppEthosControllerDeletaRoutesPathParams } from "../models/AppEthosControllerDeletaRoutes";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getAppEthosControllerDeletaRoutesUrl(id: AppEthosControllerDeletaRoutesPathParams["id"]) {
   return `https://app.ethos.ind.br/api/route/app/routes/${id}` as const

@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerPlanejarManualMethodMutationRequest, FabricaControllerPlanejarManualMethodMutationResponse } from "../models/FabricaControllerPlanejarManualMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerPlanejarManualMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos/manual` as const

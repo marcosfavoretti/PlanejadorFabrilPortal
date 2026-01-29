@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm flex-grow-1 overflow-hidden">
+        <div class="card border-0 shadow-sm grow">
             <div class="card-header bg-white border-0 pt-3 pb-2">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="text-success h5 m-0 fw-bold">
@@ -91,14 +91,14 @@
                     </app-horas-irregulares-pareto-chart>
                 }
             </div>
-            <div class="card-body p-0 d-flex flex-column overflow-hidden">
+            <div class="card-body p-0 d-flex flex-column">
 
-                <div class="flex-grow-1 overflow-hidden relative-container">
-                    <app-table-dynamic scrollHeight="flex" [scrollable]="true" [tableModel]="tableModel"
+                <div class="grow relative-container">
+                    <app-table-dynamic scrollHeight="flex" [tableModel]="tableModel"
                         [data]="tableData()" styleClass="h-100 w-100 position-absolute"></app-table-dynamic>
                 </div>
 
-                <div class="border-top bg-light p-2 flex-shrink-0">
+                <div class="border-top bg-light p-2 shrink-0">
                     <p-paginator 
                     (onPageChange)="onPageChange($event)" 
                         [first]="currentPage() * itemsPerPage"

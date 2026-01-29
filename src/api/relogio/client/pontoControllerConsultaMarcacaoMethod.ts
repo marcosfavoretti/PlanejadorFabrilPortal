@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { PontoControllerConsultaMarcacaoMethodQueryResponse, PontoControllerConsultaMarcacaoMethodQueryParams } from "../models/PontoControllerConsultaMarcacaoMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getPontoControllerConsultaMarcacaoMethodUrl() {
   return `https://app.ethos.ind.br/api/ponto/registro` as const

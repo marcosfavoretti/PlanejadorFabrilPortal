@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest, FabricaControllerDesplanejarPedidoNaFabricaMethodMutationResponse } from "../models/FabricaControllerDesplanejarPedidoNaFabricaMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerDesplanejarPedidoNaFabricaMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/fabrica/pedido` as const

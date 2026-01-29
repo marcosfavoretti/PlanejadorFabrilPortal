@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { CertificadosCatControllerRetornaArquivoCertificadoTxtQueryResponse, CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams } from "../models/CertificadosCatControllerRetornaArquivoCertificadoTxt";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getCertificadosCatControllerRetornaArquivoCertificadoTxtUrl(id: CertificadosCatControllerRetornaArquivoCertificadoTxtPathParams["id"]) {
   return `https://app.ethos.ind.br/api/certificados/file/${id}` as const

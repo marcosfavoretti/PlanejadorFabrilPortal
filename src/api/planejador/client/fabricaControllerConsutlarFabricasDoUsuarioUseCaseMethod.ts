@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodQueryResponse } from "../models/FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/usuario` as const

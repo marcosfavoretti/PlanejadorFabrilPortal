@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { CargoControllerSetUserCargoMethodMutationRequest, CargoControllerSetUserCargoMethodMutationResponse } from "../models/CargoControllerSetUserCargoMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getCargoControllerSetUserCargoMethodUrl() {
   return `https://app.ethos.ind.br/api/auth/cargo/set` as const

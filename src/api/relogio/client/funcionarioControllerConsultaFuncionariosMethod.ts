@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FuncionarioControllerConsultaFuncionariosMethodQueryResponse, FuncionarioControllerConsultaFuncionariosMethodQueryParams } from "../models/FuncionarioControllerConsultaFuncionariosMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFuncionarioControllerConsultaFuncionariosMethodUrl() {
   return `https://app.ethos.ind.br/api/ponto/funcionario/funcionarios` as const

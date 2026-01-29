@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { FabricaControllerMergeFabricaMethodMutationRequest, FabricaControllerMergeFabricaMethodMutationResponse } from "../models/FabricaControllerMergeFabricaMethod";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerMergeFabricaMethodUrl() {
   return `https://app.ethos.ind.br/api/planejador/fabrica/merge` as const

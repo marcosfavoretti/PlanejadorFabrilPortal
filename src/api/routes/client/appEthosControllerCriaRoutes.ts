@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { AppEthosControllerCriaRoutesMutationRequest, AppEthosControllerCriaRoutesMutationResponse } from "../models/AppEthosControllerCriaRoutes";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getAppEthosControllerCriaRoutesUrl() {
   return `https://app.ethos.ind.br/api/route/app/routes` as const

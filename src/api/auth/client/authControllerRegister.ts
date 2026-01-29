@@ -4,8 +4,8 @@
 */
 
 import client from "@/client";
-import type { RequestConfig, ResponseErrorConfig } from "@/client";
 import type { AuthControllerRegisterMutationRequest, AuthControllerRegisterMutationResponse, AuthControllerRegister400 } from "../models/AuthControllerRegister";
+import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getAuthControllerRegisterUrl() {
   return `https://app.ethos.ind.br/api/auth/register` as const
