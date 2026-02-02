@@ -18,6 +18,7 @@ import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wifi-solicitation-page.component';
 import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
+import { ContagemBufferPageComponent } from './pages/contagem-buffer-page/contagem-buffer-page.component';
 export const routes: Routes = [
     {
         path: '',
@@ -38,6 +39,7 @@ export const routes: Routes = [
             }
         ]
     },
+    //planejador routes
     {
         path: 'planejamentos',
         loadComponent: () => FabricaPrincipalPageComponent,
@@ -48,7 +50,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabricaPrincipal',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => FabricaPrincipalViewComponent,
                 data: {
                     roles: [
@@ -59,7 +61,7 @@ export const routes: Routes = [
             },
             {
                 path: 'minhas-fabricas',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => MinhasFabricasPageComponent,
                 data: {
                     roles: [
@@ -70,7 +72,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabrica/:fabricaId',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => FabricaPageComponent,
                 data: {
                     roles: [
@@ -80,7 +82,7 @@ export const routes: Routes = [
             },
             {
                 path: 'RO/fabrica/:fabricaId',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => FabricaPageReadOnlyComponent,
                 data: {
                     roles: [
@@ -90,7 +92,7 @@ export const routes: Routes = [
             },
             {
                 path: 'pedidos',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => PedidosFabricaViewComponent,
                 data: {
                     roles: [
@@ -100,7 +102,7 @@ export const routes: Routes = [
             },
             {
                 path: 'fabricaAvaliacao',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => FabricasParaAvaliacaoViewComponent,
                 data: {
                     roles: [
@@ -110,7 +112,7 @@ export const routes: Routes = [
             },
             {
                 path: 'capabilidades',
-                canActivate: [AuthGuard,CargoGuard],
+                canActivate: [AuthGuard, CargoGuard],
                 loadComponent: () => ItemPaginaComponent,
                 data: {
                     roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP]
@@ -118,11 +120,13 @@ export const routes: Routes = [
             }
         ]
     },
+    //certificados routes
     {
         path: 'certificados',
         loadComponent: () => CertificadoCaterpillarPageComponent,
         canActivate: [AuthGuard, CargoGuard]
     },
+    //auth routes
     {
         path: 'register',
         loadComponent: () => RegisterScreenComponent
@@ -131,26 +135,24 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () => LoginScreenComponent
     },
-    {
-        path: 'item',
-        loadComponent: () => ItemPaginaComponent,
-        data: {
-            roles: [
-                SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
-            ]
-        }
-    },
+    //ponto routes
     {
         path: 'ponto',
         loadComponent: () => RelogioPontPageComponent,
         canActivate: [AuthGuard],
     },
+    //wifi routes
     {
         path: 'wifi',
-        loadComponent: ()=> WifiSolicitationPageComponent
+        loadComponent: () => WifiSolicitationPageComponent
     },
     {
         path: 'wifi/:id',
-        loadComponent: ()=> WifiConfirmationPageComponent
-    }
+        loadComponent: () => WifiConfirmationPageComponent
+    },
+    // buffer routes
+    {
+        path: 'buffer',
+        loadComponent: () => ContagemBufferPageComponent
+    },
 ];

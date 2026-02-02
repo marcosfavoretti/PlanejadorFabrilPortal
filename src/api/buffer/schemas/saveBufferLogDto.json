@@ -1,0 +1,1 @@
+{"type":"object","properties":{"item":{"type":"string"},"qtd":{"type":"number"},"mercadoName":{"type":"string"}},"required":["item","qtd","mercadoName"],"x-readme-ref-name":"SaveBufferLogDto"}

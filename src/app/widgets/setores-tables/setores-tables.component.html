@@ -1,0 +1,13 @@
+@if (data2Display.length) {
+<app-table-dynamic [data]="data2Display" (OnChecked)="updateRequire($event)"
+    [tableModel]="tableSchema"></app-table-dynamic>
+}
+@else {
+<div class="flex-1 p-5">
+    <div class="d-flex justify-content-center align-items-center ">
+        <div class="w-50 h-50 p-5 rounded-4 border-dark-subtle border-1" style="border-style: dashed;">
+            <img src="prep.svg" width="100%" style="height: 100%;">
+        </div>
+    </div>
+</div>
+}

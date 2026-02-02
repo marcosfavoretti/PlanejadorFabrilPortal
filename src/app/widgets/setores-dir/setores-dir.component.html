@@ -1,0 +1,12 @@
+<div class="px-2 mb-4">
+    <div class="d-flex flex-wrap gap-2 justify-content-start align-items-center">
+        @for (setor of setores$ | async; track $index) {
+        <button class="btn btn-outline-success px-2 py-1 fw-semibold" [class.active]="setor === setorStore.currentSetor" style="min-width: 50px;"
+            (click)="setSetor(setor)">
+            <span class="small">
+                {{ setor.setor }}
+            </span>
+        </button>
+        }
+    </div>
+</div>

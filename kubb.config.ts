@@ -18,7 +18,9 @@ const {
     API_URL_ROUTES,
     API_SWAGGER_ROUTES,
     API_URL_WIFI,
-    API_SWAGGER_WIFI
+    API_SWAGGER_WIFI,
+    API_URL_BUFFER,
+    API_SWAGGER_BUFFER
 } = process.env as Record<string, string>;
 
 interface ApiConfigParams {
@@ -102,5 +104,11 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_WIFI,
         outputPath: './src/api/wifi',
         baseUrl: API_URL_WIFI
+    }),
+    createApiConfig({
+        name: 'buffer-api',
+        swaggerPath: API_SWAGGER_BUFFER,
+        outputPath: './src/api/buffer',
+        baseUrl: API_URL_BUFFER
     }),
 ]);

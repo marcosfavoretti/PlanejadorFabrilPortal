@@ -9,12 +9,12 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { UserstoreService } from './services/userstore.service';
 import { catchError, firstValueFrom, of, tap } from 'rxjs';
 import { RoutePermissionStoreService } from './services/RoutePermissionStore.service';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAppInitializer(async () => {
       const userStore = inject(UserstoreService);
-      const router = inject(Router);
       const routePermission = inject(RoutePermissionStoreService);
       try {
         await firstValueFrom(
@@ -41,6 +41,7 @@ export const appConfig: ApplicationConfig = {
       anchorScrolling: 'enabled'
     })),
     provideAnimationsAsync(),
+    provideHttpClient(),
     MessageService,
     providePrimeNG({
       theme: {

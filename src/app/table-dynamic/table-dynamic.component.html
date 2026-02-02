@@ -30,14 +30,10 @@
       <th pSortableColumn="{{ key.field }}" class="text-responsive text-center small">
         @if (!key.isButton) {
         @if (key.isDate) {
-        <p-columnFilter [field]="key.field" type="date"
-          display="menu" class="small">
+        <p-columnFilter [field]="key.field" type="date" display="menu" class="small">
           @if (key.isDate) {
           <ng-template pTemplate="filter" let-filter="filterCallback">
-            <p-date-picker
-              dateFormat="dd/mm/yy" 
-              (onSelect)="onDateSelect($event, filter)"
-              ></p-date-picker>
+            <p-date-picker dateFormat="dd/mm/yy" (onSelect)="onDateSelect($event, filter)"></p-date-picker>
           </ng-template>
           }
         </p-columnFilter>
@@ -80,15 +76,17 @@
       @for (key of tableModel.columns; track $index) {
       <td class="text-responsive text-center small">
         @if (key.isImg) {
+        @let image = getNestedValue(item, key.field);
         <div class="d-flex justify-content-center align-items-center small">
-          @if (!getNestedValue(item, key.field)) {
+          {{image}}
+          @if (!image) {
           <div class="bg-secondary-subtle rounded d-flex justify-content-center align-items-center"
-            style="width: 100px; height: 75px;">
+            style="width: 100px; height: 100px;">
             <i class="pi pi-eye-slash small"></i>
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="getNestedValue(item, key.field)" width="100px" height="100px" alt="" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" />
           }
         </div> }
         @else {
@@ -105,15 +103,16 @@
       @for (key of columns; track $index) {
       <td class="text-responsive text-center border-bottom border-secondary-subtle py-2 small">
         @if (key?.isImg) {
+        @let image = getNestedValue(item, key.field);
         <div class="d-flex justify-content-center align-items-center">
-          @if (!getNestedValue(item, key.field)) {
+          @if (!image) {
           <div class="bg-secondary-subtle rounded d-flex justify-content-center align-items-center"
-            style="width: 100px; height: 75px;">
+            style="width: 100px; height: 100px;">
             <i class="pi pi-eye-slash small"></i>
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="getNestedValue(item, key.field)" width="100px" alt="" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" />
           }
         </div>
         }
