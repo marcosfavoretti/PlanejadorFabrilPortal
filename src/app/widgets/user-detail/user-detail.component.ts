@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { tap } from 'rxjs';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
 import { UserstoreService } from '../../services/userstore.service';
-import {  TagModule } from 'primeng/tag';
+import { TagModule } from 'primeng/tag';
 import { UserResponseDTO } from '@/api/auth';
 import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore.service';
 
@@ -30,13 +30,19 @@ export class UserDetailComponent implements OnInit {
     const logout$ = this.userService.logout()
       .pipe(
         tap(() => {
-          this.router.navigate(['/login']);
           this.userStore.resetStore();
           this.routerStore.resetStore();
+          this.login();
         })
       )
     this.popUpService.showWhile(logout$);
   }
+
+  login(): void {
+    this.router.navigate(['/login']);
+  }
+
+
 
   ngOnInit(): void {
     this.user = this.userStore.item;

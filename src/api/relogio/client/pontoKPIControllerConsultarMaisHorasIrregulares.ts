@@ -8,7 +8,7 @@ import type { PontoKPIControllerConsultarMaisHorasIrregularesQueryResponse, Pont
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getPontoKPIControllerConsultarMaisHorasIrregularesUrl() {
-  return `https://app.ethos.ind.br/api/ponto/kpi/mais-horas-irregulares` as const
+  return `http://192.168.99.129:30001/api/ponto/kpi/mais-horas-irregulares` as const
 }
 
 /**

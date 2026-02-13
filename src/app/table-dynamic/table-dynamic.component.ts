@@ -35,31 +35,21 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() scrollable: boolean = false;
   @Input() scrollHeight: string = 'auto';
   private inputChanged$ = new Subject<{ row: any; column: any; value: any }>();
-  // Função auxiliar
+  private activeFilters = new Set<string>(); // New property for tracking active filters
 
   @ViewChild('dt2') dt2!: Table
   Array = Array;
   Object = Object;
 
   onDateSelect(event: Date, filter: Function) {
-    const utcDate = new Date(Date.UTC(event.getFullYear(), event.getMonth(), event.getDate(),
-      event.getHours(), event.getMinutes(), event.getSeconds()));
+    const utcDate = event;
+    console.log(event)
     filter(utcDate);
   }
   // Converter todas as datas para Date
   ngOnInit() {
-    this.data = this.data.map(row => {
-      const newRow = { ...row };
-      this.tableModel.columns.forEach(col => {
-        if (col.isDate) {
-          const val = this.getNestedValue(newRow, col.field);
-          if (val && !(val instanceof Date)) {
-            this.setNestedValue(newRow, col.field, new Date(val));
-          }
-        }
-      });
-      return newRow;
-    });
+    this.data = this.processDateColumns(this.data);
+    this.updateFilterStatus(); // Reflect initial filter status if any
 
     // Debounce já existente
     this.inputChanged$
@@ -67,6 +57,32 @@ export class TableDynamicComponent implements OnChanges, OnInit {
         this.onNewCheckEvent(row, column, value);
       });
   }
+  private processDateColumns(data: any[]): any[] {
+    if (!this.tableModel || !this.tableModel.columns || !data) {
+      return data;
+    }
+
+    return data.map(row => {
+      const newRow = { ...row };
+      this.tableModel.columns.forEach(col => {
+        if (col.isDate) {
+          const val = this.getNestedValue(newRow, col.field);
+          // Only convert if it's not already a Date object and has a value
+          if (val && !(val instanceof Date)) {
+            const date = new Date(val);
+            // Check if the date is valid before setting
+            if (!isNaN(date.getTime())) {
+              this.setNestedValue(newRow, col.field, date);
+            } else {
+              console.warn(`Invalid date value for field ${col.field}: ${val}`);
+            }
+          }
+        }
+      });
+      return newRow;
+    });
+  }
+
   onInputChangeDebounced(row: any, column: any, value: any) {
     console.log(row, column, value)
     this.inputChanged$.next({ row, column, value });
@@ -91,6 +107,10 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && changes['data'].currentValue) {
+      this.data = this.processDateColumns(changes['data'].currentValue);
+      this.updateFilterStatus(); // Ensure filter status is updated when data changes (e.g., table is reloaded)
+    }
     if (this.tableModel.totalize === true) this.data.map(data => data.atr_group = 'GROUP');
     if (this.Object.hasOwn(changes, 'filter') && changes['filter'].currentValue) {
       this.filterTable(changes['filter'].currentValue as { value: string, field: string, method: 'contains' | 'notEquals' });
@@ -177,11 +197,47 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   filterTable(payload: { value: string, field: string, method: 'contains' | 'notEquals' }): void {
     const { value, field, method } = payload;
     this.dt2.filter(value, field, method);
+    if (value !== null && value !== undefined && value !== '') { // Check if a filter value is provided
+        this.activeFilters.add(field);
+    } else {
+        this.activeFilters.delete(field);
+    }
+    this.updateFilterStatus(); // Call to update tableModel.columns
   }
 
   clearFilter(): void {
     this.dt2.clear()
     this.dt2.reset()
+    this.activeFilters.clear(); // Clear all active filters
+    this.updateFilterStatus(); // Reset all filterActive flags
+  }
+
+  onTableFilter(event: any): void {
+    // Clear existing active filters and rebuild based on the current filter state of the table
+    this.activeFilters.clear();
+    for (const field in event.filters) {
+      const filterMeta = event.filters[field];
+      if (Array.isArray(filterMeta)) {
+        // Multi-select filters
+        if (filterMeta.some(fm => fm.value !== null && fm.value !== undefined && fm.value !== '')) {
+          this.activeFilters.add(field);
+        }
+      } else {
+        // Single field filters
+        if (filterMeta.value !== null && filterMeta.value !== undefined && filterMeta.value !== '') {
+          this.activeFilters.add(field);
+        }
+      }
+    }
+    this.updateFilterStatus();
+  }
+
+  private updateFilterStatus(): void {
+    if (this.tableModel && this.tableModel.columns) {
+      this.tableModel.columns.forEach(col => {
+        col.filterActive = this.activeFilters.has(col.field);
+      });
+    }
   }
 
   exportarExcel() {

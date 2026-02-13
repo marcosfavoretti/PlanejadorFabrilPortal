@@ -27,11 +27,25 @@ export class PedidoStoreService
 
     pedidoLoteChart = computed(() => {
         const items = this.item() ?? [];
-        const labels = Array.from(new Set(items.map(a => a.dataEntrega)));
-        const amount = labels.map(l => items.filter(i => i.dataEntrega === l).reduce((tot, a) => tot += a.lote, 0));
+        
+        const groups = new Map<string, number>();
+        items.forEach(i => {
+            const dateObj = new Date(i.dataEntrega);
+            const key = format(dateObj, 'yyyy-MM-dd');
+            groups.set(key, (groups.get(key) || 0) + i.lote);
+        });
+
+        const sortedKeys = Array.from(groups.keys()).sort();
+
+        const labels = sortedKeys.map(key => {
+            const [year, month, day] = key.split('-').map(Number);
+            return format(new Date(year, month - 1, day), 'dd/MM/yyyy');
+        });
+        
+        const amount = sortedKeys.map(key => groups.get(key));
 
         return {
-            labels: labels.map(l => format(addDays(l, 1), 'dd/MM/yyyy')),//workaround ruim
+            labels: labels,//workaround ruim
             datasets: [
                 {
                     label: 'Pedidos agrupados por datas de entrega (totalizando lote)',
@@ -44,11 +58,25 @@ export class PedidoStoreService
 
     pedidoQuantidadeChart = computed(() => {
         const items = this.item() ?? [];
-        const labels = Array.from(new Set(items.map(a => a.dataEntrega)));
-        const amount = labels.map(l => items.filter(i => i.dataEntrega === l).length);
+
+        const groups = new Map<string, number>();
+        items.forEach(i => {
+            const dateObj = new Date(i.dataEntrega);
+            const key = format(dateObj, 'yyyy-MM-dd');
+            groups.set(key, (groups.get(key) || 0) + 1);
+        });
+
+        const sortedKeys = Array.from(groups.keys()).sort();
+
+        const labels = sortedKeys.map(key => {
+            const [year, month, day] = key.split('-').map(Number);
+            return format(new Date(year, month - 1, day), 'dd/MM/yyyy');
+        });
+
+        const amount = sortedKeys.map(key => groups.get(key));
 
         return {
-            labels: labels.map(l => format(addDays(l, 1), 'dd/MM/yyyy')),//workaround ruim
+            labels: labels,//workaround ruim
             datasets: [
                 {
                     label: 'Pedidos agrupados por datas de entrega (contagem de pedidos)',

@@ -8,7 +8,7 @@ import type { HealthControllerCheckQueryResponse, HealthControllerCheck503 } fro
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getHealthControllerCheckUrl() {
-  return `https://app.ethos.ind.br/api/planejador/health` as const
+  return `http://192.168.99.129:30010/api/planejador/health` as const
 }
 
 /**

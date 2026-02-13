@@ -27,3 +27,11 @@
     </div>
 </div>
 }
+@else {
+<p class="text-danger"> você não está autenticado!</p>
+<p class="text-muted"> por favor, faça login para acessar as funcionalidades do portal.</p>
+<button (click)="login()" class="btn btn-success rounded-pill d-flex align-items-center gap-2 px-3">
+    <i class="pi pi-user"></i>
+    <span>Login</span>
+</button>
+}

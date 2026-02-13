@@ -153,6 +153,10 @@ export const routes: Routes = [
     // buffer routes
     {
         path: 'buffer',
-        loadComponent: () => ContagemBufferPageComponent
+        loadComponent: () => ContagemBufferPageComponent,
+        canActivate: [AuthGuard, CargoGuard],
+        data: {
+            roles: [SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.ADMIN]
+        }
     },
 ];

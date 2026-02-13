@@ -8,7 +8,7 @@ import type { FabricaControllerConsultarPedidosPlanejadosMethodQueryResponse, Fa
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerConsultarPedidosPlanejadosMethodUrl() {
-  return `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos/pedidos` as const
+  return `http://192.168.99.129:30010/api/planejador/fabrica/planejamentos/pedidos` as const
 }
 
 /**

@@ -8,7 +8,7 @@ import type { PedidoControllerConsultaPedidoMethodQueryResponse, PedidoControlle
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getPedidoControllerConsultaPedidoMethodUrl() {
-  return `https://app.ethos.ind.br/api/planejador/pedido` as const
+  return `http://192.168.99.129:30010/api/planejador/pedido` as const
 }
 
 /**

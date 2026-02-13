@@ -5,6 +5,7 @@ import { WifiAPIService } from '@/app/services/WifiAPI.service';
 import { Router } from '@angular/router';
 import { catchError, of, tap } from 'rxjs';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
+import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
 
 /**
  * @title Tela de Solicitação de Acesso Wi-Fi
@@ -21,7 +22,8 @@ import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-  ],
+    PageLayoutComponent
+],
 })
 export class WifiSolicitationPageComponent {
   /**

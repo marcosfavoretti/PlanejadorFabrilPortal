@@ -8,7 +8,7 @@ import type { FuncionarioControllerConsultarCentroDeCustoMethodQueryResponse } f
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFuncionarioControllerConsultarCentroDeCustoMethodUrl() {
-  return `https://app.ethos.ind.br/api/ponto/funcionario/centro-custo` as const
+  return `http://192.168.99.129:30001/api/ponto/funcionario/centro-custo` as const
 }
 
 /**

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { WifiAPIService } from '@/app/services/WifiAPI.service';
 import { catchError, tap } from 'rxjs';
 import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
+import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
 
 /**
  * @title Tela de Finalização de Cadastro Wi-Fi
@@ -21,7 +22,9 @@ import { LoadingPopupService } from '@/app/services/LoadingPopup.service';
     CommonModule,
     RouterLink,
     ReactiveFormsModule // Importar para usar formulários reativos
-  ],
+    ,
+    PageLayoutComponent
+],
 })
 export class WifiConfirmationPageComponent implements OnInit {
   // Injeção de dependências do Angular

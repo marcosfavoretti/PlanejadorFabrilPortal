@@ -1,160 +1,183 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { PontoControllerConsultaMarcacaoMethodQueryParams, ResCentroDeCustoDTO, ResHorasIrregularesDTO, ResPontoFuncionarioDTO, ResRegistroPontoTurnoPontoDTO } from '@/api/relogio';
-import { RelogioPontoAPIService } from '@/app/services/RelogioPontoAPI.service';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { tableColumns, TableModel } from '@/app/table-dynamic/@core/table.model';
-import { Component, computed, effect, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { forkJoin, Observable, tap } from 'rxjs';
-import { TableDynamicComponent } from "@/app/table-dynamic/table-dynamic.component";
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { isDate, isSameDay } from 'date-fns';
-import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
-import { FuncionariosAPIService } from '@/app/services/FuncionariosAPI.service';
-import { HorasIrregularesParetoChartComponent } from "@/app/widgets/horas-irregulares-pareto-chart/horas-irregulares-pareto-chart.component";
+import { Subject, of } from 'rxjs';
+import { switchMap, tap, catchError } from 'rxjs/operators';
+import { isSameDay } from 'date-fns';
+
+// PrimeNG & Layout
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TableDynamicComponent } from "@/app/table-dynamic/table-dynamic.component";
+import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
+import { HorasIrregularesParetoChartComponent } from "@/app/widgets/horas-irregulares-pareto-chart/horas-irregulares-pareto-chart.component";
+
+// Services & Models
+import { RelogioPontoAPIService } from '@/app/services/RelogioPontoAPI.service';
+import { FuncionariosAPIService } from '@/app/services/FuncionariosAPI.service';
+import { TableModel, tableColumns } from '@/app/table-dynamic/@core/table.model';
+import { 
+  PontoControllerConsultaMarcacaoMethodQueryParams, 
+  ResCentroDeCustoDTO, 
+  ResHorasIrregularesDTO, 
+  ResRegistroPontoTurnoPontoDTO 
+} from '@/api/relogio';
 
 @Component({
   selector: 'app-relogio-pont-page',
-  imports: [TableDynamicComponent, SkeletonModule, ReactiveFormsModule, CommonModule, FormsModule, PageLayoutComponent, AsyncPipe, PaginatorModule, HorasIrregularesParetoChartComponent],
+  standalone: true,
+  imports: [
+    TableDynamicComponent, SkeletonModule, ReactiveFormsModule, 
+    CommonModule, FormsModule, PageLayoutComponent, AsyncPipe, 
+    PaginatorModule, HorasIrregularesParetoChartComponent
+  ],
   templateUrl: './relogio-pont-page.component.html',
   styleUrl: './relogio-pont-page.component.css'
 })
-export class RelogioPontPageComponent {
-  api = inject(RelogioPontoAPIService);
-  fb = inject(FormBuilder);
-  funcionariosAPIService = inject(FuncionariosAPIService);
+export class RelogioPontPageComponent implements OnInit {
+  private api = inject(RelogioPontoAPIService);
+  private fb = inject(FormBuilder);
+  private funcionariosAPIService = inject(FuncionariosAPIService);
+
+  // --- States (Signals) ---
+  tableData = signal<any[]>([]);
+  chartHorasIrregulares = signal<ResHorasIrregularesDTO[]>([]);
+  totalItems = signal(0);
+  currentPage = signal(0);
+  itemsPerPage = 10;
+  
+  fetching = { table: false, pareto: false };
+  centroDeCusto: ResCentroDeCustoDTO[] = [];
+  
   totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage));
+
+  // --- Form & Search Gatilho ---
   filterForm = this.fb.group({
     indetificador: [''],
     dataInicio: [''],
     dataFim: [''],
-    ccid: undefined
+    ccid: [undefined]
   });
-  tableData: WritableSignal<any[]> = signal([]);
-  itemsPerPage = 10;
-  currentPage = signal(0);
-  totalItems = signal(0);
-  centroDeCusto: ResCentroDeCustoDTO[] = [];
-  selected_funcionario: ResPontoFuncionarioDTO[] = [];
-  //
-  chartHorasIrregulares: WritableSignal<ResHorasIrregularesDTO[]> = signal([]);
-  fetching = {
-    pareto: false,
-    table: false
-  }
 
+  private searchSubject = new Subject<void>();
+
+  // --- Configuração da Tabela ---
   tableModel: TableModel = {
     paginator: false,
     title: '',
-    columns: [
-    ],
+    columns: [],
     ghostControll: [
-      {
-        color: '#eb5c5c95',
-        desc: 'marcações impares',
-        field: 'status',
-        ifValueEqual: "INCOMPLETO"
-      },
-      {
-        color: '#f2d38895',
-        desc: 'excedido limite de 09 horas',
-        field: 'status',
-        ifRowFunction: (row: any) => {
-          return row.horasIrregular > 0;
-        }
+      { color: '#eb5c5c95', desc: 'marcações ímpares', field: 'status', ifValueEqual: "INCOMPLETO" },
+      { 
+        color: '#f2d38895', 
+        desc: 'excedido limite de 09 horas', 
+        field: 'status', 
+        ifRowFunction: (row: any) => row.horasIrregular > 0 
       }
     ],
     totalize: false
   };
 
   ngOnInit(): void {
-    forkJoin([
-      this.loadHorasIrregulares(),
-      this.laodCentroDeCusto(),
-      this.loadData(this.currentPage())
-    ]).subscribe()
+    // 1. Carga inicial de dados estáticos
+    this.laodCentroDeCusto().subscribe();
+
+    // 2. Fluxo da TABELA (Rápido)
+    this.searchSubject.pipe(
+      tap(() => this.fetching.table = true),
+      switchMap(() => this.loadData(this.currentPage()).pipe(
+        catchError(() => of(null)) // Se a tabela falhar, não trava o gráfico
+      ))
+    ).subscribe(res => {
+      if (res) {
+        const data = res.data || res.data || [];
+        const total = res.total || res.total || 0;
+        this.processData(data);
+        this.totalItems.set(total);
+      }
+      this.fetching.table = false;
+    });
+
+    // 3. Fluxo do GRÁFICO (Pesado)
+    // O switchMap aqui é vital: se o usuário filtrar de novo, a requisição pesada anterior é abortada.
+    
+    this.searchSubject.pipe(
+      tap(() => this.fetching.pareto = true),
+      switchMap(() => this.loadHorasIrregulares().pipe(
+        catchError(() => of([])) 
+      ))
+    ).subscribe(kpiRes => {
+      this.chartHorasIrregulares.set(kpiRes || []);
+      this.fetching.pareto = false;
+    });
+
+    // Gatilho inicial
+    this.search();
   }
 
   search() {
     this.currentPage.set(0);
-    forkJoin([
-      this.loadData(this.currentPage()),
-      this.loadHorasIrregulares(),
-    ])
-      .subscribe();
+    this.searchSubject.next();
   }
 
-  loadData(page: number): Observable<ResRegistroPontoTurnoPontoDTO[]> {
-    console.log(this.filterForm.value)
-    const filter = this.filterForm.value as PontoControllerConsultaMarcacaoMethodQueryParams;
+  onPageChange(event: PaginatorState) {
+    if (event.page !== undefined) {
+      this.currentPage.set(event.page);
+      this.itemsPerPage = event.rows || 10;
+      this.searchSubject.next();
+    }
+  }
+
+  // --- Métodos de API ---
+
+  private loadData(page: number) {
+    const filter = { ...this.filterForm.value } as any;
     const params = {
       ...filter,
+      dataInicio: filter.dataInicio || undefined,
+      dataFim: filter.dataFim || undefined,
       page: page + 1,
       limit: this.itemsPerPage
     };
-    return this.api.consultarPonto(params)
-      .pipe(
-        tap((res: any) => {
-          const data = res.data || res.items || [];
-          const total = res.total || res.totalItems || res.total_count || 0;
-          this.processData(data);
-          this.totalItems.set(total);
-        })
-      )
+    return this.api.consultarPonto(params);
   }
 
-  laodCentroDeCusto(): Observable<ResCentroDeCustoDTO[]> {
-    const cc = this.funcionariosAPIService.getCentroDeCusto();
-    return cc.pipe(
-      tap(res => {
-        this.centroDeCusto = res;
-      })
+  private loadHorasIrregulares() {
+    const filter = { ...this.filterForm.value } as any;
+    return this.api.consultarPontosIrregularesKPI({
+      ...filter,
+      dataInicio: filter.dataInicio || undefined,
+      dataFim: filter.dataFim || undefined,
+      page: 1,
+      limit: 9999
+    });
+  }
+
+  private laodCentroDeCusto() {
+    return this.funcionariosAPIService.getCentroDeCusto().pipe(
+      tap(res => this.centroDeCusto = res)
     );
   }
 
-  loadHorasIrregulares(): Observable<ResHorasIrregularesDTO[]> {
-    const params = {
-      ...this.filterForm.value as PontoControllerConsultaMarcacaoMethodQueryParams,
-      page: 1,
-      limit: this.itemsPerPage
-    };
-    this.fetching.pareto = true;
-    return this.api.consultarPontosIrregularesKPI({
-      ...params
-    })
-      .pipe(
-        tap((res) => {
-          const data = res || [];
-          this.chartHorasIrregulares.set(data);
-          this.fetching.pareto = false;
-        })
-      )
-
-  }
-
+  // --- Processamento de Dados da Tabela ---
   private processData(data: ResRegistroPontoTurnoPontoDTO[]) {
-    if (!data || data.length === 0) {
+    if (!data.length) {
       this.tableData.set([]);
       return;
     }
 
-    let maxRegistros = 0;
-    data.forEach(item => {
-      if (item.registros && item.registros.length > maxRegistros) {
-        maxRegistros = item.registros.length;
-      }
-    });
+    const maxRegistros = Math.max(...data.map(item => item.registros?.length || 0));
 
     const newColumns: tableColumns[] = [
-      { alias: 'matricula', field: 'matricula' },
-      { alias: 'setor', field: 'setor' },
-      { alias: 'nome', field: 'nome' },
+      { alias: 'Matrícula', field: 'matricula' },
+      { alias: 'Setor', field: 'setor' },
+      { alias: 'Nome', field: 'nome' },
       { alias: 'Data', field: 'turnoDia', isDate: true },
-      { alias: 'horas trabalhadas', field: "horasTrabalhadas" }
+      { alias: 'Horas Trab.', field: "horasTrabalhadas" }
     ];
 
     for (let i = 1; i <= maxRegistros; i++) {
-      newColumns.push({ alias: `Marcacao ${i}`, field: `marcacao_${i}` });
+      newColumns.push({ alias: `M${i}`, field: `marcacao_${i}` });
       newColumns.push({ alias: `Hora ${i}`, field: `hora_${i}` });
     }
     newColumns.push({ alias: `Status`, field: `status` });
@@ -167,31 +190,23 @@ export class RelogioPontPageComponent {
         horasIrregular: item.horasIrregulares,
         setor: item.setor,
         horasTrabalhadas: item.qtdHoras,
-        turnoDia: item.turnoDia
+        turnoDia: item.turnoDia,
+        // Status lógico: OK se par ou se for hoje (ainda em aberto)
+        status: (item.registros.length % 2 === 0) || isSameDay(new Date(item.turnoDia), new Date()) ? 'OK' : 'INCOMPLETO'
       };
 
-      /** se o registro tiver marcacao par ou se for impar mas esta no dia de hoje ele deixa OK */
-      newItem['status'] = !(item.registros.length % 2) || isSameDay(item.turnoDia, new Date()) ? 'OK' : 'INCOMPLETO';
-
       if (item.registros) {
-        const sortedRegistros = [...item.registros].sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
-        sortedRegistros.forEach((registro, index) => {
-          newItem[`marcacao_${index + 1}`] = registro.marcacao;
-          newItem[`hora_${index + 1}`] = new Date(registro.data).toLocaleString();
-        });
+        [...item.registros]
+          .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime())
+          .forEach((reg, idx) => {
+            newItem[`marcacao_${idx + 1}`] = reg.marcacao;
+            newItem[`hora_${idx + 1}`] = reg.dataStr;
+          });
       }
+
       return newItem;
     });
 
     this.tableData.set(mappedData);
-  }
-
-  onPageChange(event: PaginatorState) {
-    if (event.page !== undefined) {
-      this.currentPage.set(event.page); // PrimeNG is 0-indexed
-      this.itemsPerPage = event.rows || 5;
-      this.loadData(this.currentPage())
-        .subscribe();
-    }
   }
 }

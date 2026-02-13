@@ -8,7 +8,7 @@ import type { FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodQueryRespo
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodUrl() {
-  return `https://app.ethos.ind.br/api/planejador/fabrica/usuario` as const
+  return `http://192.168.99.129:30010/api/planejador/fabrica/usuario` as const
 }
 
 /**

@@ -8,7 +8,7 @@ import type { PontoControllerSicnronizaPontoMethodMutationResponse } from "../mo
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getPontoControllerSicnronizaPontoMethodUrl() {
-  return `https://app.ethos.ind.br/api/ponto/sincroniza` as const
+  return `http://192.168.99.129:30001/api/ponto/sincroniza` as const
 }
 
 /**

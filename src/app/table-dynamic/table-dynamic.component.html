@@ -6,7 +6,7 @@
   [paginator]="tableModel.paginator? true: false" [rows]="10" [columns]="tableModel.columns"
   [rowsPerPageOptions]="30 < (data ? data.length : 0) ? [10, 20, 30, data ? data.length : 0 ]: [10,20,30]"
   [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined" class="small" sortMode="multiple"
-  [scrollable]="scrollable" [scrollHeight]="scrollHeight">
+  [scrollable]="scrollable" [scrollHeight]="scrollHeight" (onFilter)="onTableFilter($event)">
 
   <ng-template #caption class="bg-white small">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-2">
@@ -30,16 +30,23 @@
       <th pSortableColumn="{{ key.field }}" class="text-responsive text-center small">
         @if (!key.isButton) {
         @if (key.isDate) {
-        <p-columnFilter [field]="key.field" type="date" display="menu" class="small">
-          @if (key.isDate) {
+        <p-columnFilter [field]="key.field" type="date" display="menu" class="small"
+          [ngClass]="{'filter-active': key.filterActive}">
+          <ng-template pTemplate="filtericon">
+            <i class="pi" [ngClass]="key.filterActive ? 'pi-filter-fill' : 'pi-filter'"></i>
+          </ng-template>
           <ng-template pTemplate="filter" let-filter="filterCallback">
             <p-date-picker dateFormat="dd/mm/yy" (onSelect)="onDateSelect($event, filter)"></p-date-picker>
           </ng-template>
-          }
         </p-columnFilter>
         }
         @else {
-        <p-columnFilter [field]="key.field" [type]="key.isCheckBox ? 'boolean' : 'text'" display="menu" class="small" />
+        <p-columnFilter [field]="key.field" [type]="key.isCheckBox ? 'boolean' : 'text'" display="menu" class="small"
+          [ngClass]="{'filter-active': key.filterActive}">
+          <ng-template pTemplate="filtericon">
+            <i class="pi" [ngClass]="key.filterActive ? 'pi-filter-fill' : 'pi-filter'"></i>
+          </ng-template>
+        </p-columnFilter>
         }
         <p-sortIcon [field]="key.field"></p-sortIcon>
         {{ key.alias || key.field }}

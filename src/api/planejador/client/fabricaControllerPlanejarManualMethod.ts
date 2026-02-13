@@ -8,7 +8,7 @@ import type { FabricaControllerPlanejarManualMethodMutationRequest, FabricaContr
 import type { RequestConfig, ResponseErrorConfig } from "@/client";
 
 function getFabricaControllerPlanejarManualMethodUrl() {
-  return `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos/manual` as const
+  return `http://192.168.99.129:30010/api/planejador/fabrica/planejamentos/manual` as const
 }
 
 /**

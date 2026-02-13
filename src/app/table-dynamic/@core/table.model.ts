@@ -11,7 +11,8 @@ export interface tableColumns {
         label: string,
         icon: string
         command: (row: any, el: any) => void
-    }
+    },
+    filterActive?: boolean
 }
 export interface ghostControllColumn {
     field: string;

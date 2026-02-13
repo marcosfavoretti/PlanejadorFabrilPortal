@@ -1,0 +1,9 @@
+.filter-active .p-column-filter-menu-button {
+  background-color: #e0e0e0; /* Light gray background */
+  border-color: #9e9e9e; /* Slightly darker border */
+}
+
+/* Optional: change icon color */
+.filter-active .p-column-filter-menu-button .pi {
+  color: #3f51b5; /* Example: A blue color for the icon */
+}

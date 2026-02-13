@@ -7,10 +7,8 @@ import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.compo
 @Component({
   selector: 'app-contagem-buffer-page',
   standalone: true,
-  imports: [SetoresDirComponent, SetoresTablesComponent, ToolBarComponent],
+  imports: [SetoresDirComponent, SetoresTablesComponent, ToolBarComponent, PageLayoutComponent],
   templateUrl: './contagem-buffer-page.component.html',
   styleUrl: './contagem-buffer-page.component.css'
 })
-export class ContagemBufferPageComponent {
-
-}
+export class ContagemBufferPageComponent {}
