@@ -1,1 +1,16 @@
-{"type":"object","properties":{"fabricaId":{"type":"string"},"pedidoId":{"type":"number"},"item":{"type":"string"},"setor":{"type":"string","enum":["00015","00035","00050","00025","00017","00011","00020"]},"dia":{"format":"date-time","type":"string","nullable":true},"qtd":{"type":"number"}},"required":["fabricaId","pedidoId","item","setor","dia","qtd"],"x-readme-ref-name":"AdicionarPlanejamentoDTO"}
+{
+  "type": "object",
+  "properties": {
+    "fabricaId": { "type": "string" },
+    "pedidoId": { "type": "number" },
+    "item": { "type": "string" },
+    "setor": {
+      "type": "string",
+      "enum": ["00015", "00035", "00050", "00025", "00017", "00011", "00020"]
+    },
+    "dia": { "format": "date-time", "type": "string", "nullable": true },
+    "qtd": { "type": "number" }
+  },
+  "required": ["fabricaId", "pedidoId", "item", "setor", "dia", "qtd"],
+  "x-readme-ref-name": "AdicionarPlanejamentoDTO"
+}

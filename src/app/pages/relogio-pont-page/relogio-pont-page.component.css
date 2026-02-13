@@ -17,3 +17,80 @@
 ::ng-deep .custom-paginator-compact .p-paginator-current {
     margin-left: auto;
 }
+
+::ng-deep .input-group-sm .input-group-text {
+    height: calc(1.8125rem + 2px); /* Match p-dropdown height */
+    display: flex;
+    align-items: center;
+}
+
+/* Adjust p-dropdown to match form-control-sm within input-group-sm */
+::ng-deep .input-group-sm .p-dropdown {
+    height: calc(1.8125rem + 2px); /* Bootstrap's input-group-sm height + border */
+    padding: 0.25rem 0.5rem; /* Matches form-control-sm padding */
+    font-size: .875rem; /* Matches form-control-sm font-size */
+    display: flex; /* Allow inner elements to use flexbox for alignment */
+    align-items: center; /* Vertically align items */
+    width: 100%; /* Ensure it takes full width of its parent */
+}
+
+::ng-deep .input-group-sm .p-dropdown .p-dropdown-label {
+    padding: 0; /* Reset padding as it's handled by parent p-dropdown */
+    flex-grow: 1; /* Allow label to take available space */
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Ensure the input-group-text is aligned with the p-dropdown */
+::ng-deep .input-group-sm .p-dropdown .p-dropdown-trigger {
+    width: 2.5rem; /* Standard trigger width for sm */
+    height: 100%; /* Make trigger fill height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Fix for border when using border-start-0 ps-0 with input-group */
+::ng-deep .input-group .p-dropdown.border-start-0 {
+    border-left: none; /* Remove border when border-start-0 is applied */
+}
+::ng-deep .input-group .p-dropdown.border-start-0 .p-dropdown-trigger {
+    border-left: none; /* Ensure trigger also has no left border if it's the start of an input-group */
+}
+
+/* Further adjustments to match the general form-control appearance */
+::ng-deep .p-dropdown {
+    border: 1px solid #ced4da; /* Default Bootstrap border color */
+    border-radius: .25rem; /* Default Bootstrap border-radius */
+}
+::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+    box-shadow: 0 0 0 .25rem rgba(13,110,253,.25); /* Bootstrap focus style */
+    border-color: #86b7fe; /* Bootstrap focus border color */
+}
+
+::ng-deep .input-group-sm .p-dropdown.form-control.border-start-0.ps-0 {
+  padding-left: 0 !important; /* Ensure no left padding if ps-0 is used */
+}
+
+::ng-deep .input-group-sm .p-dropdown.form-control.ps-0 .p-dropdown-label {
+    padding-left: 0 !important;
+}
+
+/* Custom class for visually disabling p-multiSelect */
+.disabled-multiselect {
+    pointer-events: none; /* Prevents all click, state, and cursor options */
+    opacity: 0.6; /* Visual feedback for disabled state */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+}
+
+/* Specific styling for PrimeNG multiselect when disabled-multiselect class is applied */
+::ng-deep .p-multiselect.disabled-multiselect .p-multiselect-trigger {
+    cursor: not-allowed;
+}
+
+::ng-deep .p-multiselect.disabled-multiselect .p-multiselect-label {
+    cursor: not-allowed;
+}

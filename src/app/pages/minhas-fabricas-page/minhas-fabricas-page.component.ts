@@ -17,7 +17,7 @@ import { PageLayoutComponent } from '@/app/layouts/page-layout/page-layout.compo
     TableDynamicComponent,
     AsyncPipe,
     SkeletonModule,
-    PageLayoutComponent,
+   
   ],
   templateUrl: './minhas-fabricas-page.component.html',
   styleUrls: ['./minhas-fabricas-page.component.css'],

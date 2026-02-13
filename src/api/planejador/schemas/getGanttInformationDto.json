@@ -1,1 +1,65 @@
-{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","description":"ID da tarefa"},"name":{"type":"string","description":"Nome da tarefa"},"start":{"type":"string","description":"Data de início da tarefa (formato ISO)"},"end":{"type":"string","description":"Data de término da tarefa (formato ISO)"},"duration":{"type":"string","description":"Duração da tarefa"},"progress":{"type":"number","description":"Progresso da tarefa de 0 a 100"},"dependencies":{"description":"Dependências da tarefa (ID de outras tarefas)","type":"array","items":{"type":"string"}},"custom_class":{"type":"string","description":"Classe CSS customizada para estilização"},"color":{"type":"string","description":"Cor principal da barra (hex ou nome CSS)"},"color_progress":{"type":"string","description":"Cor da barra de progresso"},"_index":{"type":"number","description":"Índice da tarefa (uso interno)"}},"required":["name","start","progress"],"x-readme-ref-name":"GanttData"}},"legenda":{"type":"array","items":{"type":"object","properties":{"legenda":{"type":"string"},"cor":{"type":"string"}},"required":["legenda","cor"],"x-readme-ref-name":"GanttLegendaDto"}}},"required":["data","legenda"],"x-readme-ref-name":"GetGanttInformationDto"}
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "ID da tarefa" },
+          "name": { "type": "string", "description": "Nome da tarefa" },
+          "start": {
+            "type": "string",
+            "description": "Data de início da tarefa (formato ISO)"
+          },
+          "end": {
+            "type": "string",
+            "description": "Data de término da tarefa (formato ISO)"
+          },
+          "duration": { "type": "string", "description": "Duração da tarefa" },
+          "progress": {
+            "type": "number",
+            "description": "Progresso da tarefa de 0 a 100"
+          },
+          "dependencies": {
+            "description": "Dependências da tarefa (ID de outras tarefas)",
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "custom_class": {
+            "type": "string",
+            "description": "Classe CSS customizada para estilização"
+          },
+          "color": {
+            "type": "string",
+            "description": "Cor principal da barra (hex ou nome CSS)"
+          },
+          "color_progress": {
+            "type": "string",
+            "description": "Cor da barra de progresso"
+          },
+          "_index": {
+            "type": "number",
+            "description": "Índice da tarefa (uso interno)"
+          }
+        },
+        "required": ["name", "start", "progress"],
+        "x-readme-ref-name": "GanttData"
+      }
+    },
+    "legenda": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "legenda": { "type": "string" },
+          "cor": { "type": "string" }
+        },
+        "required": ["legenda", "cor"],
+        "x-readme-ref-name": "GanttLegendaDto"
+      }
+    }
+  },
+  "required": ["data", "legenda"],
+  "x-readme-ref-name": "GetGanttInformationDto"
+}

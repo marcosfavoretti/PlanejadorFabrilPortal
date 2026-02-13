@@ -1,1 +1,11 @@
-{"type":"object","properties":{"item":{"type":"string"},"serverTime":{"type":"string"},"tipo_item":{"type":"string"},"ItemFiho":{"type":"string"}},"required":["item","serverTime","tipo_item","ItemFiho"],"x-readme-ref-name":"CompactBuffer"}
+{
+  "type": "object",
+  "properties": {
+    "item": { "type": "string" },
+    "serverTime": { "type": "string" },
+    "tipo_item": { "type": "string" },
+    "ItemFiho": { "type": "string" }
+  },
+  "required": ["item", "serverTime", "tipo_item", "ItemFiho"],
+  "x-readme-ref-name": "CompactBuffer"
+}

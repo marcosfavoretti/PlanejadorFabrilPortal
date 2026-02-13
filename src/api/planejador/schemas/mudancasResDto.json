@@ -1,1 +1,14 @@
-{"type":"object","properties":{"mudanca":{"type":"string","enum":["ATUALIZACAO","REMOÇÃO","INSERÇÃO"]},"entidade":{"type":"string"},"valorAntigo":{"type":"string"},"valorNovo":{"type":"string"}},"required":["mudanca","entidade","valorAntigo","valorNovo"],"x-readme-ref-name":"MudancasResDto"}
+{
+  "type": "object",
+  "properties": {
+    "mudanca": {
+      "type": "string",
+      "enum": ["ATUALIZACAO", "REMOÇÃO", "INSERÇÃO"]
+    },
+    "entidade": { "type": "string" },
+    "valorAntigo": { "type": "string" },
+    "valorNovo": { "type": "string" }
+  },
+  "required": ["mudanca", "entidade", "valorAntigo", "valorNovo"],
+  "x-readme-ref-name": "MudancasResDto"
+}

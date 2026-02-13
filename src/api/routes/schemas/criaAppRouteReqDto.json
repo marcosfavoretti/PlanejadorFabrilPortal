@@ -1,1 +1,30 @@
-{"type":"object","properties":{"subRoutes":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"},"route":{"type":"string"},"desc":{"type":"string"}},"required":["name","route","desc"],"x-readme-ref-name":"AppSubRoute"}},"cargos":{"type":"array","items":{"type":"string","enum":["ADMIN","PCP","USER","CATERPILLAR_USER"]}},"name":{"type":"string"},"route":{"type":"string"},"desc":{"type":"string"}},"required":["subRoutes","cargos","name","route","desc"],"x-readme-ref-name":"CriaAppRouteReqDto"}
+{
+  "type": "object",
+  "properties": {
+    "subRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "route": { "type": "string" },
+          "desc": { "type": "string" }
+        },
+        "required": ["name", "route", "desc"],
+        "x-readme-ref-name": "AppSubRoute"
+      }
+    },
+    "cargos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["ADMIN", "PCP", "USER", "CATERPILLAR_USER"]
+      }
+    },
+    "name": { "type": "string" },
+    "route": { "type": "string" },
+    "desc": { "type": "string" }
+  },
+  "required": ["subRoutes", "cargos", "name", "route", "desc"],
+  "x-readme-ref-name": "CriaAppRouteReqDto"
+}

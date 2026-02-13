@@ -1,1 +1,10 @@
-{"type":"object","properties":{"visitanteNome":{"type":"string"},"visitanteEmpresa":{"type":"string"},"visitanteEmail":{"type":"string"}},"required":["visitanteNome","visitanteEmpresa","visitanteEmail"],"x-readme-ref-name":"GerarCodigoWifiDTO"}
+{
+  "type": "object",
+  "properties": {
+    "visitanteNome": { "type": "string" },
+    "visitanteEmpresa": { "type": "string" },
+    "visitanteEmail": { "type": "string" }
+  },
+  "required": ["visitanteNome", "visitanteEmpresa", "visitanteEmail"],
+  "x-readme-ref-name": "GerarCodigoWifiDTO"
+}

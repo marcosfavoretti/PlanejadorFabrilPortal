@@ -1,1 +1,25 @@
-{"type":"object","properties":{"total":{"type":"number"},"page":{"type":"number"},"limit":{"type":"number"},"totalPages":{"type":"number"},"data":{"description":"Lista de itens paginados do tipo ResPontoFuncionarioDTO.","type":"array","items":{"type":"object","properties":{"matricula":{"type":"string"},"nome":{"type":"string"},"setor":{"type":"string"}},"required":["matricula","nome","setor"],"x-readme-ref-name":"ResPontoFuncionarioDTO"}}},"required":["total","page","limit","totalPages","data"],"x-readme-ref-name":"PaginatedResPontoFuncionarioDTODto"}
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ResPontoFuncionarioDTO.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "matricula": { "type": "string" },
+          "nome": { "type": "string" },
+          "setor": { "type": "string" }
+        },
+        "required": ["matricula", "nome", "setor"],
+        "x-readme-ref-name": "ResPontoFuncionarioDTO"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedResPontoFuncionarioDTODto"
+}

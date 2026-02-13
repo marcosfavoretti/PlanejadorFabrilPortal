@@ -8,6 +8,8 @@ import { isSameDay } from 'date-fns';
 // PrimeNG & Layout
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect'; // Added MultiSelectModule
 import { TableDynamicComponent } from "@/app/table-dynamic/table-dynamic.component";
 import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
 import { HorasIrregularesParetoChartComponent } from "@/app/widgets/horas-irregulares-pareto-chart/horas-irregulares-pareto-chart.component";
@@ -16,20 +18,20 @@ import { HorasIrregularesParetoChartComponent } from "@/app/widgets/horas-irregu
 import { RelogioPontoAPIService } from '@/app/services/RelogioPontoAPI.service';
 import { FuncionariosAPIService } from '@/app/services/FuncionariosAPI.service';
 import { TableModel, tableColumns } from '@/app/table-dynamic/@core/table.model';
-import { 
-  PontoControllerConsultaMarcacaoMethodQueryParams, 
-  ResCentroDeCustoDTO, 
-  ResHorasIrregularesDTO, 
-  ResRegistroPontoTurnoPontoDTO 
+import {
+  ResCentroDeCustoDTO,
+  ResHorasIrregularesDTO,
+  ResRegistroPontoTurnoPontoDTO
 } from '@/api/relogio';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-relogio-pont-page',
   standalone: true,
   imports: [
-    TableDynamicComponent, SkeletonModule, ReactiveFormsModule, 
-    CommonModule, FormsModule, PageLayoutComponent, AsyncPipe, 
-    PaginatorModule, HorasIrregularesParetoChartComponent
+    TableDynamicComponent, SkeletonModule, ReactiveFormsModule,
+    CommonModule, FormsModule, PageLayoutComponent,
+    PaginatorModule, HorasIrregularesParetoChartComponent, DropdownModule, MultiSelectModule // Added MultiSelectModule
   ],
   templateUrl: './relogio-pont-page.component.html',
   styleUrl: './relogio-pont-page.component.css'
@@ -38,17 +40,18 @@ export class RelogioPontPageComponent implements OnInit {
   private api = inject(RelogioPontoAPIService);
   private fb = inject(FormBuilder);
   private funcionariosAPIService = inject(FuncionariosAPIService);
+  private routerAcive = inject(ActivatedRoute);
 
   // --- States (Signals) ---
+
+  preFilterSetor = signal<string[] | undefined>(undefined);
   tableData = signal<any[]>([]);
   chartHorasIrregulares = signal<ResHorasIrregularesDTO[]>([]);
   totalItems = signal(0);
   currentPage = signal(0);
   itemsPerPage = 10;
-  
   fetching = { table: false, pareto: false };
   centroDeCusto: ResCentroDeCustoDTO[] = [];
-  
   totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage));
 
   // --- Form & Search Gatilho ---
@@ -56,10 +59,29 @@ export class RelogioPontPageComponent implements OnInit {
     indetificador: [''],
     dataInicio: [''],
     dataFim: [''],
-    ccid: [undefined]
+    ccid: [[] as ResCentroDeCustoDTO[]]
   });
 
+  private getFilterParams() {
+    const filter = { ...this.filterForm.value } as any;
+    let ccidsToUse: string[] | undefined;
+
+    if (this.preFilterSetor() && this.preFilterSetor()!.length > 0) {
+      ccidsToUse = this.preFilterSetor()!;
+    } else if (filter.ccid && filter.ccid.length > 0) {
+      ccidsToUse = filter.ccid.map((cc: ResCentroDeCustoDTO) => cc.ccid);
+    }
+    return {
+      ...filter,
+      ccid: (ccidsToUse ?? []).length > 0 ? ccidsToUse : undefined,
+      dataInicio: filter.dataInicio || undefined,
+      dataFim: filter.dataFim || undefined,
+    };
+  }
+
+
   private searchSubject = new Subject<void>();
+  private routeParams = this.routerAcive.snapshot.params;
 
   // --- Configuração da Tabela ---
   tableModel: TableModel = {
@@ -67,52 +89,76 @@ export class RelogioPontPageComponent implements OnInit {
     title: '',
     columns: [],
     ghostControll: [
-      { color: '#eb5c5c95', desc: 'marcações ímpares', field: 'status', ifValueEqual: "INCOMPLETO" },
-      { 
-        color: '#f2d38895', 
-        desc: 'excedido limite de 09 horas', 
-        field: 'status', 
-        ifRowFunction: (row: any) => row.horasIrregular > 0 
+      {
+        color: '#eb5c5c95', desc: 'marcações ímpares', field: 'status', ifValueEqual: "INCOMPLETO"
+      },
+      {
+        color: '#f2d38895',
+        desc: 'excedido limite de 09 horas',
+        field: 'status',
+        ifRowFunction: (row: any) => row.horasIrregular > 0
       }
     ],
     totalize: false
   };
 
   ngOnInit(): void {
-    // 1. Carga inicial de dados estáticos
-    this.laodCentroDeCusto().subscribe();
+    const ccsParam = this.routeParams['ccs'];
 
-    // 2. Fluxo da TABELA (Rápido)
+    // 1. Iniciamos carregando os Centros de Custo
+    this.laodCentroDeCusto().subscribe({
+      next: (res) => {
+        // 2. Configuramos os filtros iniciais baseados nos Centros de Custo carregados
+        if (ccsParam) {
+          const lista = ccsParam.split(',');
+          this.preFilterSetor.set(lista);
+          const targets = this.centroDeCusto.filter(cc => lista.includes(cc.ccid.toString()));
+          this.filterForm.patchValue({ ccid: targets });
+        } else {
+          this.preFilterSetor.set([]);
+        }
+
+        // 3. Agora que os dados base existem, ativamos os "Ouvintes" (Streams)
+        this.setupDataStreams();
+
+        // 4. Disparamos a busca inicial
+        this.search();
+      },
+      error: (err) => console.error("Erro ao carregar centros de custo", err)
+    });
+  }
+
+  /**
+   * Encapsula a lógica de escuta do searchSubject.
+   * Separar isso evita que os subscribers sejam criados múltiplas vezes.
+   */
+  private setupDataStreams(): void {
+    // Fluxo da TABELA
     this.searchSubject.pipe(
       tap(() => this.fetching.table = true),
       switchMap(() => this.loadData(this.currentPage()).pipe(
-        catchError(() => of(null)) // Se a tabela falhar, não trava o gráfico
+        catchError(() => of(null))
       ))
     ).subscribe(res => {
       if (res) {
-        const data = res.data || res.data || [];
-        const total = res.total || res.total || 0;
+        const data = res.data || [];
+        const total = res.total || 0;
         this.processData(data);
         this.totalItems.set(total);
       }
       this.fetching.table = false;
     });
 
-    // 3. Fluxo do GRÁFICO (Pesado)
-    // O switchMap aqui é vital: se o usuário filtrar de novo, a requisição pesada anterior é abortada.
-    
+    // Fluxo do GRÁFICO
     this.searchSubject.pipe(
       tap(() => this.fetching.pareto = true),
       switchMap(() => this.loadHorasIrregulares().pipe(
-        catchError(() => of([])) 
+        catchError(() => of([]))
       ))
     ).subscribe(kpiRes => {
       this.chartHorasIrregulares.set(kpiRes || []);
       this.fetching.pareto = false;
     });
-
-    // Gatilho inicial
-    this.search();
   }
 
   search() {
@@ -131,32 +177,28 @@ export class RelogioPontPageComponent implements OnInit {
   // --- Métodos de API ---
 
   private loadData(page: number) {
-    const filter = { ...this.filterForm.value } as any;
-    const params = {
-      ...filter,
-      dataInicio: filter.dataInicio || undefined,
-      dataFim: filter.dataFim || undefined,
+    const params = this.getFilterParams();
+    return this.api.consultarPonto({
+      ...params,
       page: page + 1,
       limit: this.itemsPerPage
-    };
-    return this.api.consultarPonto(params);
+    });
   }
 
   private loadHorasIrregulares() {
-    const filter = { ...this.filterForm.value } as any;
+    const params = this.getFilterParams();
     return this.api.consultarPontosIrregularesKPI({
-      ...filter,
-      dataInicio: filter.dataInicio || undefined,
-      dataFim: filter.dataFim || undefined,
+      ...params,
       page: 1,
       limit: 9999
     });
   }
 
   private laodCentroDeCusto() {
-    return this.funcionariosAPIService.getCentroDeCusto().pipe(
-      tap(res => this.centroDeCusto = res)
-    );
+    return this.funcionariosAPIService.getCentroDeCusto()
+      .pipe(
+        tap(res => this.centroDeCusto = res)
+      );
   }
 
   // --- Processamento de Dados da Tabela ---

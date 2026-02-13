@@ -1,9 +1,9 @@
 import { pluginOas } from '@kubb/plugin-oas'
 import { pluginClient } from '@kubb/plugin-client'
 import { pluginTs } from '@kubb/plugin-ts'
-import { defineConfig, type UserConfig } from '@kubb/core' // 1. Importe o tipo UserConfig
+import { defineConfig, type UserConfig } from '@kubb/core' 
 import { config } from "dotenv"
-
+import axios from "axios"
 config();
 
 const {
@@ -49,7 +49,7 @@ const createApiConfig = ({ name, swaggerPath, outputPath, baseUrl }: ApiConfigPa
                 output: { path: 'models' },
                 dateType: 'date',
                 enumType: 'enum',
-                syntaxType: 'type'
+                syntaxType: 'type',
             }),
             pluginClient({
                 output: { path: 'client' },
@@ -86,12 +86,6 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_PLANEJADOR,
         outputPath: './src/api/planejador',
         baseUrl: API_URL_PLANEJADOR
-    }),
-    createApiConfig({
-        name: 'relogio-api',
-        swaggerPath: API_SWAGGER_RELOGIO,
-        outputPath: './src/api/relogio',
-        baseUrl: API_URL_RELOGIO
     }),
     createApiConfig({
         name: 'relogio-api',

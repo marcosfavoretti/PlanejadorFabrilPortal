@@ -1,1 +1,24 @@
-{"type":"object","properties":{"idSetor":{"type":"number","description":"ID único do setor (gerado automaticamente)","example":1,"readOnly":true},"setor":{"type":"string","description":"Nome do setor","example":"SOLDA"},"operacao":{"type":"string","description":"Operação associada ao setor","example":"00015","maxLength":5}},"required":["idSetor","setor","operacao"],"x-readme-ref-name":"ResSetorDTO"}
+{
+  "type": "object",
+  "properties": {
+    "idSetor": {
+      "type": "number",
+      "description": "ID único do setor (gerado automaticamente)",
+      "example": 1,
+      "readOnly": true
+    },
+    "setor": {
+      "type": "string",
+      "description": "Nome do setor",
+      "example": "SOLDA"
+    },
+    "operacao": {
+      "type": "string",
+      "description": "Operação associada ao setor",
+      "example": "00015",
+      "maxLength": 5
+    }
+  },
+  "required": ["idSetor", "setor", "operacao"],
+  "x-readme-ref-name": "ResSetorDTO"
+}

@@ -1,1 +1,15 @@
-{"type":"object","properties":{"_id":{"type":"object","properties":{},"x-readme-ref-name":"ObjectId"},"name":{"type":"string"},"route":{"type":"string"},"desc":{"type":"string"}},"required":["_id","name","route","desc"],"x-readme-ref-name":"AppSubRouteRes"}
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "object",
+      "properties": {},
+      "x-readme-ref-name": "ObjectId"
+    },
+    "name": { "type": "string" },
+    "route": { "type": "string" },
+    "desc": { "type": "string" }
+  },
+  "required": ["_id", "name", "route", "desc"],
+  "x-readme-ref-name": "AppSubRouteRes"
+}

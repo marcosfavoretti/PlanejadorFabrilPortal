@@ -15,8 +15,8 @@
         <ul class="navbar-nav">
             @for (item of routerPermission.item(); track $index) {
             <li class="nav-item">
-                <a routerLinkActive="active" [routerLink]="['/', item.route]" class="nav-link fs-6 fs-md-5 fs-lg-4">
-                    {{item.route}}
+                <a routerLinkActive="active" [routerLink]="breakRoute(item.route)" class="nav-link fs-6 fs-md-5 fs-lg-4">
+                    {{item.name}}
                 </a>
             </li>
             }

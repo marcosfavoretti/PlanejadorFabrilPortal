@@ -9,20 +9,16 @@
                             <label for="Centro de custo" class="form-label text-secondary fw-bold small mb-1">Centro de
                                 custo</label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light border-end-0 text-muted">
-                                    <i class="pi pi-hammer"></i>
-                                </span>
-                                <select type="text" id="ccid" class="form-control border-start-0 ps-0"
-                                    placeholder="centro de custo" formControlName="ccid">
-                                    <option value="" disabled>centro de custo</option>
-                                    @for (item of centroDeCusto; track $index) {
-                                    <option [value]="item.ccid">{{ item.setor }} - {{item.ccid}}</option>
-                                    }
-                                </select>
-                                <button type="button" class="btn btn-light border border-start-0"
-                                    (click)="filterForm.get('ccid')?.reset()"
-                                    [disabled]="!filterForm.get('ccid')?.value"> <i class="pi pi-eraser text-muted"></i>
-                                </button>
+
+                                <p-multiSelect [options]="centroDeCusto" optionLabel="setor"
+                                    inputId="ccid" [styleClass]="'form-control border-start-0 ps-0'"
+                                    formControlName="ccid" placeholder="centro de custo" [showClear]="true"
+                                    [maxSelectedLabels]="3" selectedItemsLabel="{0} Centros Selecionados"
+                                    display="chip" [class.disabled-multiselect]="preFilterSetor() && preFilterSetor()!.length > 0">
+                                    <ng-template let-item pTemplate="item">
+                                        {{ item.setor }} - {{ item.ccid }}
+                                    </ng-template>
+                                </p-multiSelect>
                                 <!-- <input> -->
                             </div>
                         </div>
@@ -47,7 +43,6 @@
                                     formControlName="dataInicio">
                             </div>
                         </div>
-
                         <div class="col-6 col-md-3 col-xl-2">
                             <label for="dataFinal" class="form-label text-secondary fw-bold small mb-1">Fim</label>
                             <div class="input-group input-group-sm">
@@ -82,28 +77,24 @@
             </div>
             <div id="pareto-canva">
                 @if(fetching.pareto){
-                    <!-- <p-skeleton></p-skeleton> -->
-                    <p-skeleton height="150px" styleClass="mb-2"></p-skeleton>   
+                <!-- <p-skeleton></p-skeleton> -->
+                <p-skeleton height="150px" styleClass="mb-2"></p-skeleton>
                 }
                 @else {
-                    <app-horas-irregulares-pareto-chart
-                        [rawData]="chartHorasIrregulares()">
-                    </app-horas-irregulares-pareto-chart>
+                <app-horas-irregulares-pareto-chart [rawData]="chartHorasIrregulares()">
+                </app-horas-irregulares-pareto-chart>
                 }
             </div>
             <div class="card-body p-0 d-flex flex-column">
 
                 <div class="grow relative-container">
-                    <app-table-dynamic scrollHeight="flex" [tableModel]="tableModel"
-                        [data]="tableData()" styleClass="h-100 w-100 position-absolute"></app-table-dynamic>
+                    <app-table-dynamic scrollHeight="flex" [tableModel]="tableModel" [data]="tableData()"
+                        styleClass="h-100 w-100 position-absolute"></app-table-dynamic>
                 </div>
 
                 <div class="border-top bg-light p-2 shrink-0">
-                    <p-paginator 
-                    (onPageChange)="onPageChange($event)" 
-                        [first]="currentPage() * itemsPerPage"
-                        [rows]="itemsPerPage" 
-                        [totalRecords]="totalItems()" [rowsPerPageOptions]="[10, 20, 50, 100]"
+                    <p-paginator (onPageChange)="onPageChange($event)" [first]="currentPage() * itemsPerPage"
+                        [rows]="itemsPerPage" [totalRecords]="totalItems()" [rowsPerPageOptions]="[10, 20, 50, 100]"
                         [showCurrentPageReport]="true" dropdownAppendTo="body"
                         currentPageReportTemplate="{first} - {last} de {totalRecords}"
                         styleClass="bg-transparent border-0 p-0 custom-paginator-compact">

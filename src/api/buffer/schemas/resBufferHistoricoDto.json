@@ -1,1 +1,28 @@
-{"type":"object","properties":{"id":{"type":"number","example":1,"description":"ID do histórico de buffer"},"serverTime":{"format":"date-time","type":"string","example":"2023-10-27T10:00:00Z","description":"Data e hora do registro"},"buffer":{"type":"number","example":50,"description":"Valor do buffer"},"itemId":{"type":"string","example":"ITEM_XYZ","description":"Identificador do item"}},"required":["id","serverTime","buffer"],"x-readme-ref-name":"ResBufferHistoricoDto"}
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "number",
+      "example": 1,
+      "description": "ID do histórico de buffer"
+    },
+    "serverTime": {
+      "format": "date-time",
+      "type": "string",
+      "example": "2023-10-27T10:00:00Z",
+      "description": "Data e hora do registro"
+    },
+    "buffer": {
+      "type": "number",
+      "example": 50,
+      "description": "Valor do buffer"
+    },
+    "itemId": {
+      "type": "string",
+      "example": "ITEM_XYZ",
+      "description": "Identificador do item"
+    }
+  },
+  "required": ["id", "serverTime", "buffer"],
+  "x-readme-ref-name": "ResBufferHistoricoDto"
+}

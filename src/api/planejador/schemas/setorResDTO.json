@@ -1,1 +1,9 @@
-{"type":"object","properties":{"codigo":{"type":"object"},"nome":{"type":"string"}},"required":["codigo","nome"],"x-readme-ref-name":"SetorResDTO"}
+{
+  "type": "object",
+  "properties": {
+    "codigo": { "type": "object" },
+    "nome": { "type": "string" }
+  },
+  "required": ["codigo", "nome"],
+  "x-readme-ref-name": "SetorResDTO"
+}

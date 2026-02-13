@@ -1,1 +1,9 @@
-{"type":"object","properties":{"Item":{"type":"string"},"tipo_item":{"type":"string"}},"required":["Item","tipo_item"],"x-readme-ref-name":"ItemResDto"}
+{
+  "type": "object",
+  "properties": {
+    "Item": { "type": "string" },
+    "tipo_item": { "type": "string" }
+  },
+  "required": ["Item", "tipo_item"],
+  "x-readme-ref-name": "ItemResDto"
+}

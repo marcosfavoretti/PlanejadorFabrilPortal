@@ -6,7 +6,6 @@ import { GlobalHeaderComponent } from "@/app/widgets/global-header/global-header
   selector: 'app-item-pagina',
   imports: [
     ItemCapabilidadeTabelaComponent,
-    GlobalHeaderComponent
 ],
   templateUrl: './item-pagina.component.html',
   styleUrl: './item-pagina.component.css'

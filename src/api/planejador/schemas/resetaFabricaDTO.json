@@ -1,1 +1,6 @@
-{"type":"object","properties":{"fabricaId":{"type":"string"}},"required":["fabricaId"],"x-readme-ref-name":"ResetaFabricaDTO"}
+{
+  "type": "object",
+  "properties": { "fabricaId": { "type": "string" } },
+  "required": ["fabricaId"],
+  "x-readme-ref-name": "ResetaFabricaDTO"
+}

@@ -1,1 +1,6 @@
-{"type":"object","properties":{"userId":{"type":"string"}},"required":["userId"],"x-readme-ref-name":"FabricaForkDTO"}
+{
+  "type": "object",
+  "properties": { "userId": { "type": "string" } },
+  "required": ["userId"],
+  "x-readme-ref-name": "FabricaForkDTO"
+}

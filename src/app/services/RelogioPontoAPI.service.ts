@@ -8,6 +8,7 @@ import { from, Observable } from "rxjs";
 export class RelogioPontoAPIService {
     consultarPonto(dto: PontoControllerConsultaMarcacaoMethodQueryParams)
         : Observable<PaginatedResRegistroPontoTurnoPontoDTODto> {
+        console.log('debug data log', dto);
         return from(
             pontoControllerConsultaMarcacaoMethod(dto)
                 .then((response) => {

@@ -1,1 +1,84 @@
-{"type":"object","properties":{"idMercadosIntermediario":{"type":"number","description":"ID único do mercado intermediário (gerado automaticamente)","example":101,"readOnly":true},"consulta":{"type":"string","description":"Tipo de consulta associado ao mercado","enum":["110","000","TODOS"],"example":"000"},"nome":{"type":"string","description":"Nome do mercado intermediário","example":"MERCADO ABC","maxLength":255},"histBuffer":{"description":"Histórico de buffers associado a este mercado.","type":"array","items":{"type":"object","properties":{"id":{"type":"number","description":"ID do histórico de buffer (gerado automaticamente)","example":1},"serverTime":{"format":"date-time","type":"string","description":"Data/Hora do registro (formato ISO 8601, ex: \"2025-06-09T10:30:00.000Z\" ou \"2025-06-09\")","example":"2025-06-09T09:34:30.000Z"},"item":{"description":"Dados do item associado ao histórico de buffer","allOf":[{"type":"object","properties":{"Item":{"type":"string","description":"Identificador do item","example":"ITEM_XYZ"},"tipo_item":{"type":"string","description":"Tipo do item","example":"PRODUTO FINAL"},"item_cliente":{"type":"string","description":"Código do item do cliente","example":"CLI-001"},"linha":{"type":"string","description":"Código do item do cliente","example":"CLI-001"}},"required":["Item","tipo_item","item_cliente","linha"],"x-readme-ref-name":"BufferItemDto"}]},"buffer":{"type":"number","description":"Valor do buffer","example":123}},"required":["serverTime","item","buffer"],"x-readme-ref-name":"BufferHistoricoDTO"}}},"required":["idMercadosIntermediario","consulta","nome","histBuffer"],"x-readme-ref-name":"ResMercadosIntermediarioDoSetorDTO"}
+{
+  "type": "object",
+  "properties": {
+    "idMercadosIntermediario": {
+      "type": "number",
+      "description": "ID único do mercado intermediário (gerado automaticamente)",
+      "example": 101,
+      "readOnly": true
+    },
+    "consulta": {
+      "type": "string",
+      "description": "Tipo de consulta associado ao mercado",
+      "enum": ["110", "000", "TODOS"],
+      "example": "000"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome do mercado intermediário",
+      "example": "MERCADO ABC",
+      "maxLength": 255
+    },
+    "histBuffer": {
+      "description": "Histórico de buffers associado a este mercado.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "ID do histórico de buffer (gerado automaticamente)",
+            "example": 1
+          },
+          "serverTime": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data/Hora do registro (formato ISO 8601, ex: \"2025-06-09T10:30:00.000Z\" ou \"2025-06-09\")",
+            "example": "2025-06-09T09:34:30.000Z"
+          },
+          "item": {
+            "description": "Dados do item associado ao histórico de buffer",
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "Item": {
+                    "type": "string",
+                    "description": "Identificador do item",
+                    "example": "ITEM_XYZ"
+                  },
+                  "tipo_item": {
+                    "type": "string",
+                    "description": "Tipo do item",
+                    "example": "PRODUTO FINAL"
+                  },
+                  "item_cliente": {
+                    "type": "string",
+                    "description": "Código do item do cliente",
+                    "example": "CLI-001"
+                  },
+                  "linha": {
+                    "type": "string",
+                    "description": "Código do item do cliente",
+                    "example": "CLI-001"
+                  }
+                },
+                "required": ["Item", "tipo_item", "item_cliente", "linha"],
+                "x-readme-ref-name": "BufferItemDto"
+              }
+            ]
+          },
+          "buffer": {
+            "type": "number",
+            "description": "Valor do buffer",
+            "example": 123
+          }
+        },
+        "required": ["serverTime", "item", "buffer"],
+        "x-readme-ref-name": "BufferHistoricoDTO"
+      }
+    }
+  },
+  "required": ["idMercadosIntermediario", "consulta", "nome", "histBuffer"],
+  "x-readme-ref-name": "ResMercadosIntermediarioDoSetorDTO"
+}

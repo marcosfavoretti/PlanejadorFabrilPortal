@@ -139,6 +139,14 @@ export const routes: Routes = [
     {
         path: 'ponto',
         loadComponent: () => RelogioPontPageComponent,
+        canActivate: [AuthGuard, CargoGuard],
+        data: {
+            roles: [SetUserCargoDTOCargoEnum.ADMIN]
+        }
+    },
+    {
+        path: 'ponto/:ccs',
+        loadComponent: () => RelogioPontPageComponent,
         canActivate: [AuthGuard],
     },
     //wifi routes

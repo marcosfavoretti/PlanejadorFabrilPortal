@@ -1,1 +1,36 @@
-{"type":"object","properties":{"_id":{"type":"string"},"subRoutes":{"type":"array","items":{"type":"object","properties":{"_id":{"type":"object","properties":{},"x-readme-ref-name":"ObjectId"},"name":{"type":"string"},"route":{"type":"string"},"desc":{"type":"string"}},"required":["_id","name","route","desc"],"x-readme-ref-name":"AppSubRouteRes"}},"cargos":{"type":"array","items":{"type":"string","enum":["ADMIN","PCP","USER","CATERPILLAR_USER"]}},"name":{"type":"string"},"route":{"type":"string"},"desc":{"type":"string"}},"required":["_id","subRoutes","cargos","name","route","desc"],"x-readme-ref-name":"ResAppRouteAppDTO"}
+{
+  "type": "object",
+  "properties": {
+    "_id": { "type": "string" },
+    "subRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "object",
+            "properties": {},
+            "x-readme-ref-name": "ObjectId"
+          },
+          "name": { "type": "string" },
+          "route": { "type": "string" },
+          "desc": { "type": "string" }
+        },
+        "required": ["_id", "name", "route", "desc"],
+        "x-readme-ref-name": "AppSubRouteRes"
+      }
+    },
+    "cargos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["ADMIN", "PCP", "USER", "CATERPILLAR_USER"]
+      }
+    },
+    "name": { "type": "string" },
+    "route": { "type": "string" },
+    "desc": { "type": "string" }
+  },
+  "required": ["_id", "subRoutes", "cargos", "name", "route", "desc"],
+  "x-readme-ref-name": "ResAppRouteAppDTO"
+}

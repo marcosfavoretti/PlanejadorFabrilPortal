@@ -1,69 +1,31 @@
-import axios from 'axios'
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
+import Qs from 'qs'; // Você pode precisar instalar: npm install qs
 
-import type { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios'
+export type RequestConfig<TData = any> = AxiosRequestConfig<TData>;
+export type ResponseErrorConfig<TError = any> = AxiosError<TError>;
 
-declare const AXIOS_BASE: string
-declare const AXIOS_HEADERS: string
+export type Client<TData = any, TError = any, TVariables = any> = {
+  (config: RequestConfig<TVariables>): Promise<AxiosResponse<TData>>;
+  <TRes = TData, TErr = TError, TVar = TVariables>(config: RequestConfig<TVar>): Promise<AxiosResponse<TRes>>;
+};
 
-/**
- * Subset of AxiosRequestConfig
- */
-export type RequestConfig<TData = unknown> = {
-  baseURL?: string
-  url?: string
-  method?: 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD'
-  params?: unknown
-  data?: TData | FormData
-  responseType?: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream'
-  signal?: AbortSignal
-  headers?: AxiosRequestConfig['headers']
-}
+export const axiosInstance = axios.create({
+  withCredentials: true,
+  // CONFIGURAÇÃO PARA ARRAY NA URL:
+  paramsSerializer: {
+    serialize: (params) => {
+      // O 'indices: false' remove os colchetes []
+      return Qs.stringify(params, { arrayFormat: 'repeat' });
+    }
+  }
+});
 
-/**
- * Subset of AxiosResponse
- */
-export type ResponseConfig<TData = unknown> = {
-  data: TData
-  status: number
-  statusText: string
-  headers: AxiosResponse['headers']
-}
+export const client: Client = async <TData = any, TError = any, TVariables = any>(
+  config: RequestConfig<TVariables>
+): Promise<AxiosResponse<TData>> => {
+  const response = await axiosInstance.request<TData>(config);
+  return response; 
+};
 
-export type ResponseErrorConfig<TError = unknown> = AxiosError<TError>
-
-let _config: Partial<RequestConfig> = {
-  baseURL: typeof AXIOS_BASE !== 'undefined' ? AXIOS_BASE : undefined,
-  headers: typeof AXIOS_HEADERS !== 'undefined' ? (JSON.parse(AXIOS_HEADERS) as AxiosHeaders) : undefined,
-}
-
-export const getConfig = () => _config
-
-export const setConfig = (config: RequestConfig) => {
-  _config = config
-  return getConfig()
-}
-
-export const axiosInstance = axios.create(getConfig())
-
-export const client = async <TData, TError = unknown, TVariables = unknown>(config: RequestConfig<TVariables>): Promise<ResponseConfig<TData>> => {
-  const globalConfig = getConfig()
-
-  return axiosInstance
-    .request<TData, ResponseConfig<TData>>({
-      ...globalConfig,
-      ...config,
-      withCredentials:true,
-      headers: {
-        ...globalConfig.headers,
-        ...config.headers,
-      },
-    })
-    .catch((e: AxiosError<TError>) => {
-      throw e
-    })
-}
-
-client.getConfig = getConfig
-client.setConfig = setConfig
-
-export default client
+export default client;

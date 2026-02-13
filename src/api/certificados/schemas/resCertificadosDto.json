@@ -1,1 +1,18 @@
-{"type":"object","properties":{"_id":{"type":"string"},"produto":{"type":"string"},"serialNumber":{"type":"string"},"serverTime":{"format":"date-time","type":"string"},"certificadoPath":{"type":"string"}},"required":["_id","produto","serialNumber","serverTime","certificadoPath"],"x-readme-ref-name":"ResCertificadosDto"}
+{
+  "type": "object",
+  "properties": {
+    "_id": { "type": "string" },
+    "produto": { "type": "string" },
+    "serialNumber": { "type": "string" },
+    "serverTime": { "format": "date-time", "type": "string" },
+    "certificadoPath": { "type": "string" }
+  },
+  "required": [
+    "_id",
+    "produto",
+    "serialNumber",
+    "serverTime",
+    "certificadoPath"
+  ],
+  "x-readme-ref-name": "ResCertificadosDto"
+}

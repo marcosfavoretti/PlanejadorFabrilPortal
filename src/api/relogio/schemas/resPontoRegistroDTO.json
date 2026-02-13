@@ -1,1 +1,26 @@
-{"type":"object","properties":{"id":{"type":"number"},"mat":{"type":"string"},"nome":{"type":"string"},"pis":{"type":"string"},"cpf":{"type":"string"},"data":{"format":"date-time","type":"string"},"hora":{"type":"string"},"horaNumber":{"type":"number"},"dataHoraAr":{"format":"date-time","type":"string"}},"required":["id","mat","nome","pis","cpf","data","hora","horaNumber","dataHoraAr"],"x-readme-ref-name":"ResPontoRegistroDTO"}
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "number" },
+    "mat": { "type": "string" },
+    "nome": { "type": "string" },
+    "pis": { "type": "string" },
+    "cpf": { "type": "string" },
+    "data": { "format": "date-time", "type": "string" },
+    "hora": { "type": "string" },
+    "horaNumber": { "type": "number" },
+    "dataHoraAr": { "format": "date-time", "type": "string" }
+  },
+  "required": [
+    "id",
+    "mat",
+    "nome",
+    "pis",
+    "cpf",
+    "data",
+    "hora",
+    "horaNumber",
+    "dataHoraAr"
+  ],
+  "x-readme-ref-name": "ResPontoRegistroDTO"
+}

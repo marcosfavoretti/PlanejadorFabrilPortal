@@ -1,1 +1,9 @@
-{"type":"object","properties":{"fabricaId":{"type":"string"},"pedidoId":{"type":"number"}},"required":["fabricaId","pedidoId"],"x-readme-ref-name":"ReplanejarPedidoDTO"}
+{
+  "type": "object",
+  "properties": {
+    "fabricaId": { "type": "string" },
+    "pedidoId": { "type": "number" }
+  },
+  "required": ["fabricaId", "pedidoId"],
+  "x-readme-ref-name": "ReplanejarPedidoDTO"
+}

@@ -9,6 +9,7 @@ import { GlobalFilterInputText } from '@/app/services/GlobalInputText.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { UserResponseDTO } from '@/api/auth';
 import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'global-header',
@@ -16,7 +17,8 @@ import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore
     UserProfileAvatarComponent,
     RouterModule,
     PopoverModule,
-    UserDetailComponent
+    UserDetailComponent,
+    CommonModule // Added CommonModule for ngIf
   ],
   templateUrl: './global-header.component.html',
   styleUrl: './global-header.component.css'
@@ -43,6 +45,10 @@ export class GlobalHeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  breakRoute(route: string): string[] {
+    return ['/', ...route.split('/').filter(part => part !== '')];
   }
 
   ngOnInit(): void {
