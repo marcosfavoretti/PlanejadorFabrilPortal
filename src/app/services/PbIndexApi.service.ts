@@ -10,16 +10,12 @@ import { pbindexControllerGetDatasets, pbindexControllerGetOnlineUsers } from "@
 export class PbIndexApiService {
     listDataset(user?: string): Observable<PowerbiDataset[]> {
         return from(
-            // axios.get<PowerbiDataset[]>(`http://192.168.99.129:3000/api/pbindex/powerbi/datasets`)
-            //     .then(response => response.data)
             pbindexControllerGetDatasets()
                 .then(response => response)
         );
     }
     listUsers(): Observable<string[]> {
         return from(
-            // axios.get<string[]>(`http://192.168.99.129:3000/api/pbindex/powerbi/online-users`)
-            //     .then(response => response.data)
             pbindexControllerGetOnlineUsers()
                 .then(response => response)
         );

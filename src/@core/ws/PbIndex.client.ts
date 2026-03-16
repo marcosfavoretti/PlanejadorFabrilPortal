@@ -25,7 +25,7 @@ export class PbIndexClientWs {
     onOnlineUsers: EventEmitter<string[]> = new EventEmitter<string[]>();
     clientSocket?: Socket;
 
-    constructor(private user: UserstoreService) {}
+    constructor(private user: UserstoreService) { }
 
     connect(): void {
         if (this.clientSocket?.connected) return;
@@ -43,7 +43,7 @@ export class PbIndexClientWs {
             query: {
                 name: userName
             },
-            // Removido path: '/ws/pbindex' para usar o default '/socket.io/'
+            path: '/ws/pb',
             forceNew: true,
             transports: ['websocket'],
             reconnection: true,

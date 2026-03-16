@@ -4,7 +4,7 @@ export interface WsConfig {
 
 // Default configuration
 export const pbWsConfig: WsConfig = {
-  pbIndexUrl:  'ws://192.168.99.129:30001'
+  pbIndexUrl: 'ws://app.ethos.ind.br'
 };
 
 // Configuration factory
