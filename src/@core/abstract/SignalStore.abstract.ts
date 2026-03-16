@@ -50,7 +50,7 @@ export abstract class SignalStore<T> {
       this.initialized = true;
       return this.refresh(props);
     }
-    return EMPTY;
+    return of(this.get());
   }
 
 

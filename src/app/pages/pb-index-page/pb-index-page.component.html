@@ -1,0 +1,127 @@
+<app-page-layout>
+    <div class="position-relative h-100 w-100 d-flex overflow-hidden bg-light">
+
+        <!-- Alerta de Desconexão (Overlay de Alta Prioridade) -->
+        @if (!currentConnection) {
+        <div
+            class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75 z-3">
+            <div class="text-center p-5 rounded-4 shadow-lg bg-white border-danger">
+                <h1 class="text-danger fw-bold display-4 mb-3">
+                    <i class="pi pi-exclamation-triangle"></i>
+                </h1>
+                <h2 class="text-dark fw-bold">DESCONECTADO!!!</h2>
+                <p class="text-muted">Aguardando reconexão com o servidor...</p>
+            </div>
+        </div>
+        }
+
+        <!-- Overlay para Mobile (quando sidebar está aberto) -->
+        @if (!isMobileSidebarHidden && !isDesktop) {
+        <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-2" (click)="toggleMobileSidebar()">
+        </div>
+        }
+
+        <!-- Seletor Lateral de Relatórios -->
+        <aside class="chart-sidebar bg-white border-end shadow-sm d-flex flex-column"
+            style="width: 280px; transition: all 0.3s ease;" [class.d-none]="isMobileSidebarHidden && isDesktop"
+            [class.d-flex]="!isMobileSidebarHidden || isDesktop" [class.show]="!isMobileSidebarHidden && !isDesktop">
+
+            <div class="p-3 border-bottom bg-success bg-opacity-10">
+                <h6 class="mb-0 fw-bold text-success d-flex align-items-center">
+                    <i class="pi pi-chart-line me-2"></i>
+                    Relatórios PowerBI
+                </h6>
+            </div>
+
+            <div class="flex-grow-1 overflow-auto p-2">
+                <div class="list-group list-group-flush gap-1">
+                    @for (item of chartStore.item(); track item.PowerbiDatasetsID) {
+                    <button (click)="navigateTo('/pb/' + item.PowerbiDatasetsID)"
+                        [class.active]="pickedChartComputed()?.PowerbiDatasetsID === item.PowerbiDatasetsID"
+                        [class.bg-success-subtle]="pickedChartComputed()?.PowerbiDatasetsID === item.PowerbiDatasetsID"
+                        class="list-group-item list-group-item-action border-0 rounded-2 py-2 px-3 small d-flex align-items-center transition-all">
+                        <i class="pi pi-file-pdf me-2 opacity-50"></i>
+                        <span class="text-truncate">{{item.name}}</span>
+                    </button>
+                    } @empty {
+                    <div class="text-center p-4 text-muted small fst-italic">
+                        Nenhum relatório disponível
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Botões de Ação Reutilizáveis -->
+            <app-pb-index-actions [selectedDataset]="pickedChartComputed()" [currentStatus]="currentStatus">
+            </app-pb-index-actions>
+        </aside>
+
+        <!-- Área Principal do Gráfico -->
+        <main class="flex-grow-1 position-relative d-flex flex-column bg-white w-100"
+            [class.w-100]="isMobileSidebarHidden || !isDesktop">
+
+            <!-- Botão Flutuante para Mobile (Sidebar Toggle) -->
+            <button class="btn btn-success rounded-circle shadow-lg position-fixed d-md-none z-3 sidebar-fab"
+                style="bottom: 120px; right: 20px; width: 56px; height: 56px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                (click)="toggleMobileSidebar()" title="Abrir Menu de Relatórios">
+                <i class="pi pi-list" style="font-size: 1.5rem;"></i>
+            </button>
+
+
+            <!-- Barra de Status e Usuários (Discreta e Flutuante - Agora no Canto Inferior Esquerdo) -->
+            <div class="position-absolute bottom-0 start-0 p-3 d-flex gap-2 z-2 info-overlay">
+                <!-- Status Badge -->
+                <div class="badge bg-white text-dark shadow-sm border py-1 px-2 fw-normal d-flex align-items-center opacity-75 hover-opacity-100 transition-all cursor-help"
+                    title="Status da Conexão PowerBI">
+                    <span class="status-indicator me-2" [class.bg-success]="ws.isConnect === true"
+                        [class.bg-warning]="ws.isConnect === false"></span>
+                    <span class="small text-uppercase ls-wide" style="font-size: 0.65rem;">Status: {{
+                        `${currentStatus?.describe || 'Ativo'}` }}</span>
+                </div>
+
+                <!-- Connected Users Badge with Hover List -->
+                <div class="badge bg-white text-dark shadow-sm border py-1 px-2 fw-normal d-flex align-items-center opacity-75 hover-opacity-100 transition-all cursor-pointer"
+                    (mouseenter)="userOp.toggle($event)" (mouseleave)="userOp.hide()">
+                    <i class="pi pi-users me-2 text-muted" style="font-size: 0.75rem;"></i>
+                    <span class="small text-uppercase ls-wide" style="font-size: 0.65rem;">Conectados: {{
+                        connectedUsers().length }}</span>
+                </div>
+
+                <!-- Popover de Usuários -->
+                <p-popover #userOp styleClass="user-popover shadow-lg border-0">
+                    <div class="p-2" style="min-width: 180px;">
+                        <div class="small fw-bold text-muted mb-2 border-bottom pb-1 px-1">USUÁRIOS CONECTADOS</div>
+                        <ul class="list-unstyled mb-0 px-1">
+                            @for (user of connectedUsers(); track $index) {
+                            <li class="small py-1 d-flex align-items-center">
+                                <span class="status-indicator bg-success me-2" style="width: 6px; height: 6px;"></span>
+                                {{ user }}
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                </p-popover>
+            </div>
+
+            <!-- Gráfico(s) -->
+            <div class="flex-grow-1 h-100 w-100 overflow-hidden shadow-inner">
+                @if (chartStore.bufferChart().length > 0) {
+                <div class="h-100 w-100 position-relative">
+                    @for (chart of chartStore.bufferChart(); track chart.PowerbiDatasetsID) {
+                    <app-powerbi-chart [powerbichart]="chart" [activeId]="currentGraficoId()" class="h-100 w-100" />
+                    }
+                </div>
+                } @else {
+                <div class="h-100 d-flex flex-column justify-content-center align-items-center text-muted bg-light">
+                    <div class="rounded-circle bg-white shadow-sm p-4 mb-3">
+                        <i class="pi pi-chart-bar" style="font-size: 3rem; color: #dee2e6;"></i>
+                    </div>
+                    <h5 class="fw-bold text-secondary">Selecione um Relatório</h5>
+                    <p class="small">Escolha um item na lista lateral para visualizar os dados.</p>
+                </div>
+                }
+            </div>
+        </main>
+
+    </div>
+</app-page-layout>

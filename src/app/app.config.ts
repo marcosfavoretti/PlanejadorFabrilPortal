@@ -7,12 +7,16 @@ import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { UserstoreService } from './services/userstore.service';
-import { catchError, firstValueFrom, of, tap } from 'rxjs';
+import { catchError, concatMap, firstValueFrom, of, tap } from 'rxjs';
 import { RoutePermissionStoreService } from './services/RoutePermissionStore.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    DialogService,
+    DynamicDialogRef,
+    DynamicDialogConfig,
     provideAppInitializer(async () => {
       const userStore = inject(UserstoreService);
       const routePermission = inject(RoutePermissionStoreService);
@@ -20,14 +24,9 @@ export const appConfig: ApplicationConfig = {
         await firstValueFrom(
           userStore.initialize()
             .pipe(
-              tap(
-                () => {
-                  routePermission.initialize()
-                    .subscribe();
-                }
-              ),
+              concatMap(() => routePermission.initialize()),
               catchError(err => {
-                console.error('Falha ao inicializar usuário', err);
+                console.error('Falha ao inicializar usuário ou rotas', err);
                 return of(null);
               })
             ));

@@ -1,0 +1,7 @@
+<div class="bg-white">
+    <form #forms='ngForm' class="d-flex flex-column gap-2" (ngSubmit)="checkResponse(forms)">
+        <label for="nome">Nome:</label>
+        <input required ngModel type="text" name="name" class="w-100 input input-group">
+        <button class="btn btn-success" name="submit" type="submit">OK</button>
+    </form>
+</div>

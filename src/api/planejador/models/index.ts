@@ -135,10 +135,10 @@ export type {
   ItemControllerCadastrarItemCapabilidadeMethodMutation,
 } from './ItemControllerCadastrarItemCapabilidadeMethod';
 export type {
-  ItemControllerGetItemCapabilildadeMethodError,
-  ItemControllerGetItemCapabilildadeMethodQueryResponse,
-  ItemControllerGetItemCapabilildadeMethodQuery,
-} from './ItemControllerGetItemCapabilildadeMethod';
+  ItemControllerGetItemCapabilidadeMethodError,
+  ItemControllerGetItemCapabilidadeMethodQueryResponse,
+  ItemControllerGetItemCapabilidadeMethodQuery,
+} from './ItemControllerGetItemCapabilidadeMethod';
 export type { ItemResDto } from './ItemResDto';
 export type {
   KPIControllerGetGanttInformationMethodQueryParams,

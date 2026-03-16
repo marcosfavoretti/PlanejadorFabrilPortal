@@ -1,0 +1,110 @@
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+/* Responsividade para Mobile e Tablet */
+@media (max-width: 768px) {
+    .chart-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .chart-sidebar.show {
+        transform: translateX(0);
+    }
+
+    .info-overlay {
+        pointer-events: none;
+    }
+
+    .info-overlay .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.55rem;
+    }
+
+    /* Botão flutuante do sidebar */
+    .sidebar-fab {
+        bottom: 120px !important;
+    }
+
+    /* Ajuste do overlay de desconexão para mobile */
+    .bg-dark.bg-opacity-75 {
+        padding: 20px;
+    }
+}
+
+/* Responsividade para Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .chart-sidebar {
+        width: 240px;
+    }
+
+    .chart-sidebar .list-group-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsividade para Desktop grande */
+@media (min-width: 1025px) {
+    .chart-sidebar {
+        width: 280px;
+    }
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+.hover-opacity-100:hover {
+    opacity: 1 !important;
+}
+
+.ls-wide {
+    letter-spacing: 0.05em;
+}
+
+.cursor-help {
+    cursor: help;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+}
+
+.chart-sidebar .list-group-item.active {
+    font-weight: 600;
+    color: var(--bs-success);
+    border-left: 3px solid var(--bs-success) !important;
+}
+
+.shadow-inner {
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.06);
+}
+
+.info-overlay {
+    pointer-events: auto;
+}
+
+/* Garante que o app-powerbi-chart ocupe todo o espaço */
+.user-popover {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.user-popover li:hover {
+    background-color: var(--bs-light);
+    border-radius: 4px;
+}

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize, switchMap, tap } from 'rxjs';
+import { catchError, concatMap, of, tap } from 'rxjs';
 import { UserService } from '../../services/User.service';
 import { LoadingPopupService } from '../../services/LoadingPopup.service';
 import { UserstoreService } from '@/app/services/userstore.service';
@@ -30,17 +30,16 @@ export class LoginScreenComponent {
       const login$ = this.userService
         .login({ user, password })
         .pipe(
-          switchMap(() =>
-            this.userStore.initialize()
-              .pipe(
-                finalize(() => {
-                  this.routePermission.initialize()
-                  .subscribe();
-                  this.router.navigate(['/', 'app'])
-                })
-              )
-          ),
-
+          concatMap(() => this.userStore.initialize()),
+          concatMap(() => this.routePermission.initialize()),
+          catchError(err => {
+            console.error('Failed to initialize routes', err);
+            // Still navigate to app even if routes fail to load
+            return of(null);
+          }),
+          tap(() => {
+            this.router.navigate(['/', 'app']);
+          })
         );
       this.popup.showWhile(login$);
     }

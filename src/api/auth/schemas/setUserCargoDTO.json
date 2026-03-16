@@ -3,7 +3,21 @@
   "properties": {
     "cargo": {
       "type": "string",
-      "enum": ["ADMIN", "PCP", "USER", "CATERPILLAR_USER"]
+      "enum": [
+        "ADMIN",
+        "PCP",
+        "USER",
+        "CATERPILLAR_USER",
+        "LIDER_LASER",
+        "LIDER_SOLDA",
+        "LIDER_MONTAGEM",
+        "LIDER_QUALIDADE",
+        "LIDER_PROCESSOS",
+        "DIRETOR",
+        "LIDER_PCP",
+        "ADMIN_POWERBI",
+        "ADMIN_POWERBI_VIEW"
+      ]
     },
     "userId": { "type": "string" }
   },

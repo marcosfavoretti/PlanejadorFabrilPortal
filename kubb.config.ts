@@ -1,7 +1,7 @@
 import { pluginOas } from '@kubb/plugin-oas'
 import { pluginClient } from '@kubb/plugin-client'
 import { pluginTs } from '@kubb/plugin-ts'
-import { defineConfig, type UserConfig } from '@kubb/core' 
+import { defineConfig, type UserConfig } from '@kubb/core'
 import { config } from "dotenv"
 import axios from "axios"
 config();
@@ -20,7 +20,9 @@ const {
     API_URL_WIFI,
     API_SWAGGER_WIFI,
     API_URL_BUFFER,
-    API_SWAGGER_BUFFER
+    API_SWAGGER_BUFFER,
+    API_URL_PBINDEX,
+    API_SWAGGER_PBINDEX
 } = process.env as Record<string, string>;
 
 interface ApiConfigParams {
@@ -104,5 +106,11 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_BUFFER,
         outputPath: './src/api/buffer',
         baseUrl: API_URL_BUFFER
+    }),
+    createApiConfig({
+        name: 'pbindex-api',
+        swaggerPath: API_SWAGGER_PBINDEX,
+        outputPath: './src/api/pbindex',
+        baseUrl: API_URL_PBINDEX
     }),
 ]);

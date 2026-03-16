@@ -1,7 +1,6 @@
 :host {
     display: block;
     height: 100%; /* Ou calc(100vh - tamanho_do_header_da_app_layout) */
-    overflow: hidden; /* Evita scroll na página inteira */
 }
 
 /* Garante que o container da tabela tenha contexto de posicionamento */
@@ -39,7 +38,6 @@
     flex-grow: 1; /* Allow label to take available space */
     display: flex;
     align-items: center;
-    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }

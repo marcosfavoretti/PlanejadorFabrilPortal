@@ -19,7 +19,7 @@ export { fabricaControllerResetaFabricaMethod } from './fabricaControllerResetaF
 export { fabricaControllerSincronizarFabricaPrivadaMethod } from './fabricaControllerSincronizarFabricaPrivadaMethod';
 export { healthControllerCheck } from './healthControllerCheck';
 export { itemControllerCadastrarItemCapabilidadeMethod } from './itemControllerCadastrarItemCapabilidadeMethod';
-export { itemControllerGetItemCapabilildadeMethod } from './itemControllerGetItemCapabilildadeMethod';
+export { itemControllerGetItemCapabilidadeMethod } from './itemControllerGetItemCapabilidadeMethod';
 export { KPIControllerGetGanttInformationMethod } from './KPIControllerGetGanttInformationMethod';
 export { pedidoControllerConsultaItensDoPedidoMethod } from './pedidoControllerConsultaItensDoPedidoMethod';
 export { pedidoControllerConsultaPedidoMethod } from './pedidoControllerConsultaPedidoMethod';

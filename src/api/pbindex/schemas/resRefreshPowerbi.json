@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "PowerbiDatasetsID": {
+      "type": "number",
+      "description": "ID do dataset",
+      "example": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "Nome do dataset",
+      "example": "Vendas Mensais"
+    },
+    "urlDataset": {
+      "type": "string",
+      "description": "URL do dataset",
+      "example": "https://app.powerbi.com/dataset/abc123"
+    },
+    "urlView": {
+      "type": "string",
+      "description": "URL da view do dashboard",
+      "example": "https://app.powerbi.com/view/xyz789"
+    },
+    "adminView": {
+      "type": "boolean",
+      "description": "Indica se o dashboard é visível apenas para administradores",
+      "example": false
+    }
+  },
+  "required": [
+    "PowerbiDatasetsID",
+    "name",
+    "urlDataset",
+    "urlView",
+    "adminView"
+  ],
+  "x-readme-ref-name": "ResRefreshPowerbi"
+}

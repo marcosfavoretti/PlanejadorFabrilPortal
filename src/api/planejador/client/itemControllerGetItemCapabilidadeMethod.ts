@@ -4,32 +4,32 @@
  */
 
 import fetch from '@/client';
-import type { ItemControllerGetItemCapabilildadeMethodQueryResponse } from '../models/ItemControllerGetItemCapabilildadeMethod';
+import type { ItemControllerGetItemCapabilidadeMethodQueryResponse } from '../models/ItemControllerGetItemCapabilidadeMethod';
 import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 
-function getItemControllerGetItemCapabilildadeMethodUrl() {
+function getItemControllerGetItemCapabilidadeMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/planejador/item/capabiliade` as const,
+    url: `https://app.ethos.ind.br/api/planejador/item/capabilidade` as const,
   };
   return res;
 }
 
 /**
- * {@link /api/planejador/item/capabiliade}
+ * {@link /api/planejador/item/capabilidade}
  */
-export async function itemControllerGetItemCapabilildadeMethod(
+export async function itemControllerGetItemCapabilidadeMethod(
   config: Partial<RequestConfig> & { client?: Client } = {},
 ) {
   const { client: request = fetch, ...requestConfig } = config;
 
   const res = await request<
-    ItemControllerGetItemCapabilildadeMethodQueryResponse,
+    ItemControllerGetItemCapabilidadeMethodQueryResponse,
     ResponseErrorConfig<Error>,
     unknown
   >({
     method: 'GET',
-    url: getItemControllerGetItemCapabilildadeMethodUrl().url.toString(),
+    url: getItemControllerGetItemCapabilidadeMethodUrl().url.toString(),
     ...requestConfig,
   });
   return res.data;

@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "urlDataset": { "type": "string" },
+    "urlView": { "type": "string" }
+  },
+  "required": ["name", "urlDataset", "urlView"],
+  "x-readme-ref-name": "AssingPowerbiDatasetDTO"
+}

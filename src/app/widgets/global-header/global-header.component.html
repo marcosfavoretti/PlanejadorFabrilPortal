@@ -34,7 +34,7 @@
                 <app-user-profile-avatar [selfProfile]="true"></app-user-profile-avatar>
             </button>
             <p-popover #op>
-                <app-user-detail></app-user-detail>
+                <app-user-detail (onClose)="op.hide()"></app-user-detail>
             </p-popover>
         </div>
     </div>

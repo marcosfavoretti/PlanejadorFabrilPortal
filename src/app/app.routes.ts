@@ -13,12 +13,16 @@ import { FabricaPageReadOnlyComponent } from './widgets/fabrica-page-read-only/f
 import { RelogioPontPageComponent } from './pages/relogio-pont-page/relogio-pont-page.component';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { CertificadoCaterpillarPageComponent } from './pages/certificado-caterpillar-page/certificado-caterpillar-page.component';
-import { FabricaPrincipalPageComponent } from './pages/fabrica-principal-page/fabrica-principal-page.component';
 import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas-fabricas-page.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wifi-solicitation-page.component';
 import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
 import { ContagemBufferPageComponent } from './pages/contagem-buffer-page/contagem-buffer-page.component';
+// import { FolhaHoraExtraListPageComponent } from './pages/folha-hora-extra-list-page/folha-hora-extra-list-page.component';
+// import { FolhaHoraExtraFormPageComponent } from './pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component';
+// import { FolhaHoraExtraDetailPageComponent } from './pages/folha-hora-extra-detail-page/folha-hora-extra-detail-page.component';
+import { ContentLayoutComponent } from './layouts/content-layout/content-layout.component';
+import { PbIndexPageComponent } from './pages/pb-index-page/pb-index-page.component';
 export const routes: Routes = [
     {
         path: '',
@@ -39,10 +43,21 @@ export const routes: Routes = [
             }
         ]
     },
+    {
+        path: 'pb',
+        loadComponent: () => PbIndexPageComponent,
+        canActivate: [AuthGuard],
+
+    },
+    {
+        path: 'pb/:grafico',
+        loadComponent: () => PbIndexPageComponent,
+        canActivate: [AuthGuard],
+    },
     //planejador routes
     {
         path: 'planejamentos',
-        loadComponent: () => FabricaPrincipalPageComponent,
+        loadComponent: () => ContentLayoutComponent,
         canActivate: [AuthGuard, CargoGuard],
         children: [
             {
@@ -126,6 +141,7 @@ export const routes: Routes = [
         loadComponent: () => CertificadoCaterpillarPageComponent,
         canActivate: [AuthGuard, CargoGuard]
     },
+
     //auth routes
     {
         path: 'register',
@@ -137,17 +153,59 @@ export const routes: Routes = [
     },
     //ponto routes
     {
-        path: 'ponto',
-        loadComponent: () => RelogioPontPageComponent,
-        canActivate: [AuthGuard, CargoGuard],
-        data: {
-            roles: [SetUserCargoDTOCargoEnum.ADMIN]
-        }
+        path: 'ponto/:ccs',
+        loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
+        canActivate: [AuthGuard], // Base AuthGuard for all ponto-related routes
+        children: [
+            // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
+            // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
+            // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
+
+
+            // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
+            //rotas de ponto de funcionarios
+            {
+                path: 'prefilter/:ccs', // /ponto/some_ccs_value - must be after specific he routes
+                loadComponent: () => RelogioPontPageComponent
+            },
+            {
+                path: '', // Matches exactly /ponto - must be last
+                loadComponent: () => RelogioPontPageComponent,
+                canActivate: [CargoGuard], // Additional guard for this specific case
+                data: {
+                    roles: [SetUserCargoDTOCargoEnum.ADMIN]
+                }
+            }
+        ]
     },
     {
-        path: 'ponto/:ccs',
-        loadComponent: () => RelogioPontPageComponent,
-        canActivate: [AuthGuard],
+        path: 'ponto',
+        loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
+        canActivate: [AuthGuard, CargoGuard], // Base AuthGuard for all ponto-related routes
+        data: {
+            roles: [SetUserCargoDTOCargoEnum.ADMIN]
+        },
+        children: [
+            // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
+            // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
+            // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
+
+
+            // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
+            //rotas de ponto de funcionarios
+            {
+                path: 'prefilter/:ccs', // /ponto/some_ccs_value - must be after specific he routes
+                loadComponent: () => RelogioPontPageComponent
+            },
+            {
+                path: '', // Matches exactly /ponto - must be last
+                loadComponent: () => RelogioPontPageComponent,
+                canActivate: [CargoGuard], // Additional guard for this specific case
+                data: {
+                    roles: [SetUserCargoDTOCargoEnum.ADMIN]
+                }
+            }
+        ]
     },
     //wifi routes
     {

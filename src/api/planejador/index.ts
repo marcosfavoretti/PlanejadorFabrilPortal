@@ -135,10 +135,10 @@ export type {
   ItemControllerCadastrarItemCapabilidadeMethodMutation,
 } from './models/ItemControllerCadastrarItemCapabilidadeMethod';
 export type {
-  ItemControllerGetItemCapabilildadeMethodError,
-  ItemControllerGetItemCapabilildadeMethodQueryResponse,
-  ItemControllerGetItemCapabilildadeMethodQuery,
-} from './models/ItemControllerGetItemCapabilildadeMethod';
+  ItemControllerGetItemCapabilidadeMethodError,
+  ItemControllerGetItemCapabilidadeMethodQueryResponse,
+  ItemControllerGetItemCapabilidadeMethodQuery,
+} from './models/ItemControllerGetItemCapabilidadeMethod';
 export type { ItemResDto } from './models/ItemResDto';
 export type {
   KPIControllerGetGanttInformationMethodQueryParams,
@@ -198,7 +198,7 @@ export { fabricaControllerResetaFabricaMethod } from './client/fabricaController
 export { fabricaControllerSincronizarFabricaPrivadaMethod } from './client/fabricaControllerSincronizarFabricaPrivadaMethod';
 export { healthControllerCheck } from './client/healthControllerCheck';
 export { itemControllerCadastrarItemCapabilidadeMethod } from './client/itemControllerCadastrarItemCapabilidadeMethod';
-export { itemControllerGetItemCapabilildadeMethod } from './client/itemControllerGetItemCapabilildadeMethod';
+export { itemControllerGetItemCapabilidadeMethod } from './client/itemControllerGetItemCapabilidadeMethod';
 export { KPIControllerGetGanttInformationMethod } from './client/KPIControllerGetGanttInformationMethod';
 export { pedidoControllerConsultaItensDoPedidoMethod } from './client/pedidoControllerConsultaItensDoPedidoMethod';
 export { pedidoControllerConsultaPedidoMethod } from './client/pedidoControllerConsultaPedidoMethod';

@@ -1,0 +1,17 @@
+<div class="p-4 text-center">
+    <div class="mb-3">
+        <i class="pi pi-check-circle text-success" style="font-size: 3rem;"></i>
+    </div>
+    <h4 class="fw-bold mb-2">Atualização Concluída!</h4>
+    <p class="text-muted small mb-4">{{describe}}</p>
+    
+    <div class="d-grid gap-2">
+        <button class="btn btn-success d-flex align-items-center justify-content-center py-2" (click)="reloadPage()">
+            <i class="pi pi-refresh me-2"></i>
+            Recarregar agora
+        </button>
+        <button class="btn btn-outline-secondary py-2" (click)="quitPopUp()">
+            Continuar sem atualizar
+        </button>
+    </div>
+</div>

@@ -7,19 +7,26 @@ import { LoadingPopUpComponent } from '../widgets/loading-pop-up/loading-pop-up.
 
 @Injectable({ providedIn: 'root' })
 export class LoadingPopupService {
-  // private modalRef?: NgbModalRef;
+  private activeModals = new Map<any, NgbModalRef>();
 
   constructor(private modalService: NgbModal) { }
 
   showErrorMessage(message: string): void {
+    const existingModal = this.activeModals.get(ErroPopupComponent);
+    if (existingModal) {
+      existingModal.componentInstance.erroMessage = message;
+      return;
+    }
+
     const errorRef = this.modalService.open(ErroPopupComponent, {
       backdrop: 'static',
       centered: true,
       keyboard: true,
     });
 
-    errorRef.result.catch(() => {
-      console.log('ErroPopupComponent foi fechado.');
+    this.activeModals.set(ErroPopupComponent, errorRef);
+    errorRef.result.finally(() => {
+      this.activeModals.delete(ErroPopupComponent);
     });
 
     errorRef.componentInstance.erroMessage = message;
@@ -27,12 +34,27 @@ export class LoadingPopupService {
   }
 
   showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
+    const existingModal = this.activeModals.get(component);
+    if (existingModal) {
+      if (inputs) {
+        for (const [key, value] of Object.entries(inputs)) {
+          existingModal.componentInstance[key] = value;
+        }
+      }
+      return existingModal;
+    }
+
     const modalRef = this.modalService.open(component, {
       backdrop: 'static',
       centered: true,
       keyboard: true,
     });
-    
+
+    this.activeModals.set(component, modalRef);
+    modalRef.result.finally(() => {
+      this.activeModals.delete(component);
+    });
+
     if (inputs) {
       for (const [key, value] of Object.entries(inputs)) {
         modalRef.componentInstance[key] = value;
@@ -40,7 +62,6 @@ export class LoadingPopupService {
     }
     modalRef.componentInstance.closeButtonFn = () => modalRef.close();
     return modalRef
-
   }
   showWhile(...observables: Observable<any>[]): Observable<any> {
     const modalRef = this.modalService.open(LoadingPopUpComponent, {

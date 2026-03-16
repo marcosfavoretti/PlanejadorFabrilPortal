@@ -5,12 +5,12 @@
 
 import type { ConsultarTabelaCapabilidadeDTO } from './ConsultarTabelaCapabilidadeDTO';
 
-export type ItemControllerGetItemCapabilildadeMethodError =
+export type ItemControllerGetItemCapabilidadeMethodError =
   ConsultarTabelaCapabilidadeDTO[];
 
-export type ItemControllerGetItemCapabilildadeMethodQueryResponse = any;
+export type ItemControllerGetItemCapabilidadeMethodQueryResponse = any;
 
-export type ItemControllerGetItemCapabilildadeMethodQuery = {
+export type ItemControllerGetItemCapabilidadeMethodQuery = {
   Response: any;
   Errors: any;
 };

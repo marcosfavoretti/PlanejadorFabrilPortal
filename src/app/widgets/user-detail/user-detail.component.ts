@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, output, Signal } from '@angular/core';
 import { UserService } from '../../services/User.service';
 import { Router, RouterModule } from '@angular/router';
 import { tap } from 'rxjs';
@@ -25,6 +25,7 @@ export class UserDetailComponent implements OnInit {
   private router = inject(Router);
   user !: Signal<UserResponseDTO | null>;
   loadFinish: boolean = false;
+  onClose = output<void>();
 
   logout(): void {
     const logout$ = this.userService.logout()

@@ -1,4 +1,4 @@
-import { ConsultarTabelaCapabilidadeDTO, itemControllerCadastrarItemCapabilidadeMethod, itemControllerGetItemCapabilildadeMethod } from "@/api/planejador";
+import { ConsultarTabelaCapabilidadeDTO, itemControllerCadastrarItemCapabilidadeMethod, itemControllerGetItemCapabilidadeMethod } from "@/api/planejador";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 
@@ -8,7 +8,7 @@ import { from, Observable } from "rxjs";
 export class ItemService {
     consultaCapabilidade(): Observable<ConsultarTabelaCapabilidadeDTO[]> {
         return from(
-            itemControllerGetItemCapabilildadeMethod()
+            itemControllerGetItemCapabilidadeMethod()
                 .then((response) => {
                     return response
                 })

@@ -1,5 +1,9 @@
-@if (user()) {
-<div class="user-popup-card p-3 bg-dark-gree">
+<div class="user-popup-card p-3 bg-dark-gree position-relative">
+    <button (click)="onClose.emit()" class="btn btn-sm btn-link text-muted position-absolute top-0 end-0 m-1">
+        <i class="pi pi-times"></i>
+    </button>
+
+    @if (user()) {
     <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
         <div class="avatar bg-dark-green text-white rounded-circle d-flex align-items-center justify-content-center">
             <i class="pi pi-user text-xl"></i>
@@ -25,13 +29,13 @@
             <span>Logout</span>
         </button>
     </div>
+    }
+    @else {
+    <p class="text-danger"> você não está autenticado!</p>
+    <p class="text-muted"> por favor, faça login para acessar as funcionalidades do portal.</p>
+    <button (click)="login()" class="btn btn-success rounded-pill d-flex align-items-center gap-2 px-3">
+        <i class="pi pi-user"></i>
+        <span>Login</span>
+    </button>
+    }
 </div>
-}
-@else {
-<p class="text-danger"> você não está autenticado!</p>
-<p class="text-muted"> por favor, faça login para acessar as funcionalidades do portal.</p>
-<button (click)="login()" class="btn btn-success rounded-pill d-flex align-items-center gap-2 px-3">
-    <i class="pi pi-user"></i>
-    <span>Login</span>
-</button>
-}

@@ -15,6 +15,14 @@ yarn-error.log
 .kubb
 # IDEs and editors
 .idea/
+# Ignorar pastas de estado da IA (onde ficam logs e histórico de chat)
+.claude/
+.claude-flow/
+.gemini/
+.playwright-mcp/
+# Opcional: Se você quiser que as regras de projeto fiquem só com você
+CLAUDE.md
+.mcp.json
 .project
 .classpath
 .c9/
