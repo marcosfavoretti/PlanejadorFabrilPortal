@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPbindexControllerGetDatasetsUrl() {
   const res = {
     method: 'GET',
-    url: `http://192.168.99.129:3000/api/pbindex/powerbi/datasets` as const,
+    url: `https://app.ethos.ind.br/api/pbindex/api/pbindex/powerbi/datasets` as const,
   };
   return res;
 }

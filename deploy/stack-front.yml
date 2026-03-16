@@ -39,6 +39,9 @@ services:
       # Configuracao wifi
       - API_URL_WIFI=${API_URL_WIFI}
       - API_SWAGGER_WIFI=${API_SWAGGER_WIFI}
+      #pb index
+      - API_URL_PBINDEX=${API_URL_PBINDEX}
+      - API_SWAGGER_PBINDEX=${API_SWAGGER_PBINDEX}
       # Configuracao buffer
       - API_URL_BUFFER=${API_URL_BUFFER}
       - API_SWAGGER_BUFFER=${API_SWAGGER_BUFFER}
