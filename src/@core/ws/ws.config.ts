@@ -2,9 +2,18 @@ export interface WsConfig {
   pbIndexUrl: string;
 }
 
+const getProtocol = (): string => {
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+    return 'wss';
+  }
+  return 'ws';
+};
+
+const host = 'app.ethos.ind.br';
+
 // Default configuration
 export const pbWsConfig: WsConfig = {
-  pbIndexUrl: 'ws://app.ethos.ind.br'
+  pbIndexUrl: `${getProtocol()}://${host}`
 };
 
 // Configuration factory
