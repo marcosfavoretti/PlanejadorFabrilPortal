@@ -14,10 +14,6 @@ services:
     # Se você quiser que o Docker sempre verifique se há uma versão nova na main
     pull_policy: always
     
-    # É aqui que o --add-host entra na Stack
-    extra_hosts:
-      - "app.ethos.ind.br:192.168.99.156"
-      - "app.prod.ethos:192.168.99.156"
 
     environment:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
@@ -45,3 +41,12 @@ services:
       # Configuracao buffer
       - API_URL_BUFFER=${API_URL_BUFFER}
       - API_SWAGGER_BUFFER=${API_SWAGGER_BUFFER}
+    networks:
+      - backend-network
+    dns:
+      - 192.168.99.110
+      - 192.168.99.106
+
+networks:
+  backend-network:
+    external: true
