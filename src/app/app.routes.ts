@@ -18,11 +18,24 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wifi-solicitation-page.component';
 import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
 import { ContagemBufferPageComponent } from './pages/contagem-buffer-page/contagem-buffer-page.component';
+import { ContentLayoutComponent } from './layouts/content-layout/content-layout.component';
 // import { FolhaHoraExtraListPageComponent } from './pages/folha-hora-extra-list-page/folha-hora-extra-list-page.component';
 // import { FolhaHoraExtraFormPageComponent } from './pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component';
 // import { FolhaHoraExtraDetailPageComponent } from './pages/folha-hora-extra-detail-page/folha-hora-extra-detail-page.component';
-import { ContentLayoutComponent } from './layouts/content-layout/content-layout.component';
 import { PbIndexPageComponent } from './pages/pb-index-page/pb-index-page.component';
+
+
+
+const lideres = [
+    SetUserCargoDTOCargoEnum.ADMIN,
+    SetUserCargoDTOCargoEnum.LIDER_MONTAGEM,
+    SetUserCargoDTOCargoEnum.LIDER_MONTAGEM,
+    SetUserCargoDTOCargoEnum.LIDER_QUALIDADE,
+    SetUserCargoDTOCargoEnum.LIDER_PROCESSOS,
+    SetUserCargoDTOCargoEnum.LIDER_SOLDA,
+    SetUserCargoDTOCargoEnum.LIDER_LASER
+]
+
 export const routes: Routes = [
     {
         path: '',
@@ -154,16 +167,13 @@ export const routes: Routes = [
     //ponto routes
     {
         path: 'ponto/:ccs',
+        canActivate: [AuthGuard, CargoGuard], // Base AuthGuard for all ponto-related routes
         loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
-        canActivate: [AuthGuard], // Base AuthGuard for all ponto-related routes
         children: [
             // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
             // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
             // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
-
-
             // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
-            //rotas de ponto de funcionarios
             {
                 path: 'prefilter/:ccs', // /ponto/some_ccs_value - must be after specific he routes
                 loadComponent: () => RelogioPontPageComponent
@@ -183,14 +193,15 @@ export const routes: Routes = [
         loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
         canActivate: [AuthGuard, CargoGuard], // Base AuthGuard for all ponto-related routes
         data: {
-            roles: [SetUserCargoDTOCargoEnum.ADMIN]
+            roles: [
+                SetUserCargoDTOCargoEnum.ADMIN,
+                ...lideres
+            ]
         },
         children: [
             // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
             // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
             // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
-
-
             // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
             //rotas de ponto de funcionarios
             {
@@ -202,7 +213,9 @@ export const routes: Routes = [
                 loadComponent: () => RelogioPontPageComponent,
                 canActivate: [CargoGuard], // Additional guard for this specific case
                 data: {
-                    roles: [SetUserCargoDTOCargoEnum.ADMIN]
+                    roles: [
+                        SetUserCargoDTOCargoEnum.ADMIN,
+                    ]
                 }
             }
         ]
@@ -225,4 +238,13 @@ export const routes: Routes = [
             roles: [SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.ADMIN]
         }
     },
+    // portaria routes
+    {
+        path: 'portaria',
+        loadComponent: () => import('./pages/portaria/portaria-control/portaria-control.component').then(m => m.PortariaControlComponent),
+        canActivate: [AuthGuard, CargoGuard],
+        data: {
+            roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.DIRETOR]
+        }
+    }
 ];
