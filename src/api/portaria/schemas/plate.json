@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "BoundingBox": {
+      "example": [100, 200, 300, 400],
+      "description": "Coordenadas [x, y, w, h]",
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "Channel": { "type": "number", "example": 1 },
+    "Confidence": { "type": "number", "example": 0.98 },
+    "IsExist": { "type": "boolean", "example": true },
+    "PlateColor": { "type": "string", "example": "White" },
+    "PlateNumber": { "type": "string", "example": "ABC1D23" },
+    "PlateType": { "type": "string", "example": "Standard" },
+    "Region": { "type": "string", "example": "Brazil" },
+    "UploadNum": { "type": "number", "example": 1 }
+  },
+  "required": [
+    "BoundingBox",
+    "Channel",
+    "Confidence",
+    "IsExist",
+    "PlateColor",
+    "PlateNumber",
+    "PlateType",
+    "Region",
+    "UploadNum"
+  ],
+  "x-readme-ref-name": "Plate"
+}

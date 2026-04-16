@@ -23,6 +23,12 @@ export type {
   ExcelControllerCompactBuffer2ExcelMethodMutationResponse,
   ExcelControllerCompactBuffer2ExcelMethodMutation,
 } from './models/ExcelControllerCompactBuffer2ExcelMethod';
+export type {
+  HealthControllerCheck200,
+  HealthControllerCheck503,
+  HealthControllerCheckQueryResponse,
+  HealthControllerCheckQuery,
+} from './models/HealthControllerCheck';
 export type { ResBufferHistoricoDto } from './models/ResBufferHistoricoDto';
 export type { ResMercadosIntermediarioDoSetorDTO } from './models/ResMercadosIntermediarioDoSetorDTO';
 export type { ResSetorDTO } from './models/ResSetorDTO';
@@ -42,6 +48,7 @@ export { bufferControllerConsultBufferMethod } from './client/bufferControllerCo
 export { bufferControllerJobMethod } from './client/bufferControllerJobMethod';
 export { bufferControllerSaveBufferLog } from './client/bufferControllerSaveBufferLog';
 export { excelControllerCompactBuffer2ExcelMethod } from './client/excelControllerCompactBuffer2ExcelMethod';
+export { healthControllerCheck } from './client/healthControllerCheck';
 export { setoresControllerGetSetoresMethod } from './client/setoresControllerGetSetoresMethod';
 export { setoresControllerGetSetorMercadoMethod } from './client/setoresControllerGetSetorMercadoMethod';
 export { ResMercadosIntermediarioDoSetorDTOConsultaEnum } from './models/ResMercadosIntermediarioDoSetorDTO';

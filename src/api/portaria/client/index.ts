@@ -1,0 +1,10 @@
+export { controlePortariaVideoControllerCreateSession } from './controlePortariaVideoControllerCreateSession';
+export { controlePortariaVideoControllerGetManifest } from './controlePortariaVideoControllerGetManifest';
+export { controlePortariaVideoControllerGetSegment } from './controlePortariaVideoControllerGetSegment';
+export { controlePortariaVideoControllerGetStatus } from './controlePortariaVideoControllerGetStatus';
+export { controleVeiculosControllerFindAll } from './controleVeiculosControllerFindAll';
+export { controleVeiculosControllerGetFoto } from './controleVeiculosControllerGetFoto';
+export { controleVeiculosControllerGetKpis } from './controleVeiculosControllerGetKpis';
+export { controleVeiculosWebHookControllerEvents } from './controleVeiculosWebHookControllerEvents';
+export { controleVeiculosWebHookControllerGetHeartbeat } from './controleVeiculosWebHookControllerGetHeartbeat';
+export { controleVeiculosWebHookControllerHandleWebhook } from './controleVeiculosWebHookControllerHandleWebhook';

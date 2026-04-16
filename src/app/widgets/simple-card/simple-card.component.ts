@@ -3,6 +3,7 @@ import {  SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-simple-card',
+  standalone: true,
   imports: [
     SkeletonModule
   ],

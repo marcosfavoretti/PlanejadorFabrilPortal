@@ -62,7 +62,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "allowedHosts": ["planejador.dev.ethos"]
+            "host": "0.0.0.0",
+            "allowedHosts": ["planejador.dev.ethos", "marcos"]
           },
           "configurations": {
             "production": {

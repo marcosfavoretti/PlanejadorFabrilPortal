@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "VehicleBoundingBox": { "type": "array", "items": { "type": "number" } },
+    "VehicleColor": { "type": "string", "example": "Silver" },
+    "VehicleSeries": { "type": "string", "example": "Corolla" },
+    "VehicleSign": { "type": "string", "example": "Toyota" },
+    "VehicleType": { "type": "string", "example": "Sedan" }
+  },
+  "required": [
+    "VehicleBoundingBox",
+    "VehicleColor",
+    "VehicleSeries",
+    "VehicleSign",
+    "VehicleType"
+  ],
+  "x-readme-ref-name": "Vehicle"
+}

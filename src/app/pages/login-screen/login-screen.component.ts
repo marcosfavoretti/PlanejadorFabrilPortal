@@ -30,13 +30,16 @@ export class LoginScreenComponent {
       const login$ = this.userService
         .login({ user, password })
         .pipe(
-          concatMap(() => this.userStore.initialize()),
-          concatMap(() => this.routePermission.initialize()),
-          catchError(err => {
-            console.error('Failed to initialize routes', err);
-            // Still navigate to app even if routes fail to load
-            return of(null);
-          }),
+          concatMap(() =>
+            this.userStore.initialize().pipe(
+              concatMap(() => this.routePermission.initialize()),
+              catchError((err) => {
+                console.error('Failed to initialize routes', err);
+                // Still navigate to app even if routes fail to load
+                return of(null);
+              })
+            )
+          ),
           tap(() => {
             this.router.navigate(['/', 'app']);
           })

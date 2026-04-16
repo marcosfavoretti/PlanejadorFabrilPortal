@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "properties": {
+    "NormalPic": {
+      "type": "object",
+      "properties": {
+        "Content": {
+          "type": "string",
+          "description": "Imagem em base64",
+          "example": "data:image/jpeg;base64,..."
+        },
+        "PicName": { "type": "string", "example": "plate_capture.jpg" }
+      },
+      "required": ["Content", "PicName"],
+      "x-readme-ref-name": "NormalPic"
+    },
+    "Plate": {
+      "type": "object",
+      "properties": {
+        "BoundingBox": {
+          "example": [100, 200, 300, 400],
+          "description": "Coordenadas [x, y, w, h]",
+          "type": "array",
+          "items": { "type": "number" }
+        },
+        "Channel": { "type": "number", "example": 1 },
+        "Confidence": { "type": "number", "example": 0.98 },
+        "IsExist": { "type": "boolean", "example": true },
+        "PlateColor": { "type": "string", "example": "White" },
+        "PlateNumber": { "type": "string", "example": "ABC1D23" },
+        "PlateType": { "type": "string", "example": "Standard" },
+        "Region": { "type": "string", "example": "Brazil" },
+        "UploadNum": { "type": "number", "example": 1 }
+      },
+      "required": [
+        "BoundingBox",
+        "Channel",
+        "Confidence",
+        "IsExist",
+        "PlateColor",
+        "PlateNumber",
+        "PlateType",
+        "Region",
+        "UploadNum"
+      ],
+      "x-readme-ref-name": "Plate"
+    },
+    "SnapInfo": {
+      "type": "object",
+      "properties": {
+        "AccurateTime": { "type": "string", "example": "2026-02-19 16:56:00" },
+        "AllowUser": { "type": "boolean" },
+        "AllowUserEndTime": { "type": "string" },
+        "BlockUser": { "type": "boolean" },
+        "BlockUserEndTime": { "type": "string" },
+        "DSTTune": { "type": "number" },
+        "DefenceCode": { "type": "string" },
+        "DeviceID": { "type": "string", "example": "CAM-01-ENTRADA" },
+        "Direction": {
+          "type": "string",
+          "example": "Obverse",
+          "description": "Direção do veículo"
+        },
+        "InCarPeopleNum": { "type": "number" },
+        "LanNo": { "type": "number" },
+        "OpenStrobe": { "type": "boolean" },
+        "SnapAddress": { "type": "string" },
+        "SnapTime": { "type": "string" },
+        "TimeZone": { "type": "number" }
+      },
+      "required": [
+        "AccurateTime",
+        "AllowUser",
+        "AllowUserEndTime",
+        "BlockUser",
+        "BlockUserEndTime",
+        "DSTTune",
+        "DefenceCode",
+        "DeviceID",
+        "Direction",
+        "InCarPeopleNum",
+        "LanNo",
+        "OpenStrobe",
+        "SnapAddress",
+        "SnapTime",
+        "TimeZone"
+      ],
+      "x-readme-ref-name": "SnapInfo"
+    },
+    "Vehicle": {
+      "type": "object",
+      "properties": {
+        "VehicleBoundingBox": {
+          "type": "array",
+          "items": { "type": "number" }
+        },
+        "VehicleColor": { "type": "string", "example": "Silver" },
+        "VehicleSeries": { "type": "string", "example": "Corolla" },
+        "VehicleSign": { "type": "string", "example": "Toyota" },
+        "VehicleType": { "type": "string", "example": "Sedan" }
+      },
+      "required": [
+        "VehicleBoundingBox",
+        "VehicleColor",
+        "VehicleSeries",
+        "VehicleSign",
+        "VehicleType"
+      ],
+      "x-readme-ref-name": "Vehicle"
+    }
+  },
+  "required": ["NormalPic", "Plate", "SnapInfo", "Vehicle"],
+  "x-readme-ref-name": "PictureData"
+}

@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "totalInside": {
+      "type": "number",
+      "description": "Total de veículos atualmente dentro da unidade"
+    },
+    "totalToday": {
+      "type": "number",
+      "description": "Total de movimentações hoje (Entradas + Saídas)"
+    },
+    "entriesToday": {
+      "type": "number",
+      "description": "Total de entradas hoje"
+    },
+    "exitsToday": { "type": "number", "description": "Total de saídas hoje" },
+    "avgVehiclesPerHour": {
+      "type": "number",
+      "description": "Média de veículos por hora nas últimas 24h"
+    },
+    "histogram": {
+      "description": "Histograma de movimentações do dia em slots de 30min",
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "totalInside",
+    "totalToday",
+    "entriesToday",
+    "exitsToday",
+    "histogram"
+  ],
+  "x-readme-ref-name": "VehicleKpiResponseDto"
+}

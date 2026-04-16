@@ -23,6 +23,12 @@ export type {
   ExcelControllerCompactBuffer2ExcelMethodMutationResponse,
   ExcelControllerCompactBuffer2ExcelMethodMutation,
 } from './ExcelControllerCompactBuffer2ExcelMethod';
+export type {
+  HealthControllerCheck200,
+  HealthControllerCheck503,
+  HealthControllerCheckQueryResponse,
+  HealthControllerCheckQuery,
+} from './HealthControllerCheck';
 export type { ResBufferHistoricoDto } from './ResBufferHistoricoDto';
 export type { ResMercadosIntermediarioDoSetorDTO } from './ResMercadosIntermediarioDoSetorDTO';
 export type { ResSetorDTO } from './ResSetorDTO';

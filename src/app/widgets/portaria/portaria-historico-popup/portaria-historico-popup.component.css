@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+
+:host {
+    font-family: 'Fira Sans', system-ui, -apple-system, sans-serif;
+}
+
+.fw-black {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.text-primary {
+  color: #15803d !important;
+}
+
+.bg-primary {
+  background-color: #15803d !important;
+}
+
+/* Liquid Glass Effects */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.bg-primary-subtle {
+  background-color: rgba(21, 128, 61, 0.05) !important;
+  border: 1px solid rgba(21, 128, 61, 0.1) !important;
+}
+
+.bg-success-subtle {
+  background-color: rgba(34, 197, 94, 0.08) !important;
+}
+
+.bg-warning-subtle {
+  background-color: rgba(234, 179, 8, 0.08) !important;
+}
+
+.text-success { color: #15803d !important; }
+.text-warning-emphasis { color: #854d0e !important; }
+
+.rounded-4 { border-radius: 1.5rem !important; }
+
+.tiny {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Header Refinement */
+.header-highlight {
+    background-color: #15803d; /* Sincronizado com o sistema (#15803d) */
+    border-radius: 0.5rem;
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animations */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .7; }
+}
+
+.animate-in {
+    animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-lift {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+.letter-spacing-1 {
+    letter-spacing: 0.1em;
+}
+
+/* Custom Input for Search */
+.input-group-custom input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Modal and Scrollbar */
+.modal-container {
+    max-height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    background: #fdfdfd;
+}
+
+.modal-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Table and Primeng Overrides */
+::ng-deep .p-datatable {
+  background: transparent;
+  border: none !important;
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f8fafc;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 1.5rem 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+    transition: background-color 0.2s ease;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #f8fafc !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1.25rem 1rem;
+    color: #475569;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #f8fafc;
+}
+
+::ng-deep .p-paginator {
+    background: #f8fafc !important;
+    border-radius: 0 0 1.5rem 1.5rem !important;
+    padding: 0.75rem !important;
+    border-top: 1px solid #f1f5f9 !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: white !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #15803d !important;
+    font-weight: 800;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.badge-label {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tracking-wider {
+    letter-spacing: 0.05em;
+}

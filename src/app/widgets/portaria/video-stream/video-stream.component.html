@@ -1,0 +1,85 @@
+<div class="video-container shadow-lg rounded-4 overflow-hidden position-relative bg-black">
+  <!-- Video Element -->
+  <video #videoPlayer class="w-100 h-100" playsinline muted autoplay></video>
+
+  <!-- Top Overlays -->
+  <div class="overlay-top p-3 d-flex justify-content-between align-items-start w-100 position-absolute top-0 start-0">
+    <div class="camera-info bg-dark-80 p-2 px-3 rounded-2 border-start border-success border-4">
+      <div class="tiny text-success fw-bold text-uppercase">CAMERA 01</div>
+      <div class="fw-bold text-white small">MAIN GATE - ENTRY 1</div>
+    </div>
+
+    <div class="status-badge">
+      <span class="badge rounded-pill bg-success px-3 py-2 d-flex align-items-center gap-2">
+        <span class="pulse-dot"></span>
+        ACTIVE
+      </span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="loading-overlay position-absolute top-0 start-0 w-100 h-100 bg-black-50 p-3 d-flex flex-column">
+    <div class="d-flex justify-content-between mb-4">
+      <p-skeleton width="150px" height="40px" borderRadius="8px" backgroundColor="rgba(255,255,255,0.1)"></p-skeleton>
+      <p-skeleton width="100px" height="30px" borderRadius="15px" backgroundColor="rgba(255,255,255,0.1)"></p-skeleton>
+    </div>
+    <div class="mt-auto d-flex justify-content-between align-items-end">
+      <p-skeleton width="280px" height="80px" borderRadius="12px" backgroundColor="rgba(255,255,255,0.1)"></p-skeleton>
+      <p-skeleton width="120px" height="20px" backgroundColor="rgba(255,255,255,0.05)"></p-skeleton>
+    </div>
+    <!-- Center Spinner -->
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+      <i class="pi pi-spin pi-spinner text-success display-4 mb-3"></i>
+      <div class="text-white fw-medium tiny">SINCRONIZANDO CANAL...</div>
+    </div>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+  <div
+    class="error-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-black-80 p-4 text-center" style="z-index: 10;">
+    <i class="pi pi-exclamation-triangle text-danger display-4 mb-3"></i>
+    <div class="text-white mb-3">{{ error() }}</div>
+    <button class="btn btn-outline-light btn-sm rounded-pill px-4" (click)="retry()">
+      <i class="pi pi-refresh me-2"></i>Tentar novamente
+    </button>
+  </div>
+  }
+
+  <!-- Play Overlay in case of blocked autoplay -->
+  @if (showPlayButton()) {
+  <div
+    class="play-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center bg-black-50 p-4 text-center cursor-pointer" 
+    style="z-index: 5; cursor: pointer;" 
+    (click)="forcePlay()">
+    <i class="pi pi-play-circle text-white display-1 mb-3 shadow-sm rounded-circle pulse-dot"></i>
+    <div class="text-white fw-bold">Clique para iniciar o vídeo</div>
+  </div>
+  }
+
+  <!-- Bottom Overlays -->
+  <div class="overlay-bottom p-3 w-100 position-absolute bottom-0 start-0">
+    <div class="d-flex justify-content-between align-items-end">
+      <!-- Detected Vehicle Card -->
+      <!-- <div class="detection-card bg-dark-80 p-2 px-3 rounded-3 border-bottom border-success border-4 fade-in">
+        <div class="tiny text-muted fw-bold text-uppercase mb-1">DETECTED VEHICLE</div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon-circle bg-success-10 p-2 rounded-circle">
+            <i class="pi pi-truck text-success"></i>
+          </div>
+           <div>
+             <div class="h5 fw-black text-white m-0">{{ lastDetected()?.placa || 'AGUARDANDO...' }}</div>
+            <div class="tiny text-muted">{{ lastDetected()?.modelo || 'SINCRONIZANDO...' }}</div>
+          </div> 
+        </div>
+      </div> -->
+
+      <!-- Timestamp -->
+      <div class="timestamp bg-dark-80 px-2 py-1 rounded-1 text-white-50 font-monospace tiny">
+        {{ now | date: 'yyyy-MM-dd HH:mm:ss.SSS' }}
+      </div>
+    </div>
+  </div>
+</div>

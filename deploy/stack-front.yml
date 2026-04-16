@@ -41,6 +41,9 @@ services:
       # Configuracao buffer
       - API_URL_BUFFER=${API_URL_BUFFER}
       - API_SWAGGER_BUFFER=${API_SWAGGER_BUFFER}
+      # Configuracao portaria
+      - API_URL_PORTARIA=${API_URL_PORTARIA}
+      - API_SWAGGER_PORTARIA=${API_SWAGGER_PORTARIA}
     networks:
       - backend-network
     dns:

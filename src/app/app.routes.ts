@@ -239,12 +239,12 @@ export const routes: Routes = [
         }
     },
     // portaria routes
-    // {
-    //     path: 'portaria',
-    //     loadComponent: () => import('./pages/portaria/portaria-control/portaria-control.component').then(m => m.PortariaControlComponent),
-    //     canActivate: [AuthGuard, CargoGuard],
-    //     data: {
-    //         roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.DIRETOR]
-    //     }
-    // }
+    {
+        path: 'portaria',
+        loadComponent: () => import('./pages/portaria/portaria-control-page.component').then(m => m.PortariaControlPageComponent),
+        canActivate: [AuthGuard,],//CargoGuard
+        data: {
+            roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.DIRETOR]
+        }
+    }
 ];

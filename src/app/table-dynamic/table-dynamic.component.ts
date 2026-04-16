@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, signal } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -10,6 +10,7 @@ import * as FileSaver from 'file-saver';
 import { InputNumberModule } from 'primeng/inputnumber'
 import { debounceTime, Subject } from 'rxjs';
 import { DatePicker } from 'primeng/datepicker'
+
 @Component({
   standalone: true,
   selector: 'app-table-dynamic',
@@ -34,6 +35,9 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() exportable: boolean = true;
   @Input() scrollable: boolean = false;
   @Input() scrollHeight: string = 'auto';
+  
+  failedImages = signal(new Set<string>());
+  
   private inputChanged$ = new Subject<{ row: any; column: any; value: any }>();
   private activeFilters = new Set<string>(); // New property for tracking active filters
 
@@ -46,6 +50,15 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     console.log(event)
     filter(utcDate);
   }
+  
+  onImageError(url: string) {
+    this.failedImages.update(set => {
+      const newSet = new Set(set);
+      newSet.add(url);
+      return newSet;
+    });
+  }
+
   // Converter todas as datas para Date
   ngOnInit() {
     this.data = this.processDateColumns(this.data);

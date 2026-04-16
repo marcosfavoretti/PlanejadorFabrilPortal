@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "AccurateTime": { "type": "string", "example": "2026-02-19 16:56:00" },
+    "AllowUser": { "type": "boolean" },
+    "AllowUserEndTime": { "type": "string" },
+    "BlockUser": { "type": "boolean" },
+    "BlockUserEndTime": { "type": "string" },
+    "DSTTune": { "type": "number" },
+    "DefenceCode": { "type": "string" },
+    "DeviceID": { "type": "string", "example": "CAM-01-ENTRADA" },
+    "Direction": {
+      "type": "string",
+      "example": "Obverse",
+      "description": "Direção do veículo"
+    },
+    "InCarPeopleNum": { "type": "number" },
+    "LanNo": { "type": "number" },
+    "OpenStrobe": { "type": "boolean" },
+    "SnapAddress": { "type": "string" },
+    "SnapTime": { "type": "string" },
+    "TimeZone": { "type": "number" }
+  },
+  "required": [
+    "AccurateTime",
+    "AllowUser",
+    "AllowUserEndTime",
+    "BlockUser",
+    "BlockUserEndTime",
+    "DSTTune",
+    "DefenceCode",
+    "DeviceID",
+    "Direction",
+    "InCarPeopleNum",
+    "LanNo",
+    "OpenStrobe",
+    "SnapAddress",
+    "SnapTime",
+    "TimeZone"
+  ],
+  "x-readme-ref-name": "SnapInfo"
+}

@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPbindexControllerGetOnlineUsersUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/pbindex/api/pbindex/powerbi/online-users` as const,
+    url: `https://app.ethos.ind.br,/api/pbindex/powerbi/online-users` as const,
   };
   return res;
 }

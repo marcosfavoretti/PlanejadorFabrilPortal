@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "Content": {
+      "type": "string",
+      "description": "Imagem em base64",
+      "example": "data:image/jpeg;base64,..."
+    },
+    "PicName": { "type": "string", "example": "plate_capture.jpg" }
+  },
+  "required": ["Content", "PicName"],
+  "x-readme-ref-name": "NormalPic"
+}

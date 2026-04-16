@@ -1,5 +1,4 @@
 import { AppSubRouteRes } from '@/api/routes';
-import { routes } from '@/app/app.routes';
 import { RoutePermissionStoreService } from '@/app/services/RoutePermissionStore.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
@@ -18,7 +17,6 @@ export class SideBarComponent
   routerPermissionStore = inject(RoutePermissionStoreService);
   currentSubRoutes: AppSubRouteRes[] = [];
 
-  actualRoutes = routes
   // Opcional: track do item ativo
   activeIndex = signal<number | null>(null);
 

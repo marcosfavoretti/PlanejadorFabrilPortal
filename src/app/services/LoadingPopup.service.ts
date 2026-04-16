@@ -33,7 +33,7 @@ export class LoadingPopupService {
     errorRef.componentInstance.closeButtonFn = () => errorRef.close();
   }
 
-  showPopUpComponent<T>(component: any, inputs?: Partial<T>): NgbModalRef {
+  showPopUpComponent<T>(component: any, inputs?: Partial<T>, options: any = {}): NgbModalRef {
     const existingModal = this.activeModals.get(component);
     if (existingModal) {
       if (inputs) {
@@ -48,6 +48,7 @@ export class LoadingPopupService {
       backdrop: 'static',
       centered: true,
       keyboard: true,
+      ...options
     });
 
     this.activeModals.set(component, modalRef);
@@ -86,7 +87,10 @@ export class LoadingPopupService {
             console.log('ErroPopupComponent foi fechado.');
           });
           console.log(err);
-          errorRef.componentInstance.erroMessage = err.response?.data?.message || `${err.code} ${err.message}`;
+          const backendMessage = err.response?.data?.message;
+          errorRef.componentInstance.erroMessage = Array.isArray(backendMessage)
+            ? backendMessage.join(', ')
+            : (backendMessage || `${err.code} ${err.message}`);
           errorRef.componentInstance.erroMessageErr = err.response?.data?.error;
           errorRef.componentInstance.closeButtonFn = () => errorRef.close(); // Passa a função de fechar para o input closeButtonFn
           return of(null);

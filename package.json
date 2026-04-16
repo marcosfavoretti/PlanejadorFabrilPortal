@@ -38,6 +38,7 @@
     "dotenv": "^17.2.3",
     "file-saver": "^2.0.5",
     "frappe-gantt": "^1.0.3",
+    "hls.js": "^1.6.15",
     "html2canvas": "^1.4.1",
     "planejamento-ethos-portal": "file:",
     "primeicons": "^7.0.0",

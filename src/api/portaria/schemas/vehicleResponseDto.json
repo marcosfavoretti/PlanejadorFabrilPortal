@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "placa": { "type": "string" },
+    "marca": { "type": "string" },
+    "modelo": { "type": "string" },
+    "ano": { "type": "number" },
+    "cor": { "type": "string" },
+    "createdAt": { "format": "date-time", "type": "string" },
+    "updatedAt": { "format": "date-time", "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["INSIDE", "OUTSIDE", "FORCE_CLOSE"]
+    },
+    "fotoUrl": { "type": "string" }
+  },
+  "required": [
+    "id",
+    "placa",
+    "marca",
+    "modelo",
+    "ano",
+    "createdAt",
+    "updatedAt",
+    "status"
+  ],
+  "x-readme-ref-name": "VehicleResponseDto"
+}

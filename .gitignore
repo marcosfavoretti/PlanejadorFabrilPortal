@@ -18,7 +18,10 @@ yarn-error.log
 # Ignorar pastas de estado da IA (onde ficam logs e histórico de chat)
 .claude/
 .claude-flow/
+gemini/
 .gemini/
+.codex/
+.codex
 .playwright-mcp/
 # Opcional: Se você quiser que as regras de projeto fiquem só com você
 CLAUDE.md

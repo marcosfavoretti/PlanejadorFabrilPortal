@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Fira Sans', sans-serif;
+  background-color: #f0fdf4; /* Light green background */
+  min-height: 100vh;
+}
+
+.fw-black {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.2em;
+}
+
+/* Theme Colors: Dark Green / Success Emerald */
+.text-primary {
+  color: #15803d !important; /* Green-700 */
+}
+
+.bg-primary {
+  background-color: #15803d !important;
+}
+
+.btn-primary {
+  background-color: #15803d;
+  border-color: #15803d;
+}
+
+.btn-outline-primary {
+  color: #15803d;
+  border-color: #15803d;
+}
+
+.btn-outline-primary:hover {
+  background-color: #15803d;
+  color: white;
+}
+
+.portaria-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Glass Effects */
+.kpi-glass {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(21, 128, 61, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Form Styles */
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(21, 128, 61, 0.1);
+    border-color: #15803d;
+}
+
+.input-group-text {
+    border: none;
+    color: #94a3b8;
+}
+
+/* Progress bar for capacity */
+.progress {
+    background-color: #f1f5f9;
+    border-radius: 10px;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .7; }
+}
+
+/* Tiny Utilities */
+.tiny {
+  font-size: 0.65rem;
+}
+
+.bg-success-subtle { background-color: #dcfce7 !important; }
+.bg-danger-subtle { background-color: #fee2e2 !important; }
+.bg-warning-subtle { background-color: #fef9c3 !important; }
+
+.text-success { color: #15803d !important; }
+.text-danger { color: #b91c1c !important; }
+.text-warning-emphasis { color: #854d0e !important; }
+
+.rounded-4 { border-radius: 1.5rem !important; }
+
+/* Customizing Table Dynamic inside our theme */
+::v-deep .p-datatable {
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: none !important;
+}
+
+::v-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f8fafc;
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 1.25rem 1rem;
+}
+
+::v-deep .p-datatable .p-datatable-tbody > tr {
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+::v-deep .p-datatable .p-datatable-tbody > tr:hover {
+     background-color: #f0fdf4 !important;
+ }
+ 
+ .live-dot {
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   display: inline-block;
+   background-color: #ef4444;
+ }
+ 
+ .pulse-danger {
+   animation: pulse-red 2s infinite;
+ }
+ 
+ @keyframes pulse-red {
+   0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+   70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+ }
+
+ .tracking-widest {
+   letter-spacing: 0.15em;
+ }
+ 
+ /* SelectButton Custom Premium Style */
+ ::v-deep .p-selectbutton {
+     display: flex;
+     gap: 0;
+     border-radius: 12px;
+     overflow: hidden;
+     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+ }
+ 
+ ::v-deep .p-selectbutton .p-button {
+     background: #ffffff;
+     border: 1px solid #e2e8f0;
+     color: #64748b;
+     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     padding: 0.6rem 1.25rem;
+     font-size: 0.75rem;
+     border-radius: 0;
+ }
+ 
+ ::v-deep .p-selectbutton .p-button:first-child {
+     border-top-left-radius: 12px;
+     border-bottom-left-radius: 12px;
+ }
+ 
+ ::v-deep .p-selectbutton .p-button:last-child {
+     border-top-right-radius: 12px;
+     border-bottom-right-radius: 12px;
+ }
+ 
+ ::v-deep .p-selectbutton .p-button.p-highlight {
+     background: #15803d !important;
+     border-color: #15803d !important;
+     color: #ffffff !important;
+ }
+ 
+ ::v-deep .p-selectbutton .p-button.p-highlight::before {
+     background: transparent !important;
+ }
+ 
+ ::v-deep .p-selectbutton .p-button:not(.p-highlight):not(.p-disabled):hover {
+     background: #f0fdf4;
+     color: #15803d;
+     border-color: #15803d;
+     z-index: 1;
+ }

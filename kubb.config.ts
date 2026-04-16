@@ -22,7 +22,9 @@ const {
     API_URL_BUFFER,
     API_SWAGGER_BUFFER,
     API_URL_PBINDEX,
-    API_SWAGGER_PBINDEX
+    API_SWAGGER_PBINDEX,
+    API_URL_PORTARIA,
+    API_SWAGGER_PORTARIA
 } = process.env as Record<string, string>;
 
 interface ApiConfigParams {
@@ -112,5 +114,11 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_PBINDEX,
         outputPath: './src/api/pbindex',
         baseUrl: API_URL_PBINDEX
+    }),
+    createApiConfig({
+        name: 'portaria-api',
+        swaggerPath: API_SWAGGER_PORTARIA,
+        outputPath: './src/api/portaria',
+        baseUrl: API_URL_PORTARIA
     }),
 ]);

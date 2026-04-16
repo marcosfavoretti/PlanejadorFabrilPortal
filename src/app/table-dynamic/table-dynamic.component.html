@@ -85,15 +85,14 @@
         @if (key.isImg) {
         @let image = getNestedValue(item, key.field);
         <div class="d-flex justify-content-center align-items-center small">
-          {{image}}
-          @if (!image) {
+          @if (!image || failedImages().has(image)) {
           <div class="bg-secondary-subtle rounded d-flex justify-content-center align-items-center"
             style="width: 100px; height: 100px;">
             <i class="pi pi-eye-slash small"></i>
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" (onImageError)="onImageError(image)" />
           }
         </div> }
         @else {
@@ -112,14 +111,14 @@
         @if (key?.isImg) {
         @let image = getNestedValue(item, key.field);
         <div class="d-flex justify-content-center align-items-center">
-          @if (!image) {
+          @if (!image || failedImages().has(image)) {
           <div class="bg-secondary-subtle rounded d-flex justify-content-center align-items-center"
             style="width: 100px; height: 100px;">
             <i class="pi pi-eye-slash small"></i>
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" (onImageError)="onImageError(image)" />
           }
         </div>
         }
