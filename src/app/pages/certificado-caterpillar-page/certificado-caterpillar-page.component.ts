@@ -38,7 +38,7 @@ import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.compo
     PageLayoutComponent
 ],
   templateUrl: './certificado-caterpillar-page.component.html',
-  styleUrl: './certificado-caterpillar-page.component.css'
+  styleUrl: './certificado-caterpillar-page.component.scss'
 })
 export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
 

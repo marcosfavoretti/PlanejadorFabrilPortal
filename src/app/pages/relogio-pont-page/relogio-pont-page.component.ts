@@ -11,7 +11,6 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect'; // Added MultiSelectModule
 import { TableDynamicComponent } from "@/app/table-dynamic/table-dynamic.component";
-import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.component";
 import { HorasIrregularesParetoChartComponent } from "@/app/widgets/horas-irregulares-pareto-chart/horas-irregulares-pareto-chart.component";
 
 // Services & Models
@@ -30,7 +29,7 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [
     TableDynamicComponent, SkeletonModule, ReactiveFormsModule,
-    CommonModule, FormsModule, PageLayoutComponent,
+    CommonModule, FormsModule,
     PaginatorModule, HorasIrregularesParetoChartComponent, DropdownModule, MultiSelectModule // Added MultiSelectModule
   ],
   templateUrl: './relogio-pont-page.component.html',
