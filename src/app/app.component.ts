@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PortariaWsService } from './services/PortariaWs.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +8,5 @@ import { PortariaWsService } from './services/PortariaWs.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  private portariaWs = inject(PortariaWsService);
   title = 'App Ethos';
 }

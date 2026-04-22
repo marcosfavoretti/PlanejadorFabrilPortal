@@ -11,10 +11,11 @@ export class LoadingPopupService {
 
   constructor(private modalService: NgbModal) { }
 
-  showErrorMessage(message: string): void {
+  showErrorMessage(message: string, errorDetail?: string): void {
     const existingModal = this.activeModals.get(ErroPopupComponent);
     if (existingModal) {
       existingModal.componentInstance.erroMessage = message;
+      if (errorDetail) existingModal.componentInstance.erroMessageErr = errorDetail;
       return;
     }
 
@@ -30,6 +31,7 @@ export class LoadingPopupService {
     });
 
     errorRef.componentInstance.erroMessage = message;
+    if (errorDetail) errorRef.componentInstance.erroMessageErr = errorDetail;
     errorRef.componentInstance.closeButtonFn = () => errorRef.close();
   }
 

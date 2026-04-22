@@ -5,6 +5,7 @@ import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
 
 // PrimeNG Imports
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -37,11 +38,12 @@ import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.compo
     IconFieldModule,
     InputIconModule,
     SidebarModule,
+    DialogModule,
     ButtonModule,
     PageLayoutComponent,
     ReactiveFormsModule,
     SkeletonModule
-],
+  ],
   templateUrl: './certificado-caterpillar-page.component.html',
   styleUrl: './certificado-caterpillar-page.component.scss'
 })
@@ -60,6 +62,10 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
   });
 
   totalRecords: number = 0;
+  previewVisible = false;
+  previewLoading = false;
+  previewContent = '';
+  previewTitle = '';
 
   // Form de Filtros
   filterForm = this.fb.group({
@@ -95,8 +101,11 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
         this.totalRecords = (data as any).total ?? (data.totalPages * (this.queryParams().limit || 10));
       }),
       catchError((err) => {
-        const message = (err.response?.data?.message) || 'Erro ao buscar certificados';
-        this.popup.showErrorMessage(message);
+        const backendMessage = err.response?.data?.message;
+        const message = Array.isArray(backendMessage) ? backendMessage[0] : (backendMessage || 'Erro ao buscar certificados');
+        const errorDetail = err.response?.data?.error;
+        
+        this.popup.showErrorMessage(message, errorDetail);
         return of({ data: [] });
       })
     )
@@ -122,10 +131,18 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
       { field: 'serialNumber', alias: 'Serial Number' },
       { field: 'serverTime', alias: 'Data', isDate: true },
       {
-        field: '', alias: 'Ações', button: {
+        field: 'previewAction', alias: 'Prévia', button: {
+          command: async (rowData: any) => this.previewTxt(rowData),
+          icon: 'pi pi-eye',
+          label: 'Abrir'
+        },
+        isButton: true
+      },
+      {
+        field: 'downloadAction', alias: 'Download', button: {
           command: async (rowData: any) => this.downloadTxt(rowData),
           icon: 'pi pi-cloud-download',
-          label: 'TXT'
+          label: 'Baixar'
         },
         isButton: true
       },
@@ -148,6 +165,30 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
   /**
    * Lógica de download separada para limpeza do código
    */
+  private previewTxt(rowData: any) {
+    this.previewVisible = true;
+    this.previewLoading = true;
+    this.previewContent = '';
+    this.previewTitle = `${rowData.serialNumber || 'certificado'}.txt`;
+
+    this.certificadoAPI.dowloadTxtCertificado(rowData._id)
+      .pipe(
+        catchError(err => {
+          const message = (err?.response?.message ?? err.response?.data?.message) || 'Erro ao carregar prévia do arquivo';
+          this.popup.showErrorMessage(message);
+          this.previewContent = 'Não foi possível carregar a prévia deste arquivo.';
+          return of(null);
+        })
+      )
+      .subscribe(async dataStream => {
+        this.previewLoading = false;
+
+        if (!dataStream) return;
+
+        this.previewContent = await this.resolveTxtContent(dataStream);
+      });
+  }
+
   private downloadTxt(rowData: any) {
     this.certificadoAPI.dowloadTxtCertificado(rowData._id)
       .pipe(
@@ -169,5 +210,21 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  private async resolveTxtContent(dataStream: unknown): Promise<string> {
+    if (dataStream instanceof Blob) {
+      return dataStream.text();
+    }
+
+    if (dataStream instanceof ArrayBuffer) {
+      return new TextDecoder('utf-8').decode(dataStream);
+    }
+
+    if (typeof dataStream === 'string') {
+      return dataStream;
+    }
+
+    return JSON.stringify(dataStream, null, 2);
   }
 }

@@ -11,6 +11,12 @@ export type {
   AuthControllerDetailQuery,
 } from './models/AuthControllerDetail';
 export type {
+  AuthControllerGenerateInvite200,
+  AuthControllerGenerateInviteMutationRequest,
+  AuthControllerGenerateInviteMutationResponse,
+  AuthControllerGenerateInviteMutation,
+} from './models/AuthControllerGenerateInvite';
+export type {
   AuthControllerLogin200,
   AuthControllerLogin401,
   AuthControllerLoginMutationRequest,
@@ -30,6 +36,20 @@ export type {
   AuthControllerRegisterMutation,
 } from './models/AuthControllerRegister';
 export type {
+  AuthControllerRegisterWithInvitePathParams,
+  AuthControllerRegisterWithInvite201,
+  AuthControllerRegisterWithInviteMutationRequest,
+  AuthControllerRegisterWithInviteMutationResponse,
+  AuthControllerRegisterWithInviteMutation,
+} from './models/AuthControllerRegisterWithInvite';
+export type {
+  AuthControllerValidateInvitePathParams,
+  AuthControllerValidateInvite200,
+  AuthControllerValidateInvite400,
+  AuthControllerValidateInviteQueryResponse,
+  AuthControllerValidateInviteQuery,
+} from './models/AuthControllerValidateInvite';
+export type {
   AuthControllerValidateUserPathParams,
   AuthControllerValidateUser200,
   AuthControllerValidateUser404,
@@ -48,9 +68,12 @@ export type { SetUserCargoDTO } from './models/SetUserCargoDTO';
 export type { UserResponseDTO } from './models/UserResponseDTO';
 export { authControllerCheckToken } from './client/authControllerCheckToken';
 export { authControllerDetail } from './client/authControllerDetail';
+export { authControllerGenerateInvite } from './client/authControllerGenerateInvite';
 export { authControllerLogin } from './client/authControllerLogin';
 export { authControllerLogout } from './client/authControllerLogout';
 export { authControllerRegister } from './client/authControllerRegister';
+export { authControllerRegisterWithInvite } from './client/authControllerRegisterWithInvite';
+export { authControllerValidateInvite } from './client/authControllerValidateInvite';
 export { authControllerValidateUser } from './client/authControllerValidateUser';
 export { cargoControllerSetUserCargoMethod } from './client/cargoControllerSetUserCargoMethod';
 export { SetUserCargoDTOCargoEnum } from './models/SetUserCargoDTO';

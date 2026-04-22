@@ -1,6 +1,9 @@
 {
   "type": "object",
-  "properties": { "filepath": { "type": "string" } },
+  "properties": {
+    "filepath": { "type": "string" },
+    "baseDir": { "type": "string" }
+  },
   "required": ["filepath"],
   "x-readme-ref-name": "ProcessaCertificadoDTO"
 }

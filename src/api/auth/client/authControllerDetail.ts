@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getAuthControllerDetailUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/auth/detail` as const,
+    url: `http://192.168.99.129:30002/api/auth/detail` as const,
   };
   return res;
 }

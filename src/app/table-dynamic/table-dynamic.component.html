@@ -92,7 +92,8 @@
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" (onImageError)="onImageError(image)" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt=""
+            (onImageError)="onImageError(image)" />
           }
         </div> }
         @else {
@@ -118,7 +119,8 @@
           </div>
           }
           @else {
-          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt="" (onImageError)="onImageError(image)" />
+          <p-image [preview]="true" [src]="image" width="100px" height="100px" alt=""
+            (onImageError)="onImageError(image)" />
           }
         </div>
         }
@@ -161,11 +163,11 @@
       </td>
     </tr>
   </ng-template>
-  <ng-template pTemplate="footer">
+  <!-- <ng-template pTemplate="footer">
     <span class="text-secondary small">
       total de linhas: {{ data ? data.length : 0 }}
     </span>
-  </ng-template>
+  </ng-template> -->
 </p-table>
 
 @if (tableModel.ghostControll?.length) {

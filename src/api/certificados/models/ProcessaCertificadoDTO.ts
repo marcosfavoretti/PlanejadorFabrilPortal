@@ -8,4 +8,8 @@ export type ProcessaCertificadoDTO = {
    * @type string
    */
   filepath: string;
+  /**
+   * @type string | undefined
+   */
+  baseDir?: string;
 };

@@ -1,7 +1,10 @@
 export { authControllerCheckToken } from './authControllerCheckToken';
 export { authControllerDetail } from './authControllerDetail';
+export { authControllerGenerateInvite } from './authControllerGenerateInvite';
 export { authControllerLogin } from './authControllerLogin';
 export { authControllerLogout } from './authControllerLogout';
 export { authControllerRegister } from './authControllerRegister';
+export { authControllerRegisterWithInvite } from './authControllerRegisterWithInvite';
+export { authControllerValidateInvite } from './authControllerValidateInvite';
 export { authControllerValidateUser } from './authControllerValidateUser';
 export { cargoControllerSetUserCargoMethod } from './cargoControllerSetUserCargoMethod';

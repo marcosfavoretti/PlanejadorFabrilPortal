@@ -16,7 +16,7 @@ function getAuthControllerValidateUserUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/auth/validate-user/${token}` as const,
+    url: `http://192.168.99.129:30002/api/auth/validate-user/${token}` as const,
   };
   return res;
 }

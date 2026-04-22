@@ -1,7 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild, inject, OnDestroy, signal, effect } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortariaStoreService, VeiculoDTO } from '@/app/services/PortariaStore.service';
 import { SkeletonModule } from 'primeng/skeleton';
+import { Subscription } from 'rxjs';
 
 import Hls from 'hls.js';
 
@@ -25,12 +26,17 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
   lastDetected = signal<VeiculoDTO | null>(null);
   now = new Date();
   private timer: any;
-  private wsSubscription: any;
+  private wsSubscription?: Subscription;
+  private sessionSubscription?: Subscription;
+  private initializePlayerTimeout?: ReturnType<typeof setTimeout>;
+  private nativeLoadedMetadataHandler?: () => void;
+  private isDestroyed = false;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.isDestroyed = false;
     this.loadSession();
     this.timer = setInterval(() => {
       this.now = new Date();
@@ -42,26 +48,55 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isDestroyed = true;
     if (this.timer) clearInterval(this.timer);
-    if (this.wsSubscription) this.wsSubscription.unsubscribe();
+    this.wsSubscription?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
+    if (this.initializePlayerTimeout) clearTimeout(this.initializePlayerTimeout);
+    this.destroyPlayer();
+  }
+
+  private destroyPlayer() {
     if (this.hls) {
+      this.hls.stopLoad();
       this.hls.destroy();
+      this.hls = undefined;
+    }
+
+    const video = this.videoElement?.nativeElement;
+    if (video) {
+      if (this.nativeLoadedMetadataHandler) {
+        video.removeEventListener('loadedmetadata', this.nativeLoadedMetadataHandler);
+        this.nativeLoadedMetadataHandler = undefined;
+      }
+
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
     }
   }
 
   loadSession() {
+    if (this.isDestroyed) return;
+
     this.isLoading.set(true);
-    this.portariaStore.getVideoSession().subscribe({
+    this.sessionSubscription?.unsubscribe();
+    this.sessionSubscription = this.portariaStore.getVideoSession().subscribe({
       next: (res) => {
+        if (this.isDestroyed) return;
+
         if (res.manifestUrl) {
           this.manifestUrl.set(res.manifestUrl);
-          setTimeout(() => this.initializePlayer(res.manifestUrl), 100);
+          if (this.initializePlayerTimeout) clearTimeout(this.initializePlayerTimeout);
+          this.initializePlayerTimeout = setTimeout(() => this.initializePlayer(res.manifestUrl), 100);
         } else {
           this.error.set('URL do manifesto não disponível');
           this.isLoading.set(false);
         }
       },
       error: (err) => {
+        if (this.isDestroyed) return;
+
         this.error.set('Erro ao autenticar sessão de vídeo');
         this.isLoading.set(false);
       }
@@ -69,13 +104,13 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
   }
 
   initializePlayer(url: string) {
+    if (this.isDestroyed) return;
+
     const video = this.videoElement.nativeElement;
     video.muted = true; // Evitar bloqueio garantindo muted explicitamente no DOM
     this.showPlayButton.set(false);
     
-    if (this.hls) {
-      this.hls.destroy();
-    }
+    this.destroyPlayer();
 
     if (Hls.isSupported()) {
       this.hls = new Hls({
@@ -95,6 +130,8 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
       this.hls.attachMedia(video);
 
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (this.isDestroyed) return;
+
         this.isLoading.set(false);
         video.play().catch(e => {
           console.warn('Autoplay blocked', e);
@@ -103,6 +140,8 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
       });
 
       this.hls.on(Hls.Events.ERROR, (event: any, data: any) => {
+        if (this.isDestroyed) return;
+
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -117,20 +156,23 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
               break;
             default:
               this.error.set('Erro fatal no player de vídeo');
-              this.hls.destroy();
+              this.destroyPlayer();
               break;
           }
         }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = url;
-      video.addEventListener('loadedmetadata', () => {
+      this.nativeLoadedMetadataHandler = () => {
+        if (this.isDestroyed) return;
+
         this.isLoading.set(false);
         video.play().catch(e => {
           console.warn('Autoplay blocked native', e);
           this.showPlayButton.set(true);
         });
-      });
+      };
+      video.addEventListener('loadedmetadata', this.nativeLoadedMetadataHandler);
     } else {
       this.error.set('Seu navegador não suporta HLS.');
       this.isLoading.set(false);
@@ -138,6 +180,8 @@ export class VideoStreamComponent implements OnInit, OnDestroy {
   }
 
   retry() {
+    if (this.isDestroyed) return;
+
     this.error.set(null);
     this.loadSession();
   }

@@ -11,6 +11,12 @@ export type {
   AuthControllerDetailQuery,
 } from './AuthControllerDetail';
 export type {
+  AuthControllerGenerateInvite200,
+  AuthControllerGenerateInviteMutationRequest,
+  AuthControllerGenerateInviteMutationResponse,
+  AuthControllerGenerateInviteMutation,
+} from './AuthControllerGenerateInvite';
+export type {
   AuthControllerLogin200,
   AuthControllerLogin401,
   AuthControllerLoginMutationRequest,
@@ -29,6 +35,20 @@ export type {
   AuthControllerRegisterMutationResponse,
   AuthControllerRegisterMutation,
 } from './AuthControllerRegister';
+export type {
+  AuthControllerRegisterWithInvitePathParams,
+  AuthControllerRegisterWithInvite201,
+  AuthControllerRegisterWithInviteMutationRequest,
+  AuthControllerRegisterWithInviteMutationResponse,
+  AuthControllerRegisterWithInviteMutation,
+} from './AuthControllerRegisterWithInvite';
+export type {
+  AuthControllerValidateInvitePathParams,
+  AuthControllerValidateInvite200,
+  AuthControllerValidateInvite400,
+  AuthControllerValidateInviteQueryResponse,
+  AuthControllerValidateInviteQuery,
+} from './AuthControllerValidateInvite';
 export type {
   AuthControllerValidateUserPathParams,
   AuthControllerValidateUser200,

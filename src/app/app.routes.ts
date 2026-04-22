@@ -19,6 +19,7 @@ import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wi
 import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
 import { ContagemBufferPageComponent } from './pages/contagem-buffer-page/contagem-buffer-page.component';
 import { ContentLayoutComponent } from './layouts/content-layout/content-layout.component';
+import { RegisterTokenGuard } from './guard/RegisterToken.guard';
 // import { FolhaHoraExtraListPageComponent } from './pages/folha-hora-extra-list-page/folha-hora-extra-list-page.component';
 // import { FolhaHoraExtraFormPageComponent } from './pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component';
 // import { FolhaHoraExtraDetailPageComponent } from './pages/folha-hora-extra-detail-page/folha-hora-extra-detail-page.component';
@@ -158,6 +159,11 @@ export const routes: Routes = [
     //auth routes
     {
         path: 'register',
+        loadComponent: () => RegisterScreenComponent
+    },
+    {
+        path: 'register/:token',
+        canActivate: [RegisterTokenGuard],
         loadComponent: () => RegisterScreenComponent
     },
     {

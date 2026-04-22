@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getAuthControllerCheckTokenUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/auth/check-token` as const,
+    url: `http://192.168.99.129:30002/api/auth/check-token` as const,
   };
   return res;
 }

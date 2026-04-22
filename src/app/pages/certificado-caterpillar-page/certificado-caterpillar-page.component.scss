@@ -19,6 +19,25 @@ $brand-green-light: rgba(46, 125, 50, 0.1);
   font-size: 0.6rem;
 }
 
+.header-container {
+  border-left: 4px solid #15803d;
+  padding-left: 1rem;
+}
+
+.header-title {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
 .rounded-4 {
   border-radius: 1rem !important;
 }
@@ -33,11 +52,6 @@ $brand-green-light: rgba(46, 125, 50, 0.1);
 
 .table-wrapper {
   overflow-y: auto;
-  /*
-   * Usa a CSS variable --navbar-height publicada dinamicamente pelo GlobalHeaderComponent via ResizeObserver.
-   * O restante (230px) cobre: page padding (~24px) + header título (~46px + mb 8px)
-   * + filter card (~62px + mb 8px) + table footer "total" (~24px) + paginator (~48px) + buffer (~10px)
-   */
   max-height: calc(100vh - var(--navbar-height, 56px) - 230px);
 }
 
@@ -139,4 +153,51 @@ $brand-green-light: rgba(46, 125, 50, 0.1);
 
 .border-bottom-subtle {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.preview-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: #1e293b;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.preview-loading {
+  padding: 1rem;
+}
+
+.certificate-preview-content {
+  min-height: 24rem;
+  max-height: min(70vh, 42rem);
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background: #f8fafc;
+  color: #0f172a;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+::ng-deep .certificate-preview-dialog {
+  .p-dialog-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .p-dialog-content {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
 }

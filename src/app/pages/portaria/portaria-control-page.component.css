@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
-
 :host {
   display: block;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: #f0fdf4; /* Light green background */
   min-height: 100vh;
 }

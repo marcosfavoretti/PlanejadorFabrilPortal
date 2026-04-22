@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, computed, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -19,6 +19,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { VideoStreamComponent } from '@/app/widgets/portaria/video-stream/video-stream.component';
+import { PortariaWsService } from '@/app/services/PortariaWs.service';
 
 @Component({
   selector: 'app-portaria-control-page',
@@ -39,8 +40,9 @@ import { VideoStreamComponent } from '@/app/widgets/portaria/video-stream/video-
   templateUrl: './portaria-control-page.component.html',
   styleUrl: './portaria-control-page.component.css'
 })
-export class PortariaControlPageComponent implements OnInit {
+export class PortariaControlPageComponent implements OnInit, OnDestroy {
   private portariaStore = inject(PortariaStoreService);
+  private portariaWs = inject(PortariaWsService);
   private fb = inject(FormBuilder);
   private popup = inject(LoadingPopupService);
 
@@ -148,6 +150,11 @@ export class PortariaControlPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.portariaWs.connect();
+  }
+
+  ngOnDestroy(): void {
+    this.portariaWs.disconnect();
   }
 
   onViewModeChange(event: any) {

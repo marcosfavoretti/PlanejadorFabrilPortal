@@ -10,12 +10,16 @@ export class PortariaWsService {
   private portariaStore = inject(PortariaStoreService);
   private eventSource?: EventSource;
   private reconnectTimeout?: any;
-
-  constructor() {
-    this.connect();
-  }
+  private shouldReconnect = false;
 
   connect() {
+    this.shouldReconnect = true;
+
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = undefined;
+    }
+
     if (this.eventSource) {
       this.eventSource.close();
     }
@@ -46,14 +50,18 @@ export class PortariaWsService {
     };
 
     this.eventSource.onerror = (error) => {
+      if (!this.shouldReconnect) return;
+
       console.error('[PortariaWsService] Erro na conexão SSE. Tentando reconectar em 5s...', error);
       this.eventSource?.close();
+      this.eventSource = undefined;
       
       if (this.reconnectTimeout) {
         clearTimeout(this.reconnectTimeout);
       }
       
       this.reconnectTimeout = setTimeout(() => {
+        if (!this.shouldReconnect) return;
         this.connect();
       }, 5000);
     };
@@ -68,6 +76,8 @@ export class PortariaWsService {
   }
 
   disconnect() {
+    this.shouldReconnect = false;
+
     if (this.eventSource) {
       this.eventSource.close();
       this.eventSource = undefined;

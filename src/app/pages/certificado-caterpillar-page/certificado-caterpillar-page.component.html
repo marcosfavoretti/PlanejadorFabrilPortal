@@ -3,10 +3,10 @@
 
     <!-- Header Section -->
     <div
-      class="flex-shrink-0 d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2 px-1 gap-1">
+      class="flex-shrink-0 d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2 px-1 gap-1 header-container">
       <div>
         <h1 class="header-title mb-0">Certificados Caterpillar</h1>
-        <p class="header-subtitle mb-0 opacity-75">Consulte e baixe certificados de ROPS e Seriais.</p>
+        <p class="header-subtitle mb-0">Consulte e baixe certificados de ROPS e Seriais.</p>
       </div>
     </div>
 
@@ -60,4 +60,23 @@
     </div>
 
   </div>
+
+  <p-dialog [(visible)]="previewVisible" [modal]="true" [draggable]="false" [resizable]="false"
+    [style]="{ width: 'min(960px, 94vw)' }" [contentStyle]="{ padding: '0' }" styleClass="certificate-preview-dialog">
+    <ng-template pTemplate="header">
+      <div class="preview-dialog-header">
+        <i class="pi pi-file"></i>
+        <span>{{ previewTitle }}</span>
+      </div>
+    </ng-template>
+
+    @if (previewLoading) {
+    <div class="preview-loading">
+      <p-skeleton width="100%" height="24rem" borderRadius="0.5rem"></p-skeleton>
+    </div>
+    }
+    @else {
+    <pre class="certificate-preview-content">{{ previewContent }}</pre>
+    }
+  </p-dialog>
 </app-page-layout>
