@@ -1,5 +1,7 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { toSignal, rxResource } from '@angular/core/rxjs-interop';
 
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
@@ -9,9 +11,10 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext'; // Adicione para ficar bonito
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { SkeletonModule } from 'primeng/skeleton';
 
 // RxJS
-import { catchError, debounceTime, distinctUntilChanged, of, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, takeUntil, tap, startWith, map } from 'rxjs';
 
 // Seus Componentes/Serviços
 import { GlobalHeaderComponent } from "@/app/widgets/global-header/global-header.component";
@@ -35,7 +38,9 @@ import { PageLayoutComponent } from "@/app/layouts/page-layout/page-layout.compo
     InputIconModule,
     SidebarModule,
     ButtonModule,
-    PageLayoutComponent
+    PageLayoutComponent,
+    ReactiveFormsModule,
+    SkeletonModule
 ],
   templateUrl: './certificado-caterpillar-page.component.html',
   styleUrl: './certificado-caterpillar-page.component.scss'
@@ -44,19 +49,61 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
 
   private readonly certificadoAPI = inject(CertificadosAPIService);
   private readonly popup = inject(LoadingPopupService);
+  private readonly fb = inject(FormBuilder);
 
-  // Subject para controlar o delay da digitação
-  private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
   sidebarVisible: boolean = false;
 
-  queryParams: CertificadosCatControllerConsultarCertificadosQueryParams = {
-    limit: 5,
+  queryParams = signal<CertificadosCatControllerConsultarCertificadosQueryParams>({
+    limit: 10,
     page: 0,
-  };
+  });
 
   totalRecords: number = 0;
-  certificados = signal<any[]>([]);
+
+  // Form de Filtros
+  filterForm = this.fb.group({
+    produto: [''],
+    seriaNumber: ['']
+  });
+
+  // Signal de filtros com debounce — ao mudar filtro reseta para page 0
+  filters = toSignal(
+    this.filterForm.valueChanges.pipe(
+      startWith(this.filterForm.value),
+      debounceTime(400),
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+      tap(() => this.queryParams.update(p => ({ ...p, page: 0 })))
+    ),
+    { initialValue: this.filterForm.value }
+  );
+
+  // Resource para busca de dados — reage a qualquer mudança de filters, page ou limit
+  certificadosResource = rxResource({
+    request: () => ({
+      filters: this.filters(),
+      page: this.queryParams().page,
+      limit: this.queryParams().limit
+    }),
+    loader: ({ request }) => this.certificadoAPI.consultarCertificados({
+      produto: request.filters.produto || undefined,
+      seriaNumber: request.filters.seriaNumber || undefined,
+      page: request.page,
+      limit: request.limit
+    }).pipe(
+      tap(data => {
+        this.totalRecords = (data as any).total ?? (data.totalPages * (this.queryParams().limit || 10));
+      }),
+      catchError((err) => {
+        const message = (err.response?.data?.message) || 'Erro ao buscar certificados';
+        this.popup.showErrorMessage(message);
+        return of({ data: [] });
+      })
+    )
+  });
+
+  // Signal computado para a tabela
+  certificados = computed(() => this.certificadosResource.value()?.data || []);
 
   itens: SidebarItem[] = [
     {
@@ -87,8 +134,6 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    this.setupSearchListener();
-    this.consultarCertificados();
   }
 
   ngOnDestroy(): void {
@@ -96,77 +141,8 @@ export class CertificadoCaterpillarPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  /**
-   * Configura o ouvinte de busca com Debounce
-   * Isso evita que a API seja chamada a cada letra digitada
-   */
-  private setupSearchListener() {
-    this.searchSubject.pipe(
-      debounceTime(600), // Espera 600ms após o usuário parar de digitar
-      distinctUntilChanged(), // Só busca se o valor for diferente do anterior
-      takeUntil(this.destroy$) // Evita memory leak
-    ).subscribe((value) => {
-      this.executeSearch(value);
-    });
-  }
-
-  /**
-   * Método chamado pelo HTML a cada tecla (apenas repassa para o Subject)
-   */
-  onSearchInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchSubject.next(value);
-  }
-
-  /**
-   * Lógica real de filtro
-   */
-  private executeSearch(value: string) {
-    // 1. Limpa filtros anteriores para evitar conflito
-    this.queryParams.produto = undefined;
-    this.queryParams.seriaNumber = undefined; // Corrigi o typo 'seriaNumber' aqui, verifique sua interface
-
-    // 2. Lógica de decisão (Número = Produto, Texto = Serial)
-    const cleanValue = value.trim();
-
-    if (cleanValue) {
-      const isNumeric = /^[0-9]+$/.test(cleanValue);
-      if (isNumeric) {
-        this.queryParams.produto = cleanValue;
-      } else {
-        this.queryParams.seriaNumber = cleanValue;
-      }
-    }
-
-    // 3. OBRIGATÓRIO: Voltar para a primeira página ao filtrar
-    this.queryParams.page = 0;
-
-    // 4. Consulta
-    this.consultarCertificados();
-  }
-
-  consultarCertificados() {
-    const consulta$ = this.certificadoAPI.consultarCertificados(this.queryParams)
-      .pipe(
-        tap(data => {
-          this.certificados.set(data.data);
-          this.totalRecords = (data as any).total ?? (data.totalPages * (this.queryParams.limit || 10));
-        }),
-        catchError(
-          (err) => {
-            const message = (err.response?.data?.message) || 'Erro ao buscar arquivo';
-            this.popup.showErrorMessage(message);
-            return of();
-          }
-        )
-      )
-      .subscribe()
-  }
-
   onPageChange(event: PaginatorState) {
-    this.queryParams.page = event.page;
-    this.queryParams.limit = event.rows;
-    this.consultarCertificados();
+    this.queryParams.update(p => ({ ...p, page: event.page!, limit: event.rows! }));
   }
 
   /**

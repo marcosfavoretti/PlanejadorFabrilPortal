@@ -1,60 +1,142 @@
 $brand-green: #2e7d32;
+$brand-green-light: rgba(46, 125, 50, 0.1);
 
 .page-container {
-  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
-.surface-card {
+.filter-card {
+  background: rgba(35, 117, 35, 0.438);
+  border: none;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 0.5rem !important;
+}
+
+.tiny {
+  font-size: 0.6rem;
+}
+
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+.table-card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-y: auto;
+  /*
+   * Usa a CSS variable --navbar-height publicada dinamicamente pelo GlobalHeaderComponent via ResizeObserver.
+   * O restante (230px) cobre: page padding (~24px) + header título (~46px + mb 8px)
+   * + filter card (~62px + mb 8px) + table footer "total" (~24px) + paginator (~48px) + buffer (~10px)
+   */
+  max-height: calc(100vh - var(--navbar-height, 56px) - 230px);
 }
 
 .search-wrapper {
-  width: 300px;
-  display: flex;
-  gap: 1%;
-  align-items: center;
+  position: relative;
+
   .pi {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
     z-index: 1;
-    font-size: 1rem;
   }
 }
 
-.custom-search-input {
+.custom-input {
   width: 100%;
-  border-radius: 50px !important;
-  padding-left: 2.5rem !important;
-  background-color: #f8f9fa;
-  border: 1px solid transparent;
-  transition: all 0.2s;
+  border-radius: 8px !important;
+  padding-left: 2.25rem !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid transparent !important;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.8rem;
+  height: 34px;
 
   &:focus {
-    background-color: #fff;
-    border-color: lighten($brand-green, 20%);
-    box-shadow: 0 0 0 3px rgba($brand-green, 0.1);
+    background-color: #ffffff !important;
+    border-color: #15803d !important;
+    box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15) !important;
   }
 }
 
+.input-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  padding-left: 0.25rem;
+  letter-spacing: 0.05em;
+}
 
 ::ng-deep .custom-paginator {
   background: transparent !important;
   border: none !important;
-  justify-content: flex-end;
+  padding: 0.35rem 0.75rem !important;
 
-  .p-paginator-page.p-highlight {
-    background: rgba($brand-green, 0.1) !important;
-    color: $brand-green !important;
-    border-radius: 50%;
+  .p-paginator-pages .p-paginator-page {
+    border-radius: 6px;
+    margin: 0 1px;
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+
+    &.p-highlight {
+      background: $brand-green-light !important;
+      color: $brand-green !important;
+      font-weight: 700;
+    }
+
+    &:not(.p-highlight):hover {
+      background: #f1f5f9 !important;
+    }
   }
 
-  .p-paginator-page:not(.p-highlight):hover {
-    background: #f1f1f1 !important;
-    border-radius: 50%;
+  .p-paginator-first,
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-last {
+    border-radius: 6px;
+    min-width: 2rem;
+    height: 2rem;
+
+    &:hover {
+      background: #f1f5f9 !important;
+    }
+  }
+
+  .p-paginator-current {
+    font-size: 0.75rem;
   }
 }
 
+.header-title {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.1rem !important;
+}
+
+.header-subtitle {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
 .border-bottom-subtle {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }

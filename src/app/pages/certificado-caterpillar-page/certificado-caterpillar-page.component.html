@@ -1,37 +1,63 @@
 <app-page-layout>
-  <div class="page-container p-4">
+  <div class="page-container p-2 p-md-3">
 
-    <div class="surface-card h-100 d-flex flex-column shadow-sm p-2 rounded-4">
+    <!-- Header Section -->
+    <div
+      class="flex-shrink-0 d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2 px-1 gap-1">
+      <div>
+        <h1 class="header-title mb-0">Certificados Caterpillar</h1>
+        <p class="header-subtitle mb-0 opacity-75">Consulte e baixe certificados de ROPS e Seriais.</p>
+      </div>
+    </div>
 
-      <div class="d-flex justify-content-between align-items-center p-2 border-bottom-subtle">
-        <div>
-          <h1 class="text-success display-6 m-0" style="font-size: 1.75rem; letter-spacing: -0.5px;">
-            Certificados
-          </h1>
-          <small class="text-muted">certificados do teste elétrico caterpillar</small>
+    <!-- Filter Card -->
+    <div class="filter-card p-2 p-md-3 mb-2 flex-shrink-0">
+      <form [formGroup]="filterForm" class="row g-2">
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="input-label">ROPS / Produto</label>
+          <div class="search-wrapper">
+            <i class="pi pi-tag tiny"></i>
+            <input pInputText placeholder="Ex: 12345" type="text" formControlName="produto"
+              class="custom-input bg-light border-0 shadow-none">
+          </div>
         </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="input-label">Número de Série</label>
+          <div class="search-wrapper">
+            <i class="pi pi-barcode tiny"></i>
+            <input pInputText placeholder="Ex: ETH000123" type="text" formControlName="seriaNumber"
+              class="custom-input bg-light border-0 shadow-none">
+          </div>
+        </div>
+      </form>
+    </div>
 
-        <span class="p-input-icon-left search-wrapper">
-          <i class="pi pi-search text-muted"></i>
-          <input pInputText placeholder="Buscar por serial ou ROPS..." type="text" (input)="onSearchInput($event)"
-            class="custom-search-input">
-        </span>
+    <!-- Table Card -->
+    <div class="table-card px-2 px-md-3 rounded-4 bg-white shadow-sm border-0">
+      <div class="position-relative">
+        <!-- Loading State Overlay -->
+        @if (certificadosResource.isLoading()) {
+        <div
+          class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 z-2">
+          <p-skeleton width="100%" height="100%" borderRadius="1rem"></p-skeleton>
+        </div>
+        }
+
+        <div class="table-wrapper">
+          <app-table-dynamic [exportable]="false" [tableModel]="tableShema" [data]="certificados()">
+          </app-table-dynamic>
+        </div>
       </div>
 
-      <div class="flex-grow-1 p-0 position-relative">
-        <div class="table-wrapper h-100">
-          <app-table-dynamic [exportable]="false" [tableModel]="tableShema" [data]="certificados()"> </app-table-dynamic>
-        </div>
-      </div>
-
-      <div class="p-3 border-top border-light">
-        <p-paginator (onPageChange)="onPageChange($event)" [first]="(queryParams.page! * queryParams.limit!)"
-          [rows]="queryParams.limit!" [totalRecords]="totalRecords" [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+      <!-- Footer / Paginator -->
+      <div class="border-top bg-light">
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="(queryParams().page! * queryParams().limit!)"
+          [rows]="queryParams().limit!" [totalRecords]="totalRecords" [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
           [showCurrentPageReport]="true" dropdownAppendTo="body"
           currentPageReportTemplate="{first} - {last} de {totalRecords}" styleClass="custom-paginator">
         </p-paginator>
       </div>
-
     </div>
+
   </div>
 </app-page-layout>

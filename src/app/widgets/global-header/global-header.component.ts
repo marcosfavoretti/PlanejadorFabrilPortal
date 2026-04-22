@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './global-header.component.html',
   styleUrl: './global-header.component.css'
 })
-export class GlobalHeaderComponent implements OnInit, OnDestroy {
+export class GlobalHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   user!: Signal<UserResponseDTO | null>;
   userStore = inject(UserstoreService);
   routerPermission = inject(RoutePermissionStoreService);
@@ -32,6 +32,8 @@ export class GlobalHeaderComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private input$ = new Subject<string>();
+  private resizeObserver?: ResizeObserver;
+  readonly globalHeaderRef = viewChild.required<ElementRef>('globalHeader');
 
   setGlobalFilter(text: string) {
     this.globalFilter.setText(text);
@@ -42,7 +44,18 @@ export class GlobalHeaderComponent implements OnInit, OnDestroy {
     this.input$.next(value);
   }
 
+  ngAfterViewInit(): void {
+    const el: HTMLElement = this.globalHeaderRef().nativeElement;
+    const updateVar = () => {
+      document.documentElement.style.setProperty('--navbar-height', `${el.offsetHeight}px`);
+    };
+    updateVar();
+    this.resizeObserver = new ResizeObserver(updateVar);
+    this.resizeObserver.observe(el);
+  }
+
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.destroy$.next();
     this.destroy$.complete();
   }
