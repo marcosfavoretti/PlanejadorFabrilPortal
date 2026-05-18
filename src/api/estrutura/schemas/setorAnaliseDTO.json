@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "nome": { "type": "string" },
+    "codigo": { "type": "string" }
+  },
+  "required": ["nome", "codigo"],
+  "x-readme-ref-name": "SetorAnaliseDTO"
+}

@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "sessionId": { "type": "string" } },
+  "required": ["sessionId"],
+  "x-readme-ref-name": "CancelarMensagemReqDto"
+}

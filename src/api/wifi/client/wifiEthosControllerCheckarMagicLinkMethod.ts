@@ -15,7 +15,7 @@ function getWifiEthosControllerCheckarMagicLinkMethodUrl(
 ) {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/wifi/check/${id}` as const,
+    url: `https://dev.ethos.ind.br/api/wifi/check/${id}` as const,
   };
   return res;
 }

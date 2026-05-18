@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ChatConversationSummaryDto.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "conversationId": { "type": "string" },
+          "sessionId": { "type": "string" },
+          "contextType": { "type": "string" },
+          "title": { "type": "string" },
+          "model": { "type": "string" },
+          "lastMessagePreview": { "type": "object", "nullable": true },
+          "lastMessageAt": { "format": "date-time", "type": "string" },
+          "messageCount": { "type": "number" }
+        },
+        "required": [
+          "conversationId",
+          "sessionId",
+          "contextType",
+          "model",
+          "lastMessageAt",
+          "messageCount"
+        ],
+        "x-readme-ref-name": "ChatConversationSummaryDto"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedChatConversationSummaryDtoDto"
+}

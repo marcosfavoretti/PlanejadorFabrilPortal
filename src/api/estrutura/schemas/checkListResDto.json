@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "itens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "partcode": { "type": "string" },
+          "tipo": { "type": "string" },
+          "quantidade": { "type": "number" },
+          "itemCliente": { "type": "string" }
+        },
+        "required": ["partcode", "tipo", "quantidade", "itemCliente"],
+        "x-readme-ref-name": "CheckListItemResDto"
+      }
+    },
+    "estrutura": { "type": "string" }
+  },
+  "required": ["itens", "estrutura"],
+  "x-readme-ref-name": "CheckListResDto"
+}

@@ -1,0 +1,9 @@
+<p-card>
+  <form #forms="ngForm" (ngSubmit)="validForms(forms)">
+    <div class="d-flex flex-column gap-3">
+      <label for="name">insira seu nome:</label>
+      <input type="text" name="name" id="name" ngModel required>
+      <button type="submit" class="btn btn-success align-self-end">feito</button>
+    </div>
+  </form>
+</p-card>

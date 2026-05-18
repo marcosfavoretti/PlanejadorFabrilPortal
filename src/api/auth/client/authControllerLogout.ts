@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getAuthControllerLogoutUrl() {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/logout` as const,
+    url: `https://dev.ethos.ind.br/api/auth/logout` as const,
   };
   return res;
 }

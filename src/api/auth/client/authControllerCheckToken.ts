@@ -4,16 +4,13 @@
  */
 
 import fetch from '@/client';
-import type {
-  AuthControllerCheckTokenMutationRequest,
-  AuthControllerCheckTokenMutationResponse,
-} from '../models/AuthControllerCheckToken';
+import type { AuthControllerCheckTokenMutationResponse } from '../models/AuthControllerCheckToken';
 import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 
 function getAuthControllerCheckTokenUrl() {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/check-token` as const,
+    url: `https://dev.ethos.ind.br/api/auth/check-token` as const,
   };
   return res;
 }
@@ -23,23 +20,17 @@ function getAuthControllerCheckTokenUrl() {
  * {@link /api/auth/check-token}
  */
 export async function authControllerCheckToken(
-  data?: AuthControllerCheckTokenMutationRequest,
-  config: Partial<RequestConfig<AuthControllerCheckTokenMutationRequest>> & {
-    client?: Client;
-  } = {},
+  config: Partial<RequestConfig> & { client?: Client } = {},
 ) {
   const { client: request = fetch, ...requestConfig } = config;
-
-  const requestData = data;
 
   const res = await request<
     AuthControllerCheckTokenMutationResponse,
     ResponseErrorConfig<Error>,
-    AuthControllerCheckTokenMutationRequest
+    unknown
   >({
     method: 'POST',
     url: getAuthControllerCheckTokenUrl().url.toString(),
-    data: requestData,
     ...requestConfig,
   });
   return res.data;

@@ -14,7 +14,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPbindexControllerRefreshDatasetAsAdminUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br,/api/pbindex/powerbi/refresh/admin` as const,
+    url: `https://dev.ethos.ind.br/api/pbindex/powerbi/refresh/admin` as const,
   };
   return res;
 }

@@ -1,0 +1,31 @@
+<div id="popup" >
+  <div class="d-flex justify-content-between p-3" class="modal-title">
+    <h2>Filtros</h2>
+    <button class="btn btn-close" (click)="onNoClick()"></button>
+  </div>
+  <div class="modal-body" class="container">
+    <form #filterForms>
+        <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-flex gap-2">
+              <label for="imagem">c/ imagem</label>
+              <p-inputSwitch name="imagem" [(ngModel)]="filterStore.imagem"  (onChange)="onSwitchMove(filterTypesEnum.C_IMG, $event)"/>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-flex gap-2">
+              <label for="imagem">apenas (110, 220)</label>
+              <p-inputSwitch name="110or220" [(ngModel)]="filterStore.is110or220" (onChange)="onSwitchMove(filterTypesEnum.C_110_or_220,  $event)" />
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="d-flex gap-2">
+              <label for="imagem">nao comprados</label>
+              <p-inputSwitch name="n_comprados" [(ngModel)]="filterStore.nComprado" (onChange)="onSwitchMove(filterTypesEnum.N_COMPRADOS, $event)" />
+            </div>
+          </div>
+        </div>
+        
+    </form>
+  </div>
+</div>

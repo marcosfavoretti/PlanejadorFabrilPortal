@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": ["system", "user", "assistant", "tool"]
+        },
+        "content": { "type": "object", "nullable": true },
+        "reasoning_content": {
+          "type": "string",
+          "description": "Conteudo de raciocinio retornado por providers que exigem replay desse campo em turnos futuros"
+        },
+        "name": {
+          "type": "string",
+          "description": "Nome associado a mensagens de tool"
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "type": "string", "enum": ["function"] },
+              "function": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "arguments": {
+                    "type": "string",
+                    "description": "Argumentos serializados em JSON"
+                  }
+                },
+                "required": ["name", "arguments"],
+                "x-readme-ref-name": "ToolCallFunctionDto"
+              }
+            },
+            "required": ["id", "type", "function"],
+            "x-readme-ref-name": "ToolCallDto"
+          }
+        },
+        "tool_call_id": {
+          "type": "string",
+          "description": "Referencia do tool call respondido"
+        },
+        "attachments": {
+          "description": "Anexos estruturados para renderizacao rica no frontend",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["image"] },
+              "url": { "type": "string" },
+              "mimeType": { "type": "string" },
+              "alt": { "type": "string" },
+              "partcode": { "type": "string" }
+            },
+            "required": ["type", "url"],
+            "x-readme-ref-name": "ChatAttachmentDto"
+          }
+        }
+      },
+      "required": ["role", "content"],
+      "x-readme-ref-name": "ChatMessageDto"
+    },
+    "finishReason": {
+      "type": "string",
+      "enum": ["stop", "tool_calls", "length"]
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "promptTokens": { "type": "number" },
+        "completionTokens": { "type": "number" },
+        "totalTokens": { "type": "number" }
+      },
+      "required": ["promptTokens", "completionTokens", "totalTokens"],
+      "x-readme-ref-name": "ChatCompletionUsageDto"
+    }
+  },
+  "required": ["message", "finishReason"],
+  "x-readme-ref-name": "ChatCompletionDto"
+}

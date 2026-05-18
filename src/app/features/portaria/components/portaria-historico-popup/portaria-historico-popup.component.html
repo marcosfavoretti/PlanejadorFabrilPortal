@@ -1,0 +1,161 @@
+<div class="modal-container p-4 bg-light">
+  <!-- Header -->
+  <div class="header-highlight d-flex justify-content-between align-items-center mb-4 shadow rounded-3">
+    <div class="d-flex flex-column gap-1">
+      <h6 class="text-white-50 m-0 fs-6 fw-bold letter-spacing-1">AUDITORIA DE ACESSOS</h6>
+      <div class="d-flex align-items-center gap-3 mt-1">
+        <h2 class="fw-black m-0 text-white display-6">{{ selectedVehicle }}</h2>
+        <span class="badge bg-white text-success rounded-pill px-3 py-1 fw-bold align-self-center badge-label mb-1 ms-2">CONSULTA ANALÍTICA COMPLETA</span>
+      </div>
+    </div>
+    <button class="btn btn-outline-light rounded-pill px-4 hover-lift" style="border-width: 2px" (click)="closeButtonFn()">
+      <i class="pi pi-times me-2"></i>Fechar
+    </button>
+  </div>
+
+  <!-- Content -->
+  @if (data(); as info) {
+  <div class="row g-4 animate-in">
+    <!-- Left Column (Perfil Operacional) -->
+    <div class="col-lg-3 d-flex flex-column gap-3">
+      <div>
+        <h6 class="fw-bold text-muted small text-uppercase mb-3 tracking-wider" style="font-size: 0.75rem;">Perfil Operacional</h6>
+        
+        <!-- Status Badge -->
+        <div class="card border-0 rounded-3 mb-3" style="background-color: #f5eaea;">
+          <div class="card-body p-3 d-flex align-items-center justify-content-center border border-1" style="border-color: #ebd1d1 !important; border-radius: 0.5rem;">
+               <span class="fw-bold d-flex align-items-center gap-2" style="color: #9e2a2b; letter-spacing: 0.05rem;">
+                <i class="pi pi-circle-fill" style="font-size: 0.6rem;"></i> 
+                {{ info.veiculo.status_atual === 'FORA' ? 'FORA' : info.veiculo.status_atual }}
+              </span>
+          </div>
+        </div>
+
+        <!-- Modelo -->
+        <div class="card border-0 rounded-3 shadow-sm mb-3">
+          <div class="card-body p-3">
+            <span class="text-muted tiny fw-bold d-block mb-1">MODELO / ESPECIFICAÇÃO</span>
+            <p class="h6 fw-bold m-0 text-dark font-fira-sans mt-2">{{ info.veiculo.modelo || 'N/D' }}</p>
+          </div>
+        </div>
+
+        <!-- Ano / Cor -->
+        <div class="card border-0 rounded-3 shadow-sm mb-3">
+          <div class="card-body p-3">
+            <span class="text-muted tiny fw-bold d-block mb-1">ANO / COR</span>
+            <div class="d-flex align-items-center gap-2 mt-2">
+              <p class="h6 fw-bold m-0 text-dark font-fira-sans">{{ info.veiculo.ano || 'N/D' }} • </p>
+              <i class="pi pi-circle-fill text-success" style="font-size: 0.8rem;"></i>
+              <span class="h6 fw-bold m-0 text-dark font-fira-sans">{{ info.veiculo.cor || 'N/D' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Último Registro -->
+        <div class="card border-0 rounded-3 text-white shadow-sm" style="background-color: #15803d;">
+          <div class="card-body p-4 pb-3">
+            <span class="tiny text-white-50 fw-bold d-block mb-3">ÚLTIMO REGISTRO</span>
+            
+            <p class="h5 fw-bold m-0 mb-1">
+               {{ info.veiculo.ultima_movimentacao | date:'dd/MM/yyyy' }}
+            </p>
+            <p class="h5 fw-bold m-0 opacity-75 mb-4">
+              {{ info.veiculo.ultima_movimentacao | date:'HH:mm' }}
+            </p>
+            
+            <hr class="border-white opacity-25 my-3">
+            
+            <div class="d-flex align-items-center gap-2 mt-2">
+              <i class="pi pi-sync text-white-50" style="font-size: 0.8rem;"></i>
+              <span class="tiny text-white-50">SINCRONIZAÇÃO ATIVA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column (Cronologia) -->
+    <div class="col-lg-9 d-flex flex-column">
+      
+      <div class="mb-4 d-flex justify-content-between align-items-end">
+        <div>
+           <h6 class="fw-bold text-muted small text-uppercase m-0 mb-1 tracking-wider" style="font-size: 0.75rem;">CRONOLOGIA DE PASSAGENS</h6>
+           <h3 class="fw-bold text-dark m-0 pb-1">Histórico de <br> Movimentação</h3>
+        </div>
+      </div>
+      
+      <!-- History Table Card -->
+      <div class="flex-grow-1 bg-transparent border-0 d-flex flex-column">
+        <div class="flex-grow-1">
+          <app-table-dynamic [data]="info.historico" [tableModel]="historyTableConfig">
+          </app-table-dynamic>
+        </div>
+
+        <!-- Paginator Footer -->
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="paginatorFirst()" [rows]="rows()"
+          [totalRecords]="totalRecords()" [rowsPerPageOptions]="[5, 10, 20]" [pageLinkSize]="3" class="mt-2 bg-transparent">
+        </p-paginator>
+
+        @if (info.historico.length === 0) {
+        <div class="p-5 text-center flex-grow-1 d-flex flex-column justify-content-center bg-white rounded-4 shadow-sm border">
+          <i class="pi pi-inbox text-muted display-4 mb-3"></i>
+          <h5 class="text-muted fw-light">Nenhum registro histórico disponível para esta placa.</h5>
+        </div>
+        }
+      </div>
+
+       <!-- Bottom Cards Row -->
+       <div class="row mt-4 mb-2 g-3">
+         <div class="col-6">
+            <div class="card border-0 rounded-3 shadow-sm px-4 py-3 d-flex flex-row justify-content-between align-items-center border-start border-4" style="border-left-color: #15803d !important;">
+               <div>
+                 <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.1em;">FREQUÊNCIA TOTAL</span>
+                 <div class="d-flex align-items-end gap-2 mt-1">
+                   <h2 class="m-0 text-dark fw-black">{{ info.total }}</h2>
+                   <span class="text-muted fw-bold mb-1" style="font-size: 0.8rem;">ACESSOS</span>
+                 </div>
+               </div>
+               <div class="rounded p-2 text-success d-flex align-items-center justify-content-center" style="background-color: #dcfce7; width: 40px; height: 40px;">
+                  <i class="pi pi-chart-bar fs-5"></i>
+               </div>
+            </div>
+         </div>
+         <div class="col-6">
+            <div class="card border-0 rounded-3 shadow-sm px-4 py-3 d-flex flex-row justify-content-between align-items-center border-start border-4" style="border-left-color: #15803d !important;">
+               <div>
+                 <span class="text-muted fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.1em;">EFICIÊNCIA / CICLO</span>
+                 <div class="d-flex align-items-end gap-2 mt-1">
+                   <h2 class="m-0 text-dark fw-black">{{ calcMedia(info.historico) }}</h2>
+                   <span class="text-muted fw-bold mb-1" style="font-size: 0.8rem;">MIN/MÉDIO</span>
+                 </div>
+               </div>
+               <div class="rounded p-2 text-success d-flex align-items-center justify-content-center" style="background-color: #dcfce7; width: 40px; height: 40px;">
+                  <i class="pi pi-clock fs-5"></i>
+               </div>
+            </div>
+         </div>
+       </div>
+
+    </div>
+  </div>
+  } @else {
+  <!-- Loading Skeleton -->
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <p-skeleton width="100%" height="80px" borderRadius="0.5rem" class="mb-3"></p-skeleton>
+      <p-skeleton width="100%" height="80px" borderRadius="0.5rem" class="mb-3"></p-skeleton>
+      <p-skeleton width="100%" height="150px" borderRadius="0.5rem" class="mb-3"></p-skeleton>
+      <p-skeleton width="100%" height="120px" borderRadius="0.5rem" class="mb-3"></p-skeleton>
+    </div>
+    <div class="col-lg-9">
+      <p-skeleton width="100%" height="100px" borderRadius="0.5rem" class="mb-3"></p-skeleton>
+      <p-skeleton width="100%" height="400px" borderRadius="0.5rem" class="mb-4"></p-skeleton>
+      <div class="row g-3">
+        <div class="col-6"><p-skeleton width="100%" height="90px" borderRadius="0.5rem"></p-skeleton></div>
+        <div class="col-6"><p-skeleton width="100%" height="90px" borderRadius="0.5rem"></p-skeleton></div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

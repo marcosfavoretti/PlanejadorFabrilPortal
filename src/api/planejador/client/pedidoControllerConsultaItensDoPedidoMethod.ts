@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPedidoControllerConsultaItensDoPedidoMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/planejador/pedido/itens` as const,
+    url: `https://dev.ethos.ind.br/api/planejador/pedido/itens` as const,
   };
   return res;
 }

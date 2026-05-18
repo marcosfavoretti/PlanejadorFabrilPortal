@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "arguments": {
+      "type": "string",
+      "description": "Argumentos serializados em JSON"
+    }
+  },
+  "required": ["name", "arguments"],
+  "x-readme-ref-name": "ToolCallFunctionDto"
+}

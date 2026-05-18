@@ -1,0 +1,22 @@
+<div class="popup-container">
+  <div class="popup-header">
+    <div class="icon-circle" [class.error]="msg.stt === 'error'" [class.success]="msg.stt === 'confirm'">
+      <i class="pi" [class.pi-exclamation-triangle]="msg.stt === 'error'" [class.pi-check-circle]="msg.stt === 'confirm'"></i>
+    </div>
+  </div>
+
+  <div class="popup-content">
+    <h2 class="popup-title">
+      {{ msg.stt === 'confirm' ? 'Sucesso!' : 'Ops! Algo deu errado' }}
+    </h2>
+    <div class="popup-messages">
+      <p class="popup-description">{{ msg.msg }}</p>
+    </div>
+  </div>
+
+  <div class="popup-footer">
+    <button (click)="dialogRef.close()" class="close-btn">
+      Entendi
+    </button>
+  </div>
+</div>

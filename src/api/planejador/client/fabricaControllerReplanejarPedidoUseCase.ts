@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerReplanejarPedidoUseCaseUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/planejador/fabrica/fabrica/replanejamento` as const,
+    url: `https://dev.ethos.ind.br/api/planejador/fabrica/fabrica/replanejamento` as const,
   };
   return res;
 }

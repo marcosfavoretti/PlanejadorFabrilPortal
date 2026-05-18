@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { EventEmitter, Injectable } from '@angular/core';
 import { WsEvent } from '../enum/WsEvent.enum';
-import { UserstoreService } from '@/app/services/userstore.service';
+import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { getPBWsConfig } from './ws.config';
 
 export type wsStatus = {
@@ -43,7 +43,7 @@ export class PbIndexClientWs {
             query: {
                 name: userName
             },
-            path: '/ws/pb',
+            path: wsConfig.pbIndexPath,
             forceNew: true,
             transports: ['websocket'],
             reconnection: true,

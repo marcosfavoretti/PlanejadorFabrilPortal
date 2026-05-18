@@ -1,6 +1,5 @@
 export type {
   AuthControllerCheckToken200,
-  AuthControllerCheckTokenMutationRequest,
   AuthControllerCheckTokenMutationResponse,
   AuthControllerCheckTokenMutation,
 } from './AuthControllerCheckToken';

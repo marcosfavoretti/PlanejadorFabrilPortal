@@ -16,7 +16,7 @@ function getAuthControllerRegisterWithInviteUrl(
 ) {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/register/${registrationToken}` as const,
+    url: `https://dev.ethos.ind.br/api/auth/register/${registrationToken}` as const,
   };
   return res;
 }

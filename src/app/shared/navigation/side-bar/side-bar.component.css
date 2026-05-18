@@ -1,0 +1,31 @@
+.active-link {
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #212529 !important;
+}
+
+.nav-item-link {
+  transition: background-color 0.2s;
+  color: #495057 !important;
+}
+
+.nav-item-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #212529 !important;
+}
+
+.sidebar-nav {
+  background-color: inherit;
+}
+
+.text-truncate {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host-context(.p-sidebar) .sidebar-nav {
+  height: 100vh !important;
+}

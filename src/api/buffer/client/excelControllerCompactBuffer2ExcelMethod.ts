@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getExcelControllerCompactBuffer2ExcelMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/buffer/excel` as const,
+    url: `https://dev.ethos.ind.br/api/buffer/excel` as const,
   };
   return res;
 }

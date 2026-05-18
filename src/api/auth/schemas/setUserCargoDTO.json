@@ -5,6 +5,7 @@
       "type": "string",
       "enum": [
         "ADMIN",
+        "ESTRUTURA",
         "PCP",
         "USER",
         "CATERPILLAR_USER",

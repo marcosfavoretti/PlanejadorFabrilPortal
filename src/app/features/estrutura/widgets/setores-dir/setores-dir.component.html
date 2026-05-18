@@ -1,0 +1,14 @@
+<div class="px-2 mb-4">
+    <div class="setor-picker-scroll">
+        <div class="d-flex gap-2">
+            @for (setor of setores$ | async; track $index) {
+            <button class="btn btn-outline-success px-2 py-1 fw-semibold text-nowrap" [class.active]="setor === setorStore.currentSetor" style="min-width: 50px;"
+                (click)="setSetor(setor)">
+                <span class="small">
+                    {{ setor.setor }}
+                </span>
+            </button>
+            }
+        </div>
+    </div>
+</div>

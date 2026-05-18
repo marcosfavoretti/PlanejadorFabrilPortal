@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getSetoresControllerGetSetoresMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/buffer/setores` as const,
+    url: `https://dev.ethos.ind.br/api/buffer/setores` as const,
   };
   return res;
 }

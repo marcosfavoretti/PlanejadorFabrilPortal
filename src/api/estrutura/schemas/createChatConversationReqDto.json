@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "contextType": { "type": "string" },
+    "title": { "type": "string" }
+  },
+  "required": ["contextType"],
+  "x-readme-ref-name": "CreateChatConversationReqDto"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "COD_ITEM_FINAL": { "type": "string" },
+    "SEPARADOR": { "type": "string" }
+  },
+  "required": ["COD_ITEM_FINAL", "SEPARADOR"],
+  "x-readme-ref-name": "SubmitChecklistDTO"
+}

@@ -1,0 +1,162 @@
+<div class="pt-4 h-100 position-relative struct-analysis-page bg-light overflow-auto">
+  <div class="p-4 d-flex flex-column">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+      <div>
+        <h2 class="fw-bold text-dark-green mb-1">Análise Estrutural</h2>
+        <p class="text-muted small mb-0">Visualize dados analíticos e indicadores de desempenho por setor.</p>
+      </div>
+    </div>
+
+    <!-- Consolidated Sticky Dashboard -->
+    <div class="sticky-top-dashboard px-2 mb-4">
+      <div class="dashboard-controls-card shadow-sm border rounded-4 bg-white overflow-hidden">
+
+        <!-- Top Row: Search & Filters -->
+        <div class="p-3 bg-white">
+          <div class="row g-3 align-items-center">
+            <!-- Search Box -->
+            <div class="col-xl-5 col-lg-6">
+              <div class="search-box-container d-flex align-items-center px-3">
+                <i class="pi pi-search search-icon me-2"></i>
+                <input type="text" pInputText class="search-input w-100"
+                  placeholder="Digite um partcode para analisar..." [(ngModel)]="searchQuery" (keyup.enter)="search()">
+              </div>
+            </div>
+
+            <!-- Global Filters (Only if data loaded) -->
+            @if (filteredSectorsData && hasRequestedData && refreshing !== true && !errorMessage) {
+            <div class="col-xl-7 col-lg-6">
+              <div class="d-flex align-items-center gap-4 flex-wrap justify-content-lg-end">
+                <div class="d-flex align-items-center gap-2 filter-item">
+                  <label class="small fw-bold text-muted text-uppercase mb-0"
+                    style="font-size: 0.6rem; letter-spacing: 0.05rem;">Status</label>
+                  <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus" (onChange)="applyFilters()"
+                    optionLabel="label" optionValue="value" placeholder="Todos"
+                    styleClass="p-dropdown-sm border-0 bg-light rounded-3 shadow-none custom-dropdown" appendTo="body">
+                  </p-dropdown>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 filter-item">
+                  <p-inputSwitch [(ngModel)]="filterTimeGtZero" (onChange)="applyFilters()" inputId="filterTimeGtZero"
+                    styleClass="custom-switch">
+                  </p-inputSwitch>
+                  <label for="filterTimeGtZero" class="small fw-bold text-muted text-uppercase mb-0 cursor-pointer"
+                    style="font-size: 0.6rem; letter-spacing: 0.05rem;">
+                    Apenas tempo > 0
+                  </label>
+                </div>
+
+                @if (isAnyFilterActive) {
+                <button class="btn btn-sm btn-link text-danger text-decoration-none p-0 fw-bold"
+                  (click)="resetFilters()" style="font-size: 0.7rem;">
+                  <i class="pi pi-filter-slash me-1"></i>LIMPAR
+                </button>
+                }
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Bottom Row: Sector Navigation (Only if data loaded) -->
+        @if (filteredSectorsData && hasRequestedData && refreshing !== true && !errorMessage) {
+        <div class="bg-light px-3 py-2 sector-nav-bar border-top border-light-subtle">
+          <div class="d-flex gap-2 overflow-auto p-1 sector-nav-container no-scrollbar">
+            @for (sector of filteredSectorsData; track $index) {
+            @if (sector[1].length > 0) {
+            <button class="btn sector-nav-pill-modern" (click)="scrollToSector(sector[0])">
+              <span class="sector-dot" [style.background-color]="getSectorConfig(sector[0]).color"></span>
+              <span class="sector-label">{{getSectorConfig(sector[0]).label}}</span>
+              <span class="sector-count">{{sector[1].length}}</span>
+            </button>
+            }
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    @if(refreshing === true) {
+    <div class="d-flex justify-content-center align-items-center py-5 loading-state">
+      <div class="text-center">
+        <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="4" animationDuration=".5s"></p-progressSpinner>
+        <p class="mt-2 text-muted mb-0">Carregando análise da estrutura...</p>
+      </div>
+    </div>
+    }
+    @else if (errorMessage) {
+    <div class="empty-state">
+      <i class="pi pi-exclamation-triangle text-danger"></i>
+      <span>{{errorMessage}}</span>
+    </div>
+    }
+    @else if (filteredSectorsData && hasRequestedData) {
+    <div class="p-4">
+      @if (filteredSectorsData.length) {
+      <div class="row row-gap-5 w-100 m-0">
+        @for (sector of filteredSectorsData; track $index) {
+        @if (sector[1].length > 0) {
+        <div class="col-12" [id]="'sector-' + sector[0]">
+
+          <!-- Dashboard Grid -->
+          <div class="row g-4 align-items-stretch">
+            <!-- Left: Metric Sidebar Card -->
+            <div class="col-xl-3 col-lg-4">
+              <div class="metric-sidebar-card p-4 rounded-4 text-white d-flex flex-column"
+                [style.background-color]="getSectorConfig(sector[0]).color">
+                <div
+                  class="icon-box mb-4 bg-white bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center"
+                  style="width: 60px; height: 60px;">
+                  <i [class]="'pi ' + getSectorConfig(sector[0]).icon" style="font-size: 1.75rem"></i>
+                </div>
+                <div class="mt-auto">
+                  <span class="smallest opacity-60 text-uppercase tracking-widest d-block mb-1 fw-bold">
+                    {{getSectorConfig(sector[0]).label}}
+                  </span>
+                  <div class="d-flex align-items-baseline gap-2">
+                    <h1 class="display-4 fw-bold mb-0 lh-1">{{calculateTotalTime(sector[1]).split(' ')[0]}}</h1>
+                    <span class="h4 mb-0 opacity-75">min</span>
+                  </div>
+                  <div class="smallest opacity-80 fw-bold text-uppercase tracking-widest mt-1">
+                    Total: {{ calculateTotalTimeHours(sector[1]) }}
+                  </div>
+                  <div class="smallest opacity-80 fw-bold text-uppercase tracking-widest mt-1">
+                    Quantidade: {{ sector[1].length }} itens
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Table Container -->
+            <div class="col-xl-9 col-lg-8">
+              <div class="p-1 h-100">
+                <app-table-dynamic #tables [exportable]="true" [tableModel]="findMatchTableSchema(sector[0])"
+                  [data]="sector[1]"></app-table-dynamic>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+        <hr>
+        }
+      </div>
+      }
+      @else {
+      <div class="empty-state w-100">
+        <i class="pi pi-info-circle"></i>
+        <span>Nenhum processo foi retornado para esta estrutura.</span>
+      </div>
+      }
+    </div>
+    }
+    @else {
+    <div class="empty-state">
+      <i class="pi pi-chart-bar"></i>
+      <span>Informe um partcode para iniciar a análise por processo.</span>
+    </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { "type": "string", "enum": ["image"] },
+    "url": { "type": "string" },
+    "mimeType": { "type": "string" },
+    "alt": { "type": "string" },
+    "partcode": { "type": "string" }
+  },
+  "required": ["type", "url"],
+  "x-readme-ref-name": "ChatAttachmentDto"
+}

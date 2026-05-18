@@ -1,0 +1,11 @@
+:host {
+    display: block;
+}
+
+form {
+    display: block;
+}
+
+.flex-grow-1 {
+    min-height: 0; /* Important for flex-grow with overflow */
+}

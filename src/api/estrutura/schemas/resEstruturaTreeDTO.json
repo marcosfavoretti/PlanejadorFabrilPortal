@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "estrutura": { "$ref": "#/components/schemas/ResEstruturaItemTreeDTO" },
+    "detalhes": {
+      "type": "object",
+      "properties": {
+        "niveis": { "type": "number" },
+        "ultSync": { "type": "string", "format": "date-time" }
+      },
+      "required": ["niveis", "ultSync"],
+      "x-readme-ref-name": "ResEstruturaDetalhesDTO"
+    }
+  },
+  "required": ["estrutura", "detalhes"],
+  "x-readme-ref-name": "ResEstruturaTreeDTO"
+}

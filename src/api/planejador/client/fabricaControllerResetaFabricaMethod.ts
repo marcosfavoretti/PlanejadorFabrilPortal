@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerResetaFabricaMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/planejador/fabrica/reset` as const,
+    url: `https://dev.ethos.ind.br/api/planejador/fabrica/reset` as const,
   };
   return res;
 }

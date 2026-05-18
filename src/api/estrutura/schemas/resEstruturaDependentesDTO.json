@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "target": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string" },
+        "itemCliente": { "type": "string" },
+        "partcode": { "type": "string" },
+        "qtd": { "type": "number" },
+        "ehControle": { "type": "boolean" }
+      },
+      "required": ["status", "itemCliente", "partcode", "qtd", "ehControle"],
+      "x-readme-ref-name": "ResEstruturaItemDTO"
+    },
+    "depedencias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "itemCliente": { "type": "string" },
+          "partcode": { "type": "string" },
+          "qtd": { "type": "number" },
+          "ehControle": { "type": "boolean" }
+        },
+        "required": ["status", "itemCliente", "partcode", "qtd", "ehControle"],
+        "x-readme-ref-name": "ResEstruturaItemDTO"
+      }
+    }
+  },
+  "required": ["target", "depedencias"],
+  "x-readme-ref-name": "ResEstruturaDependentesDTO"
+}

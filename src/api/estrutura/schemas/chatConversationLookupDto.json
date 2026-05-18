@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "sessionId": { "type": "string" },
+    "userId": { "type": "string" },
+    "contextType": { "type": "string" },
+    "title": { "type": "string" },
+    "model": { "type": "string" },
+    "conversationId": { "type": "string" }
+  },
+  "required": ["sessionId", "userId", "contextType", "model", "conversationId"],
+  "x-readme-ref-name": "ChatConversationLookupDto"
+}

@@ -1,0 +1,14 @@
+import { Component } from '@angular/core';
+import { SetoresDirComponent } from '@/app/features/estrutura/widgets/setores-dir/setores-dir.component';
+import { SetoresTablesComponent } from '@/app/features/estrutura/widgets/setores-tables/setores-tables.component';
+import { ToolBarComponent } from '@/app/shared/components/tool-bar/tool-bar.component';
+import { PageLayoutComponent } from "@/app/shared/layouts/page-layout/page-layout.component";
+
+@Component({
+  selector: 'app-contagem-buffer-page',
+  standalone: true,
+  imports: [SetoresDirComponent, SetoresTablesComponent, ToolBarComponent, PageLayoutComponent],
+  templateUrl: './contagem-buffer-page.component.html',
+  styleUrl: './contagem-buffer-page.component.css'
+})
+export class ContagemBufferPageComponent {}

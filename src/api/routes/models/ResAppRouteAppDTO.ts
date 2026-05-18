@@ -7,6 +7,7 @@ import type { AppSubRouteRes } from './AppSubRouteRes';
 
 export enum ResAppRouteAppDTOCargosEnum {
   ADMIN = 'ADMIN',
+  ESTRUTURA = 'ESTRUTURA',
   PCP = 'PCP',
   USER = 'USER',
   CATERPILLAR_USER = 'CATERPILLAR_USER',

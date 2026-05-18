@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getItemControllerGetItemCapabilidadeMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/planejador/item/capabilidade` as const,
+    url: `https://dev.ethos.ind.br/api/planejador/item/capabilidade` as const,
   };
   return res;
 }

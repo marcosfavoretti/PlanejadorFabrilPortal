@@ -1,41 +1,8 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { FabricaPageComponent } from './pages/fabrica-page/fabrica-page.component';
-import { LoginScreenComponent } from './pages/login-screen/login-screen.component';
-import { RegisterScreenComponent } from './pages/register-screen/register-screen.component';
-import { AuthGuard } from './guard/Auth.guard';
-import { ItemPaginaComponent } from './pages/item-pagina/item-pagina.component';
-import { FabricaPrincipalViewComponent } from './widgets/fabrica-principal-view/fabrica-principal-view.component';
-import { PedidosFabricaViewComponent } from './widgets/pedidos-fabrica-view/pedidos-fabrica-view.component';
-import { CargoGuard } from './guard/Cargo.guard';
-import { FabricasParaAvaliacaoViewComponent } from './widgets/fabricas-para-avaliacao-view/fabricas-para-avaliacao-view.component';
-import { FabricaPageReadOnlyComponent } from './widgets/fabrica-page-read-only/fabrica-page-read-only.component';
-import { RelogioPontPageComponent } from './pages/relogio-pont-page/relogio-pont-page.component';
-import { SetUserCargoDTOCargoEnum } from '@/api/auth';
-import { CertificadoCaterpillarPageComponent } from './pages/certificado-caterpillar-page/certificado-caterpillar-page.component';
-import { MinhasFabricasPageComponent } from './pages/minhas-fabricas-page/minhas-fabricas-page.component';
-import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
-import { WifiSolicitationPageComponent } from './pages/wifi-solicitation-page/wifi-solicitation-page.component';
-import { WifiConfirmationPageComponent } from './pages/wifi-confirmation-page/wifi-confirmation-page.component';
-import { ContagemBufferPageComponent } from './pages/contagem-buffer-page/contagem-buffer-page.component';
-import { ContentLayoutComponent } from './layouts/content-layout/content-layout.component';
-import { RegisterTokenGuard } from './guard/RegisterToken.guard';
-// import { FolhaHoraExtraListPageComponent } from './pages/folha-hora-extra-list-page/folha-hora-extra-list-page.component';
-// import { FolhaHoraExtraFormPageComponent } from './pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component';
-// import { FolhaHoraExtraDetailPageComponent } from './pages/folha-hora-extra-detail-page/folha-hora-extra-detail-page.component';
-import { PbIndexPageComponent } from './pages/pb-index-page/pb-index-page.component';
-
-
-
-const lideres = [
-    SetUserCargoDTOCargoEnum.ADMIN,
-    SetUserCargoDTOCargoEnum.LIDER_MONTAGEM,
-    SetUserCargoDTOCargoEnum.LIDER_MONTAGEM,
-    SetUserCargoDTOCargoEnum.LIDER_QUALIDADE,
-    SetUserCargoDTOCargoEnum.LIDER_PROCESSOS,
-    SetUserCargoDTOCargoEnum.LIDER_SOLDA,
-    SetUserCargoDTOCargoEnum.LIDER_LASER
-]
+import { HomePageComponent } from './features/home/pages/home-page/home-page.component';
+import { WelcomePageComponent } from './features/home/pages/welcome-page/welcome-page.component';
+import { AUTH_ROUTES } from '@/app/core/auth/auth.routes';
+import { AuthGuard } from '@/app/guard/Auth.guard';
 
 export const routes: Routes = [
     {
@@ -59,198 +26,35 @@ export const routes: Routes = [
     },
     {
         path: 'pb',
-        loadComponent: () => PbIndexPageComponent,
-        canActivate: [AuthGuard],
-
+        loadChildren: () => import('./features/pbindex/routes').then((m) => m.PBINDEX_ROUTES),
     },
-    {
-        path: 'pb/:grafico',
-        loadComponent: () => PbIndexPageComponent,
-        canActivate: [AuthGuard],
-    },
-    //planejador routes
     {
         path: 'planejamentos',
-        loadComponent: () => ContentLayoutComponent,
-        canActivate: [AuthGuard, CargoGuard],
-        children: [
-            {
-                path: '', redirectTo: 'fabricaPrincipal', pathMatch: 'full'
-            },
-            {
-                path: 'fabricaPrincipal',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => FabricaPrincipalViewComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.CATERPILLAR_USER,
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
-                    ]
-                }
-            },
-            {
-                path: 'minhas-fabricas',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => MinhasFabricasPageComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.CATERPILLAR_USER,
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
-                    ]
-                }
-            },
-            {
-                path: 'fabrica/:fabricaId',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => FabricaPageComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
-                    ]
-                }
-            },
-            {
-                path: 'RO/fabrica/:fabricaId',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => FabricaPageReadOnlyComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.USER
-                    ]
-                }
-            },
-            {
-                path: 'pedidos',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => PedidosFabricaViewComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP
-                    ]
-                }
-            },
-            {
-                path: 'fabricaAvaliacao',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => FabricasParaAvaliacaoViewComponent,
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP
-                    ]
-                }
-            },
-            {
-                path: 'capabilidades',
-                canActivate: [AuthGuard, CargoGuard],
-                loadComponent: () => ItemPaginaComponent,
-                data: {
-                    roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PCP]
-                }
-            }
-        ]
+        loadChildren: () => import('./features/planejamento/routes').then((m) => m.PLANEJAMENTO_ROUTES),
     },
-    //certificados routes
     {
         path: 'certificados',
-        loadComponent: () => CertificadoCaterpillarPageComponent,
-        canActivate: [AuthGuard, CargoGuard]
-    },
-
-    //auth routes
-    {
-        path: 'register',
-        loadComponent: () => RegisterScreenComponent
-    },
-    {
-        path: 'register/:token',
-        canActivate: [RegisterTokenGuard],
-        loadComponent: () => RegisterScreenComponent
-    },
-    {
-        path: 'login',
-        loadComponent: () => LoginScreenComponent
-    },
-    //ponto routes
-    {
-        path: 'ponto/:ccs',
-        canActivate: [AuthGuard, CargoGuard], // Base AuthGuard for all ponto-related routes
-        loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
-        children: [
-            // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
-            // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
-            // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
-            // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
-            {
-                path: 'prefilter/:ccs', // /ponto/some_ccs_value - must be after specific he routes
-                loadComponent: () => RelogioPontPageComponent
-            },
-            {
-                path: '', // Matches exactly /ponto - must be last
-                loadComponent: () => RelogioPontPageComponent,
-                canActivate: [CargoGuard], // Additional guard for this specific case
-                data: {
-                    roles: [SetUserCargoDTOCargoEnum.ADMIN]
-                }
-            }
-        ]
+        loadChildren: () => import('./features/certificados/routes').then((m) => m.CERTIFICADOS_ROUTES),
     },
     {
         path: 'ponto',
-        loadComponent: () => ContentLayoutComponent, // Layout for all ponto routes
-        canActivate: [AuthGuard, CargoGuard], // Base AuthGuard for all ponto-related routes
-        data: {
-            roles: [
-                SetUserCargoDTOCargoEnum.ADMIN,
-                ...lideres
-            ]
-        },
-        children: [
-            // { path: 'he', loadComponent: () => FolhaHoraExtraListPageComponent },
-            // { path: 'he/criar', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/criar
-            // { path: 'he/editar/:idFolha', loadComponent: () => FolhaHoraExtraFormPageComponent }, // /ponto/he/editar/123
-            // { path: 'he/view/:idFolha', loadComponent: () => FolhaHoraExtraDetailPageComponent }, // /ponto/he/view/123
-            //rotas de ponto de funcionarios
-            {
-                path: 'prefilter/:ccs', // /ponto/some_ccs_value - must be after specific he routes
-                loadComponent: () => RelogioPontPageComponent
-            },
-            {
-                path: '', // Matches exactly /ponto - must be last
-                loadComponent: () => RelogioPontPageComponent,
-                canActivate: [CargoGuard], // Additional guard for this specific case
-                data: {
-                    roles: [
-                        SetUserCargoDTOCargoEnum.ADMIN,
-                    ]
-                }
-            }
-        ]
+        loadChildren: () => import('./features/ponto/routes').then((m) => m.PONTO_ROUTES),
     },
-    //wifi routes
     {
         path: 'wifi',
-        loadComponent: () => WifiSolicitationPageComponent
+        loadChildren: () => import('./features/wifi/routes').then((m) => m.WIFI_ROUTES),
     },
-    {
-        path: 'wifi/:id',
-        loadComponent: () => WifiConfirmationPageComponent
-    },
-    // buffer routes
     {
         path: 'buffer',
-        loadComponent: () => ContagemBufferPageComponent,
-        canActivate: [AuthGuard, CargoGuard],
-        data: {
-            roles: [SetUserCargoDTOCargoEnum.PCP, SetUserCargoDTOCargoEnum.ADMIN]
-        }
+        loadChildren: () => import('./features/buffer/routes').then((m) => m.BUFFER_ROUTES),
     },
-    // portaria routes
     {
         path: 'portaria',
-        loadComponent: () => import('./pages/portaria/portaria-control-page.component').then(m => m.PortariaControlPageComponent),
-        canActivate: [AuthGuard,],//CargoGuard
-        data: {
-            roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.DIRETOR]
-        }
-    }
+        loadChildren: () => import('./features/portaria/routes').then((m) => m.PORTARIA_ROUTES),
+    },
+    {
+        path: 'estrutura',
+        loadChildren: () => import('./features/estrutura/routes').then((m) => m.ESTRUTURA_ROUTES),
+    },
+    ...AUTH_ROUTES,
 ];

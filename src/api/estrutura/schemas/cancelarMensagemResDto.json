@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "cancelled": { "type": "boolean" } },
+  "required": ["cancelled"],
+  "x-readme-ref-name": "CancelarMensagemResDto"
+}

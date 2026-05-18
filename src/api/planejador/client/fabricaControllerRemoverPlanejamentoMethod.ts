@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerRemoverPlanejamentoMethodUrl() {
   const res = {
     method: 'DELETE',
-    url: `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos` as const,
+    url: `https://dev.ethos.ind.br/api/planejador/fabrica/planejamentos` as const,
   };
   return res;
 }

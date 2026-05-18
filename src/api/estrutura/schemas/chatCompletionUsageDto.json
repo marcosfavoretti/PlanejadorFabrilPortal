@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "promptTokens": { "type": "number" },
+    "completionTokens": { "type": "number" },
+    "totalTokens": { "type": "number" }
+  },
+  "required": ["promptTokens", "completionTokens", "totalTokens"],
+  "x-readme-ref-name": "ChatCompletionUsageDto"
+}

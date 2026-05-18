@@ -7,6 +7,7 @@ import type { AppSubRoute } from './AppSubRoute';
 
 export enum CriaAppRouteReqDtoCargosEnum {
   ADMIN = 'ADMIN',
+  ESTRUTURA = 'ESTRUTURA',
   PCP = 'PCP',
   USER = 'USER',
   CATERPILLAR_USER = 'CATERPILLAR_USER',

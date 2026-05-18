@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "sessionId": { "type": "string" },
+    "message": { "type": "string" },
+    "contextType": { "type": "string" },
+    "title": { "type": "string" },
+    "stream": {
+      "type": "boolean",
+      "description": "Quando true, o endpoint pode responder em streaming."
+    }
+  },
+  "required": ["sessionId", "message", "contextType"],
+  "x-readme-ref-name": "EnviarMensagemStreamReqDto"
+}

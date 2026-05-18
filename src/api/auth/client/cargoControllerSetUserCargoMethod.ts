@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCargoControllerSetUserCargoMethodUrl() {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/cargo/set` as const,
+    url: `https://dev.ethos.ind.br/api/auth/cargo/set` as const,
   };
   return res;
 }

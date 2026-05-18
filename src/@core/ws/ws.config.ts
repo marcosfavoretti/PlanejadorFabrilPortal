@@ -1,24 +1,14 @@
+import { getRuntimeAppConfig } from '@/app/shared/config/runtime-app-config';
+
 export interface WsConfig {
   pbIndexUrl: string;
+  pbIndexPath: string;
 }
 
-const getProtocol = (): string => {
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    return 'wss';
-  }
-  return 'ws';
-};
-
-const host = 'app.ethos.ind.br';
-
-// Default configuration
-export const pbWsConfig: WsConfig = {
-  pbIndexUrl: `${getProtocol()}://${host}`
-};
-
-// Configuration factory
 export function getPBWsConfig(): WsConfig {
+  const runtimeConfig = getRuntimeAppConfig();
   return {
-    pbIndexUrl: pbWsConfig.pbIndexUrl
+    pbIndexUrl: runtimeConfig.pbWsOrigin,
+    pbIndexPath: runtimeConfig.pbWsPath,
   };
 }

@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "status": { "type": "string" },
+    "itemCliente": { "type": "string" },
+    "partcode": { "type": "string" },
+    "descricao": { "type": "string" },
+    "ehControle": { "type": "boolean" },
+    "roteiro": { "type": "string" },
+    "numRoteiro": { "type": "string" },
+    "operacoes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operacao": { "type": "string" },
+          "tempo": { "type": "number" },
+          "roteiro": { "type": "string" },
+          "roteiroAlternativo": { "type": "string" }
+        },
+        "required": ["operacao", "tempo", "roteiro", "roteiroAlternativo"],
+        "x-readme-ref-name": "ResOperacaoDTO"
+      }
+    }
+  },
+  "required": ["status", "itemCliente", "partcode", "ehControle"],
+  "x-readme-ref-name": "ResItemDetalhadoDTO"
+}

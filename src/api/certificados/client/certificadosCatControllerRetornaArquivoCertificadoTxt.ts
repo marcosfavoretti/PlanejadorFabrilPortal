@@ -15,7 +15,7 @@ function getCertificadosCatControllerRetornaArquivoCertificadoTxtUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/certificados/file/${id}` as const,
+    url: `https://dev.ethos.ind.br/api/certificados/file/${id}` as const,
   };
   return res;
 }

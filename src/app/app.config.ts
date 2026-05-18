@@ -6,9 +6,9 @@ import Aura from '@primeng/themes/aura';
 import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { UserstoreService } from './services/userstore.service';
+import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { catchError, concatMap, firstValueFrom, of, tap } from 'rxjs';
-import { RoutePermissionStoreService } from './services/RoutePermissionStore.service';
+import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 

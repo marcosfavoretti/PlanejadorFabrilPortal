@@ -1,0 +1,40 @@
+@if (itens) {
+<p-toast />
+<p-confirmDialog/>
+<div class="d-flex flex-column h-100">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center flex-grow-1 me-3" style="max-width: 300px;">
+      <div class="search-box-container d-flex align-items-center flex-grow-1">
+        <div class="d-flex justify-content-center align-items-center ps-3">
+          <i class="pi pi-search search-icon"></i>
+        </div>
+        <input type="text" 
+               placeholder="Pesquisa rápida (Código)..." 
+               (input)="applyFilterGlobal($event, 'contains')"
+               class="form-control form-control-sm border-0 shadow-none ps-2 bg-transparent" />
+      </div>
+    </div>
+    @if (submitButton) {
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" 
+                (click)="resetCheckList($event)" 
+                class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center shadow-sm">
+          <i class="pi pi-plus me-2"></i>
+          Novo CheckList
+        </button>
+        <button name="submit" 
+                class="btn btn-success btn-sm px-4 d-flex align-items-center shadow-sm" 
+                (click)="formsSubmitted()">
+          <i class="pi pi-send me-2"></i>
+          Enviar Checklist
+        </button>
+      </div>  
+    }
+  </div>  
+  <div>
+    <app-table-dynamic #dt [data]="itens" [tableModel]="tableModel" (OnChecked)="onTableChecked($event)"
+      [scrollable]="false" [exportable]="exportable">
+    </app-table-dynamic>
+  </div>
+</div>
+}

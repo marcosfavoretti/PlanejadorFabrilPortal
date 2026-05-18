@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "partcodes": { "type": "array", "items": { "type": "string" } },
+    "partcodePai": { "type": "string" }
+  },
+  "required": ["partcodes", "partcodePai"],
+  "x-readme-ref-name": "RemoveItemChecklistDTO"
+}

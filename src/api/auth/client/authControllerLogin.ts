@@ -14,7 +14,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getAuthControllerLoginUrl() {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/login` as const,
+    url: `https://dev.ethos.ind.br/api/auth/login` as const,
   };
   return res;
 }

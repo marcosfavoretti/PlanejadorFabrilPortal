@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "operacao": { "type": "string" },
+    "tempo": { "type": "number" },
+    "roteiro": { "type": "string" },
+    "roteiroAlternativo": { "type": "string" }
+  },
+  "required": ["operacao", "tempo", "roteiro", "roteiroAlternativo"],
+  "x-readme-ref-name": "ResOperacaoDTO"
+}

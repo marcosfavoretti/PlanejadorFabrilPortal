@@ -1,0 +1,118 @@
+<p-treeTable #dt [value]="item" [scrollable]="true" [globalFilterFields]="['partcode']" selectionMode="single"
+  [(selection)]="selectedTreeNode" (onNodeSelect)="selectTreeNode($event.node)" class="mb-4">
+  <ng-template pTemplate="caption">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 p-2">
+      <div class="d-flex align-items-center flex-grow-1">
+        <div class="search-box-container d-flex align-items-center flex-grow-1" style="max-width: 400px;">
+          <div class="d-flex justify-content-center align-items-center ps-3">
+            <i class="pi pi-search search-icon"></i>
+          </div>
+          <input pInputText type="text" class="w-100 search-input ps-2" placeholder="Filtrar nesta lista..."
+            (input)="applyFilterGlobal($event, 'contains')" />
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-end">
+        <button (click)="exportarExcel()" class="btn btn-sm btn-outline-success px-3 d-flex align-items-center shadow-sm">
+          <i class="pi pi-file-excel me-2"></i>.xlsx
+        </button>
+        <button (click)="exportarCSV()" class="btn btn-sm btn-outline-secondary px-3 d-flex align-items-center shadow-sm">
+          <i class="pi pi-table me-2"></i>.csv
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="text-center text-responsive">ID DO ITEM</th>
+      <th class="text-center text-responsive">NOME DO COMPONENTE</th>
+      <th class="text-center text-responsive">QTD</th>
+      <th class="text-center text-responsive">STATUS</th>
+      <th class="text-center text-responsive">IMAGEM</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr class="text-responsive">
+      <td>
+        <p-treeTableToggler [rowNode]="rowNode" />
+        {{ rowData.partcode }}
+      </td>
+      <td>{{ rowData.pa }}</td>
+      <td class="text-center">{{ rowData.quantidade }}</td>
+      <td class="text-center">
+        <p-tag [severity]="getTagSeverity(rowData.tipo)" [value]="rowData.tipo || '---'"></p-tag>
+      </td>
+      <td class="text-center">
+        @let image = rowData.imagem;
+        @if (image && !failedImages().has(image)) {
+        <p-image [preview]="true" [src]="image" width="100px" height="100px"
+          (onImageError)="onImageError(image)"></p-image>
+        }
+        @else {
+        <div style="width: 100px; height: 100px; margin: 0 auto;"
+          class="d-flex align-items-center justify-content-center bg-secondary-subtle rounded">
+          <i class="pi pi-eye-slash" style="font-size: 1.5rem; color: #999;"></i>
+        </div>
+        }
+      </td>
+    </tr>
+  </ng-template>
+</p-treeTable>
+
+<section class="graph-viewer">
+  <div class="graph-toolbar">
+    <div>
+      <h3 class="graph-title">Grafo da Estrutura</h3>
+      <p class="graph-subtitle">{{ graphNodes.length }} itens em {{ totalLayers }} camadas</p>
+    </div>
+
+    @if (selectedGraphNode?.node?.data) {
+    <div class="graph-selection">
+      <span class="selection-label">Selecionado</span>
+      <strong>{{ selectedGraphNode?.node?.data?.partcode }}</strong>
+      <span>{{ selectedGraphNode?.node?.data?.pa }}</span>
+    </div>
+    }
+  </div>
+
+  <div class="graph-body">
+    <aside class="graph-tree">
+      <p-tree [value]="item" [selection]="selectedTreeNode" selectionMode="single"
+        (onNodeSelect)="selectTreeNode($event.node)">
+        <ng-template let-node pTemplate="default">
+          <span class="tree-node-label">{{ node.data?.partcode }}</span>
+        </ng-template>
+      </p-tree>
+    </aside>
+
+    <div class="graph-canvas">
+      <svg [attr.viewBox]="'0 0 ' + graphWidth + ' ' + graphHeight" [attr.width]="graphWidth"
+        [attr.height]="graphHeight">
+        <defs>
+          <marker id="graphArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M 0 0 L 8 4 L 0 8 z" class="graph-arrow" />
+          </marker>
+        </defs>
+
+        @for (edge of graphEdges; track edge.from.id + '-' + edge.to.id) {
+        <path class="graph-edge" [attr.d]="edge.path" marker-end="url(#graphArrow)" />
+        }
+
+        @for (graphNode of graphNodes; track graphNode.id) {
+        <g class="graph-node" [class.graph-node-selected]="isGraphNodeSelected(graphNode)"
+          (click)="selectGraphNode(graphNode)">
+          <rect [attr.x]="graphNode.x" [attr.y]="graphNode.y" width="220" height="80" rx="8" />
+          <text class="graph-node-partcode" [attr.x]="graphNode.x + 20" [attr.y]="graphNode.y + 32">
+            {{ graphNode.node.data?.partcode }}
+          </text>
+          <text class="graph-node-pa" [attr.x]="graphNode.x + 20" [attr.y]="graphNode.y + 60">
+            {{ graphNode.node.data?.pa }}
+          </text>
+          <text class="graph-node-layer" [attr.x]="graphNode.x + 180" [attr.y]="graphNode.y + 32">
+            C{{ graphNode.layer + 1 }}
+          </text>
+        </g>
+        }
+      </svg>
+    </div>
+  </div>
+</section>

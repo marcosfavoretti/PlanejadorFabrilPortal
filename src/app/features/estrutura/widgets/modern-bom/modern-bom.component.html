@@ -1,0 +1,214 @@
+<div class="bom-container p-3 bg-light">
+  <div class="row g-4 align-items-start">
+    <!-- Main Column: BOM List/Tree -->
+    <div class="col-lg-8 d-flex flex-column">
+      <div class="p-4 d-flex flex-column">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="fw-bold text-dark-green mb-1">Consultar Estrutura</h2>
+            <p class="text-muted small mb-0">Gerenciando estruturas e componentes industriais.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm px-3" [ngClass]="viewMode() === 'tree' ? 'btn-success' : 'btn-outline-secondary'"
+              (click)="setViewMode('tree')">
+              <i class="pi pi-sitemap me-2"></i>Árvore
+            </button>
+            <button class="btn btn-sm px-3" [ngClass]="viewMode() === 'list' ? 'btn-success' : 'btn-outline-secondary'"
+              (click)="setViewMode('list')">
+              <i class="pi pi-list me-2"></i>Lista
+            </button>
+          </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="row g-2 mb-4">
+          <div class="col-md-8">
+            <div class="p-input-icon-left d-flex gap-2 w-100 search-box-container">
+              <div class="d-flex justify-content-center align-items-center ps-3">
+                <i class="pi pi-search search-icon"></i>
+              </div>
+              <input type="text" pInputText class="w-100 search-input" placeholder="Buscar por Partcode..."
+                [(ngModel)]="searchQuery" (keyup.enter)="search()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="position-relative custom-scrollbar">
+          @if (loading()) {
+          <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="4"></p-progressSpinner>
+            <p class="text-muted mt-2">Buscando estrutura...</p>
+          </div>
+          } @else if (listData.length > 0 || treeData.length > 0) {
+
+          @if (viewMode() === 'list') {
+          <app-table-dynamic [exportable]="true" [data]="listData" [tableModel]="tableModel"
+            (onRowSelect)="onSelect($event)">
+          </app-table-dynamic>
+          } @else {
+          <app-item-hierarchy-lista [item]="treeData" (onNodeSelect)="onSelect($event)" />
+          }
+
+          } @else {
+          <div class="text-center py-5">
+            <img src="no_data.svg" alt="Sem dados" style="max-width: 200px; opacity: 0.5">
+            <p class="text-muted mt-3">Utilize a busca para carregar uma estrutura.</p>
+          </div>
+          }
+        </div>
+
+        <!-- Footer Info -->
+        <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+          <span class="text-muted smallest">Exibindo {{ listData.length }} componentes</span>
+          <div class="pagination-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Column: Modern Glassmorphism Details -->
+    <div class="col-lg-4 sticky-sidebar-column" #card_info>
+      <div class="glass-sidebar rounded-4 shadow-lg p-3 p-md-4 text-white d-flex flex-column position-relative">
+
+        <div class="card-info-sticky">
+          <span class="status-pill mb-2 d-inline-block">Item final</span>
+          <h3 class="fw-bold mb-1 tracking-tight">{{ selectedItem()?.partcode || '---' }}</h3>
+          <div class="d-flex align-items-center gap-2 card-info-meta">
+            <i class="pi pi-tag small"></i>
+            <span class="smallest fw-bold">COD. CLIENTE: {{ selectedItem()?.pa || '---' }}</span>
+          </div>
+        </div>
+
+        <!-- Modern Tabs Integration -->
+        <div class="tab-shell flex-grow-1 min-h-0 d-flex flex-column">
+          <div class="detail-tabs" role="tablist" aria-label="Detalhes do item">
+            <button type="button" class="detail-tab" [class.active]="activeDetailTab() === 'specs'"
+              (click)="setActiveDetailTab('specs')">
+              <i class="pi pi-info-circle"></i>
+              <span>Especificações</span>
+            </button>
+            <button type="button" class="detail-tab" [class.active]="activeDetailTab() === 'control'"
+              (click)="setActiveDetailTab('control')">
+              <i class="pi pi-check-square"></i>
+              <span>Controle</span>
+            </button>
+            <button type="button" class="detail-tab" [class.active]="activeDetailTab() === 'visual'"
+              (click)="setActiveDetailTab('visual')">
+              <i class="pi pi-image"></i>
+              <span>Visual</span>
+            </button>
+          </div>
+
+          <div class="detail-panel flex-grow-1 min-h-0 overflow-auto custom-scrollbar">
+            @if (activeDetailTab() === 'specs') {
+            <div class="spec-group">
+              <div class="spec-row">
+                <span class="spec-label">Status do Item</span>
+                <span class="status-pill"
+                  [ngClass]="'text-' + getSeverity(selectedItemDetails()?.status || selectedItem()?.item_status)">
+                  {{ selectedItemDetails()?.status || selectedItem()?.item_status || '---' }}
+                </span>
+              </div>
+
+              <div class="spec-row">
+                <div class="d-flex flex-column min-w-0">
+                  <span class="spec-label mb-1">Cliente / Descrição</span>
+                  <span class="spec-value text-truncate" [pTooltip]="selectedItemDetails()?.itemCliente">
+                    {{ selectedItemDetails()?.itemCliente || '---' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="spec-row">
+                <div class="d-flex flex-column min-w-0">
+                  <span class="spec-label mb-1">Roteiro Ativo</span>
+                  <span class="spec-value">
+                    <i class="pi pi-map-marker me-1 route-icon small"></i>
+                    {{ selectedItemDetails()?.roteiro || 'Nenhum Atribuído' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="spec-row">
+                <div class="d-flex flex-column min-w-0">
+                  <span class="spec-label mb-1">Quantidade na Estrutura</span>
+                  <span class="spec-value">{{ selectedItem()?.qtd || '0' }} {{ selectedItem()?.medida || '' }}</span>
+                </div>
+              </div>
+            </div>
+            } @else if (activeDetailTab() === 'control') {
+            @if (controlItems().length > 0) {
+            <table class="modern-table">
+              <tbody>
+                @for (item of controlItems(); track item.partcode) {
+                <tr>
+                  <td>
+                    <div class="fw-bold small text-truncate" [pTooltip]="item.itemCliente">{{ item.itemCliente }}</div>
+                    <div class="smallest opacity-40">{{ item.partcode?.partcode || item.partcode }}</div>
+                  </td>
+                  <td class="text-end">
+                    <i class="pi pi-circle-fill" [ngClass]="'text-' + getSeverity(item.status)" [pTooltip]="item.status"
+                      style="font-size: 0.6rem"></i>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } @else {
+            <div class="empty-state">
+              <i class="pi pi-search d-block mb-3"></i>
+              <p class="small fw-bold mb-0">Sem dados</p>
+            </div>
+            }
+            } @else {
+            <div class="h-100 d-flex flex-column gap-3">
+              <!-- Final item image -->
+              <div class="img-container flex-grow-1 position-relative overflow-auto custom-scrollbar">
+                @if (selectedItem()?.partcode) {
+                <p-image [src]="getItemImage(selectedItem().partcode)" [preview]="true" appendTo="body"
+                  imageClass="w-100 h-100 object-fit-contain p-3" alt="Renderização" />
+                }
+                <div class="img-overlay">
+                  <div class="smallest opacity-50 font-monospace">{{ selectedItem()?.partcode }}</div>
+                </div>
+              </div>
+
+              <!-- Control items images -->
+              @if (controlItems().length > 0) {
+              <div class="control-images-section">
+                <div class="smallest fw-bold mb-2 opacity-60">ITENS DE CONTROLE</div>
+                <div class="control-grid-container custom-scrollbar">
+                  @for (ctrl of controlItems(); track ctrl.partcode?.partcode || ctrl.partcode) {
+                  <div class="control-img-card position-relative">
+                    <p-image [src]="getItemImage(ctrl.partcode?.partcode || ctrl.partcode)" [preview]="true"
+                      appendTo="body" imageClass="object-fit-contain w-100 h-100" alt="Item de controle" />
+                    <div class="control-img-label">
+                      <span class="smallest font-monospace">{{ ctrl.partcode?.partcode || ctrl.partcode }}</span>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+            }
+          </div>
+
+          <div class="d-flex flex-column gap-2 mt-3">
+            <button class="btn-analytics w-100" (click)="goToAnalytics()" [disabled]="!selectedItem()?.partcode">
+              <i class="pi pi-chart-bar me-2"></i>Gerar Análise
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

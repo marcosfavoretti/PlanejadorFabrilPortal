@@ -1,0 +1,312 @@
+<p-toast />
+
+<!-- Layout principal: sidebar + área de chat -->
+<div class="chatbot-layout" [class.sidebar-open]="sidebarOpen">
+
+  <!-- ════════════ SIDEBAR DE HISTÓRICO ════════════ -->
+  @if (showHistory) {
+  <aside class="history-sidebar" [class.open]="sidebarOpen" aria-label="Histórico de conversas">
+    <div class="sidebar-header">
+      <h5 class="sidebar-title">
+        <i class="pi pi-history me-2"></i>Histórico
+      </h5>
+      <button class="sidebar-close-btn" (click)="toggleSidebar()" aria-label="Fechar histórico">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <button class="new-chat-btn" (click)="startNewSession()">
+      <i class="pi pi-plus-circle me-2"></i>
+      Nova conversa
+    </button>
+
+    <div class="sidebar-list">
+      @if (conversationsLoading()) {
+        <div class="sidebar-loading">
+          <i class="pi pi-spin pi-spinner"></i>
+          <span>Carregando...</span>
+        </div>
+      } @else if (conversations().length === 0) {
+        <div class="sidebar-empty">
+          <i class="pi pi-inbox"></i>
+          <p>Nenhuma conversa encontrada</p>
+        </div>
+      } @else {
+        @for (conv of conversations(); track conv.conversationId) {
+          <div class="conversation-row">
+            <button
+              class="conversation-item"
+              (click)="loadConversation(conv)"
+              [title]="getConversationDisplayTitle(conv)"
+            >
+              <div class="conv-title">
+                {{ getConversationDisplayTitle(conv) }}
+              </div>
+              <div class="conv-preview">
+                {{ getConversationPreview(conv) }}
+              </div>
+              <div class="conv-meta">
+                <span class="conv-count">{{ conv.messageCount }} msgs</span>
+                <span class="conv-time">{{ formatRelativeTime(conv.lastMessageAt) }}</span>
+              </div>
+            </button>
+
+            <div class="conversation-actions">
+              @if (pendingDeleteConversationId() === conv.conversationId) {
+                <div class="delete-confirmation" (click)="$event.stopPropagation()">
+                  <button
+                    class="history-action-btn confirm-btn"
+                    (click)="confirmDeleteConversation(conv, $event)"
+                    [disabled]="deletingConversationId() === conv.conversationId"
+                    title="Confirmar exclusão"
+                    aria-label="Confirmar exclusão"
+                  >
+                    @if (deletingConversationId() === conv.conversationId) {
+                      <i class="pi pi-spin pi-spinner"></i>
+                    } @else {
+                      <i class="pi pi-check"></i>
+                    }
+                  </button>
+                  <button
+                    class="history-action-btn cancel-confirm-btn"
+                    (click)="cancelDeleteConversation($event)"
+                    [disabled]="deletingConversationId() === conv.conversationId"
+                    title="Cancelar exclusão"
+                    aria-label="Cancelar exclusão"
+                  >
+                    <i class="pi pi-times"></i>
+                  </button>
+                </div>
+              } @else {
+                <button
+                  class="history-action-btn delete-btn"
+                  (click)="requestDeleteConversation(conv.conversationId, $event)"
+                  [disabled]="!!deletingConversationId()"
+                  title="Apagar conversa"
+                  aria-label="Apagar conversa"
+                >
+                  <i class="pi pi-trash"></i>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </aside>
+  }
+
+  <!-- ════════════ ÁREA PRINCIPAL DE CHAT ════════════ -->
+  <div class="chat-main">
+
+    <!-- Cabeçalho -->
+    <div class="chat-header glass-card">
+      <div class="chat-header-info">
+        @if (showHistory) {
+          <button
+            class="header-toggle-btn"
+            (click)="toggleSidebar()"
+            [title]="sidebarOpen ? 'Fechar histórico' : 'Abrir histórico'"
+            aria-label="Alternar histórico"
+          >
+            <i class="pi" [class.pi-bars]="!sidebarOpen" [class.pi-align-left]="sidebarOpen"></i>
+          </button>
+        }
+
+        <div class="header-icon-wrap">
+          <i class="pi {{ headerIcon }}"></i>
+        </div>
+        <div class="header-text">
+          @if (renaming()) {
+            <div class="title-edit-row">
+              <input
+                type="text"
+                class="title-edit-input"
+                [(ngModel)]="editableTitle"
+                [disabled]="renameSaving()"
+                maxlength="120"
+                placeholder="Nome da conversa"
+                (keyup.enter)="saveTitle()"
+                (keyup.escape)="cancelRename()"
+                aria-label="Nome da conversa"
+              />
+              <button
+                class="title-action-btn save"
+                (click)="saveTitle()"
+                [disabled]="renameSaving()"
+                title="Salvar nome"
+                aria-label="Salvar nome"
+              >
+                @if (renameSaving()) {
+                  <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                  <i class="pi pi-check"></i>
+                }
+              </button>
+              <button
+                class="title-action-btn"
+                (click)="cancelRename()"
+                [disabled]="renameSaving()"
+                title="Cancelar edição"
+                aria-label="Cancelar edição"
+              >
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          } @else {
+            <div class="title-display-row">
+              <h4 class="chat-header-title">{{ computedTitle() }}</h4>
+              <button
+                class="title-action-btn"
+                (click)="beginRename()"
+                title="Editar nome da conversa"
+                aria-label="Editar nome da conversa"
+              >
+                <i class="pi pi-pencil"></i>
+              </button>
+            </div>
+          }
+          <p class="chat-header-sub">{{ subtitle }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensagens -->
+    <div class="card border-0 glass-card flex-grow-1 d-flex flex-column rounded-4 overflow-hidden">
+      <div #messagesContainer class="chat-messages flex-grow-1 p-4 overflow-auto d-flex flex-column gap-3">
+
+        <!-- Estado inicial vazio -->
+        @if (messages().length === 0 && !historyLoading()) {
+          <div class="empty-state d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+            <i class="pi pi-comments empty-icon"></i>
+            <p class="mt-3 fw-semibold">{{ subtitle }}</p>
+          </div>
+        }
+
+        <!-- Skeleton enquanto carrega histórico -->
+        @if (historyLoading()) {
+          <div class="history-skeleton">
+            <div class="skeleton-bubble skeleton-right"></div>
+            <div class="skeleton-bubble skeleton-left"></div>
+            <div class="skeleton-bubble skeleton-right skeleton-short"></div>
+            <div class="skeleton-bubble skeleton-left"></div>
+          </div>
+        }
+
+        <!-- Mensagens -->
+        @for (msg of messages(); track $index) {
+          @if (msg.role === 'user' || msg.content || msg.interrupted) {
+            <div class="d-flex mb-2"
+              [class.justify-content-end]="msg.role === 'user'"
+              [class.justify-content-start]="msg.role === 'assistant'"
+            >
+              <!-- Avatar do assistente -->
+              @if (msg.role === 'assistant') {
+                <div class="assistant-avatar me-2">
+                  <i class="pi {{ headerIcon }}"></i>
+                </div>
+              }
+
+              <div class="message-bubble px-4 py-3 rounded-4 shadow-sm"
+                [class.user-bubble]="msg.role === 'user'"
+                [class.assistant-bubble]="msg.role === 'assistant'"
+              >
+                @if (msg.content) {
+                  <button class="copy-btn" (click)="copyToClipboard(msg.content)" title="Copiar mensagem">
+                    <i class="pi pi-copy"></i>
+                  </button>
+                }
+
+                @if (msg.role === 'assistant' && msg.interrupted) {
+                  <div class="message-status interrupted-status">Resposta interrompida</div>
+                }
+
+                <div class="markdown-content" [innerHTML]="msg.content | markdown"></div>
+
+                @if ($any(msg).attachments) {
+                  @for (attachment of $any(msg).attachments; track $index) {
+                    @if (attachment.type === 'image') {
+                      <div class="structure-image-wrapper mt-3">
+                        <p-image
+                          [src]="attachment.url"
+                          [alt]="attachment.alt || 'Imagem'"
+                          [preview]="true"
+                          imageClass="structure-image"
+                          styleClass="structure-image-host"
+                        />
+                      </div>
+                    }
+                  }
+                }
+
+                <div class="message-time mt-1">{{ msg.timestamp | date: 'HH:mm' }}</div>
+              </div>
+            </div>
+          }
+        }
+
+        <!-- Indicador de digitação -->
+        @if (showTypingIndicator()) {
+          <div class="d-flex justify-content-start">
+            <div class="assistant-avatar me-2">
+              <i class="pi {{ headerIcon }}"></i>
+            </div>
+            <div class="message-bubble px-4 py-3 rounded-4 shadow-sm assistant-bubble">
+              <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Input de mensagem -->
+      <div class="p-2">
+        <div class="input-toolbar d-flex align-items-center">
+
+          @if (sessionCreating()) {
+            <div class="session-creating-indicator">
+              <i class="pi pi-spin pi-spinner me-2"></i>
+              <span>Iniciando conversa...</span>
+            </div>
+          } @else {
+            <input
+              #messageInput
+              id="chatbot-widget-input"
+              type="text"
+              class="form-control form-control-lg creative-input px-3"
+              [placeholder]="inputPlaceholder"
+              [disabled]="inputDisabled()"
+              [ngModel]="newMessage"
+              (ngModelChange)="onMessageChange($event)"
+              (keydown)="handleKeyboard($event)"
+              (keyup.enter)="send()"
+              aria-label="Campo de mensagem"
+            />
+          }
+
+          @if (canCancel()) {
+            <button class="creative-btn cancel-btn ms-2" (click)="cancel()" title="Cancelar">
+              <i class="pi pi-stop-circle"></i>
+            </button>
+          }
+
+          <button
+            class="creative-btn send-btn ms-2"
+            (click)="send()"
+            [disabled]="!newMessage.trim() || inputDisabled()"
+          >
+            @if (loading() || sessionCreating()) {
+              <i class="pi pi-spin pi-spinner"></i>
+            } @else {
+              <i class="pi pi-send"></i>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /chat-main -->
+</div><!-- /chatbot-layout -->

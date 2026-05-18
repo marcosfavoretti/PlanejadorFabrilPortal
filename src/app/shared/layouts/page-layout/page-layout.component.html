@@ -1,0 +1,37 @@
+<div class="page-layout">
+  <global-header></global-header>
+  <div class="page-content-wrapper">
+    <div class="container-fluid m-0 p-0 h-100 d-flex flex-column">
+      <div *ngIf="hasSubRoutes() && isMobile()" class="p-2 border-bottom bg-light d-flex align-items-center">
+        <button type="button" class="btn btn-outline-success btn-sm d-flex align-items-center" (click)="openSidebar()">
+          <i class="pi pi-bars me-2"></i> Opções
+        </button>
+      </div>
+
+      <p-sidebar
+        *ngIf="hasSubRoutes()"
+        [visible]="sidebarVisible()"
+        (visibleChange)="sidebarVisible.set($event)"
+        [baseZIndex]="10000"
+        styleClass="bg-dark-green p-0 border-0">
+        <app-side-bar (onItemClick)="closeSidebar()"></app-side-bar>
+      </p-sidebar>
+
+      <div class="flex-grow-1 overflow-hidden">
+        <p-splitter [panelSizes]="(hasSubRoutes() && !isMobile()) ? [20, 80] : [100]" styleClass="rounded-0 border-0 h-100">
+          <ng-template pTemplate="panel" *ngIf="hasSubRoutes() && !isMobile()">
+            <div class="h-100 w-100 m-0 p-0 bg-dark-green">
+              <app-side-bar></app-side-bar>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="panel">
+            <div class="container-fluid scrollable-content h-100 p-0">
+              <ng-content></ng-content>
+            </div>
+          </ng-template>
+        </p-splitter>
+      </div>
+    </div>
+  </div>
+</div>

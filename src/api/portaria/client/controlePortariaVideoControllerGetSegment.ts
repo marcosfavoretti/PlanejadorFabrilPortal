@@ -15,7 +15,7 @@ function getControlePortariaVideoControllerGetSegmentUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/controle-portaria/video/segments/${filename}` as const,
+    url: `https://dev.ethos.ind.br/api/controle-portaria/video/segments/${filename}` as const,
   };
   return res;
 }

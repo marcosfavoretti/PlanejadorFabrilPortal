@@ -1,0 +1,46 @@
+name: CI Validation
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    runs-on: [self-hosted, Linux, X64, frontend]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate API Client (Kubb)
+        run: npm run generate
+        env:
+          API_URL_AUTH: ${{ secrets.API_URL_AUTH }}
+          API_SWAGGER_AUTH: ${{ secrets.API_SWAGGER_AUTH }}
+          API_URL_ROUTES: ${{ secrets.API_URL_ROUTES }}
+          API_SWAGGER_ROUTES: ${{ secrets.API_SWAGGER_ROUTES }}
+          API_URL_CERTIFICADOS: ${{ secrets.API_URL_CERTIFICADOS }}
+          API_SWAGGER_CERTIFICADOS: ${{ secrets.API_SWAGGER_CERTIFICADOS }}
+          API_URL_PLANEJADOR: ${{ secrets.API_URL_PLANEJADOR }}
+          API_SWAGGER_PLANEJADOR: ${{ secrets.API_SWAGGER_PLANEJADOR }}
+          API_URL_RELOGIO: ${{ secrets.API_URL_RELOGIO }}
+          API_SWAGGER_RELOGIO: ${{ secrets.API_SWAGGER_RELOGIO }}
+          API_URL_WIFI: ${{ secrets.API_URL_WIFI }}
+          API_SWAGGER_WIFI: ${{ secrets.API_SWAGGER_WIFI }}
+          API_URL_BUFFER: ${{ secrets.API_URL_BUFFER }}
+          API_SWAGGER_BUFFER: ${{ secrets.API_SWAGGER_BUFFER }}
+          API_URL_PBINDEX: ${{ secrets.API_URL_PBINDEX }}
+          API_SWAGGER_PBINDEX: ${{ secrets.API_SWAGGER_PBINDEX }}
+          API_URL_PORTARIA: ${{ secrets.API_URL_PORTARIA }}
+          API_SWAGGER_PORTARIA: ${{ secrets.API_SWAGGER_PORTARIA }}
+
+      - name: Build Angular Application
+        run: npm run build

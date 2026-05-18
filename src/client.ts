@@ -1,9 +1,8 @@
-import { isDevMode } from '@angular/core';
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
-import Qs from 'qs'; // Você pode precisar instalar: npm install qs
-
-export const DEV_AUTH_TOKEN_STORAGE_KEY = 'token';
+import Qs from 'qs';
+import { readDevAuthToken } from '@/app/core/auth/utils/auth-token';
+import { rewriteUrlToRuntimeGateway } from '@/app/shared/config/runtime-app-config';
 
 export type RequestConfig<TData = any> = AxiosRequestConfig<TData>;
 export type ResponseErrorConfig<TError = any> = AxiosError<TError>;
@@ -25,15 +24,15 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  if (!isDevMode() || typeof localStorage === 'undefined') {
-    return config;
+  if (config.url) {
+    config.url = rewriteUrlToRuntimeGateway(config.url);
   }
 
-  const token = localStorage.getItem(DEV_AUTH_TOKEN_STORAGE_KEY);
+  const token = readDevAuthToken();
 
   if (token) {
     config.headers = config.headers ?? {};
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return config;

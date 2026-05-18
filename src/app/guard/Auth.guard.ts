@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { UserService } from '../services/User.service';
+import { UserService } from '@/app/core/auth/services/user.service';
 import { firstValueFrom, tap } from 'rxjs';
 
 @Injectable({
@@ -13,8 +13,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     try {
-      const ping$ = this.userService
-        .ping();
+      const ping$ = this.userService.ping();
       await firstValueFrom(ping$);
       return true;
     } catch (error) {

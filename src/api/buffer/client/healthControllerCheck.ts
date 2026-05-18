@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getHealthControllerCheckUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/buffer/health` as const,
+    url: `https://dev.ethos.ind.br/api/buffer/health` as const,
   };
   return res;
 }

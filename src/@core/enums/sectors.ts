@@ -1,0 +1,13 @@
+export enum Sectors{
+    SOLDA = "SOLDA",
+    SOLDAROBO = "SOLDA ROBO",
+    BANHO = "BANHO",
+    PINTURA = "PINTURA CABS",
+    PINTURAPO = "PINTURA FABS",
+    MONTAGEM = "MONTAGEM",
+    LIXA = "LIXA",
+    TIPAGEM = "TIPAGEM",
+    PONTEADEIRA = "PONTEADEIRA",
+    DOBRA = "DOBRA",
+    LASER = "LASER"
+}

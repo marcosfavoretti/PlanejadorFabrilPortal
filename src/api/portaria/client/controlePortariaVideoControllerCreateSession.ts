@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getControlePortariaVideoControllerCreateSessionUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/controle-portaria/video/session` as const,
+    url: `https://dev.ethos.ind.br/api/controle-portaria/video/session` as const,
   };
   return res;
 }

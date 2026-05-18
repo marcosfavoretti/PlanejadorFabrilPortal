@@ -1,0 +1,16 @@
+<div class="h-100 d-flex flex-column p-4 bg-light overflow-auto">
+  <!-- Header Section -->
+  <div class="mb-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="text-primary-emphasis fw-bold mb-1">Configuração de Checklists</h1>
+        <p class="text-secondary lead mb-0">Defina os critérios e itens obrigatórios para validação.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-grow-1">
+    <app-item-painel #painel (onSubmitResponse)="handleRequests($event)" [modo]="'cadastro'" [filters]="filter" [paginator]="false" [cardMode]="true" [showFilterBar]="false" [exportable]="false"></app-item-painel>
+  </div>
+</div>

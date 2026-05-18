@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "estrutura": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "itemCliente": { "type": "string" },
+          "partcode": { "type": "string" },
+          "qtd": { "type": "number" },
+          "ehControle": { "type": "boolean" }
+        },
+        "required": ["status", "itemCliente", "partcode", "qtd", "ehControle"],
+        "x-readme-ref-name": "ResEstruturaItemDTO"
+      }
+    },
+    "detalhes": { "type": "object" }
+  },
+  "required": ["estrutura", "detalhes"],
+  "x-readme-ref-name": "ResEstruturaListaDTO"
+}

@@ -1,0 +1,15 @@
+.hover-effect {
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+
+.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.bg-success-subtle { background-color: #d1e7dd; }
+.bg-primary-subtle { background-color: #cfe2ff; }
+.bg-warning-subtle { background-color: #fff3cd; }
+
+.text-success-emphasis { color: #0a3622; }

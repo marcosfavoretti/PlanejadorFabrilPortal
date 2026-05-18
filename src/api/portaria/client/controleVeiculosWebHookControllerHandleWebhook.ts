@@ -14,7 +14,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getControleVeiculosWebHookControllerHandleWebhookUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/controle-portaria/veiculos/webhook` as const,
+    url: `https://dev.ethos.ind.br/api/controle-portaria/veiculos/webhook` as const,
   };
   return res;
 }

@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "properties": {
+    "setor": {
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "codigo": { "type": "string" }
+      },
+      "required": ["nome", "codigo"],
+      "x-readme-ref-name": "SetorAnaliseDTO"
+    },
+    "analise": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string" },
+              "itemCliente": { "type": "string" },
+              "partcode": { "type": "string" },
+              "qtd": { "type": "number" },
+              "ehControle": { "type": "boolean" }
+            },
+            "required": [
+              "status",
+              "itemCliente",
+              "partcode",
+              "qtd",
+              "ehControle"
+            ],
+            "x-readme-ref-name": "ResEstruturaItemDTO"
+          },
+          "metricas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": { "type": "string" },
+                "valor": { "type": "string" }
+              },
+              "required": ["nome", "valor"],
+              "x-readme-ref-name": "MetricasDTO"
+            }
+          }
+        },
+        "required": ["item", "metricas"],
+        "x-readme-ref-name": "ItemMetricas"
+      }
+    }
+  },
+  "required": ["setor", "analise"],
+  "x-readme-ref-name": "GetAnaliseResDTO"
+}

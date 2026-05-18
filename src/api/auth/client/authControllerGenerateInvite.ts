@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getAuthControllerGenerateInviteUrl() {
   const res = {
     method: 'POST',
-    url: `http://192.168.99.129:30002/api/auth/register-link` as const,
+    url: `https://dev.ethos.ind.br/api/auth/register-link` as const,
   };
   return res;
 }

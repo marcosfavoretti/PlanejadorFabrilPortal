@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getWifiEthosControllerSolicitarCodigoWifiUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/wifi/new` as const,
+    url: `https://dev.ethos.ind.br/api/wifi/new` as const,
   };
   return res;
 }

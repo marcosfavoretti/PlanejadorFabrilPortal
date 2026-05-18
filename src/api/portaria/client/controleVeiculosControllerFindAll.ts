@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getControleVeiculosControllerFindAllUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/controle-portaria/veiculos` as const,
+    url: `https://dev.ethos.ind.br/api/controle-portaria/veiculos` as const,
   };
   return res;
 }

@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "partcode": { "type": "string" },
+    "tipo": { "type": "string" },
+    "quantidade": { "type": "number" },
+    "itemCliente": { "type": "string" },
+    "avaiable": { "type": "boolean" }
+  },
+  "required": ["partcode", "tipo", "quantidade", "itemCliente", "avaiable"],
+  "x-readme-ref-name": "CheckListItemResStatusDto"
+}

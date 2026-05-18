@@ -1,0 +1,58 @@
+.search-box-container {
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.search-box-container:focus-within {
+    border-color: #00a77f;
+    box-shadow: 0 8px 24px rgba(0, 167, 127, 0.15);
+    transform: translateY(-1px);
+}
+
+.search-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0.5rem 0.5rem !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.search-input:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.search-icon {
+    color: #a0aec0;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.search-box-container:focus-within .search-icon {
+    color: #00a77f;
+}
+
+.hover-row {
+    transition: background-color 0.2s ease;
+}
+
+.hover-row:hover {
+    background-color: rgba(0, 167, 127, 0.03) !important;
+}
+
+.custom-table :host ::ng-deep .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.custom-table :host ::ng-deep .p-paginator {
+    background-color: transparent;
+    border: none;
+    padding: 1rem 0;
+}

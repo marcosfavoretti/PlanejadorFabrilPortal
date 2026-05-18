@@ -2,48 +2,23 @@ version: '3.8'
 
 services:
   ethosfront:
-    # Aponte para a imagem gerada pelo CI/CD
-    # Substitua SEU_USUARIO e SEU_REPOSITORIO pelos dados reais (tudo minúsculo)
-    image: ghcr.io/${GITHUB_USER_OR_ORG}/${GITHUB_REPOSITORY}:main
-    
-    container_name: ethosfront
-    restart: always # Importante para produção/homologação
+    # A imagem será substituída pelo CI/CD durante o deploy
+    image: ghcr.io/${GITHUB_REPOSITORY}:${IMAGE_TAG:-main}
+
     ports:
-      - "${DEPLOY_PORT}:8085"
-    
-    # Se você quiser que o Docker sempre verifique se há uma versão nova na main
-    pull_policy: always
-    
+      - "${DEPLOY_PORT:-8085}:8085"
 
     environment:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
-      # Configurações do Planejador
-      - API_URL_PLANEJADOR=${API_URL_PLANEJADOR}
-      - API_SWAGGER_PLANEJADOR=${API_SWAGGER_PLANEJADOR}
-      # Configurações de Rotas
-      - API_URL_ROUTES=${API_URL_ROUTES}
-      - API_SWAGGER_ROUTES=${API_SWAGGER_ROUTES}
-      # Configurações de Auth
-      - API_URL_AUTH=${API_URL_AUTH}
-      - API_SWAGGER_AUTH=${API_SWAGGER_AUTH}
-      # Configurações de Ponto
-      - API_URL_RELOGIO=${API_URL_RELOGIO}
-      - API_SWAGGER_RELOGIO=${API_SWAGGER_RELOGIO}
-      # Configurações de Certificados
-      - API_URL_CERTIFICADOS=${API_URL_CERTIFICADOS}
-      - API_SWAGGER_CERTIFICADOS=${API_SWAGGER_CERTIFICADOS}
-      # Configuracao wifi
-      - API_URL_WIFI=${API_URL_WIFI}
-      - API_SWAGGER_WIFI=${API_SWAGGER_WIFI}
-      #pb index
-      - API_URL_PBINDEX=${API_URL_PBINDEX}
-      - API_SWAGGER_PBINDEX=${API_SWAGGER_PBINDEX}
-      # Configuracao buffer
-      - API_URL_BUFFER=${API_URL_BUFFER}
-      - API_SWAGGER_BUFFER=${API_SWAGGER_BUFFER}
-      # Configuracao portaria
-      - API_URL_PORTARIA=${API_URL_PORTARIA}
-      - API_SWAGGER_PORTARIA=${API_SWAGGER_PORTARIA}
+      # As variáveis de API agora são embutidas no build Angular durante o CI/CD.
+      # O container final não depende mais desses envs para iniciar.
+
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == marcos-Virtual-Machine
+
     networks:
       - backend-network
     dns:

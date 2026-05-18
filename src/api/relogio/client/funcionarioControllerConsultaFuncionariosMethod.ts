@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFuncionarioControllerConsultaFuncionariosMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/funcionario/funcionarios` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/funcionario/funcionarios` as const,
   };
   return res;
 }

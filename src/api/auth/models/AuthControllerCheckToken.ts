@@ -9,18 +9,10 @@
  */
 export type AuthControllerCheckToken200 = any;
 
-export type AuthControllerCheckTokenMutationRequest = {
-  /**
-   * @type string | undefined
-   */
-  token?: string;
-};
-
 export type AuthControllerCheckTokenMutationResponse =
   AuthControllerCheckToken200;
 
 export type AuthControllerCheckTokenMutation = {
   Response: AuthControllerCheckToken200;
-  Request: AuthControllerCheckTokenMutationRequest;
   Errors: any;
 };

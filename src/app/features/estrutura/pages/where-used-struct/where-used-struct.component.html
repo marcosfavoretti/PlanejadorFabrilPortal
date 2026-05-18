@@ -1,0 +1,119 @@
+<div class="pt-4 h-100 position-relative where-used-page bg-light overflow-auto">
+  <div class="p-4 d-flex flex-column">
+    <div class="d-flex justify-content-between align-items-center mb-4 px-2 flex-wrap gap-3">
+      <div>
+        <h2 class="fw-bold text-dark-green mb-1">Onde e Usado</h2>
+        <p class="text-muted small mb-0">Consulte em quais estruturas um item aparece e acompanhe seus dependentes.</p>
+      </div>
+      @if (partcode) {
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-success btn-sm" (click)="goTo('consultar')">
+          <i class="pi pi-sitemap me-2"></i>Ver estrutura
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="goTo('analise')">
+          <i class="pi pi-chart-bar me-2"></i>Analise
+        </button>
+      </div>
+      }
+    </div>
+
+    <div class="sticky-top-dashboard px-2 mb-4">
+      <div class="dashboard-controls-card shadow-sm border rounded-4 bg-white overflow-hidden">
+        <div class="p-3 bg-white">
+          <div class="row g-3 align-items-center">
+            <div class="col-12">
+              <div class="search-box-container d-flex align-items-center px-3">
+                <i class="pi pi-search search-icon me-2"></i>
+                <input
+                  type="text"
+                  pInputText
+                  class="search-input w-100"
+                  placeholder="Digite um partcode para localizar dependencias..."
+                  [(ngModel)]="searchQuery"
+                  (keyup.enter)="search()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (loading) {
+    <div class="d-flex justify-content-center align-items-center py-5 loading-state">
+      <div class="text-center">
+        <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="4" animationDuration=".5s"></p-progressSpinner>
+        <p class="mt-2 text-muted mb-0">Carregando estruturas dependentes...</p>
+      </div>
+    </div>
+    } @else if (errorMessage) {
+    <div class="empty-state">
+      <i class="pi pi-exclamation-triangle text-danger"></i>
+      <span>{{ errorMessage }}</span>
+    </div>
+    } @else if (response && target) {
+    <div class="row g-4 px-2">
+      <div class="col-xl-3 col-lg-4">
+        <div class="metric-sidebar-card p-4 rounded-4 text-white d-flex flex-column">
+          <div class="icon-box mb-4 bg-white bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center">
+            <i class="pi pi-share-alt" style="font-size: 1.75rem"></i>
+          </div>
+
+          <span class="smallest opacity-75 text-uppercase tracking-widest d-block mb-1 fw-bold">Item consultado</span>
+          <h3 class="fw-bold mb-1">{{ target.partcode }}</h3>
+          <p class="opacity-75 small mb-4">{{ target.itemCliente || 'Sem descricao cadastrada' }}</p>
+
+          <div class="summary-stat">
+            <span class="summary-label">Status</span>
+            <span class="summary-value">{{ target.status || 'Nao informado' }}</span>
+          </div>
+
+          <div class="summary-stat">
+            <span class="summary-label">Dependencias</span>
+            <span class="summary-value">{{ dependencies.length }}</span>
+          </div>
+
+          <div class="summary-stat">
+            <span class="summary-label">Itens de controle</span>
+            <span class="summary-value">{{ controlledDependenciesCount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-9 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+              <div>
+                <h5 class="fw-bold mb-1">Estruturas que utilizam o item</h5>
+                <p class="text-muted small mb-0">Lista consolidada de dependencias retornadas pela API de estrutura.</p>
+              </div>
+              <span class="badge text-bg-light border text-secondary px-3 py-2">
+                {{ dependencies.length }} registro(s)
+              </span>
+            </div>
+
+            @if (dependencies.length > 0) {
+            <app-table-dynamic [exportable]="true" [tableModel]="tableModel" [data]="dependencies"></app-table-dynamic>
+            } @else {
+            <div class="empty-state compact">
+              <i class="pi pi-info-circle"></i>
+              <span>Este item nao possui dependencias registradas no momento.</span>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    } @else if (hasRequestedData) {
+    <div class="empty-state">
+      <i class="pi pi-info-circle"></i>
+      <span>Nenhum dado foi retornado para o partcode informado.</span>
+    </div>
+    } @else {
+    <div class="empty-state">
+      <i class="pi pi-share-alt"></i>
+      <span>Informe um partcode para descobrir onde ele e usado na estrutura.</span>
+    </div>
+    }
+  </div>
+</div>

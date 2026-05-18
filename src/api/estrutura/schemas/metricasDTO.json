@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "nome": { "type": "string" }, "valor": { "type": "string" } },
+  "required": ["nome", "valor"],
+  "x-readme-ref-name": "MetricasDTO"
+}

@@ -1,0 +1,79 @@
+<div class="d-flex flex-column h-100">
+  <!-- Search Filter Component -->
+  <app-item-painel-filter 
+    class="w-100" 
+    [cardMode]="cardMode"
+    [partcode]="givenPartcode"
+    [disableFilters]="!targetItemOriginal || modo !== 'default'"
+    (OnClearSearch)="onClearSearch()" 
+    (OnpartCodeFill)="givenPartcode = $event" 
+    (OnFilterSelected)="filterData($event)">
+  </app-item-painel-filter>
+
+  <!-- Active Filters Bar -->
+  @if (showFilterBar) {
+    <div id="util-bar" class="d-flex justify-content-between align-items-center mb-3 px-1">
+      <div id="filtros" class="d-flex align-items-center gap-2 flex-wrap">
+        <span class="text-muted smallest fw-bold text-uppercase tracking-wider">Filtros Ativos:</span>
+        @if (filters.length > 0) {
+          @for (filt of filters; track $index) {
+            <p-tag [severity]="filt.tagColor" [rounded]="true" [value]="filt.filternome" class="shadow-sm"></p-tag>
+          }
+        } @else {
+          <span class="text-secondary small italic">Nenhum filtro aplicado</span>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Results Area -->
+  <div class="position-relative">
+    @if ($any(targetItemDisplay)?.partcode && !requestingData) {
+      <div id="list">
+        @if (targetItemDisplayList && targetItemDisplayList.length && hasFiltersApply) {
+          @if (modo === 'cadastro') {
+            <app-item-result-list-register-checklist
+              [submitButton]="false"
+              [paginator]="paginator"
+              [exportable]="exportable"
+              [target_item]="$any(targetItemOriginal)?.partcode"
+              (onSubmitResponse)="eventValidStategy($event)"
+              [itens]="targetItemDisplayList"
+              [target_columns]="['paRecorded', 'checkListAvaiable']"></app-item-result-list-register-checklist>
+          }
+ @else if (modo === 'coleta') {
+            <app-item-result-list-register-checklist
+              [submitButton]="true"
+              [paginator]="paginator"
+              [exportable]="exportable"
+              (onSubmitResponse)="eventValidStategy($event)"
+              [target_item]="$any(targetItemOriginal)?.partcode"
+              [itens]="targetItemDisplayList" 
+              [target_columns]="['collected']"></app-item-result-list-register-checklist>
+          } @else {
+            <app-item-result-list-register-checklist 
+              [itens]="targetItemDisplayList" 
+              [paginator]="paginator"
+              [exportable]="exportable"
+              [target_item]="$any(targetItemOriginal)?.partcode"
+              [target_columns]="[]"
+              [submitButton]="false"></app-item-result-list-register-checklist>
+          }
+        }
+ @else if(targetItemDisplay && !hasFiltersApply) {
+          <app-item-hierarchy-lista [item]="targetItemDisplayTreeNode" />
+        }
+      </div>
+    } @else {
+      <div class="h-100 d-flex flex-column justify-content-center align-items-center py-5">
+        @if (requestingData) {
+          <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="4"></p-progressSpinner>
+          <p class="text-muted mt-3">Buscando informações do item...</p>
+        } @else {
+          <img src="assets/no_data.svg" alt="Sem dados" style="max-width: 180px; opacity: 0.6">
+          <span class="text-muted mt-3 fw-medium">{{errorMessage || 'Utilize a busca para carregar um item'}}</span>
+        }
+      </div>
+    }
+  </div>
+</div>

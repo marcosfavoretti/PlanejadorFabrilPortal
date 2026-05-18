@@ -31,7 +31,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/frappe-gantt/dist/frappe-gantt.css",
               "src/styles.css"
-                        ],
+            ],
             "scripts": []
           },
           "configurations": {
@@ -63,7 +63,9 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "host": "0.0.0.0",
-            "allowedHosts": ["planejador.dev.ethos", "marcos"]
+            "allowedHosts": [
+              "dev.ethos.ind.br"
+            ]
           },
           "configurations": {
             "production": {

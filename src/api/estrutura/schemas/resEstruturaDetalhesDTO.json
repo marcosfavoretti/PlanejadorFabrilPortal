@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "niveis": { "type": "number" },
+    "ultSync": { "type": "string", "format": "date-time" }
+  },
+  "required": ["niveis", "ultSync"],
+  "x-readme-ref-name": "ResEstruturaDetalhesDTO"
+}

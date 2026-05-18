@@ -1,42 +1,57 @@
 #!/bin/sh
-# Este script garante que a build do frontend ocorra apenas uma vez,
-# depois que a API já estiver pronta.
+# Este script apenas inicia o Nginx, pois a build já foi feita no CI/CD.
 
 # Encerra o script se qualquer comando falhar
 set -e
 
 # Diretório onde o Nginx espera os arquivos HTML
 NGINX_ROOT=/usr/share/nginx/html
+APP_CONFIG_FILE="$NGINX_ROOT/app-config.js"
 
-# Verifica se a build inicial já foi feita procurando por um arquivo de marcação.
-if [ ! -f "$NGINX_ROOT/build_completo.flag" ]; then
-  echo ">>> Primeira inicialização: Preparando para buildar o projeto..."
+quote_js_string() {
+  printf '%s' "$1" | sed "s/'/'\\\\''/g"
+}
 
-  # =================== TESTE DE CONECTIVIDADE ===================
-  # Seu script 'generate' PRECISA usar o endereço 'http://api:3000' para se conectar,
-  # pois 'api' é o nome do serviço no docker-compose.
-  # O endpoint de healthcheck é /api/health conforme seu docker-compose.
-  # A porta padrão é 3000, se for outra, ajuste a variável ${PORT} no seu .env.
-  
-  echo ">>> Gerando cliente da API com 'npm run generate'..."
-  npm run generate
+normalize_csv_to_js_array() {
+  if [ -z "$1" ]; then
+    printf ''
+    return
+  fi
 
-  echo ">>> Buildando a aplicação Angular com 'npm run build --prod'..."
-  npm run build --prod
+  printf '%s' "$1" | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | sed '/^$/d' | while IFS= read -r item; do
+    escaped_item=$(quote_js_string "$item")
+    printf "'%s'," "$escaped_item"
+  done | sed 's/,$//'
+}
 
-  echo ">>> Copiando arquivos para o diretório do Nginx..."
-  rm -rf $NGINX_ROOT/*
-  cp -r /app/dist/* $NGINX_ROOT/
-
-  # Cria um arquivo "flag" para que este bloco não execute novamente
-  touch "$NGINX_ROOT/build_completo.flag"
-
-  echo ">>> Setup inicial finalizado."
-else
-  echo ">>> Aplicação já buildada. Iniciando Nginx diretamente."
+echo ">>> Verificando integridade da aplicação..."
+if [ ! -f "$NGINX_ROOT/index.html" ]; then
+  echo "ERROR: index.html não encontrado em $NGINX_ROOT. O build falhou ou os arquivos não foram copiados corretamente."
+  exit 1
 fi
 
-# Inicia o Nginx em primeiro plano para manter o contêiner ativo
-echo ">>> Iniciando servidor Nginx..."
-exec nginx -g 'daemon off;'
+HTTP_GATEWAY_ORIGIN=${APP_HTTP_GATEWAY_ORIGIN:-}
+PB_WS_ORIGIN=${APP_PB_WS_ORIGIN:-}
+PB_WS_PATH=${APP_PB_WS_PATH:-/ws/pb}
+HOME_EXTERNAL_URL=${APP_HOME_EXTERNAL_URL:-https://www.ethos.ind.br/}
+DEBUG_ENABLED=${APP_DEBUG_ENABLED:-false}
+ENABLE_ROUTE_PERMISSION_MOCK=${APP_ENABLE_ROUTE_PERMISSION_MOCK:-false}
+ENABLE_DEV_AUTH_TOKEN=${APP_ENABLE_DEV_AUTH_TOKEN:-false}
+ALLOWED_RESOURCE_ORIGINS=$(normalize_csv_to_js_array "${APP_ALLOWED_RESOURCE_ORIGINS:-https://app.powerbi.com,https://www.ethos.ind.br}")
 
+echo ">>> Gerando runtime config em $APP_CONFIG_FILE..."
+cat > "$APP_CONFIG_FILE" <<EOF
+window.__APP_CONFIG__ = {
+  httpGatewayOrigin: '$(quote_js_string "$HTTP_GATEWAY_ORIGIN")',
+  pbWsOrigin: '$(quote_js_string "$PB_WS_ORIGIN")',
+  pbWsPath: '$(quote_js_string "$PB_WS_PATH")',
+  homeExternalUrl: '$(quote_js_string "$HOME_EXTERNAL_URL")',
+  debugEnabled: $DEBUG_ENABLED,
+  enableRoutePermissionMock: $ENABLE_ROUTE_PERMISSION_MOCK,
+  enableDevAuthToken: $ENABLE_DEV_AUTH_TOKEN,
+  allowedResourceOrigins: [${ALLOWED_RESOURCE_ORIGINS}]
+};
+EOF
+
+echo ">>> Aplicação pronta. Iniciando servidor Nginx..."
+exec nginx -g 'daemon off;'

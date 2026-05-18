@@ -1,0 +1,173 @@
+<app-page-layout>
+  <div class="portaria-container p-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-end mb-5">
+      <div class="brand">
+        <h1 class="display-5 fw-black m-0 text-primary">RELAÇÕES DE PORTARIA</h1>
+        <p class="text-muted tracking-wide small mb-0">PAINEL UNIFICADO DE MONITORAMENTO E AUDITORIA</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary rounded-pill px-4 shadow-sm" (click)="refreshKPIs()">
+          <i class="pi pi-refresh me-2"></i>Atualizar KPIs
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Section -->
+    @if (kpisData(); as kpis) {
+    <div class="row g-4 mb-5">
+      <div class="col-md-3">
+        <div class="p-1">
+          <app-kpi-card-veiculos title="TOTAL NO PÁTIO" [value]="kpis.totalInside.toString()"></app-kpi-card-veiculos>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white">
+          <app-kpi-card-veiculos title="MOVIMENTAÇÃO HOJE" [value]="kpis.totalToday.toString()"></app-kpi-card-veiculos>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white">
+          <app-kpi-card-veiculos title="ENTRADAS HOJE" [value]="kpis.entriesToday.toString()"></app-kpi-card-veiculos>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white">
+          <app-kpi-card-veiculos title="MÉDIA VEÍCULOS/H"
+            [value]="kpis.avgVehiclesPerHour?.toString() || '0'"></app-kpi-card-veiculos>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <div class="row g-4 mb-5">
+      <div class="col-md-3" *ngFor="let i of [1,2,3,4]">
+        <p-skeleton width="100%" height="100px" borderRadius="24px"></p-skeleton>
+      </div>
+    </div>
+    }
+
+    <!-- Live Feed & Stats Grid -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center gap-2">
+            <span class="live-dot pulse-danger"></span>
+            <h5 class="fw-black m-0 text-primary small tracking-widest">LIVE ENTRANCE FEED</h5>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-light rounded-2" (click)="onRefreshStream()" title="Reiniciar Stream">
+              <i class="pi pi-th-large"></i>
+            </button>
+            <button class="btn btn-sm btn-light rounded-2" (click)="onToggleFullscreen()" title="Tela Cheia">
+              <i class="pi pi-expand"></i>
+            </button>
+          </div>
+        </div>
+        <app-video-stream></app-video-stream>
+      </div>
+
+      <div class="col-lg-4 d-flex flex-column gap-4">
+        <!-- Top: Occupancy Flow -->
+        @if (kpisData(); as kpis) {
+        <div class="card p-4 bg-white rounded-4 border-0 shadow-sm flex-grow-1">
+          <h6 class="fw-bold mb-3 text-secondary tiny text-uppercase tracking-wider">Fluxo de Movimentação (Hoje)</h6>
+          <app-fluxo-heatmap-chart [data]="kpis.fluxoPorHora"></app-fluxo-heatmap-chart>
+        </div>
+
+        <!-- Bottom: Distribution -->
+        <div class="card p-4 shadow-sm border-0 rounded-4 bg-dark-green text-white position-relative overflow-hidden">
+          <div class="position-absolute top-0 end-0 p-3 opacity-10">
+            <i class="pi pi-truck text-white-50" style="font-size: 5rem; transform: rotate(-15deg);"></i>
+          </div>
+          <h6 class="fw-bold mb-3 opacity-75 tiny text-uppercase tracking-wider">Distruição por tipo</h6>
+          <div class="list-group list-group-flush bg-transparent">
+            @for (item of kpis.mixPorTipo; track item.tipo) {
+            <div
+              class="list-group-item bg-transparent text-white border-white/10 d-flex justify-content-between align-items-center px-0 py-2 tiny">
+              <span class="fw-medium d-flex align-items-center">
+                <i class="pi pi-angle-right me-2"></i>{{ item.tipo }}
+              </span>
+              <span class="badge bg-white text-primary rounded-pill">{{ item.quantidade }}</span>
+            </div>
+            }
+          </div>
+        </div>
+        } @else {
+        <p-skeleton width="100%" height="240px" borderRadius="1.5rem"></p-skeleton>
+        <p-skeleton width="100%" height="240px" borderRadius="1.5rem"></p-skeleton>
+        }
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-dark-green">
+      <form [formGroup]="filterForm" class="row g-3 align-items-end">
+        <div class="col-lg-2 col-md-4 col-sm-6">
+          <label class="form-label tiny fw-bold text-uppercase text-muted">Placa</label>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light border-end-0"><i class="pi pi-search tiny"></i></span>
+            <input type="text" formControlName="placa" class="form-control border-start-0 ps-0 bg-light"
+              placeholder="Ex: ABC-1234">
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+          <label class="form-label tiny fw-bold text-uppercase text-muted">Status</label>
+          <select formControlName="status" class="form-select form-select-sm bg-light border-0">
+            <option value="">Todos Status</option>
+            <option *ngFor="let opt of veiculoStatusOptions" [value]="opt">{{ opt }}</option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+          <label class="form-label tiny fw-bold text-uppercase text-muted">Modelo</label>
+          <input type="text" formControlName="modelo" class="form-control form-control-sm bg-light border-0"
+            placeholder="Ex: truck">
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+          <label class="form-label tiny fw-bold text-uppercase text-muted">Data Inicial</label>
+          <input type="date" formControlName="startDate" class="form-control form-control-sm bg-light border-0">
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+          <label class="form-label tiny fw-bold text-uppercase text-muted">Data Final</label>
+          <input type="date" formControlName="endDate" class="form-control form-control-sm bg-light border-0">
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 d-flex gap-2">
+          <button type="button" class="btn btn-light btn-sm rounded-pill flex-grow-1" (click)="clearFilters()">
+            Limpar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Table Section -->
+    <div class="row">
+      <div class="col-12">
+
+        <div class="py-2 border-0 rounded-4 overflow-hidden bg-white shadow-sm">
+          @if (!veiculosResource.isLoading()) {
+          <app-table-dynamic [data]="veiculosData()" [tableModel]="vehicleTableConfig">
+          </app-table-dynamic>
+
+          <div class="px-3 pb-3">
+            <p-paginator (onPageChange)="onPageChange($event)" [first]="paginatorFirst()" [rows]="rows()"
+              [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+          </div>
+
+          @if (veiculosData().length === 0) {
+          <div class="p-5 text-center">
+            <i class="pi pi-search text-muted display-4 mb-3"></i>
+            <h5 class="text-muted">Nenhum veículo encontrado com os filtros atuais.</h5>
+            <button class="btn btn-link btn-sm" (click)="clearFilters()">Limpar todos os filtros</button>
+          </div>
+          }
+          } @else {
+          <div class="p-4">
+            <p-skeleton width="100%" height="400px" borderRadius="1.5rem"></p-skeleton>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div>
+</app-page-layout>

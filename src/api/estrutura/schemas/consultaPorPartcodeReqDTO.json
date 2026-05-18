@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "partcode": {
+      "type": "string",
+      "description": "O partcode do item",
+      "example": "20-000-00220"
+    }
+  },
+  "required": ["partcode"],
+  "x-readme-ref-name": "ConsultaPorPartcodeReqDTO"
+}
