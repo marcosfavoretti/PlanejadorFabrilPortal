@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getControleVeiculosWebHookControllerGetHeartbeatUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/controle-portaria/veiculos/webhook` as const,
+    url: `https://app.ethos.ind.br/api/controle-portaria/veiculos/webhook` as const,
   };
   return res;
 }

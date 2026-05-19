@@ -14,7 +14,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPbindexControllerGetRefreshDateUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/pbindex/powerbi/refresh` as const,
+    url: `https://app.ethos.ind.br/api/pbindex/powerbi/refresh` as const,
   };
   return res;
 }

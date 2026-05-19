@@ -36,6 +36,28 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## API client
+
+`src/api` is a committed artifact and is part of the source of truth for builds and deploys.
+
+To update the generated client, run locally:
+
+```bash
+npm run generate
+```
+
+Operational rules:
+
+- CI does not call Swagger or regenerate `src/api`.
+- Production and CI only accept generated code pointing to `https://app.ethos.ind.br`.
+- Before committing changes in `src/api`, validate the committed client with:
+
+```bash
+npm run check:api-client
+```
+
+The generator still depends on the Swagger environment variables configured for local use in `kubb.config.ts`, but the generated client host is always normalized to production.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:

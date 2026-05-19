@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerConsultaFabricaPrincipalMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/planejador/fabrica/principal` as const,
+    url: `https://app.ethos.ind.br/api/planejador/fabrica/principal` as const,
   };
   return res;
 }

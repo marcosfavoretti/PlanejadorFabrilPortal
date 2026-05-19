@@ -16,7 +16,7 @@ function getSetoresControllerGetSetorMercadoMethodUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/buffer/setores/${setorId}/mercados/${dia}` as const,
+    url: `https://app.ethos.ind.br/api/buffer/setores/${setorId}/mercados/${dia}` as const,
   };
   return res;
 }

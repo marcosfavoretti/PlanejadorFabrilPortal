@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerPlanejarManualMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/planejador/fabrica/planejamentos/manual` as const,
+    url: `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos/manual` as const,
   };
   return res;
 }

@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getChatbotEstruturaControllerSendMessageUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/estrutura/chatbot/message` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/chatbot/message` as const,
   };
   return res;
 }

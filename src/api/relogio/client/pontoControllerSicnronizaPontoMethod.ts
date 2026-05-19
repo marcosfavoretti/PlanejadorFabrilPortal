@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPontoControllerSicnronizaPontoMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/ponto/sincroniza` as const,
+    url: `https://app.ethos.ind.br/api/ponto/sincroniza` as const,
   };
   return res;
 }

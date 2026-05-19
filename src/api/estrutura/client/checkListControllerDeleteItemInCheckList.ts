@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCheckListControllerDeleteItemInCheckListUrl() {
   const res = {
     method: 'DELETE',
-    url: `https://dev.ethos.ind.br/api/estrutura/checklist` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/checklist` as const,
   };
   return res;
 }

@@ -15,7 +15,7 @@ function getControleVeiculosControllerGetFotoUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/controle-portaria/veiculos/foto/${filename}` as const,
+    url: `https://app.ethos.ind.br/api/controle-portaria/veiculos/foto/${filename}` as const,
   };
   return res;
 }

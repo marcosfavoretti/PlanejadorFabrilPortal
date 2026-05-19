@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerConsultarPedidosPlanejadosMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/planejador/fabrica/planejamentos/pedidos` as const,
+    url: `https://app.ethos.ind.br/api/planejador/fabrica/planejamentos/pedidos` as const,
   };
   return res;
 }

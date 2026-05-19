@@ -15,7 +15,7 @@ function getChatbotEstruturaControllerGetHistoryUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/estrutura/chatbot/history/${sessionId}` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/chatbot/history/${sessionId}` as const,
   };
   return res;
 }

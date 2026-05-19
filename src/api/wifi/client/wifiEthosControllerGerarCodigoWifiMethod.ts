@@ -16,7 +16,7 @@ function getWifiEthosControllerGerarCodigoWifiMethodUrl(
 ) {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/wifi/code/${id}` as const,
+    url: `https://app.ethos.ind.br/api/wifi/code/${id}` as const,
   };
   return res;
 }

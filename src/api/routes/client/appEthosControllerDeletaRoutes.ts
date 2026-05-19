@@ -15,7 +15,7 @@ function getAppEthosControllerDeletaRoutesUrl(
 ) {
   const res = {
     method: 'DELETE',
-    url: `https://dev.ethos.ind.br/api/route/app/routes/${id}` as const,
+    url: `https://app.ethos.ind.br/api/route/app/routes/${id}` as const,
   };
   return res;
 }

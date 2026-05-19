@@ -15,7 +15,7 @@ function getChatbotEstruturaControllerDeleteConversationUrl(
 ) {
   const res = {
     method: 'DELETE',
-    url: `https://dev.ethos.ind.br/api/estrutura/chatbot/conversations/${conversationId}` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/chatbot/conversations/${conversationId}` as const,
   };
   return res;
 }

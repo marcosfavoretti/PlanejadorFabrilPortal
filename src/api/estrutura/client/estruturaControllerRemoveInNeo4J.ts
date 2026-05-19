@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getEstruturaControllerRemoveInNeo4JUrl() {
   const res = {
     method: 'DELETE',
-    url: `https://dev.ethos.ind.br/api/estrutura/final` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/final` as const,
   };
   return res;
 }

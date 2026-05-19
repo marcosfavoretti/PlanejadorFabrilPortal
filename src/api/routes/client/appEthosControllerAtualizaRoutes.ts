@@ -16,7 +16,7 @@ function getAppEthosControllerAtualizaRoutesUrl(
 ) {
   const res = {
     method: 'PUT',
-    url: `https://dev.ethos.ind.br/api/route/app/routes/${id}` as const,
+    url: `https://app.ethos.ind.br/api/route/app/routes/${id}` as const,
   };
   return res;
 }

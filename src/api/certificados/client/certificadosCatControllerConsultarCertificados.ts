@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCertificadosCatControllerConsultarCertificadosUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/certificados` as const,
+    url: `https://app.ethos.ind.br/api/certificados` as const,
   };
   return res;
 }

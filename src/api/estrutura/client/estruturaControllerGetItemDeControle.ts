@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getEstruturaControllerGetItemDeControleUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/estrutura/controle` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/controle` as const,
   };
   return res;
 }

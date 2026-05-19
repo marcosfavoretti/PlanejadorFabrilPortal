@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFabricaControllerMergeFabricaMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/planejador/fabrica/merge` as const,
+    url: `https://app.ethos.ind.br/api/planejador/fabrica/merge` as const,
   };
   return res;
 }

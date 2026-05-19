@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCheckListControllerGetChecklistAvaiableUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/estrutura/checklist/avaiable` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/checklist/avaiable` as const,
   };
   return res;
 }

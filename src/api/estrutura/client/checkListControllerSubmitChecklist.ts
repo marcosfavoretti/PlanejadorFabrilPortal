@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCheckListControllerSubmitChecklistUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/estrutura/checklist/submit` as const,
+    url: `https://app.ethos.ind.br/api/estrutura/checklist/submit` as const,
   };
   return res;
 }

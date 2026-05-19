@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getBufferControllerSaveBufferLogUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/buffer` as const,
+    url: `https://app.ethos.ind.br/api/buffer` as const,
   };
   return res;
 }

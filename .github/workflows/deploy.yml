@@ -25,29 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate API Client (Kubb)
-        run: npm run generate
-        env:
-          API_URL_AUTH: ${{ secrets.API_URL_AUTH }}
-          API_SWAGGER_AUTH: ${{ secrets.API_SWAGGER_AUTH }}
-          API_URL_ROUTES: ${{ secrets.API_URL_ROUTES }}
-          API_SWAGGER_ROUTES: ${{ secrets.API_SWAGGER_ROUTES }}
-          API_URL_CERTIFICADOS: ${{ secrets.API_URL_CERTIFICADOS }}
-          API_SWAGGER_CERTIFICADOS: ${{ secrets.API_SWAGGER_CERTIFICADOS }}
-          API_URL_PLANEJADOR: ${{ secrets.API_URL_PLANEJADOR }}
-          API_SWAGGER_PLANEJADOR: ${{ secrets.API_SWAGGER_PLANEJADOR }}
-          API_URL_RELOGIO: ${{ secrets.API_URL_RELOGIO }}
-          API_SWAGGER_RELOGIO: ${{ secrets.API_SWAGGER_RELOGIO }}
-          API_URL_WIFI: ${{ secrets.API_URL_WIFI }}
-          API_SWAGGER_WIFI: ${{ secrets.API_SWAGGER_WIFI }}
-          API_URL_BUFFER: ${{ secrets.API_URL_BUFFER }}
-          API_SWAGGER_BUFFER: ${{ secrets.API_SWAGGER_BUFFER }}
-          API_URL_PBINDEX: ${{ secrets.API_URL_PBINDEX }}
-          API_SWAGGER_PBINDEX: ${{ secrets.API_SWAGGER_PBINDEX }}
-          API_URL_PORTARIA: ${{ secrets.API_URL_PORTARIA }}
-          API_SWAGGER_PORTARIA: ${{ secrets.API_SWAGGER_PORTARIA }}
-          API_URL_ESTRUTURA: ${{ secrets.API_URL_ESTRUTURA }}
-          API_SWAGGER_ESTRUTURA: ${{ secrets.API_SWAGGER_ESTRUTURA }}
+      - name: Validate committed API client
+        run: npm run check:api-client
 
       - name: Build Angular Application
         run: npm run build
@@ -92,27 +71,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            API_URL_AUTH=${{ secrets.API_URL_AUTH }}
-            API_SWAGGER_AUTH=${{ secrets.API_SWAGGER_AUTH }}
-            API_URL_ROUTES=${{ secrets.API_URL_ROUTES }}
-            API_SWAGGER_ROUTES=${{ secrets.API_SWAGGER_ROUTES }}
-            API_URL_CERTIFICADOS=${{ secrets.API_URL_CERTIFICADOS }}
-            API_SWAGGER_CERTIFICADOS=${{ secrets.API_SWAGGER_CERTIFICADOS }}
-            API_URL_PLANEJADOR=${{ secrets.API_URL_PLANEJADOR }}
-            API_SWAGGER_PLANEJADOR=${{ secrets.API_SWAGGER_PLANEJADOR }}
-            API_URL_RELOGIO=${{ secrets.API_URL_RELOGIO }}
-            API_SWAGGER_RELOGIO=${{ secrets.API_SWAGGER_RELOGIO }}
-            API_URL_WIFI=${{ secrets.API_URL_WIFI }}
-            API_SWAGGER_WIFI=${{ secrets.API_SWAGGER_WIFI }}
-            API_URL_BUFFER=${{ secrets.API_URL_BUFFER }}
-            API_SWAGGER_BUFFER=${{ secrets.API_SWAGGER_BUFFER }}
-            API_URL_PBINDEX=${{ secrets.API_URL_PBINDEX }}
-            API_SWAGGER_PBINDEX=${{ secrets.API_SWAGGER_PBINDEX }}
-            API_URL_PORTARIA=${{ secrets.API_URL_PORTARIA }}
-            API_SWAGGER_PORTARIA=${{ secrets.API_SWAGGER_PORTARIA }}
-            API_URL_ESTRUTURA=${{ secrets.API_URL_ESTRUTURA }}
-            API_SWAGGER_ESTRUTURA=${{ secrets.API_SWAGGER_ESTRUTURA }}
 
   smoke-test:
     needs: build-and-push

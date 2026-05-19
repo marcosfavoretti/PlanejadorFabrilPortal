@@ -16,7 +16,7 @@ function getAuthControllerValidateInviteUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/auth/invite/${token}` as const,
+    url: `https://app.ethos.ind.br/api/auth/invite/${token}` as const,
   };
   return res;
 }
