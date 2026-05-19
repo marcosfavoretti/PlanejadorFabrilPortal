@@ -41,6 +41,8 @@ jobs:
           API_SWAGGER_PBINDEX: ${{ secrets.API_SWAGGER_PBINDEX }}
           API_URL_PORTARIA: ${{ secrets.API_URL_PORTARIA }}
           API_SWAGGER_PORTARIA: ${{ secrets.API_SWAGGER_PORTARIA }}
+          API_URL_ESTRUTURA: ${{ secrets.API_URL_ESTRUTURA }}
+          API_SWAGGER_ESTRUTURA: ${{ secrets.API_SWAGGER_ESTRUTURA }}
 
       - name: Build Angular Application
         run: npm run build
