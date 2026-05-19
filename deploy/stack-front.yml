@@ -28,3 +28,4 @@ services:
 networks:
   backend-network:
     external: true
+    name: ethos_backend-network
