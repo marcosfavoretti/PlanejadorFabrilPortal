@@ -3,7 +3,7 @@ version: '3.8'
 services:
   ethosfront:
     # A imagem será substituída pelo CI/CD durante o deploy
-    image: ghcr.io/${GITHUB_REPOSITORY}:${IMAGE_TAG:-main}
+    image: ghcr.io/marcosfavoretti/planejadorfabrilportal:${IMAGE_TAG:-main}
 
     ports:
       - "${DEPLOY_PORT:-8085}:8085"
