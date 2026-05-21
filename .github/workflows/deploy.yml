@@ -113,12 +113,23 @@ jobs:
   deploy:
     needs: smoke-test
     runs-on: [self-hosted, Linux, X64, frontend]
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Deploy to Swarm
         run: |
-          # O IMAGE_TAG deve bater com o formato gerado pelo metadata-action: sha-<full-sha>
           export IMAGE_TAG=sha-${{ github.sha }}
-          docker stack deploy -c deploy/stack-front.yml ethosfront --with-registry-auth
+          IMAGE_URL=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}
+          echo "Deploying image: $IMAGE_URL"
+          docker stack deploy -c deploy/stack-front.yml ethosfront --with-registry-auth --resolve-image always

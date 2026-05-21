@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   ethosfront:
-    # A imagem será substituída pelo CI/CD durante o deploy
-    image: ghcr.io/marcosfavoretti/planejadorfabrilportal:${IMAGE_TAG:-main}
+    # IMAGE_TAG deve ser definido pelo pipeline para evitar fallback silencioso.
+    image: ghcr.io/marcosfavoretti/planejadorfabrilportal:${IMAGE_TAG}
 
     ports:
       - "${DEPLOY_PORT:-8085}:8085"
