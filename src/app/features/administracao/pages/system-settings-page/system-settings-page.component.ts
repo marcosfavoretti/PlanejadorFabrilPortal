@@ -25,14 +25,14 @@ import {
   CriaAppRouteReqDtoCargosEnum,
   ResAppRouteAppDTO,
 } from '@/api/routes';
-import { ImpressoraBluetoothResponseDto } from '@/api/mobile';
+// import { ImpressoraBluetoothResponseDto } from '@/api/mobile';
 import { UserService } from '@/app/core/auth/services/user.service';
 import { RoutePermissionApiService } from '@/app/core/route-permission/services/route-permission-api.service';
 import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { LoadingPopupService } from '@/app/shared/services/loading-popup.service';
 import { AdminSectionCardComponent } from '../../shared/admin-section-card/admin-section-card.component';
 import { RouteConfigFormComponent } from '../../components/route-config-form/route-config-form.component';
-import { MobilePrinterApiService } from '../../services/mobile-printer-api.service';
+// import { MobilePrinterApiService } from '../../services/mobile-printer-api.service';
 
 type RouteFormSubmitValue = {
   id?: string;
@@ -70,14 +70,14 @@ type RouteFormSubmitValue = {
   styleUrl: './system-settings-page.component.css'
 })
 export class SystemSettingsPageComponent implements AfterViewInit {
-  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'create-user', 'printers'] as const;
+  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'create-user'] as const;
   private sectionObserver?: IntersectionObserver;
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly userService = inject(UserService);
   private readonly routePermissionApiService = inject(RoutePermissionApiService);
   private readonly routePermissionStore = inject(RoutePermissionStoreService);
-  private readonly mobilePrinterApiService = inject(MobilePrinterApiService);
+  // private readonly mobilePrinterApiService = inject(MobilePrinterApiService);
   private readonly popup = inject(LoadingPopupService);
   private readonly messageService = inject(MessageService);
 
@@ -92,7 +92,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
   }));
 
   protected readonly routes = signal<ResAppRouteAppDTO[]>([]);
-  protected readonly printers = signal<ImpressoraBluetoothResponseDto[]>([]);
+  // protected readonly printers = signal<ImpressoraBluetoothResponseDto[]>([]);
   protected readonly generatedInvite = signal<AuthControllerGenerateInviteMutationResponse | null>(null);
   protected readonly editingRoute = signal<ResAppRouteAppDTO | null>(null);
 
@@ -101,18 +101,18 @@ export class SystemSettingsPageComponent implements AfterViewInit {
   protected readonly inviteSaving = signal(false);
   protected readonly roleSaving = signal(false);
   protected readonly userSaving = signal(false);
-  protected readonly printerSaving = signal(false);
-  protected readonly printerRemovingId = signal<string | null>(null);
+  // protected readonly printerSaving = signal(false);
+  // protected readonly printerRemovingId = signal<string | null>(null);
   protected readonly activeSection = signal('route-config');
 
   protected readonly routeCount = computed(() => this.routes().length);
-  protected readonly printerCount = computed(() => this.printers().length);
+  // protected readonly printerCount = computed(() => this.printers().length);
   protected readonly sections = [
     { id: 'route-config', label: 'Configuração de Rotas' },
     { id: 'invites', label: 'Convites' },
     { id: 'role-management', label: 'Gestão de Cargos' },
     { id: 'create-user', label: 'Criar Usuário' },
-    { id: 'printers', label: 'Impressoras' },
+    // { id: 'printers', label: 'Impressoras' },
   ] as const;
   protected readonly activeSectionLabel = computed(() =>
     this.sections.find(section => section.id === this.activeSection())?.label ?? this.sections[0].label
@@ -133,10 +133,10 @@ export class SystemSettingsPageComponent implements AfterViewInit {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  protected readonly printerForm = this.fb.nonNullable.group({
-    nome: ['', Validators.required],
-    macAddress: ['', [Validators.required, Validators.pattern(/^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/)]],
-  });
+  // protected readonly printerForm = this.fb.nonNullable.group({
+  //   nome: ['', Validators.required],
+  //   macAddress: ['', [Validators.required, Validators.pattern(/^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/)]],
+  // });
 
   constructor() {
     this.loadRoutes();
@@ -325,54 +325,54 @@ export class SystemSettingsPageComponent implements AfterViewInit {
       });
   }
 
-  protected createPrinter() {
-    if (this.printerForm.invalid) {
-      this.printerForm.markAllAsTouched();
-      return;
-    }
+  // protected createPrinter() {
+  //   if (this.printerForm.invalid) {
+  //     this.printerForm.markAllAsTouched();
+  //     return;
+  //   }
 
-    this.printerSaving.set(true);
-    const rawValue = this.printerForm.getRawValue();
+  //   this.printerSaving.set(true);
+  //   const rawValue = this.printerForm.getRawValue();
 
-    this.mobilePrinterApiService.createPrinter({
-      nome: rawValue.nome.trim(),
-      macAddress: rawValue.macAddress.trim(),
-    })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: printer => {
-          this.printerSaving.set(false);
-          this.printerForm.reset({ nome: '', macAddress: '' });
-          this.printers.update(printers => [printer, ...printers]);
-          this.showSuccess('Impressora cadastrada com sucesso.');
-        },
-        error: err => {
-          this.printerSaving.set(false);
-          this.handleError(err, 'Não foi possível cadastrar a impressora.');
-        }
-      });
-  }
+  //   this.mobilePrinterApiService.createPrinter({
+  //     nome: rawValue.nome.trim(),
+  //     macAddress: rawValue.macAddress.trim(),
+  //   })
+  //     .pipe(takeUntilDestroyed(this.destroyRef))
+  //     .subscribe({
+  //       next: printer => {
+  //         this.printerSaving.set(false);
+  //         this.printerForm.reset({ nome: '', macAddress: '' });
+  //         this.printers.update(printers => [printer, ...printers]);
+  //         this.showSuccess('Impressora cadastrada com sucesso.');
+  //       },
+  //       error: err => {
+  //         this.printerSaving.set(false);
+  //         this.handleError(err, 'Não foi possível cadastrar a impressora.');
+  //       }
+  //     });
+  // }
 
-  protected deletePrinter(printer: ImpressoraBluetoothResponseDto) {
-    if (!window.confirm(`Excluir a impressora "${printer.nome}"?`)) {
-      return;
-    }
+  // protected deletePrinter(printer: ImpressoraBluetoothResponseDto) {
+  //   if (!window.confirm(`Excluir a impressora "${printer.nome}"?`)) {
+  //     return;
+  //   }
 
-    this.printerRemovingId.set(printer.id);
-    this.mobilePrinterApiService.deletePrinter(printer.id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.printerRemovingId.set(null);
-          this.printers.update(printers => printers.filter(item => item.id !== printer.id));
-          this.showSuccess('Impressora removida com sucesso.');
-        },
-        error: err => {
-          this.printerRemovingId.set(null);
-          this.handleError(err, 'Não foi possível remover a impressora.');
-        }
-      });
-  }
+  //   this.printerRemovingId.set(printer.id);
+  //   this.mobilePrinterApiService.deletePrinter(printer.id)
+  //     .pipe(takeUntilDestroyed(this.destroyRef))
+  //     .subscribe({
+  //       next: () => {
+  //         this.printerRemovingId.set(null);
+  //         this.printers.update(printers => printers.filter(item => item.id !== printer.id));
+  //         this.showSuccess('Impressora removida com sucesso.');
+  //       },
+  //       error: err => {
+  //         this.printerRemovingId.set(null);
+  //         this.handleError(err, 'Não foi possível remover a impressora.');
+  //       }
+  //     });
+  // }
 
   private loadRoutes() {
     this.routesLoading.set(true);
@@ -390,14 +390,14 @@ export class SystemSettingsPageComponent implements AfterViewInit {
       });
   }
 
-  private loadPrinters() {
-    this.mobilePrinterApiService.listPrinters()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: printers => this.printers.set(Array.isArray(printers) ? printers : []),
-        error: err => this.handleError(err, 'Não foi possível carregar as impressoras Bluetooth.')
-      });
-  }
+  // private loadPrinters() {
+  //   this.mobilePrinterApiService.listPrinters()
+  //     .pipe(takeUntilDestroyed(this.destroyRef))
+  //     .subscribe({
+  //       next: printers => this.printers.set(Array.isArray(printers) ? printers : []),
+  //       error: err => this.handleError(err, 'Não foi possível carregar as impressoras Bluetooth.')
+  //     });
+  // }
 
   private toRouteRequest(payload: RouteFormSubmitValue): CriaAppRouteReqDto {
     return {
