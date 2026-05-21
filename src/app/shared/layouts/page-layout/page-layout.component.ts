@@ -39,7 +39,7 @@ export class PageLayoutComponent implements OnInit {
 
     const baseRoute = urlSegments[0];
     const routes = this.routerPermissionStore.item();
-    if (!routes) {
+    if (!Array.isArray(routes)) {
       return false;
     }
 

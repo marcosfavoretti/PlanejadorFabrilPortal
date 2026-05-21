@@ -11,6 +11,11 @@ export type CheckListControllerGetChecklistQueryParams = {
    * @type string
    */
   partcode: string;
+  /**
+   * @description Tag textual livre do checklist
+   * @type string
+   */
+  tag: string;
 };
 
 export type CheckListControllerGetChecklistError = CheckListResDto[];

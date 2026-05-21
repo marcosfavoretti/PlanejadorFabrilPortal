@@ -74,6 +74,13 @@ export const ESTRUTURA_ROUTES: Routes = [
           ),
       },
       {
+        path: 'chatbot/share/:shareId',
+        loadComponent: () =>
+          import('@/app/features/estrutura/pages/chatbot-shared-page/chatbot-shared-page.component').then(
+            (m) => m.ChatbotSharedPageComponent,
+          ),
+      },
+      {
         path: 'chatbot',
         loadComponent: () =>
           import('@/app/features/estrutura/pages/chatbot-estrutura-page/chatbot-estrutura-page.component').then(

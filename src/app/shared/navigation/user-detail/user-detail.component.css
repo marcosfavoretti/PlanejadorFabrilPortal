@@ -8,3 +8,19 @@
   height: 48px;
   font-size: 1.5rem;
 }
+
+.user-popup-card__logged-out {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+  padding-top: 1.5rem;
+}
+
+.user-popup-card__guest-avatar {
+  border: 1px solid rgba(25, 135, 84, 0.2);
+}
+
+.user-popup-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+}

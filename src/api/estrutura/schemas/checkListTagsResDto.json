@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "estrutura": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["estrutura", "tags"],
+  "x-readme-ref-name": "CheckListTagsResDto"
+}

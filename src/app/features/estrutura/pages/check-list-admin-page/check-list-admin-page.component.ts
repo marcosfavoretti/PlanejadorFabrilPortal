@@ -4,7 +4,7 @@ import { ItemPainelComponent } from '@/app/features/estrutura/widgets/item-paine
 import { FilterItens } from '@/@core/abstract/filter-item.abstract';
 import type { ResEstruturaItemTreeDTO } from '@/api/estrutura';
 import { EstruturaApiService } from '@/app/features/estrutura/services/EstruturaApi.service';
-import { FilterRemoveRepetidos } from '@/@core/filters/filter-remove-repetidos';
+import { EstruturaContextService } from '@/app/features/estrutura/services/EstruturaContext.service';
 import { CheckBoxResponseEvent } from '@/app/features/estrutura/widgets/item-result-list-register-checklist/item-result-list-register-checklist.component';
 import { firstValueFrom } from 'rxjs';
 import { PopUpResponseComponent } from '@/app/features/estrutura/widgets/pop-up-response/pop-up-response.component';
@@ -22,11 +22,10 @@ export class CheckListAdminPageComponent implements OnInit {
   @ViewChild('painel') painel!: ItemPainelComponent;
   constructor(
     private itemrelationservice: EstruturaApiService,
-    private modalservice: DialogService
+    private modalservice: DialogService,
+    private contextService: EstruturaContextService
   ) { }
-  filter: FilterItens[] = [
-    new FilterRemoveRepetidos(),
-  ]
+  filter: FilterItens[] = []
 
   ngOnInit(): void {
   }
@@ -81,8 +80,18 @@ export class CheckListAdminPageComponent implements OnInit {
         toDO.toUnAssign.forEach(m => { m.stt = 'feito'; });
       }
 
+      const tag = this.contextService.getTag();
+      if (!tag && (toDO.toCheckList.length > 0 || toDO.toRCheckList.length > 0)) {
+        this.openResponseDialog({
+          msg: 'Selecione ou crie uma tag antes de editar o checklist.',
+          stt: 'error'
+        });
+        this.painel.requestItem();
+        return;
+      }
+
       if (toDO.toCheckList.some(m => m.stt === 'pendente')) {
-        await firstValueFrom(this.itemrelationservice.createCheckList(itempai, {
+        await firstValueFrom(this.itemrelationservice.createCheckList(itempai, tag!, {
           partcodes: toDO.toCheckList
             .filter(m => m.stt === 'pendente')
             .map(m => (m.item as any).partcode)
@@ -91,7 +100,7 @@ export class CheckListAdminPageComponent implements OnInit {
       }
 
       if (toDO.toRCheckList.some(m => m.stt === 'pendente')) {
-        await firstValueFrom(this.itemrelationservice.removeCheckList(itempai, {
+        await firstValueFrom(this.itemrelationservice.removeCheckList(itempai, tag!, {
           partcodes: toDO.toRCheckList
             .filter(m => m.stt === 'pendente')
             .map(m => (m.item as any).partcode)
@@ -101,7 +110,7 @@ export class CheckListAdminPageComponent implements OnInit {
 
       if (!isAutoSave) {
         this.openResponseDialog({
-          msg: 'dados salvos',
+          msg: `Checklist salvo na tag "${tag}".`,
           stt: 'confirm'
         });
       }

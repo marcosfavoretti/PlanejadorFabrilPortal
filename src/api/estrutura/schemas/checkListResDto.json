@@ -15,8 +15,9 @@
         "x-readme-ref-name": "CheckListItemResDto"
       }
     },
-    "estrutura": { "type": "string" }
+    "estrutura": { "type": "string" },
+    "tag": { "type": "string" }
   },
-  "required": ["itens", "estrutura"],
+  "required": ["itens", "estrutura", "tag"],
   "x-readme-ref-name": "CheckListResDto"
 }

@@ -1,0 +1,16 @@
+<section class="admin-section-card" [id]="id()">
+  <header class="admin-section-card__header">
+    <div>
+      <h2>{{ title() }}</h2>
+      @if (description()) {
+        <p>{{ description() }}</p>
+      }
+    </div>
+
+    <ng-content select="[section-actions]"></ng-content>
+  </header>
+
+  <div class="admin-section-card__body">
+    <ng-content></ng-content>
+  </div>
+</section>

@@ -14,4 +14,8 @@ export type CheckListResDto = {
    * @type string
    */
   estrutura: string;
+  /**
+   * @type string
+   */
+  tag: string;
 };

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concatMap, of, tap } from 'rxjs';
 import { UserService } from '@/app/core/auth/services/user.service';
 import { LoadingPopupService } from '@/app/shared/services/loading-popup.service';
@@ -19,6 +19,7 @@ export class LoginScreenComponent {
 
   private userService = inject(UserService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private routePermission = inject(RoutePermissionStoreService);
   private userStore = inject(UserstoreService);
   private popup = inject(LoadingPopupService);
@@ -30,6 +31,10 @@ export class LoginScreenComponent {
       const login$ = this.userService
         .login({ user, password })
         .pipe(
+          tap(() => {
+            this.userStore.resetStore();
+            this.routePermission.resetStore();
+          }),
           concatMap(() =>
             this.userStore.initialize().pipe(
               concatMap(() => this.routePermission.initialize()),
@@ -41,7 +46,12 @@ export class LoginScreenComponent {
             )
           ),
           tap(() => {
-            this.router.navigate(['/', 'app']);
+            const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+            if (returnUrl && returnUrl !== '/app' && returnUrl !== '/' && !returnUrl.includes('/login')) {
+              this.router.navigateByUrl(returnUrl);
+            } else {
+              this.router.navigate(['/', 'app']);
+            }
           })
         );
       this.popup.showWhile(login$);

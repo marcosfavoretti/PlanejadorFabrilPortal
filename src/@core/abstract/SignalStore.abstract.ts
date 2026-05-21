@@ -25,7 +25,7 @@ export abstract class SignalStore<T> {
   }
 
   initialize(props?: unknown): Observable<unknown> {
-    if (!this.initialized) {
+    if (!this.initialized || this.get() === null) {
       this.initialized = true;
       return this.refresh(props);
     }

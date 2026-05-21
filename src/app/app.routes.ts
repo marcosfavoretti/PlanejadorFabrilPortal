@@ -56,5 +56,9 @@ export const routes: Routes = [
         path: 'estrutura',
         loadChildren: () => import('./features/estrutura/routes').then((m) => m.ESTRUTURA_ROUTES),
     },
+    {
+        path: 'administracao',
+        loadChildren: () => import('./features/administracao/routes').then((m) => m.ADMINISTRACAO_ROUTES),
+    },
     ...AUTH_ROUTES,
 ];

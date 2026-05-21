@@ -22,19 +22,23 @@ export function parseToList(
     
     const converted = result.map(node => convertToTreeNode(node, imageProvider));
     
-    // Unicidade por partcode e soma de qtd
+    // Unicidade por partcode, mantendo itens de controle separados dos demais.
     const seen = new Map<string, ResEstruturaItemTreeDTO>();
     const unique: ResEstruturaItemTreeDTO[] = [];
     
     for (const node of converted) {
         if (node.partcode) {
-            const existing = seen.get(node.partcode);
+            const dedupeKey = `${node.partcode}::${(node as any).ehControle ? 'controle' : 'comum'}`;
+            const existing = seen.get(dedupeKey);
             if (existing) {
                 if (existing.qtd !== undefined && node.qtd !== undefined) {
                     existing.qtd += node.qtd;
                 }
+                (existing as any).checkListAvaiable = Boolean((existing as any).checkListAvaiable || (node as any).checkListAvaiable);
+                (existing as any).paRecorded = Boolean((existing as any).paRecorded || (node as any).paRecorded);
+                (existing as any).collected = Boolean((existing as any).collected || (node as any).collected);
             } else {
-                seen.set(node.partcode, node);
+                seen.set(dedupeKey, node);
                 unique.push(node);
             }
         } else {
@@ -61,6 +65,7 @@ function convertToTreeNode(
         item_status: itemData.item_status,
         partcode,
         imagem: itemData.imagem || (partcode && imageProvider ? imageProvider(partcode) : undefined),
+        ehControle: itemData.ehControle ?? false,
         checkListAvaiable :itemData.checkListAvaiable,
         paRecorded: itemData.paRecorded,
         collected: false

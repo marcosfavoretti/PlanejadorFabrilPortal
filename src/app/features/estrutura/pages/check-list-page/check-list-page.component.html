@@ -15,6 +15,7 @@
   <!-- Main Content Area -->
   <div class="flex-grow-1">
     <app-item-painel #painel (onSubmitResponse)="handleRequests($event)" [modo]="'coleta'"
-      [filters]="filters" [paginator]="false" [cardMode]="true" [showFilterBar]="false" [exportable]="false"></app-item-painel>
+      [filters]="filters" [paginator]="false" [cardMode]="true" [showFilterBar]="false" [exportable]="false"
+      [stickyChecklistHeader]="true"></app-item-painel>
   </div>
 </div>

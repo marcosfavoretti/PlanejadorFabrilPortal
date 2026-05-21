@@ -28,7 +28,7 @@ export class SideBarComponent implements OnInit {
     }
 
     const routes = this.routerPermissionStore.item();
-    if (!routes) {
+    if (!Array.isArray(routes)) {
       return [];
     }
 

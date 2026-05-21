@@ -28,6 +28,9 @@ export interface ConversationSummary {
   lastMessagePreview?: unknown;
   lastMessageAt: Date;
   messageCount: number;
+  shareId?: string;
+  parentConversationId?: string;
+  rootConversationId?: string;
 }
 
 export interface ChatSessionConfig {
@@ -74,6 +77,7 @@ export class ChatbotService {
 
   /** sessionId confirmado pelo backend. null = ainda não tem sessão */
   private _sessionId: string | null = null;
+  private _conversationId: string | null = null;
 
   /** Contexto usado para criar novas sessões */
   private _sessionConfig: ChatSessionConfig = { ...DEFAULT_CONTEXT };
@@ -84,6 +88,10 @@ export class ChatbotService {
 
   get hasSession(): boolean {
     return this._sessionId !== null;
+  }
+
+  get conversationId(): string | null {
+    return this._conversationId;
   }
 
   // ── Configuração ──────────────────────────────────────────────────────────
@@ -112,8 +120,9 @@ export class ChatbotService {
    * Define um sessionId externo (para retomar uma conversa existente).
    * Isso NÃO carrega o histórico automaticamente — chame `loadHistory()` depois.
    */
-  useSession(sessionId: string, title?: string): void {
+  useSession(sessionId: string, title?: string, conversationId?: string): void {
     this._sessionId = sessionId;
+    this._conversationId = conversationId?.trim() || null;
     this.activeTitle.set(title?.trim() || undefined);
   }
 
@@ -169,6 +178,7 @@ export class ChatbotService {
         .subscribe({
           next: (res) => {
             this._sessionId = res.sessionId;
+            this._conversationId = res.conversationId;
             this.activeTitle.set(res['title'] || title);
             subscriber.next(res.sessionId);
             subscriber.complete();
@@ -366,6 +376,7 @@ export class ChatbotService {
 
     // Limpa sessão — próxima msg vai criar nova via backend
     this._sessionId = null;
+    this._conversationId = null;
     this.messages.set([]);
     this.loading.set(false);
     this.sessionCreating.set(false);

@@ -1,0 +1,363 @@
+<p-toast />
+
+<div class="system-settings-page">
+  <section class="system-settings-page__hero">
+    <div>
+      <span class="system-settings-page__eyebrow">Administração sistêmica</span>
+      <h1>Cadastros, parâmetros e configurações administrativas</h1>
+      <p>
+        Central única para gerenciar rotas do app, convites com cargos, mudança de cargo
+        e cadastro de impressoras Bluetooth.
+      </p>
+    </div>
+
+    <div class="system-settings-page__stats">
+      <div>
+        <strong>{{ routeCount() }}</strong>
+        <span>rotas carregadas</span>
+      </div>
+      <div>
+        <strong>{{ printerCount() }}</strong>
+        <span>impressoras cadastradas</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="system-settings-page__docs-layout">
+    <aside class="system-settings-page__sticky-nav">
+      <div class="admin-nav-shell">
+        <div class="admin-nav-shell__eyebrow">Nesta página</div>
+        <div class="admin-nav-shell__current">{{ activeSectionLabel() }}</div>
+
+        <nav class="admin-nav">
+          @for (section of sections; track section.id) {
+          <a [href]="'#' + section.id" (click)="scrollTo($event, section.id)" class="admin-nav__link"
+            [class.admin-nav__link--active]="activeSection() === section.id">
+            {{ section.label }}
+          </a>
+          }
+        </nav>
+      </div>
+    </aside>
+
+    <div class="system-settings-page__content" #content>
+      <app-admin-section-card id="route-config" title="Configuração de rotas"
+        description="Crie, edite e remova módulos configuráveis do app usando o endpoint administrativo de rotas.">
+        <app-route-config-form [routeModel]="editingRoute()" [cargosOptions]="cargosOptions" [busy]="routeSaving()"
+          (save)="saveRoute($event)" (cancelEdit)="cancelRouteEdit()" />
+
+        <div class="system-settings-page__table-header">
+          <h3>Rotas cadastradas</h3>
+          @if (routesLoading()) {
+          <span>Carregando...</span>
+          }
+        </div>
+
+        <p-table [value]="routes()" [tableStyle]="{ 'min-width': '60rem' }" responsiveLayout="scroll"
+          styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nome</th>
+              <th>Rota</th>
+              <th>Descrição</th>
+              <th>Cargos</th>
+              <th>Sub-rotas</th>
+              <th class="system-settings-page__actions-column">Ações</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-route>
+            <tr>
+              <td>{{ route.name }}</td>
+              <td><code>{{ route.route }}</code></td>
+              <td>{{ route.desc }}</td>
+              <td>
+                <div class="system-settings-page__tag-list">
+                  @for (cargo of route.cargos; track cargo) {
+                  <p-tag [value]="cargo" severity="success" />
+                  }
+                </div>
+              </td>
+              <td>{{ route.subRoutes?.length ?? 0 }}</td>
+              <td class="system-settings-page__actions-column">
+                <div class="system-settings-page__action-buttons">
+                  <button type="button" pButton icon="pi pi-pencil" text (click)="editRoute(route)"></button>
+                  <button type="button" pButton icon="pi pi-trash" severity="danger" text
+                    (click)="removeRoute(route)"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6">Nenhuma rota disponível para o usuário atual.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </app-admin-section-card>
+
+      <app-admin-section-card id="invites" title="Convites com cargos"
+        description="Gere links de cadastro já associados aos cargos que o novo usuário deve receber.">
+        <form [formGroup]="inviteForm" class="system-settings-page__form" (ngSubmit)="generateInvite()">
+          <div class="system-settings-page__field">
+            <label class="system-settings-page__field-label" for="invite-cargos">Cargos do convite</label>
+            <p-multiSelect inputId="invite-cargos" formControlName="cargos" optionLabel="label" optionValue="value"
+              [options]="userCargoOptions" [filter]="true" [showClear]="true" [maxSelectedLabels]="3"
+              selectedItemsLabel="{0} cargos selecionados" placeholder="Selecione um ou mais cargos" display="chip"
+              appendTo="body" styleClass="w-full" />
+          </div>
+
+          <div class="system-settings-page__inline-actions">
+            <button type="submit" pButton label="Gerar convite" [loading]="inviteSaving()" class="w-full"></button>
+          </div>
+        </form>
+
+        @if (generatedInvite(); as invite) {
+        <div class="system-settings-page__result-card">
+          <div>
+            <strong>Link gerado</strong>
+            <code>{{ $any(invite).url }}</code>
+          </div>
+          <div>
+            <strong>Expira em</strong>
+            <span>{{ $any(invite).expiresAt || 'não informado' }}</span>
+          </div>
+          <button type="button" pButton label="Copiar link" icon="pi pi-copy" severity="secondary"
+            (click)="copyInviteLink()"></button>
+        </div>
+        }
+      </app-admin-section-card>
+
+      <app-admin-section-card id="role-management" title="Gestão de cargos"
+        description="Altere o cargo principal de um usuário informando o identificador usado pelo backend.">
+        <div class="system-settings-page__role-layout">
+          <aside class="system-settings-page__role-panel">
+            <span class="system-settings-page__role-kicker">Fluxo rápido</span>
+            <h3>Troca de cargo com referência direta ao usuário</h3>
+            <p>
+              Como esta tela ainda não lista usuários, a operação usa o identificador do backend.
+              Informe o `userId`, escolha o novo cargo e confirme a atualização.
+            </p>
+
+            <div class="system-settings-page__role-steps">
+              <div class="system-settings-page__role-step">
+                <strong>1</strong>
+                <div>
+                  <span>Identifique o usuário</span>
+                  <small>Use o ID persistido no backend.</small>
+                </div>
+              </div>
+
+              <div class="system-settings-page__role-step">
+                <strong>2</strong>
+                <div>
+                  <span>Selecione o cargo</span>
+                  <small>O cargo escolhido passa a ser o principal.</small>
+                </div>
+              </div>
+
+              <div class="system-settings-page__role-step">
+                <strong>3</strong>
+                <div>
+                  <span>Confirme a alteração</span>
+                  <small>A mudança é aplicada imediatamente.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="system-settings-page__role-note">
+              <strong>Atenção</strong>
+              <span>Revise o ID antes de enviar para evitar alteração no usuário errado.</span>
+            </div>
+          </aside>
+
+          <form [formGroup]="userCargoForm" class="system-settings-page__form system-settings-page__role-form" (ngSubmit)="updateUserCargo()">
+            <div class="system-settings-page__form-shell">
+              <div class="system-settings-page__form-shell-header">
+                <h3>Atualizar cargo principal</h3>
+                <p>Preencha os campos abaixo para aplicar a alteração.</p>
+              </div>
+
+              <div class="system-settings-page__field">
+                <label class="system-settings-page__field-label" for="user-id">ID do Usuário</label>
+                <input
+                  id="user-id"
+                  pInputText
+                  formControlName="userId"
+                  class="w-full system-settings-page__control" />
+                <small class="system-settings-page__field-helper">Ex: 664c0c9f3b0f0d21a8e91f44</small>
+              </div>
+
+              <div class="system-settings-page__field">
+                <label class="system-settings-page__field-label" for="user-cargo">Novo cargo</label>
+                <p-select
+                  inputId="user-cargo"
+                  formControlName="cargo"
+                  optionLabel="label"
+                  optionValue="value"
+                  [options]="userCargoOptions"
+                  placeholder="Selecione o cargo principal"
+                  styleClass="w-full system-settings-page__control system-settings-page__control--select" />
+              </div>
+
+              <div class="system-settings-page__hint system-settings-page__hint--soft">
+                A atualização usa o `userId` diretamente porque esta área administrativa ainda não consome uma listagem de usuários.
+              </div>
+
+              <div class="system-settings-page__inline-actions system-settings-page__inline-actions--end">
+                <button type="submit" pButton label="Atualizar cargo" [loading]="roleSaving()"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </app-admin-section-card>
+
+      <app-admin-section-card id="create-user" title="Criar usuário"
+        description="Crie um novo usuário no sistema informando nome, email e senha.">
+        <div class="system-settings-page__user-layout">
+          <aside class="system-settings-page__user-panel">
+            <span class="system-settings-page__user-kicker">Cadastro manual</span>
+            <h3>Criação direta de acesso administrativo</h3>
+            <p>
+              Use esta área para provisionar um usuário imediatamente no sistema. Informe dados básicos,
+              defina uma senha inicial e conclua o cadastro em uma única etapa.
+            </p>
+
+            <div class="system-settings-page__user-steps">
+              <div class="system-settings-page__user-step">
+                <strong>1</strong>
+                <div>
+                  <span>Identifique a pessoa</span>
+                  <small>Preencha o nome exatamente como deve aparecer no sistema.</small>
+                </div>
+              </div>
+
+              <div class="system-settings-page__user-step">
+                <strong>2</strong>
+                <div>
+                  <span>Defina o e-mail de acesso</span>
+                  <small>Esse endereço será usado como referência principal do usuário.</small>
+                </div>
+              </div>
+
+              <div class="system-settings-page__user-step">
+                <strong>3</strong>
+                <div>
+                  <span>Crie a senha inicial</span>
+                  <small>Depois do cadastro, o usuário já poderá autenticar com esses dados.</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="system-settings-page__user-note">
+              <strong>Boas práticas</strong>
+              <span>Prefira senhas temporárias fortes e combine a troca no primeiro acesso com o usuário final.</span>
+            </div>
+          </aside>
+
+          <form [formGroup]="createUserForm" class="system-settings-page__form system-settings-page__user-form" (ngSubmit)="createUser()">
+            <div class="system-settings-page__form-shell">
+              <div class="system-settings-page__form-shell-header">
+                <h3>Cadastrar novo usuário</h3>
+                <p>Informe os dados mínimos para liberar o acesso inicial.</p>
+              </div>
+
+              <div class="system-settings-page__field">
+                <label class="system-settings-page__field-label" for="user-name">Nome</label>
+                <p-floatlabel variant="on">
+                  <input id="user-name" pInputText formControlName="name" class="w-full" />
+                  <label for="user-name">Ex: Maria da Silva</label>
+                </p-floatlabel>
+              </div>
+
+              <div class="system-settings-page__field">
+                <label class="system-settings-page__field-label" for="user-email">E-mail</label>
+                <p-floatlabel variant="on">
+                  <input id="user-email" type="email" pInputText formControlName="email" class="w-full" />
+                  <label for="user-email">Ex: maria.silva&#64;empresa.com</label>
+                </p-floatlabel>
+              </div>
+
+              <div class="system-settings-page__field">
+                <label class="system-settings-page__field-label" for="user-password">Senha inicial</label>
+                <p-floatlabel variant="on">
+                  <p-password inputId="user-password" formControlName="password" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
+                  <label for="user-password">Defina uma senha temporária</label>
+                </p-floatlabel>
+              </div>
+
+              <div class="system-settings-page__hint system-settings-page__hint--soft">
+                Este fluxo cria o acesso diretamente no sistema. Revise e-mail e senha antes de confirmar.
+              </div>
+
+              <div class="system-settings-page__inline-actions system-settings-page__inline-actions--end">
+                <button type="submit" pButton label="Criar usuário" [loading]="userSaving()"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </app-admin-section-card>
+
+      <!-- <app-admin-section-card
+        id="printers"
+        title="Impressoras Bluetooth"
+        description="Cadastre e remova impressoras disponíveis para o app mobile.">
+        <form [formGroup]="printerForm" class="system-settings-page__printer-form" (ngSubmit)="createPrinter()">
+          <div class="system-settings-page__field">
+            <p-floatlabel variant="on">
+              <input id="printer-name" pInputText formControlName="nome" class="w-full" />
+              <label for="printer-name">Nome da Impressora</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="system-settings-page__field">
+            <p-floatlabel variant="on">
+              <input id="printer-mac" pInputText formControlName="macAddress" class="w-full" />
+              <label for="printer-mac">MAC Address (ex: 00:1A...)</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="system-settings-page__inline-actions">
+            <button type="submit" pButton label="Cadastrar" [loading]="printerSaving()" class="w-full"></button>
+          </div>
+        </form>
+
+        <p-table [value]="printers()" responsiveLayout="scroll" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nome</th>
+              <th>MAC Address</th>
+              <th>Criação</th>
+              <th class="system-settings-page__actions-column">Ações</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-printer>
+            <tr>
+              <td>{{ printer.nome }}</td>
+              <td><code>{{ printer.macAddress }}</code></td>
+              <td>{{ printer.dataCriacao || 'não informado' }}</td>
+              <td class="system-settings-page__actions-column">
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-trash"
+                  severity="danger"
+                  text
+                  [loading]="printerRemovingId() === printer.id"
+                  (click)="deletePrinter(printer)"></button>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="4">Nenhuma impressora cadastrada.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </app-admin-section-card> -->
+    </div>
+  </div>
+</div>

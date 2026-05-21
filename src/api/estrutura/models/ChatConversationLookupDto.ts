@@ -28,4 +28,16 @@ export type ChatConversationLookupDto = {
    * @type string
    */
   conversationId: string;
+  /**
+   * @type object
+   */
+  shareId?: object | null;
+  /**
+   * @type object
+   */
+  parentConversationId?: object | null;
+  /**
+   * @type object
+   */
+  rootConversationId?: object | null;
 };

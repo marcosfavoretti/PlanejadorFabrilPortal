@@ -20,6 +20,12 @@ export type {
   ChatbotEstruturaControllerDeleteConversationMutation,
 } from './models/ChatbotEstruturaControllerDeleteConversation';
 export type {
+  ChatbotEstruturaControllerForkSharedConversationPathParams,
+  ChatbotEstruturaControllerForkSharedConversationError,
+  ChatbotEstruturaControllerForkSharedConversationMutationResponse,
+  ChatbotEstruturaControllerForkSharedConversationMutation,
+} from './models/ChatbotEstruturaControllerForkSharedConversation';
+export type {
   ChatbotEstruturaControllerGetHistoryPathParams,
   ChatbotEstruturaControllerGetHistoryError,
   ChatbotEstruturaControllerGetHistoryQueryResponse,
@@ -38,6 +44,12 @@ export type {
   ChatbotEstruturaControllerSendMessageMutation,
 } from './models/ChatbotEstruturaControllerSendMessage';
 export type {
+  ChatbotEstruturaControllerShareConversationPathParams,
+  ChatbotEstruturaControllerShareConversationError,
+  ChatbotEstruturaControllerShareConversationMutationResponse,
+  ChatbotEstruturaControllerShareConversationMutation,
+} from './models/ChatbotEstruturaControllerShareConversation';
+export type {
   ChatbotEstruturaControllerUpdateConversationPathParams,
   ChatbotEstruturaControllerUpdateConversationError,
   ChatbotEstruturaControllerUpdateConversationMutationRequest,
@@ -46,7 +58,9 @@ export type {
 } from './models/ChatbotEstruturaControllerUpdateConversation';
 export type { ChatCompletionDto } from './models/ChatCompletionDto';
 export type { ChatCompletionUsageDto } from './models/ChatCompletionUsageDto';
+export type { ChatConversationForkDto } from './models/ChatConversationForkDto';
 export type { ChatConversationLookupDto } from './models/ChatConversationLookupDto';
+export type { ChatConversationShareDto } from './models/ChatConversationShareDto';
 export type { ChatConversationSummaryDto } from './models/ChatConversationSummaryDto';
 export type { ChatMessageDto } from './models/ChatMessageDto';
 export type {
@@ -68,6 +82,12 @@ export type {
   CheckListControllerGetChecklistAvaiableQuery,
 } from './models/CheckListControllerGetChecklistAvaiable';
 export type {
+  CheckListControllerGetChecklistTagsQueryParams,
+  CheckListControllerGetChecklistTagsError,
+  CheckListControllerGetChecklistTagsQueryResponse,
+  CheckListControllerGetChecklistTagsQuery,
+} from './models/CheckListControllerGetChecklistTags';
+export type {
   CheckListControllerInsertItemCheckList201,
   CheckListControllerInsertItemCheckListMutationRequest,
   CheckListControllerInsertItemCheckListMutationResponse,
@@ -83,6 +103,7 @@ export type { CheckListItemResDto } from './models/CheckListItemResDto';
 export type { CheckListItemResStatusDto } from './models/CheckListItemResStatusDto';
 export type { CheckListResDto } from './models/CheckListResDto';
 export type { CheckListStatusResDto } from './models/CheckListStatusResDto';
+export type { CheckListTagsResDto } from './models/CheckListTagsResDto';
 export type { ConsultaPorPartcodeReqDTO } from './models/ConsultaPorPartcodeReqDTO';
 export type { CreateChatConversationReqDto } from './models/CreateChatConversationReqDto';
 export type { EnviarMensagemStreamReqDto } from './models/EnviarMensagemStreamReqDto';
@@ -92,6 +113,12 @@ export type {
   EstruturaControllerAnaliseEstruturaMethodQueryResponse,
   EstruturaControllerAnaliseEstruturaMethodQuery,
 } from './models/EstruturaControllerAnaliseEstruturaMethod';
+export type {
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryParams,
+  EstruturaControllerAnaliseEstruturaResumidaMethod200,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryResponse,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQuery,
+} from './models/EstruturaControllerAnaliseEstruturaResumidaMethod';
 export type {
   EstruturaControllerDetalharItensQueryParams,
   EstruturaControllerDetalharItens200,
@@ -165,6 +192,8 @@ export type { ResEstruturaListaDTO } from './models/ResEstruturaListaDTO';
 export type { ResEstruturaTreeDTO } from './models/ResEstruturaTreeDTO';
 export type { ResItemDetalhadoDTO } from './models/ResItemDetalhadoDTO';
 export type { ResOperacaoDTO } from './models/ResOperacaoDTO';
+export type { ResumoTempoSetorDTO } from './models/ResumoTempoSetorDTO';
+export type { ResumoTempoSetorItemDTO } from './models/ResumoTempoSetorItemDTO';
 export type { SetorAnaliseDTO } from './models/SetorAnaliseDTO';
 export type { SubmitChecklistDTO } from './models/SubmitChecklistDTO';
 export type { ToolCallDto } from './models/ToolCallDto';
@@ -173,16 +202,20 @@ export type { UpdateChatConversationReqDto } from './models/UpdateChatConversati
 export { chatbotEstruturaControllerCancelMessage } from './client/chatbotEstruturaControllerCancelMessage';
 export { chatbotEstruturaControllerCreateConversation } from './client/chatbotEstruturaControllerCreateConversation';
 export { chatbotEstruturaControllerDeleteConversation } from './client/chatbotEstruturaControllerDeleteConversation';
+export { chatbotEstruturaControllerForkSharedConversation } from './client/chatbotEstruturaControllerForkSharedConversation';
 export { chatbotEstruturaControllerGetHistory } from './client/chatbotEstruturaControllerGetHistory';
 export { chatbotEstruturaControllerListConversations } from './client/chatbotEstruturaControllerListConversations';
 export { chatbotEstruturaControllerSendMessage } from './client/chatbotEstruturaControllerSendMessage';
+export { chatbotEstruturaControllerShareConversation } from './client/chatbotEstruturaControllerShareConversation';
 export { chatbotEstruturaControllerUpdateConversation } from './client/chatbotEstruturaControllerUpdateConversation';
 export { checkListControllerDeleteItemInCheckList } from './client/checkListControllerDeleteItemInCheckList';
 export { checkListControllerGetChecklist } from './client/checkListControllerGetChecklist';
 export { checkListControllerGetChecklistAvaiable } from './client/checkListControllerGetChecklistAvaiable';
+export { checkListControllerGetChecklistTags } from './client/checkListControllerGetChecklistTags';
 export { checkListControllerInsertItemCheckList } from './client/checkListControllerInsertItemCheckList';
 export { checkListControllerSubmitChecklist } from './client/checkListControllerSubmitChecklist';
 export { estruturaControllerAnaliseEstruturaMethod } from './client/estruturaControllerAnaliseEstruturaMethod';
+export { estruturaControllerAnaliseEstruturaResumidaMethod } from './client/estruturaControllerAnaliseEstruturaResumidaMethod';
 export { estruturaControllerDetalharItens } from './client/estruturaControllerDetalharItens';
 export { estruturaControllerEstrturaAsListMethod } from './client/estruturaControllerEstrturaAsListMethod';
 export { estruturaControllerEstrturaAsTreeMethod } from './client/estruturaControllerEstrturaAsTreeMethod';

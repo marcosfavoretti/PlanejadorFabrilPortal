@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "setorNome": { "type": "string" },
+    "setorCodigo": { "type": "string" },
+    "tempoProdTotalHr": {
+      "type": "number",
+      "description": "Tempo total de producao somado no setor, em horas decimais.",
+      "example": 12.5
+    },
+    "m2Total": {
+      "type": "number",
+      "description": "Metragem quadrada total somada no setor quando a metrica se aplica.",
+      "example": 8.75
+    },
+    "temQuimicos": {
+      "type": "boolean",
+      "description": "Indica se o conjunto de itens desse setor possui quimicos quando a metrica se aplica.",
+      "example": true
+    }
+  },
+  "required": ["setorNome", "setorCodigo", "tempoProdTotalHr"],
+  "x-readme-ref-name": "ResumoTempoSetorItemDTO"
+}

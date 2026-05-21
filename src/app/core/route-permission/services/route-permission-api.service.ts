@@ -8,7 +8,7 @@ import {
   appEthosControllerGetRoutesForUser
 } from '@/api/routes';
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,22 @@ export class RoutePermissionApiService {
   }
 
   getRotaByUser(): Observable<ResAppRouteAppDTO[]> {
-    return from(appEthosControllerGetRoutesForUser());
+    return from(appEthosControllerGetRoutesForUser()).pipe(
+      map((response) => this.normalizeRoutesResponse(response))
+    );
+  }
+
+  private normalizeRoutesResponse(response: unknown): ResAppRouteAppDTO[] {
+    if (Array.isArray(response)) {
+      return response;
+    }
+
+    if (typeof response === 'string' && response.includes('<!doctype html>')) {
+      console.error('RoutePermissionApiService: gateway retornou HTML no endpoint de rotas.', response);
+      return [];
+    }
+
+    console.error('RoutePermissionApiService: resposta inválida no endpoint de rotas.', response);
+    return [];
   }
 }

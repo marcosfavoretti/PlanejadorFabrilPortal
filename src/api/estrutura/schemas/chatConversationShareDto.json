@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "conversationId": { "type": "string" },
+    "shareId": { "type": "string" },
+    "sharePath": { "type": "string" }
+  },
+  "required": ["conversationId", "shareId", "sharePath"],
+  "x-readme-ref-name": "ChatConversationShareDto"
+}

@@ -36,4 +36,16 @@ export type ChatConversationSummaryDto = {
    * @type number
    */
   messageCount: number;
+  /**
+   * @type object
+   */
+  shareId?: object | null;
+  /**
+   * @type object
+   */
+  parentConversationId?: object | null;
+  /**
+   * @type object
+   */
+  rootConversationId?: object | null;
 };

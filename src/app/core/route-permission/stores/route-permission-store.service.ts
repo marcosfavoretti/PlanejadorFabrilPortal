@@ -16,10 +16,11 @@ export class RoutePermissionStoreService extends SignalStore<ResAppRouteAppDTO[]
   override refresh(): Observable<ResAppRouteAppDTO[]> {
     return this.routePermissonApiService.getRotaByUser().pipe(
       tap(routes => {
+        const normalizedRoutes = this.normalizeRoutes(routes);
         this.set(
           this.shouldUseEstruturaSubrouteTestMock()
-            ? this.withEstruturaSubrouteTestMock(routes)
-            : routes
+            ? this.withEstruturaSubrouteTestMock(normalizedRoutes)
+            : normalizedRoutes
         );
       })
     );
@@ -68,5 +69,17 @@ export class RoutePermissionStoreService extends SignalStore<ResAppRouteAppDTO[]
     });
 
     return mockedRoutes;
+  }
+
+  private normalizeRoutes(routes: unknown): ResAppRouteAppDTO[] {
+    if (!Array.isArray(routes)) {
+      return [];
+    }
+
+    return routes.map(route => ({
+      ...route,
+      cargos: Array.isArray(route.cargos) ? route.cargos : [],
+      subRoutes: Array.isArray(route.subRoutes) ? route.subRoutes : [],
+    }));
   }
 }

@@ -12,4 +12,8 @@ export type RemoveItemChecklistDTO = {
    * @type string
    */
   partcodePai: string;
+  /**
+   * @type string
+   */
+  tag: string;
 };

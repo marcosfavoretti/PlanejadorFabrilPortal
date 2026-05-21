@@ -20,6 +20,12 @@ export type {
   ChatbotEstruturaControllerDeleteConversationMutation,
 } from './ChatbotEstruturaControllerDeleteConversation';
 export type {
+  ChatbotEstruturaControllerForkSharedConversationPathParams,
+  ChatbotEstruturaControllerForkSharedConversationError,
+  ChatbotEstruturaControllerForkSharedConversationMutationResponse,
+  ChatbotEstruturaControllerForkSharedConversationMutation,
+} from './ChatbotEstruturaControllerForkSharedConversation';
+export type {
   ChatbotEstruturaControllerGetHistoryPathParams,
   ChatbotEstruturaControllerGetHistoryError,
   ChatbotEstruturaControllerGetHistoryQueryResponse,
@@ -38,6 +44,12 @@ export type {
   ChatbotEstruturaControllerSendMessageMutation,
 } from './ChatbotEstruturaControllerSendMessage';
 export type {
+  ChatbotEstruturaControllerShareConversationPathParams,
+  ChatbotEstruturaControllerShareConversationError,
+  ChatbotEstruturaControllerShareConversationMutationResponse,
+  ChatbotEstruturaControllerShareConversationMutation,
+} from './ChatbotEstruturaControllerShareConversation';
+export type {
   ChatbotEstruturaControllerUpdateConversationPathParams,
   ChatbotEstruturaControllerUpdateConversationError,
   ChatbotEstruturaControllerUpdateConversationMutationRequest,
@@ -46,7 +58,9 @@ export type {
 } from './ChatbotEstruturaControllerUpdateConversation';
 export type { ChatCompletionDto } from './ChatCompletionDto';
 export type { ChatCompletionUsageDto } from './ChatCompletionUsageDto';
+export type { ChatConversationForkDto } from './ChatConversationForkDto';
 export type { ChatConversationLookupDto } from './ChatConversationLookupDto';
+export type { ChatConversationShareDto } from './ChatConversationShareDto';
 export type { ChatConversationSummaryDto } from './ChatConversationSummaryDto';
 export type { ChatMessageDto } from './ChatMessageDto';
 export type {
@@ -68,6 +82,12 @@ export type {
   CheckListControllerGetChecklistAvaiableQuery,
 } from './CheckListControllerGetChecklistAvaiable';
 export type {
+  CheckListControllerGetChecklistTagsQueryParams,
+  CheckListControllerGetChecklistTagsError,
+  CheckListControllerGetChecklistTagsQueryResponse,
+  CheckListControllerGetChecklistTagsQuery,
+} from './CheckListControllerGetChecklistTags';
+export type {
   CheckListControllerInsertItemCheckList201,
   CheckListControllerInsertItemCheckListMutationRequest,
   CheckListControllerInsertItemCheckListMutationResponse,
@@ -83,6 +103,7 @@ export type { CheckListItemResDto } from './CheckListItemResDto';
 export type { CheckListItemResStatusDto } from './CheckListItemResStatusDto';
 export type { CheckListResDto } from './CheckListResDto';
 export type { CheckListStatusResDto } from './CheckListStatusResDto';
+export type { CheckListTagsResDto } from './CheckListTagsResDto';
 export type { ConsultaPorPartcodeReqDTO } from './ConsultaPorPartcodeReqDTO';
 export type { CreateChatConversationReqDto } from './CreateChatConversationReqDto';
 export type { EnviarMensagemStreamReqDto } from './EnviarMensagemStreamReqDto';
@@ -92,6 +113,12 @@ export type {
   EstruturaControllerAnaliseEstruturaMethodQueryResponse,
   EstruturaControllerAnaliseEstruturaMethodQuery,
 } from './EstruturaControllerAnaliseEstruturaMethod';
+export type {
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryParams,
+  EstruturaControllerAnaliseEstruturaResumidaMethod200,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryResponse,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQuery,
+} from './EstruturaControllerAnaliseEstruturaResumidaMethod';
 export type {
   EstruturaControllerDetalharItensQueryParams,
   EstruturaControllerDetalharItens200,
@@ -165,6 +192,8 @@ export type { ResEstruturaListaDTO } from './ResEstruturaListaDTO';
 export type { ResEstruturaTreeDTO } from './ResEstruturaTreeDTO';
 export type { ResItemDetalhadoDTO } from './ResItemDetalhadoDTO';
 export type { ResOperacaoDTO } from './ResOperacaoDTO';
+export type { ResumoTempoSetorDTO } from './ResumoTempoSetorDTO';
+export type { ResumoTempoSetorItemDTO } from './ResumoTempoSetorItemDTO';
 export type { SetorAnaliseDTO } from './SetorAnaliseDTO';
 export type { SubmitChecklistDTO } from './SubmitChecklistDTO';
 export type { ToolCallDto } from './ToolCallDto';

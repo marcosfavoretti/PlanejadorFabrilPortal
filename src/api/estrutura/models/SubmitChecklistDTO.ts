@@ -11,5 +11,9 @@ export type SubmitChecklistDTO = {
   /**
    * @type string
    */
+  CHECKLIST_TAG: string;
+  /**
+   * @type string
+   */
   SEPARADOR: string;
 };

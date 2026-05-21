@@ -3,19 +3,19 @@
     <i class="pi pi-times"></i>
   </button>
 
-  @if (user()) {
+  @if (currentUser(); as user) {
   <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
     <div class="avatar bg-dark-green text-white rounded-circle d-flex align-items-center justify-content-center">
       <i class="pi pi-user text-xl"></i>
     </div>
     <div>
-      <h6 class="m-0 fw-bold">{{ user()!.name }}</h6>
-      <small class="text-muted">{{ user()!.email }}</small>
+      <h6 class="m-0 fw-bold">{{ user.name }}</h6>
+      <small class="text-muted">{{ user.email }}</small>
     </div>
   </div>
 
   <div class="mb-3 d-flex flex-wrap gap-2">
-    @for (cargo of user()?.cargosLista; track $index) {
+    @for (cargo of user.cargosLista; track $index) {
     <p-tag severity="success" [value]="cargo"></p-tag>
     }
   </div>
@@ -28,11 +28,16 @@
   </div>
   }
   @else {
-  <p class="text-danger"> você não está autenticado!</p>
-  <p class="text-muted"> por favor, faça login para acessar as funcionalidades do portal.</p>
-  <button (click)="login()" class="btn btn-success rounded-pill d-flex align-items-center gap-2 px-3">
-    <i class="pi pi-user"></i>
-    <span>Login</span>
-  </button>
+  <div class="user-popup-card__logged-out">
+    <div class="avatar user-popup-card__guest-avatar bg-light text-success rounded-circle d-flex align-items-center justify-content-center">
+      <i class="pi pi-user text-xl"></i>
+    </div>
+    <p class="user-popup-card__title text-danger m-0">Usuário deslogado</p>
+    <p class="text-muted m-0">Faça login para acessar as funcionalidades do portal.</p>
+    <button (click)="login()" class="btn btn-success rounded-pill d-inline-flex align-items-center justify-content-center gap-2 px-3">
+      <i class="pi pi-sign-in"></i>
+      <span>Fazer login</span>
+    </button>
+  </div>
   }
 </div>

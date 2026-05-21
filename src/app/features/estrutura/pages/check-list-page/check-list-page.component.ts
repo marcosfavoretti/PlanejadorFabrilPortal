@@ -7,6 +7,7 @@ import { CheckBoxResponseEvent } from '@/app/features/estrutura/widgets/item-res
 import { PopUpSubmitChecklistComponent } from '@/app/features/estrutura/widgets/pop-up-submit-checklist/pop-up-submit-checklist.component';
 import { Observable } from 'rxjs';
 import { EstruturaApiService } from '@/app/features/estrutura/services/EstruturaApi.service';
+import { EstruturaContextService } from '@/app/features/estrutura/services/EstruturaContext.service';
 import { PopUpResponseComponent } from '@/app/features/estrutura/widgets/pop-up-response/pop-up-response.component';
 import { CacheService } from '@/@core/services/cache-service.service';
 
@@ -25,7 +26,8 @@ export class CheckListPageComponent implements OnInit {
   constructor(
     private dialog: DialogService, 
     private apiservice: EstruturaApiService, 
-    private cacheservice: CacheService
+    private cacheservice: CacheService,
+    private contextService: EstruturaContextService
   ) { }
 
   async handleRequests({ itempai, event }: { itempai: string, event: CheckBoxResponseEvent[] }) {
@@ -42,15 +44,22 @@ export class CheckListPageComponent implements OnInit {
   }
 
   public submitLog(separador: string, itemfinal: string) {
+    const tag = this.contextService.getTag();
+    if (!tag) {
+      this.popUpResponse({ msg: 'Selecione uma tag antes de submeter o checklist', stt: 'error' });
+      return;
+    }
+
     this.apiservice.newChecklistLog({
       SEPARADOR: separador,
-      COD_ITEM_FINAL: itemfinal
+      COD_ITEM_FINAL: itemfinal,
+      CHECKLIST_TAG: tag
     })
       .subscribe({
         error: (e) => this.popUpResponse({ msg: `nao foi possivel enviar os dados contate o TI\n error:${e}`, stt: 'error' }),
         next: async () => {
           this.popUpResponse({ msg: 'cadastrado com sucesso!! A pagina será recarregada em breve...', stt: 'confirm' }, false)
-          this.cacheservice.remove(itemfinal);
+          this.clearChecklistCache(itemfinal, tag);
           await new Promise(resolve => setInterval(resolve, 1500));
           window.location.reload();
         },
@@ -73,6 +82,23 @@ export class CheckListPageComponent implements OnInit {
     }
     )
     return dialogRef.onClose
+  }
+
+  private clearChecklistCache(partcode: string, tag: string) {
+    const cacheKey = this.buildChecklistCacheKey(partcode, tag);
+    if (!cacheKey) return;
+    this.cacheservice.remove(cacheKey);
+  }
+
+  private buildChecklistCacheKey(partcode?: string, tag?: string): string | undefined {
+    const normalizedPartcode = partcode?.trim().toUpperCase();
+    const normalizedTag = tag?.trim().toLowerCase();
+
+    if (!normalizedPartcode || !normalizedTag) {
+      return undefined;
+    }
+
+    return `checklist:${normalizedPartcode}:${normalizedTag}`;
   }
 
 }

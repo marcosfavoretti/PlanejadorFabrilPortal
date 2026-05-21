@@ -9,7 +9,7 @@
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarLinks">
     <ul class="navbar-nav">
-      @for (item of routerPermission.item(); track $index) {
+      @for (item of navigationRoutes(); track $index) {
       <li class="nav-item">
         <a routerLinkActive="active" [routerLink]="breakRoute(item.route)" class="nav-link fs-6 fs-md-5 fs-lg-4">
           {{ item.name }}

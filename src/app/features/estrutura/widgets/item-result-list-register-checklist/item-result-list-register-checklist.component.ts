@@ -34,12 +34,16 @@ export interface CheckBoxResponseEvent {
 })
 export class ItemResultListRegisterChecklistComponent implements OnChanges, OnInit {
   @Input('target_item') target_item?: string
+  @Input() checklistTag?: string
   @Input('submitButton') submitButton: boolean = false
   @Input('itens') itens?: ResEstruturaItemTreeDTO[];
   itens_original_copy?: ResEstruturaItemTreeDTO[];
   @Input('target_columns') target_columns !: string[]
   @Input('paginator') paginator: boolean = true
   @Input('exportable') exportable: boolean = true
+  @Input() quickSearchCode: string = ''
+  @Input() stickyToolbar: boolean = false
+  @Input() showToolbarActions: boolean = true
   // @Input('target_columns') target_columns !: Array<keyof ItemModelInColeta>
   @ViewChild('dt') dt!: TableDynamicComponent;
   @Output('onSubmitResponse') onsubmitresponse: Subject<CheckBoxResponseEvent[]> = new Subject<CheckBoxResponseEvent[]>();
@@ -54,6 +58,13 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
 
   constructor(private cacheService: CacheService, private primengconfirmation: ConfirmationService) { }
 
+  private getItemIdentity(item: ResEstruturaItemTreeDTO | undefined): string {
+    const data = item as any;
+    const partcode = data?.partcode?.trim()?.toUpperCase?.() || '';
+    const itemKind = data?.ehControle ? 'controle' : 'comum';
+    return `${partcode}::${itemKind}`;
+  }
+
   ngOnInit(): void {
     this.tableModel.paginator = this.paginator
   }
@@ -63,7 +74,8 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     if (!this.itens) return;
 
     // Sincroniza o item alterado na tabela com a nossa lista local
-    const target = this.itens.find(item => (item as any).partcode === row.partcode);
+    const rowIdentity = this.getItemIdentity(row);
+    const target = this.itens.find(item => this.getItemIdentity(item) === rowIdentity);
     if (target) {
       (target as any)[column] = checked;
       this.checkUnsavedChanges();
@@ -88,7 +100,10 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     
     // Persiste as mudanças no cache local storage
     if (this.target_item) {
-      this.cacheService.set(this.target_item, changes);
+      const cacheKey = this.getCacheKey();
+      if (cacheKey) {
+        this.cacheService.set(cacheKey, changes);
+      }
     }
 
     this.onUnsavedChanges.emit(changes);//emito a lista que esta com as alterções
@@ -99,8 +114,9 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
       target: event?.target as EventTarget,
       message: 'Deseja mesmo iniciar um novo checkList? Todo progresso será perdido',
       accept: () => {
-        if (!this.target_item) return
-        this.cacheService.remove(this.target_item);
+        const cacheKey = this.getCacheKey();
+        if (!cacheKey) return
+        this.cacheService.remove(cacheKey);
         this.itens = this.normalizeItens(this.itens_original_copy);
         this.onUnsavedChanges.emit([]);
       },
@@ -111,10 +127,16 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     this.dt.filterTable({ value: ($event.target as HTMLInputElement).value, field: 'partcode', method: stringVal });
   }
 
+  public applyPartcodeFilter(value: string): void {
+    if (!this.dt) return;
+    this.dt.filterTable({ value: value?.trim() || '', field: 'partcode', method: 'contains' });
+  }
+
 
   public loadCacheChanges(): ResEstruturaItemTreeDTO[] {
-    if (!this.target_item) return []
-    return this.cacheService.get<ResEstruturaItemTreeDTO[]>(this.target_item) || [];
+    const cacheKey = this.getCacheKey();
+    if (!cacheKey) return []
+    return this.cacheService.get<ResEstruturaItemTreeDTO[]>(cacheKey) || [];
   }
 
 
@@ -127,12 +149,13 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
       const incacheChages = this.loadCacheChanges();
       this.itens = this.normalizeItens(
         this.itens.map(item => {
-          const target_change = incacheChages.find(change => (change as any).partcode === (item as any).partcode);
+          const target_change = incacheChages.find(change => this.getItemIdentity(change) === this.getItemIdentity(item));
           return target_change ? { ...target_change } : item;
         })
       );
       this.sortItens();
       this.buildTableSchema();
+      this.applyPartcodeFilter(this.quickSearchCode);
     }
   }
 
@@ -173,8 +196,6 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     }
     columns.push({ alias: 'Partcode', field: 'partcode', isImg: false });
     columns.push({ alias: 'Tipo', field: 'item_status', isImg: false });
-    columns.push({ alias: 'Quantidade', field: 'qtd_display', isImg: false });
-    columns.push({ alias: 'PA', field: 'pa', isImg: false });
     columns.push({ alias: 'Imagem', field: 'imagem', isImg: true });
 
     this.tableModel.columns = columns;
@@ -229,6 +250,16 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     }
   }
 
+  private getCacheKey(): string | undefined {
+    const partcode = this.target_item?.trim().toUpperCase();
+    const tag = this.checklistTag?.trim().toLowerCase();
+
+    if (!partcode || !tag) {
+      return undefined;
+    }
+
+    return `checklist:${partcode}:${tag}`;
+  }
 
 
 }

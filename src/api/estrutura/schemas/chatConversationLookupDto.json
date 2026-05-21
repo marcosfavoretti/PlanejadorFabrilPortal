@@ -6,7 +6,10 @@
     "contextType": { "type": "string" },
     "title": { "type": "string" },
     "model": { "type": "string" },
-    "conversationId": { "type": "string" }
+    "conversationId": { "type": "string" },
+    "shareId": { "type": "object", "nullable": true },
+    "parentConversationId": { "type": "object", "nullable": true },
+    "rootConversationId": { "type": "object", "nullable": true }
   },
   "required": ["sessionId", "userId", "contextType", "model", "conversationId"],
   "x-readme-ref-name": "ChatConversationLookupDto"

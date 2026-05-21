@@ -5,6 +5,7 @@ import { client } from '@/client';
 import { readDevAuthToken } from '@/app/core/auth/utils/auth-token';
 import { estruturaApiEndpoints } from '../config/estrutura-api-endpoints';
 import {
+    chatbotEstruturaControllerForkSharedConversation,
     checkListControllerGetChecklist,
     checkListControllerGetChecklistAvaiable,
     checkListControllerDeleteItemInCheckList,
@@ -15,15 +16,19 @@ import {
     chatbotEstruturaControllerCreateConversation,
     chatbotEstruturaControllerDeleteConversation,
     chatbotEstruturaControllerSendMessage,
+    chatbotEstruturaControllerShareConversation,
     chatbotEstruturaControllerUpdateConversation,
     estruturaControllerAnaliseEstruturaMethod,
     estruturaControllerGetEstruturasDedendentesMethod,
     estruturaControllerEstrturaAsListMethod,
     estruturaControllerEstrturaAsTreeMethod,
     estruturaExportControllerExportToNeo4J,
+    checkListControllerGetChecklistTags,
 } from "@/api/estrutura";
 import type { ChatbotEstruturaControllerListConversationsQueryParams } from "@/api/estrutura";
 import type {
+    ChatConversationForkDto,
+    ChatConversationShareDto,
     CheckListControllerDeleteItemInCheckListMutationRequest,
     CheckListControllerInsertItemCheckListMutationRequest,
     GetAnaliseResDTO,
@@ -57,6 +62,10 @@ interface ChatbotCancelMessageProps {
     providedIn: 'root'
 })
 export class EstruturaApiService {
+    private normalizePartcode(value?: string | null): string {
+        return value?.trim().toUpperCase() || '';
+    }
+
     private extractReadableText(value: unknown, fallback = ''): string {
         if (typeof value === 'string') {
             return value;
@@ -179,8 +188,9 @@ export class EstruturaApiService {
         return [];
     }
 
-    getItemHierarchy(partcode: string): Observable<ResEstruturaItemTreeDTO> {
+    getItemHierarchy(partcode: string, tag?: string): Observable<ResEstruturaItemTreeDTO> {
         const trimmedPartcode = partcode.trim().toUpperCase();
+        const trimmedTag = tag ? tag.trim().toLowerCase() : '';
         return from(
             estruturaControllerEstrturaAsTreeMethod({
                 partcode: trimmedPartcode
@@ -191,12 +201,18 @@ export class EstruturaApiService {
                 const estrutura = (response as any)?.estrutura || response;
                 const normalizedTree = this.normalizeTreeNode(estrutura as ResEstruturaItemTreeDTO);
 
-                return from(checkListControllerGetChecklistAvaiable({ partcode: trimmedPartcode })).pipe(
+                if (!trimmedTag) {
+                    return of(normalizedTree);
+                }
+
+                return from(checkListControllerGetChecklistAvaiable({ partcode: trimmedPartcode, tag: trimmedTag })).pipe(
                     map(checklist => {
                         const checklistMap = new Map<string, boolean>();
                         if (checklist && Array.isArray(checklist.itens)) {
                             checklist.itens.forEach((item: any) => {
-                                checklistMap.set(item.partcode.trim(), item.avaiable);
+                                const normalizedPartcode = this.normalizePartcode(item.partcode);
+                                if (!normalizedPartcode) return;
+                                checklistMap.set(normalizedPartcode, Boolean(item.avaiable));
                             });
                         }
                         return this.mergeChecklistStatus(normalizedTree, checklistMap);
@@ -208,9 +224,9 @@ export class EstruturaApiService {
     }
 
     private mergeChecklistStatus(node: any, checklistMap: Map<string, boolean>): any {
-        const pc = node.partcode?.trim();
+        const pc = this.normalizePartcode(node.partcode);
         if (pc) {
-            node.checkListAvaiable = checklistMap.get(pc) || false;
+            node.checkListAvaiable = checklistMap.get(pc) ?? false;
         }
 
         const children = node.children || node.filhos;
@@ -260,11 +276,13 @@ export class EstruturaApiService {
         )
     }
 
-    removeCheckList(partcode: string, payload: Omit<CheckListControllerDeleteItemInCheckListMutationRequest, 'partcodePai'>) {
+    removeCheckList(partcode: string, tag: string, payload: Omit<CheckListControllerDeleteItemInCheckListMutationRequest, 'partcodePai' | 'tag'>) {
         const trimmedPartcode = partcode.trim();
+        const trimmedTag = tag.trim().toLowerCase();
         const data: CheckListControllerDeleteItemInCheckListMutationRequest = {
             ...payload,
             partcodePai: trimmedPartcode,
+            tag: trimmedTag,
             partcodes: payload.partcodes.map(p => p.trim())
         };
         return from(
@@ -272,11 +290,13 @@ export class EstruturaApiService {
         )
     }
 
-    createCheckList(partcode: string, payload: Omit<CheckListControllerInsertItemCheckListMutationRequest, 'partcodePai'>) {
+    createCheckList(partcode: string, tag: string, payload: Omit<CheckListControllerInsertItemCheckListMutationRequest, 'partcodePai' | 'tag'>) {
         const trimmedPartcode = partcode.trim();
+        const trimmedTag = tag.trim().toLowerCase();
         const data: CheckListControllerInsertItemCheckListMutationRequest = {
             ...payload,
             partcodePai: trimmedPartcode,
+            tag: trimmedTag,
             partcodes: payload.partcodes.map(p => p.trim())
         };
         return from(
@@ -323,6 +343,13 @@ export class EstruturaApiService {
         );
     }
 
+    getChecklistTags(partcode: string): Observable<any> {
+        const trimmedPartcode = partcode.trim().toUpperCase();
+        return from(
+            checkListControllerGetChecklistTags({ partcode: trimmedPartcode })
+        );
+    }
+
     exportItem(partcode: string) {
         const trimmedPartcode = partcode.trim().toUpperCase();
         return from(
@@ -365,6 +392,18 @@ export class EstruturaApiService {
             chatbotEstruturaControllerUpdateConversation(conversationId.trim(), {
                 title: title.trim(),
             })
+        );
+    }
+
+    shareConversation(conversationId: string): Observable<ChatConversationShareDto> {
+        return from(
+            chatbotEstruturaControllerShareConversation(conversationId.trim())
+        );
+    }
+
+    forkSharedConversation(shareId: string): Observable<ChatConversationForkDto> {
+        return from(
+            chatbotEstruturaControllerForkSharedConversation(shareId.trim())
         );
     }
 

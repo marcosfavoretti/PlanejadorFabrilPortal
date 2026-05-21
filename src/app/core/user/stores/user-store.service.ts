@@ -25,6 +25,7 @@ export class UserstoreService extends SignalStore<UserResponseDTO> {
     return this.userService.detail().pipe(
       tap(user => this.set(user)),
       catchError(() => {
+        this.clear();
         this.initialized = false;
         throw new Error('Erro ao autenticar usuario');
       })

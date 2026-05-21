@@ -12,4 +12,8 @@ export type InsertItemChecklistDTO = {
    * @type string
    */
   partcodePai: string;
+  /**
+   * @type string
+   */
+  tag: string;
 };

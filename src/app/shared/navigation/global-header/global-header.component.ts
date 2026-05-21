@@ -1,7 +1,7 @@
 import { UserResponseDTO } from '@/api/auth';
 import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { LoadingPopupService } from '@/app/shared/services/loading-popup.service';
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, Signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, computed, inject, OnDestroy, OnInit, Signal, viewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PopoverModule } from 'primeng/popover';
 import { UserProfileAvatarComponent } from '../../components/user-profile-avatar/user-profile-avatar.component';
@@ -24,6 +24,10 @@ export class GlobalHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly userStore = inject(UserstoreService);
   protected readonly routerPermission = inject(RoutePermissionStoreService);
   protected readonly popup = inject(LoadingPopupService);
+  protected readonly navigationRoutes = computed(() => {
+    const routes = this.routerPermission.item();
+    return Array.isArray(routes) ? routes : [];
+  });
 
   private resizeObserver?: ResizeObserver;
   readonly globalHeaderRef = viewChild.required<ElementRef>('globalHeader');

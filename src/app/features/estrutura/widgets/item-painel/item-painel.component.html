@@ -1,33 +1,57 @@
 <div class="d-flex flex-column h-100">
-  <!-- Search Filter Component -->
-  <app-item-painel-filter 
-    class="w-100" 
-    [cardMode]="cardMode"
-    [partcode]="givenPartcode"
-    [disableFilters]="!targetItemOriginal || modo !== 'default'"
-    (OnClearSearch)="onClearSearch()" 
-    (OnpartCodeFill)="givenPartcode = $event" 
-    (OnFilterSelected)="filterData($event)">
-  </app-item-painel-filter>
+  <div class="checklist-sticky-shell" [class.is-sticky]="stickyChecklistHeader">
+    <!-- Search Filter Component -->
+    <app-item-painel-filter 
+      class="w-100" 
+      [cardMode]="cardMode"
+      [partcode]="givenPartcode"
+      [checklistTag]="selectedTagInput"
+      [availableTags]="availableTags"
+      [quickSearchCode]="quickSearchCode"
+      [showChecklistTagField]="shouldShowTagSelector"
+      [checklistTagMode]="checklistTagMode"
+      [showChecklistActions]="false"
+      [disableChecklistActions]="disableChecklistActions"
+      [disableFilters]="!targetItemOriginal || modo !== 'default'"
+      (OnClearSearch)="onClearSearch()" 
+      (OnpartCodeFill)="givenPartcode = $event" 
+      (OnChecklistLookupSubmit)="submitChecklistLookup($event)"
+      (OnChecklistTagApply)="applyTagSelection($event)"
+      (OnChecklistTagClear)="clearSelectedTag()"
+      (OnQuickSearchCodeChange)="onQuickSearchCodeChange($event)"
+      (OnFilterSelected)="filterData($event)">
+    </app-item-painel-filter>
 
-  <!-- Active Filters Bar -->
-  @if (showFilterBar) {
-    <div id="util-bar" class="d-flex justify-content-between align-items-center mb-3 px-1">
-      <div id="filtros" class="d-flex align-items-center gap-2 flex-wrap">
-        <span class="text-muted smallest fw-bold text-uppercase tracking-wider">Filtros Ativos:</span>
-        @if (filters.length > 0) {
-          @for (filt of filters; track $index) {
-            <p-tag [severity]="filt.tagColor" [rounded]="true" [value]="filt.filternome" class="shadow-sm"></p-tag>
+    <!-- Active Filters Bar -->
+    @if (showFilterBar) {
+      <div id="util-bar" class="d-flex justify-content-between align-items-center mb-3 px-1">
+        <div id="filtros" class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="text-muted smallest fw-bold text-uppercase tracking-wider">Filtros Ativos:</span>
+          @if (filters.length > 0) {
+            @for (filt of filters; track $index) {
+              <p-tag [severity]="filt.tagColor" [rounded]="true" [value]="filt.filternome" class="shadow-sm"></p-tag>
+            }
+          } @else {
+            <span class="text-secondary small italic">Nenhum filtro aplicado</span>
           }
-        } @else {
-          <span class="text-secondary small italic">Nenhum filtro aplicado</span>
-        }
+        </div>
       </div>
+    }
+
+  </div>
+
+  @if (shouldShowTagSelector) {
+    <div class="alert mb-3 checklist-context-alert" [class]="selectedTag ? 'alert-success' : 'alert-warning'">
+      @if (selectedTag) {
+        Contexto atual do checklist: <strong>{{ selectedTag }}</strong>.
+      } @else {
+        Nenhuma tag selecionada. {{ tagHelperText }}
+      }
     </div>
   }
 
   <!-- Results Area -->
-  <div class="position-relative">
+  <div class="position-relative flex-grow-1 min-h-0">
     @if ($any(targetItemDisplay)?.partcode && !requestingData) {
       <div id="list">
         @if (targetItemDisplayList && targetItemDisplayList.length && hasFiltersApply) {
@@ -36,6 +60,10 @@
               [submitButton]="false"
               [paginator]="paginator"
               [exportable]="exportable"
+              [quickSearchCode]="quickSearchCode"
+              [checklistTag]="selectedTag"
+              [stickyToolbar]="false"
+              [showToolbarActions]="false"
               [target_item]="$any(targetItemOriginal)?.partcode"
               (onSubmitResponse)="eventValidStategy($event)"
               [itens]="targetItemDisplayList"
@@ -46,6 +74,10 @@
               [submitButton]="true"
               [paginator]="paginator"
               [exportable]="exportable"
+              [quickSearchCode]="quickSearchCode"
+              [checklistTag]="selectedTag"
+              [stickyToolbar]="true"
+              [showToolbarActions]="true"
               (onSubmitResponse)="eventValidStategy($event)"
               [target_item]="$any(targetItemOriginal)?.partcode"
               [itens]="targetItemDisplayList" 
@@ -55,6 +87,10 @@
               [itens]="targetItemDisplayList" 
               [paginator]="paginator"
               [exportable]="exportable"
+              [quickSearchCode]="quickSearchCode"
+              [checklistTag]="selectedTag"
+              [stickyToolbar]="false"
+              [showToolbarActions]="false"
               [target_item]="$any(targetItemOriginal)?.partcode"
               [target_columns]="[]"
               [submitButton]="false"></app-item-result-list-register-checklist>

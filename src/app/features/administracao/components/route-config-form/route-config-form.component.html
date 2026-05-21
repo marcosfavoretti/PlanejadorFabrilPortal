@@ -1,0 +1,105 @@
+<form [formGroup]="form" class="route-form" (ngSubmit)="submit()">
+  <div class="route-form__grid">
+    <div class="route-form__field">
+      <p-floatlabel variant="on">
+        <input id="route-name" pInputText formControlName="name" class="w-full" />
+        <label for="route-name">Nome da Rota</label>
+      </p-floatlabel>
+    </div>
+
+    <div class="route-form__field">
+      <p-floatlabel variant="on">
+        <input id="route-path" pInputText formControlName="route" class="w-full" />
+        <label for="route-path">Path (ex: /home)</label>
+      </p-floatlabel>
+    </div>
+  </div>
+
+  <div class="route-form__field">
+    <p-floatlabel variant="on">
+      <textarea
+        id="route-desc"
+        pTextarea
+        formControlName="desc"
+        rows="3"
+        class="w-full"></textarea>
+      <label for="route-desc">Descrição do Módulo</label>
+    </p-floatlabel>
+  </div>
+
+  <div class="route-form__field">
+    <label class="route-form__field-label" for="route-cargos">Cargos com Acesso</label>
+    <p-multiSelect
+      inputId="route-cargos"
+      formControlName="cargos"
+      optionLabel="label"
+      optionValue="value"
+      [options]="cargosOptions()"
+      [filter]="true"
+      placeholder="Selecione os cargos permitidos"
+      display="chip"
+      appendTo="body"
+      styleClass="w-full" />
+  </div>
+
+  <div class="route-form__subroutes">
+    <div class="route-form__subroutes-header">
+      <div>
+        <h3>Sub-rotas</h3>
+        <p>Cadastre os módulos internos exibidos na navegação lateral.</p>
+      </div>
+
+      <button type="button" pButton icon="pi pi-plus" label="Adicionar" severity="secondary" (click)="addSubRoute()"></button>
+    </div>
+
+    @if (subRoutes.length === 0) {
+      <div class="route-form__empty-state">
+        Nenhuma sub-rota cadastrada.
+      </div>
+    }
+
+    <div formArrayName="subRoutes" class="route-form__subroutes-list">
+      @for (subRoute of subRoutes.controls; track $index) {
+        <div class="route-form__subroute-item" [formGroupName]="$index">
+          <div class="route-form__grid">
+            <div class="route-form__field">
+              <p-floatlabel variant="on">
+                <input [id]="'subroute-name-' + $index" pInputText formControlName="name" class="w-full" />
+                <label [for]="'subroute-name-' + $index">Nome da Sub-rota</label>
+              </p-floatlabel>
+            </div>
+
+            <div class="route-form__field">
+              <p-floatlabel variant="on">
+                <input [id]="'subroute-path-' + $index" pInputText formControlName="route" class="w-full" />
+                <label [for]="'subroute-path-' + $index">Rota</label>
+              </p-floatlabel>
+            </div>
+          </div>
+
+          <div class="route-form__field">
+            <div class="route-form__subroute-footer">
+              <p-floatlabel variant="on" class="w-full">
+                <input [id]="'subroute-desc-' + $index" pInputText formControlName="desc" class="w-full" />
+                <label [for]="'subroute-desc-' + $index">Descrição</label>
+              </p-floatlabel>
+              <button type="button" pButton icon="pi pi-trash" severity="danger" text (click)="removeSubRoute($index)"></button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="route-form__actions">
+    @if (routeModel()) {
+      <button type="button" pButton label="Cancelar edição" severity="secondary" [outlined]="true" (click)="resetToCreateMode()"></button>
+    }
+
+    <button
+      type="submit"
+      pButton
+      [label]="routeModel() ? 'Salvar Alterações' : 'Criar Nova Rota'"
+      [loading]="busy()"></button>
+  </div>
+</form>

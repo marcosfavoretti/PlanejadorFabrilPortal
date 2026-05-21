@@ -18,6 +18,7 @@ export abstract class FilterItens {
                 item_status: item.item_status,
                 partcode: item.partcode,
                 imagem: item.imagem,
+                ehControle: item.ehControle,
                 checkListAvaiable: item.checkListAvaiable,
                 paRecorded: item.paRecorded
             } as any;

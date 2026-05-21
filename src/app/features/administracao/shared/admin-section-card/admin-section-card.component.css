@@ -1,0 +1,68 @@
+.admin-section-card {
+  background:
+    #ffffff,
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='250' preserveAspectRatio='none' viewBox='0 0 1440 250'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1006%26quot%3b)' fill='none'%3e%3cpath d='M16 250L266 0L572 0L322 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1007%26quot%3b)'/%3e%3cpath d='M262.6 250L512.6 0L722.6 0L472.6 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1007%26quot%3b)'/%3e%3cpath d='M517.2 250L767.2 0L830.2 0L580.2 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1007%26quot%3b)'/%3e%3cpath d='M718.8000000000001 250L968.8000000000001 0L1297.3000000000002 0L1047.3000000000002 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1007%26quot%3b)'/%3e%3cpath d='M1431 250L1181 0L998 0L1248 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1008%26quot%3b)'/%3e%3cpath d='M1157.4 250L907.4000000000001 0L764.9000000000001 0L1014.9000000000001 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1008%26quot%3b)'/%3e%3cpath d='M923.8 250L673.8 0L594.3 0L844.3 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1008%26quot%3b)'/%3e%3cpath d='M726.1999999999999 250L476.19999999999993 0L258.69999999999993 0L508.69999999999993 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1008%26quot%3b)'/%3e%3cpath d='M1307.5631939248183 250L1440 117.5631939248182L1440 250z' fill='url(%26quot%3b%23SvgjsLinearGradient1007%26quot%3b)'/%3e%3cpath d='M0 250L132.4368060751818 250L0 117.5631939248182z' fill='url(%26quot%3b%23SvgjsLinearGradient1008%26quot%3b)'/%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1006'%3e%3crect width='1440' height='250' fill='white'/%3e%3c/mask%3e%3clinearGradient x1='0%25' y1='100%25' x2='100%25' y2='0%25' id='SvgjsLinearGradient1007'%3e%3cstop stop-color='rgba(100%2c 116%2c 139%2c 0.38)' offset='0'/%3e%3cstop stop-opacity='0.06' stop-color='rgba(100%2c 116%2c 139%2c 0.38)' offset='0.66'/%3e%3c/linearGradient%3e%3clinearGradient x1='100%25' y1='100%25' x2='0%25' y2='0%25' id='SvgjsLinearGradient1008'%3e%3cstop stop-color='rgba(100%2c 116%2c 139%2c 0.38)' offset='0'/%3e%3cstop stop-opacity='0.06' stop-color='rgba(100%2c 116%2c 139%2c 0.38)' offset='0.66'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e");
+  border: 1px solid #d9e2ec;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  padding: 1.5rem;
+  position: relative;
+  background-size: auto, 100% 100%;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-blend-mode: normal, normal;
+}
+
+.admin-section-card::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.admin-section-card__header {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-section-card__header h2 {
+  color: #123524;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.admin-section-card__header p {
+  color: #52606d;
+  margin: 0.35rem 0 0;
+  max-width: 48rem;
+}
+
+.admin-section-card__body {
+  display: grid;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 576px) {
+  .admin-section-card {
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+  }
+
+  .admin-section-card__header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+  }
+}
+

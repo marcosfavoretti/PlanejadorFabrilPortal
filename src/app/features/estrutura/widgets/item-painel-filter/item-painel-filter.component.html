@@ -1,7 +1,8 @@
-<div [class]="cardMode ? 'p-3 bg-white rounded-4 shadow-sm border mb-3' : 'mb-3'">
-    <div class="d-flex align-items-center gap-3">
-        <div class="flex-grow-1">
-            <form (ngSubmit)="requestSearch()" #filterForms="ngForm">
+<div [class]="cardMode ? 'p-3 bg-white rounded-4 shadow-sm border mb-3 checklist-toolbar-card' : 'mb-3 checklist-toolbar-card'">
+    <div class="checklist-filter-layout">
+        <form class="d-flex align-items-center gap-2 flex-wrap checklist-filter-row"
+              (ngSubmit)="showChecklistTagField ? submitChecklistLookup() : requestSearch()">
+            <div class="flex-grow-1 checklist-filter-row__search">
                 <div class="search-box-container d-flex align-items-center">
                     <div class="d-flex justify-content-center align-items-center ps-3">
                         <i class="pi pi-search search-icon"></i>
@@ -10,25 +11,81 @@
                            placeholder="Buscar por Partcode..." 
                            class="w-100 search-input ps-2" 
                            [(ngModel)]="partcode"
-                           name="partcode"
-                           (keyup.enter)="requestSearch()">
+                           name="partcode">
                     @if (partcode) {
                         <button class="btn btn-link text-muted p-2" (click)="clearSearch()" type="button">
                             <i class="pi pi-times"></i>
                         </button>
                     }
                 </div>
-            </form>
-        </div>
+            </div>
+
+            @if (showChecklistTagField) {
+                <div class="checklist-tag-box d-flex align-items-center gap-2 flex-wrap">
+                    <div class="tag-input-container d-flex align-items-center">
+                        <i class="pi pi-tag tag-icon ps-3"></i>
+                        <select
+                            class="tag-input ps-2"
+                            [(ngModel)]="selectedExistingTag"
+                            name="checklistTagSelect"
+                            >
+                            <option value="">{{ availableTags.length ? 'Selecione a tag' : 'Nenhuma tag disponivel' }}</option>
+                            @for (tag of availableTags; track tag.value) {
+                                <option [value]="tag.value">{{ tag.label }}</option>
+                            }
+                        </select>
+                        @if (selectedExistingTag || newChecklistTag) {
+                            <button class="btn btn-link text-muted p-2" (click)="clearChecklistTag()" type="button">
+                                <i class="pi pi-times"></i>
+                            </button>
+                        }
+                    </div>
+
+                    @if (checklistTagMode === 'hybrid') {
+                        <div class="tag-input-container d-flex align-items-center">
+                            <i class="pi pi-plus-circle tag-icon ps-3"></i>
+                            <input
+                                type="text"
+                                class="tag-input ps-2"
+                                [(ngModel)]="newChecklistTag"
+                                name="newChecklistTag"
+                                placeholder="Ou crie uma nova tag">
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-success btn-sm px-3 checklist-toolbar-btn">Consultar checklist</button>
+                </div>
+            }
         
-        @if (!disableFilters) {
-            <button [disabled]="disableFilters" 
-                    class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm hover-effect" 
-                    style="width: 45px; height: 45px;"
-                    (click)="openDialog()"
-                    pTooltip="Filtros avançados">
-                <i class="pi pi-filter"></i>
-            </button>
+            @if (!disableFilters) {
+                <button [disabled]="disableFilters" 
+                        class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm hover-effect checklist-filter-trigger" 
+                        type="button"
+                        (click)="openDialog()"
+                        pTooltip="Filtros avançados">
+                    <i class="pi pi-filter"></i>
+                </button>
+            }
+        </form>
+
+        @if (showChecklistActions) {
+            <div class="checklist-feature-toolbar">
+                <button type="button"
+                        class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center justify-content-center shadow-sm checklist-toolbar-btn"
+                        [disabled]="disableChecklistActions"
+                        (click)="resetChecklist($event)">
+                    <i class="pi pi-refresh me-2"></i>
+                    Novo CheckList
+                </button>
+
+                <button type="button"
+                        class="btn btn-success btn-sm px-4 d-flex align-items-center justify-content-center shadow-sm checklist-toolbar-btn"
+                        [disabled]="disableChecklistActions"
+                        (click)="submitChecklist()">
+                    <i class="pi pi-send me-2"></i>
+                    Enviar Checklist
+                </button>
+            </div>
         }
     </div>
 </div>

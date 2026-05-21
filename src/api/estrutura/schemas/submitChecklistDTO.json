@@ -2,8 +2,9 @@
   "type": "object",
   "properties": {
     "COD_ITEM_FINAL": { "type": "string" },
+    "CHECKLIST_TAG": { "type": "string" },
     "SEPARADOR": { "type": "string" }
   },
-  "required": ["COD_ITEM_FINAL", "SEPARADOR"],
+  "required": ["COD_ITEM_FINAL", "CHECKLIST_TAG", "SEPARADOR"],
   "x-readme-ref-name": "SubmitChecklistDTO"
 }

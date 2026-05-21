@@ -42,6 +42,9 @@
               <div class="conv-title">
                 {{ getConversationDisplayTitle(conv) }}
               </div>
+              @if (getConversationOriginLabel(conv); as originLabel) {
+                <div class="conv-badge">{{ originLabel }}</div>
+              }
               <div class="conv-preview">
                 {{ getConversationPreview(conv) }}
               </div>
@@ -79,9 +82,22 @@
                 </div>
               } @else {
                 <button
+                  class="history-action-btn share-btn"
+                  (click)="shareConversation(conv, $event)"
+                  [disabled]="!!sharingConversationId() || !!deletingConversationId()"
+                  title="Compartilhar conversa"
+                  aria-label="Compartilhar conversa"
+                >
+                  @if (sharingConversationId() === conv.conversationId) {
+                    <i class="pi pi-spin pi-spinner"></i>
+                  } @else {
+                    <i class="pi pi-share-alt"></i>
+                  }
+                </button>
+                <button
                   class="history-action-btn delete-btn"
                   (click)="requestDeleteConversation(conv.conversationId, $event)"
-                  [disabled]="!!deletingConversationId()"
+                  [disabled]="!!deletingConversationId() || !!sharingConversationId()"
                   title="Apagar conversa"
                   aria-label="Apagar conversa"
                 >
@@ -156,6 +172,19 @@
           } @else {
             <div class="title-display-row">
               <h4 class="chat-header-title">{{ computedTitle() }}</h4>
+              <button
+                class="title-action-btn"
+                (click)="shareActiveConversation()"
+                [disabled]="!canShareActiveConversation() || !!sharingConversationId()"
+                title="Copiar link da conversa"
+                aria-label="Copiar link da conversa"
+              >
+                @if (!!sharingConversationId()) {
+                  <i class="pi pi-spin pi-spinner"></i>
+                } @else {
+                  <i class="pi pi-share-alt"></i>
+                }
+              </button>
               <button
                 class="title-action-btn"
                 (click)="beginRename()"
@@ -272,19 +301,18 @@
               <span>Iniciando conversa...</span>
             </div>
           } @else {
-            <input
+            <div
               #messageInput
               id="chatbot-widget-input"
-              type="text"
-              class="form-control form-control-lg creative-input px-3"
-              [placeholder]="inputPlaceholder"
-              [disabled]="inputDisabled()"
-              [ngModel]="newMessage"
-              (ngModelChange)="onMessageChange($event)"
+              class="creative-input px-3"
+              [attr.contenteditable]="inputDisabled() ? 'false' : 'true'"
+              [attr.data-placeholder]="inputPlaceholder"
+              [class.is-disabled]="inputDisabled()"
+              (paste)="handlePaste($event)"
               (keydown)="handleKeyboard($event)"
-              (keyup.enter)="send()"
+              (input)="handleEditorInput()"
               aria-label="Campo de mensagem"
-            />
+            ></div>
           }
 
           @if (canCancel()) {

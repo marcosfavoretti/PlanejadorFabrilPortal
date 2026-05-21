@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import {
+  AuthControllerGenerateInviteMutationRequest,
+  AuthControllerGenerateInviteMutationResponse,
   AuthControllerRegisterMutationResponse,
   AuthControllerValidateUserQueryResponse,
   AuthDto,
+  CargoControllerSetUserCargoMethodMutationRequest,
   CreateUserDto,
   UserResponseDTO,
   authControllerCheckToken,
   authControllerDetail,
+  authControllerGenerateInvite,
   authControllerLogin,
   authControllerLogout,
   authControllerRegister,
   authControllerRegisterWithInvite,
   authControllerValidateInvite,
+  cargoControllerSetUserCargoMethod,
 } from '@/api/auth';
 import { clearAuthToken, readStoredAuthToken, storeAuthToken } from '@/app/core/auth/utils/auth-token';
 import { from, Observable } from 'rxjs';
@@ -76,6 +81,14 @@ export class UserService {
 
   registerWithInvite(dto: CreateUserDto, token: string): Observable<AuthControllerRegisterMutationResponse> {
     return from(authControllerRegisterWithInvite(token, dto));
+  }
+
+  generateInvite(dto: AuthControllerGenerateInviteMutationRequest): Observable<AuthControllerGenerateInviteMutationResponse> {
+    return from(authControllerGenerateInvite(dto));
+  }
+
+  setUserCargo(dto: CargoControllerSetUserCargoMethodMutationRequest): Observable<void> {
+    return from(cargoControllerSetUserCargoMethod(dto));
   }
 
   ping(): Observable<void> {
