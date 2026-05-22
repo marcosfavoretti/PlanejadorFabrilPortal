@@ -119,24 +119,34 @@ jobs:
           # Remove o container se ele já existir (de builds falhos anteriores)
           docker rm -f smoke-test-app || true
           
-          # Tenta rodar em uma porta aleatória disponível para evitar conflitos no runner
-          # Mas como o curl abaixo está fixo em 8086, vamos manter 8086 mas garantir o cleanup
           docker run -d --name smoke-test-app -p 8086:8085 $IMAGE_URL
           
           echo "Aguardando inicialização do Nginx..."
-          sleep 5
-          
-          if curl -f http://localhost:8086/index.html > /dev/null; then
-            echo "SUCCESS: Frontend acessível e retornando index.html"
-            docker stop smoke-test-app
-            docker rm smoke-test-app
-          else
-            echo "ERROR: Falha ao acessar o frontend após o build"
-            docker logs smoke-test-app
-            docker stop smoke-test-app
-            docker rm smoke-test-app
-            exit 1
-          fi
+          cleanup() {
+            docker stop smoke-test-app >/dev/null 2>&1 || true
+            docker rm smoke-test-app >/dev/null 2>&1 || true
+          }
+
+          trap cleanup EXIT
+
+          for attempt in $(seq 1 15); do
+            if curl -fsS http://localhost:8086/index.html > /dev/null; then
+              echo "SUCCESS: Frontend acessível e retornando index.html"
+              exit 0
+            fi
+
+            if [ "$(docker inspect -f '{{.State.Running}}' smoke-test-app 2>/dev/null)" != "true" ]; then
+              echo "ERROR: Container encerrou antes de responder ao smoke test"
+              docker logs smoke-test-app
+              exit 1
+            fi
+
+            sleep 2
+          done
+
+          echo "ERROR: Falha ao acessar o frontend após o build"
+          docker logs smoke-test-app
+          exit 1
 
   deploy:
     if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
