@@ -10,19 +10,28 @@ export class SafeUrlMakerService {
   constructor(private sanitizer: DomSanitizer,) { }
 
   generateSafeUrl(url: string): SafeResourceUrl | null {
-    const allowedOrigins = getRuntimeAppConfig().allowedResourceOrigins;
+    const allowedOrigins = new Set(
+      getRuntimeAppConfig()
+        .allowedResourceOrigins
+        .map(origin => origin.trim())
+        .filter(Boolean)
+    );
 
     try {
       const parsed = new URL(url);
-      if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+      if (!['https:', 'http:'].includes(parsed.protocol)) {
         return null;
       }
 
-      if (!allowedOrigins.includes(parsed.origin)) {
+      if (parsed.username || parsed.password) {
         return null;
       }
 
-      return this.sanitizer.bypassSecurityTrustResourceUrl(parsed.toString());
+      if (!allowedOrigins.has(parsed.origin)) {
+        return null;
+      }
+
+      return this.sanitizer.bypassSecurityTrustResourceUrl(parsed.toString()); // nosemgrep
     } catch {
       return null;
     }

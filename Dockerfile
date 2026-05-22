@@ -28,11 +28,15 @@ COPY --from=builder /app/dist/planejamento-ethos-portal/browser /usr/share/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Dá permissão de execução para o script
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Dá permissão de execução para o script e libera escrita apenas nos diretórios usados em runtime
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /var/run /usr/local/bin/entrypoint.sh
 
 # Expõe a porta configurada no nginx.conf
 EXPOSE 8085
+
+# Executa o contêiner sem privilégios de root
+USER nginx
 
 # Define o script como o ponto de entrada
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -7,8 +7,7 @@ import {TreeTable, TreeTableModule} from "primeng/treetable"
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
+import { exportRowsToCsv, exportRowsToXlsx } from '../../../../shared/utils/spreadsheet-export';
 
 interface GraphNode {
   id: string;
@@ -137,7 +136,7 @@ export class ItemHierarchyListaComponent{
     return this.selectedGraphNode?.id === node.id;
   }
 
-  exportarExcel() {
+  async exportarExcel() {
     const dados: any[] = [];
     const flatten = (nodes: TreeNode[]) => {
       nodes.forEach(node => {
@@ -153,18 +152,8 @@ export class ItemHierarchyListaComponent{
       });
     };
     flatten(this.item);
-    
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dados);
-    const workbook: XLSX.WorkBook = {
-      Sheets: { 'Dados': worksheet },
-      SheetNames: ['Dados']
-    };
 
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob: Blob = new Blob([excelBuffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    });
-    FileSaver.saveAs(blob, `Estrutura_${new Date().getTime()}.xlsx`);
+    await exportRowsToXlsx(dados, `Estrutura_${new Date().getTime()}.xlsx`);
   }
 
   exportarCSV() {
@@ -184,10 +173,7 @@ export class ItemHierarchyListaComponent{
     };
     flatten(this.item);
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dados);
-    const csv = XLSX.utils.sheet_to_csv(worksheet);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    FileSaver.saveAs(blob, `Estrutura_${new Date().getTime()}.csv`);
+    exportRowsToCsv(dados, `Estrutura_${new Date().getTime()}.csv`);
   }
 
   private buildGraph() {

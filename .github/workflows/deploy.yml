@@ -10,7 +10,24 @@ env:
   IMAGE_NAME: marcosfavoretti/planejadorfabrilportal
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.impact.outputs.should_build }}
+      should_deploy: ${{ steps.impact.outputs.should_deploy }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect deploy impact
+        id: impact
+        run: bash ./scripts/ci/detect-deploy-impact.sh "${{ github.event.before }}" "${{ github.sha }}"
+
   validate:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.should_build == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,6 +42,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run security audit
+        run: npm run security:audit
+
+      - name: Run GitLeaks
+        run: npm run security:gitleaks
+
+      - name: Run Semgrep
+        run: npm run security:semgrep
+
       - name: Validate committed API client
         run: npm run check:api-client
 
@@ -32,7 +58,8 @@ jobs:
         run: npm run build
 
   build-and-push:
-    needs: validate
+    needs: [prepare, validate]
+    if: ${{ needs.prepare.outputs.should_build == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -73,7 +100,8 @@ jobs:
           cache-to: type=gha,mode=max
 
   smoke-test:
-    needs: build-and-push
+    if: ${{ needs.prepare.outputs.should_build == 'true' }}
+    needs: [prepare, build-and-push]
     runs-on: ubuntu-latest
     steps:
       - name: Log in to the Container registry
@@ -111,7 +139,8 @@ jobs:
           fi
 
   deploy:
-    needs: smoke-test
+    if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
+    needs: [prepare, smoke-test]
     runs-on: [self-hosted, Linux, X64, frontend]
     permissions:
       contents: read
