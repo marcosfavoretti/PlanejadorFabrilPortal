@@ -1,0 +1,14 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore generated artifacts and documentation with known false positives"
+paths = [
+  '''node_modules/''',
+  '''dist/''',
+  '''build/''',
+  '''coverage/''',
+  '''\.angular/''',
+  '''package-lock\.json''',
+  '''README\.md'''
+]

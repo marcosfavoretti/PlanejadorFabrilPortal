@@ -43,6 +43,22 @@
   margin: 0 auto;
 }
 
+.portaria-kpi-grid .col {
+  align-self: stretch;
+}
+
+.portaria-kpi-slot {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+}
+
+.portaria-kpi-skeleton {
+  display: block;
+  width: 100%;
+  min-height: 11rem;
+}
+
 /* Glass Effects */
 .kpi-glass {
   background: white;
@@ -151,6 +167,22 @@
  .tracking-widest {
    letter-spacing: 0.15em;
  }
+
+@media (max-width: 1199.98px) {
+  .portaria-kpi-slot {
+    min-height: 11rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .portaria-kpi-grid {
+    gap: 1rem 0;
+  }
+
+  .portaria-kpi-slot {
+    min-height: 10rem;
+  }
+}
  
  /* SelectButton Custom Premium Style */
  ::v-deep .p-selectbutton {

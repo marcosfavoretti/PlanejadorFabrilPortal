@@ -61,20 +61,26 @@ form {
 
 @media (max-width: 991.98px) {
     .checklist-toolbar-panel {
-        align-items: stretch;
-        flex-direction: column;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     .checklist-toolbar-panel__search,
     .checklist-search-panel {
+        flex: 1 1 auto;
         max-width: none;
-        min-width: 0;
-        width: 100%;
+        min-width: 12rem;
     }
 
     .checklist-action-panel__actions {
-        width: 100%;
-        justify-content: flex-start;
+        flex: 0 0 auto;
+        width: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
     }
 }
 
@@ -85,24 +91,15 @@ form {
     }
 
     .checklist-toolbar-panel {
-        align-items: center;
-        flex-direction: row;
-        flex-wrap: nowrap;
         gap: 0.5rem;
     }
 
     .checklist-toolbar-panel__search,
     .checklist-search-panel {
-        flex: 1 1 auto;
-        max-width: none;
-        min-width: 0;
+        min-width: 10rem;
     }
 
     .checklist-action-panel__actions {
-        flex: 0 0 auto;
-        width: auto;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
         gap: 0.5rem;
     }
 
@@ -140,5 +137,10 @@ form {
         padding-left: 0.625rem !important;
         padding-right: 0.625rem !important;
         font-size: 0.8125rem;
+    }
+
+    .checklist-toolbar-panel__search,
+    .checklist-search-panel {
+        min-width: 8.5rem;
     }
 }

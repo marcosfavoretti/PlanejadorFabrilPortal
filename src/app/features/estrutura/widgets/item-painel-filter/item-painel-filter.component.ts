@@ -7,6 +7,7 @@ import { FilterItens } from '@/@core/abstract/filter-item.abstract';
 import { FilterTypes } from '@/@core/enums/filtersTypes';
 
 type ChecklistTagMode = 'select' | 'hybrid';
+type ChecklistTagEntryMode = 'existing' | 'new';
 export interface ChecklistLookupPayload {
   partcode?: string;
   tag?: string;
@@ -44,8 +45,34 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
   @Output('OnChecklistSubmit') onChecklistSubmit: EventEmitter<void> = new EventEmitter<void>()
   @Output('OnQuickSearchCodeChange') onQuickSearchCodeChange: EventEmitter<string> = new EventEmitter<string>()
   @Output('OnFilterSelected') onFilterSelected: EventEmitter<FilterItens[]> = new EventEmitter<FilterItens[]>()
+  tagEntryMode: ChecklistTagEntryMode = 'existing'
   selectedExistingTag: string = ''
   newChecklistTag: string = ''
+
+  get isHybridTagMode(): boolean {
+    return this.checklistTagMode === 'hybrid';
+  }
+
+  get hasAvailableTags(): boolean {
+    return this.availableTags.length > 0;
+  }
+
+  get resolvedChecklistTag(): string {
+    return this.resolveChecklistTag();
+  }
+
+  get canSubmitChecklistLookup(): boolean {
+    const partcode = this.partcode?.trim().toUpperCase();
+    return Boolean(partcode && partcode.length >= 5 && this.resolvedChecklistTag);
+  }
+
+  get tagModeLabel(): string {
+    if (!this.isHybridTagMode) {
+      return 'Selecionar tag';
+    }
+
+    return this.tagEntryMode === 'new' ? 'Criar nova tag' : 'Usar tag existente';
+  }
 
   ngOnInit(): void {
       this.resetFilters()
@@ -69,14 +96,14 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
   }
 
   submitChecklistLookup() {
-    const partcode = this.partcode?.trim().toUpperCase();
+    if (!this.canSubmitChecklistLookup) return;
 
-    if (!partcode || partcode.length < 5) return;
+    const partcode = this.partcode?.trim().toUpperCase();
 
     this.partcode = partcode;
     this.onChecklistLookupSubmit.emit({
       partcode,
-      tag: this.resolveChecklistTag()
+      tag: this.resolvedChecklistTag
     });
     this.resetFilters();
   }
@@ -90,6 +117,7 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
     this.checklistTag = '';
     this.selectedExistingTag = '';
     this.newChecklistTag = '';
+    this.tagEntryMode = this.hasAvailableTags ? 'existing' : 'new';
     this.onChecklistTagClear.emit();
   }
 
@@ -133,16 +161,53 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
     });
   }
 
+  selectTagEntryMode(mode: ChecklistTagEntryMode) {
+    this.tagEntryMode = mode;
+
+    if (mode === 'existing') {
+      this.newChecklistTag = '';
+      return;
+    }
+
+    this.selectedExistingTag = '';
+  }
+
+  onExistingTagChange(value: string) {
+    this.selectedExistingTag = value;
+    if (value && this.isHybridTagMode) {
+      this.tagEntryMode = 'existing';
+      this.newChecklistTag = '';
+    }
+  }
+
+  onNewTagInput() {
+    if (!this.isHybridTagMode) {
+      return;
+    }
+
+    if (this.newChecklistTag.trim()) {
+      this.tagEntryMode = 'new';
+      this.selectedExistingTag = '';
+      return;
+    }
+
+    if (!this.selectedExistingTag) {
+      this.tagEntryMode = this.hasAvailableTags ? 'existing' : 'new';
+    }
+  }
+
   private syncTagFields() {
     const currentTag = this.checklistTag?.trim() || '';
     const existsInAvailable = this.availableTags.some(tag => tag.value === currentTag);
 
     if (this.checklistTagMode === 'select') {
+      this.tagEntryMode = 'existing';
       this.selectedExistingTag = existsInAvailable ? currentTag : '';
       this.newChecklistTag = '';
       return;
     }
 
+    this.tagEntryMode = existsInAvailable ? 'existing' : currentTag ? 'new' : this.hasAvailableTags ? 'existing' : 'new';
     this.selectedExistingTag = existsInAvailable ? currentTag : '';
     this.newChecklistTag = existsInAvailable ? '' : currentTag;
   }
@@ -150,6 +215,10 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
   private resolveChecklistTag(): string {
     const selectedTag = this.selectedExistingTag?.trim() || '';
     const newTag = this.newChecklistTag?.trim() || '';
-    return this.checklistTagMode === 'hybrid' ? (newTag || selectedTag) : selectedTag;
+    if (this.checklistTagMode !== 'hybrid') {
+      return selectedTag;
+    }
+
+    return this.tagEntryMode === 'new' ? newTag : selectedTag;
   }
 }

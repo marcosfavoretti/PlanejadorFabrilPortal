@@ -61,6 +61,39 @@
     flex: 0 1 auto;
 }
 
+.checklist-tag-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 20rem;
+}
+
+.checklist-tag-toggle {
+    display: inline-flex;
+    gap: 0.35rem;
+    padding: 0.25rem;
+    background: #eaf4f1;
+    border-radius: 999px;
+    align-self: flex-start;
+}
+
+.checklist-tag-toggle__btn {
+    border: none;
+    background: transparent;
+    color: #52606d;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.checklist-tag-toggle__btn.is-active {
+    background: #ffffff;
+    color: #00846d;
+    box-shadow: 0 3px 10px rgba(0, 132, 109, 0.18);
+}
+
 .checklist-actions-box {
     flex: 0 0 auto;
     justify-content: flex-end;
@@ -130,6 +163,31 @@
     color: #00a77f;
 }
 
+.checklist-tag-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 1.25rem;
+    padding: 0 0.25rem;
+    font-size: 0.8rem;
+}
+
+.checklist-tag-caption__label {
+    color: #52606d;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.checklist-tag-caption__value {
+    color: #00846d;
+    font-weight: 700;
+}
+
+.checklist-tag-caption__placeholder {
+    color: #7b8794;
+}
+
 @media (min-width: 992px) {
     .checklist-filter-row {
         flex-wrap: nowrap !important;
@@ -159,6 +217,11 @@
         min-width: 0;
     }
 
+    .checklist-tag-panel {
+        min-width: 0;
+        width: 100%;
+    }
+
     .checklist-actions-box .btn {
         flex: 1 1 0;
         min-width: 0;
@@ -167,6 +230,14 @@
     .tag-input-container {
         min-width: 0;
         flex: 1 1 100%;
+    }
+
+    .checklist-tag-toggle {
+        width: 100%;
+    }
+
+    .checklist-tag-toggle__btn {
+        flex: 1 1 50%;
     }
 
     .checklist-feature-toolbar {

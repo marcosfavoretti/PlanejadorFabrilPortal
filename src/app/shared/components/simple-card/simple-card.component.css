@@ -1,3 +1,11 @@
+.simple-card-shell {
+  min-height: 100%;
+}
+
+.simple-card-shell__content {
+  flex: 1 1 auto;
+}
+
 .data-card {
   transition: all 0.3s ease-in-out;
 }

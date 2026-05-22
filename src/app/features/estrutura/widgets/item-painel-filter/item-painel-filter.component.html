@@ -22,38 +22,69 @@
 
             @if (showChecklistTagField) {
                 <div class="checklist-tag-box d-flex align-items-center gap-2 flex-wrap">
-                    <div class="tag-input-container d-flex align-items-center">
-                        <i class="pi pi-tag tag-icon ps-3"></i>
-                        <select
-                            class="tag-input ps-2"
-                            [(ngModel)]="selectedExistingTag"
-                            name="checklistTagSelect"
-                            >
-                            <option value="">{{ availableTags.length ? 'Selecione a tag' : 'Nenhuma tag disponivel' }}</option>
-                            @for (tag of availableTags; track tag.value) {
-                                <option [value]="tag.value">{{ tag.label }}</option>
-                            }
-                        </select>
-                        @if (selectedExistingTag || newChecklistTag) {
-                            <button class="btn btn-link text-muted p-2" (click)="clearChecklistTag()" type="button">
-                                <i class="pi pi-times"></i>
-                            </button>
+                    <div class="checklist-tag-panel">
+                        @if (isHybridTagMode) {
+                            <div class="checklist-tag-toggle" role="tablist" aria-label="Modo de tag">
+                                <button
+                                    type="button"
+                                    class="checklist-tag-toggle__btn"
+                                    [class.is-active]="tagEntryMode === 'existing'"
+                                    (click)="selectTagEntryMode('existing')">
+                                    Usar existente
+                                </button>
+                                <button
+                                    type="button"
+                                    class="checklist-tag-toggle__btn"
+                                    [class.is-active]="tagEntryMode === 'new'"
+                                    (click)="selectTagEntryMode('new')">
+                                    Criar nova
+                                </button>
+                            </div>
                         }
+
+                        <div class="tag-input-container d-flex align-items-center">
+                            <i class="pi tag-icon ps-3" [class.pi-tag]="tagEntryMode === 'existing'" [class.pi-plus-circle]="tagEntryMode === 'new'"></i>
+                            @if (!isHybridTagMode || tagEntryMode === 'existing') {
+                                <select
+                                    class="tag-input ps-2"
+                                    [ngModel]="selectedExistingTag"
+                                    (ngModelChange)="onExistingTagChange($event)"
+                                    name="checklistTagSelect">
+                                    <option value="">{{ availableTags.length ? 'Selecione a tag' : 'Nenhuma tag disponivel' }}</option>
+                                    @for (tag of availableTags; track tag.value) {
+                                        <option [value]="tag.value">{{ tag.label }}</option>
+                                    }
+                                </select>
+                            } @else {
+                                <input
+                                    type="text"
+                                    class="tag-input ps-2"
+                                    [(ngModel)]="newChecklistTag"
+                                    (ngModelChange)="onNewTagInput()"
+                                    name="newChecklistTag"
+                                    placeholder="Digite o nome da nova tag">
+                            }
+
+                            @if (selectedExistingTag || newChecklistTag) {
+                                <button class="btn btn-link text-muted p-2" (click)="clearChecklistTag()" type="button">
+                                    <i class="pi pi-times"></i>
+                                </button>
+                            }
+                        </div>
+
+                        <div class="checklist-tag-caption">
+                            <span class="checklist-tag-caption__label">{{ tagModeLabel }}</span>
+                            @if (resolvedChecklistTag) {
+                                <span class="checklist-tag-caption__value">{{ resolvedChecklistTag }}</span>
+                            } @else {
+                                <span class="checklist-tag-caption__placeholder">
+                                    {{ tagEntryMode === 'new' ? 'Informe o nome da nova tag' : 'Escolha uma tag para continuar' }}
+                                </span>
+                            }
+                        </div>
                     </div>
 
-                    @if (checklistTagMode === 'hybrid') {
-                        <div class="tag-input-container d-flex align-items-center">
-                            <i class="pi pi-plus-circle tag-icon ps-3"></i>
-                            <input
-                                type="text"
-                                class="tag-input ps-2"
-                                [(ngModel)]="newChecklistTag"
-                                name="newChecklistTag"
-                                placeholder="Ou crie uma nova tag">
-                        </div>
-                    }
-
-                    <button type="submit" class="btn btn-success btn-sm px-3 checklist-toolbar-btn">Consultar checklist</button>
+                    <button type="submit" class="btn btn-success btn-sm px-3 checklist-toolbar-btn" [disabled]="!canSubmitChecklistLookup">Consultar checklist</button>
                 </div>
             }
         

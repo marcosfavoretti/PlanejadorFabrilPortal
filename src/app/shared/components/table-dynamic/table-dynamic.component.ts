@@ -5,8 +5,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FormsModule } from '@angular/forms';
 import { tableColumns, TableModel } from './table.model';
-import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
+import { exportRowsToXlsx } from '../../utils/spreadsheet-export';
 import { InputNumberModule } from 'primeng/inputnumber'
 import { Subject } from 'rxjs';
 import { DatePicker } from 'primeng/datepicker'
@@ -267,7 +266,7 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     }
   }
 
-  exportarExcel() {
+  async exportarExcel() {
     const dados = this.data.map(row => {
       const resultado: { [k: string]: string } = {};
       this.tableModel.columns.forEach(col => {
@@ -276,16 +275,6 @@ export class TableDynamicComponent implements OnChanges, OnInit {
       return resultado;
     });
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dados);
-    const workbook: XLSX.WorkBook = {
-      Sheets: { 'Dados': worksheet },
-      SheetNames: ['Dados']
-    };
-
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob: Blob = new Blob([excelBuffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    });
-    FileSaver.saveAs(blob, `${this.tableModel.title || 'export'}_${new Date().getTime()}.xlsx`);
+    await exportRowsToXlsx(dados, `${this.tableModel.title || 'export'}_${new Date().getTime()}.xlsx`);
   }
 }
