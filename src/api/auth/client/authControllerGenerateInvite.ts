@@ -23,7 +23,7 @@ function getAuthControllerGenerateInviteUrl() {
  * {@link /api/auth/register-link}
  */
 export async function authControllerGenerateInvite(
-  data?: AuthControllerGenerateInviteMutationRequest,
+  data: AuthControllerGenerateInviteMutationRequest,
   config: Partial<
     RequestConfig<AuthControllerGenerateInviteMutationRequest>
   > & { client?: Client } = {},

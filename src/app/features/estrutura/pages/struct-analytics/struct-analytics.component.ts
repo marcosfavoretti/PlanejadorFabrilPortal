@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ScrollTopModule } from 'primeng/scrolltop';
 import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableDynamicComponent } from "@/app/shared/components/table-dynamic/table-dynamic.component";
@@ -30,6 +31,7 @@ import { EstruturaContextService } from '@/app/features/estrutura/services/Estru
     FormsModule,
     DropdownModule,
     InputSwitchModule,
+    ScrollTopModule,
     TableDynamicComponent,
   ]
 

@@ -101,6 +101,10 @@ export class ModernBomComponent implements OnInit {
     this.activeDetailTab.set(tab);
   }
 
+  get layerLegend(): number[] {
+    return Array.from({ length: this.getTreeLayerCount(this.treeData) }, (_, index) => index);
+  }
+
   search(updateUrl = true) {
     const partcode = this.searchQuery.trim().toUpperCase();
     if (!partcode || partcode.length < 5) return;
@@ -230,6 +234,17 @@ export class ModernBomComponent implements OnInit {
         queryParams: { partcode }
       });
     }
+  }
+
+  private getTreeLayerCount(nodes: TreeNode[], layer = 1): number {
+    if (!nodes.length) {
+      return 0;
+    }
+
+    return nodes.reduce((maxLayer, node) => {
+      const childLayerCount = this.getTreeLayerCount((node.children as TreeNode[] | undefined) ?? [], layer + 1);
+      return Math.max(maxLayer, childLayerCount || layer);
+    }, layer);
   }
 
 }

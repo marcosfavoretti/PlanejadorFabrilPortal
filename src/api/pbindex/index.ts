@@ -2,42 +2,42 @@ export type { AssingPowerbiDatasetDTO } from './models/AssingPowerbiDatasetDTO';
 export type {
   PbindexControllerAssignDataset201,
   PbindexControllerAssignDataset500,
+  PbindexControllerAssignDatasetMutation,
   PbindexControllerAssignDatasetMutationRequest,
   PbindexControllerAssignDatasetMutationResponse,
-  PbindexControllerAssignDatasetMutation,
 } from './models/PbindexControllerAssignDataset';
 export type {
   PbindexControllerGetDatasets200,
   PbindexControllerGetDatasets500,
-  PbindexControllerGetDatasetsQueryResponse,
   PbindexControllerGetDatasetsQuery,
+  PbindexControllerGetDatasetsQueryResponse,
 } from './models/PbindexControllerGetDatasets';
 export type {
   PbindexControllerGetOnlineUsers200,
-  PbindexControllerGetOnlineUsersQueryResponse,
   PbindexControllerGetOnlineUsersQuery,
+  PbindexControllerGetOnlineUsersQueryResponse,
 } from './models/PbindexControllerGetOnlineUsers';
 export type {
-  PbindexControllerGetRefreshDateQueryParams,
   PbindexControllerGetRefreshDate200,
   PbindexControllerGetRefreshDate500,
-  PbindexControllerGetRefreshDateQueryResponse,
   PbindexControllerGetRefreshDateQuery,
+  PbindexControllerGetRefreshDateQueryParams,
+  PbindexControllerGetRefreshDateQueryResponse,
 } from './models/PbindexControllerGetRefreshDate';
 export type {
   PbindexControllerRefreshDataset200,
   PbindexControllerRefreshDataset400,
   PbindexControllerRefreshDataset404,
+  PbindexControllerRefreshDatasetMutation,
   PbindexControllerRefreshDatasetMutationRequest,
   PbindexControllerRefreshDatasetMutationResponse,
-  PbindexControllerRefreshDatasetMutation,
 } from './models/PbindexControllerRefreshDataset';
 export type {
   PbindexControllerRefreshDatasetAsAdmin200,
   PbindexControllerRefreshDatasetAsAdmin404,
+  PbindexControllerRefreshDatasetAsAdminMutation,
   PbindexControllerRefreshDatasetAsAdminMutationRequest,
   PbindexControllerRefreshDatasetAsAdminMutationResponse,
-  PbindexControllerRefreshDatasetAsAdminMutation,
 } from './models/PbindexControllerRefreshDatasetAsAdmin';
 export type { RefreshPowerbiDatasetDto } from './models/RefreshPowerbiDatasetDto';
 export type { ResPowerbiDataset } from './models/ResPowerbiDataset';

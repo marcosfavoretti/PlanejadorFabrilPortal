@@ -45,15 +45,20 @@ export class ItemPainelComponent implements OnInit {
     private router: Router
   ) { 
     effect(() => {
-      const pc = this.contextService.partcode();
-      if (pc && pc !== this.givenPartcode) {
-        this.givenPartcode = pc;
-      }
       const tag = this.contextService.tag();
       if (tag !== this.selectedTag) {
         this.selectedTag = tag || '';
         this.selectedTagInput = tag || '';
         this.updateQueryParams();
+
+        if (this._givenPartcode && (tag || this.canPreviewStructureWithoutTag)) {
+          this.requestItem();
+        }
+      }
+
+      const pc = this.contextService.partcode();
+      if (pc && pc !== this.givenPartcode) {
+        this.givenPartcode = pc;
       }
     });
   }

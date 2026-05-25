@@ -26,7 +26,7 @@ function getAppEthosControllerAtualizaRoutesUrl(
  */
 export async function appEthosControllerAtualizaRoutes(
   id: AppEthosControllerAtualizaRoutesPathParams['id'],
-  data?: AppEthosControllerAtualizaRoutesMutationRequest,
+  data: AppEthosControllerAtualizaRoutesMutationRequest,
   config: Partial<
     RequestConfig<AppEthosControllerAtualizaRoutesMutationRequest>
   > & { client?: Client } = {},

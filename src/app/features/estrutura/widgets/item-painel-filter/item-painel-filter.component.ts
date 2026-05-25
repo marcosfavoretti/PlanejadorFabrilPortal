@@ -21,7 +21,7 @@ export interface ChecklistLookupPayload {
   imports: [
     FormsModule,
     CommonModule,
-    ]
+  ]
 })
 export class ItemPainelFilterComponent implements OnInit, OnChanges {
   constructor(private dialog: DialogService) { }
@@ -34,10 +34,10 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
   @Input() checklistTagMode: ChecklistTagMode = 'select'
   @Input() showChecklistActions: boolean = false
   @Input() disableChecklistActions: boolean = true
-  filterStore !: { imagem: boolean; is110or220: boolean; nComprado: boolean } 
-  @Input() disableFilters : boolean = true
-  @Output('OnClearSearch') onClearSearch : EventEmitter<void> = new EventEmitter<void>()
-  @Output('OnpartCodeFill') onPartCodeFill : EventEmitter<string> = new EventEmitter<string>()
+  filterStore !: { imagem: boolean; is110or220: boolean; nComprado: boolean }
+  @Input() disableFilters: boolean = true
+  @Output('OnClearSearch') onClearSearch: EventEmitter<void> = new EventEmitter<void>()
+  @Output('OnpartCodeFill') onPartCodeFill: EventEmitter<string> = new EventEmitter<string>()
   @Output('OnChecklistTagApply') onChecklistTagApply: EventEmitter<string> = new EventEmitter<string>()
   @Output('OnChecklistTagClear') onChecklistTagClear: EventEmitter<void> = new EventEmitter<void>()
   @Output('OnChecklistLookupSubmit') onChecklistLookupSubmit: EventEmitter<ChecklistLookupPayload> = new EventEmitter<ChecklistLookupPayload>()
@@ -75,8 +75,8 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-      this.resetFilters()
-      this.syncTagFields()
+    this.resetFilters()
+    this.syncTagFields()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,10 +85,10 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
     }
   }
 
-  requestSearch(){
+  requestSearch() {
     const partcode = this.partcode?.trim().toUpperCase();
 
-    if(!partcode || partcode.length < 5) return
+    if (!partcode || partcode.length < 5) return
 
     this.partcode = partcode;
     this.onPartCodeFill.emit(partcode)
@@ -133,29 +133,29 @@ export class ItemPainelFilterComponent implements OnInit, OnChanges {
     this.onQuickSearchCodeChange.emit(this.quickSearchCode);
   }
 
-  resetFilters(){
+  resetFilters() {
     this.filterStore = {
-      imagem : false,
-      is110or220 : false,
+      imagem: false,
+      is110or220: false,
       nComprado: false
     }
   }
-  clearSearch(){
+  clearSearch() {
     this.partcode = undefined
     this.resetFilters()
     this.onClearSearch.emit()
   }
 
-  openDialog(){
+  openDialog() {
     const dialogRef = this.dialog.open(
       ItemPainelFilterPopupComponent, {
-         width: '50vw',
-         height: '50vh',
-         data: this.filterStore,
-         closable: false,
-      }
+      width: '50vw',
+      height: '50vh',
+      data: this.filterStore,
+      closable: false,
+    }
     )
-    dialogRef.onClose.subscribe(result  => {
+    dialogRef.onClose.subscribe(result => {
       this.filterStore = result.filterStore
       this.onFilterSelected.emit(result.filterStategy)
     });

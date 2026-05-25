@@ -1,21 +1,21 @@
 export type { GerarCodigoWifiDTO } from './GerarCodigoWifiDTO';
 export type { SolicitarCodigoWifiDTO } from './SolicitarCodigoWifiDTO';
 export type {
-  WifiEthosControllerCheckarMagicLinkMethodPathParams,
   WifiEthosControllerCheckarMagicLinkMethodError,
-  WifiEthosControllerCheckarMagicLinkMethodMutationResponse,
   WifiEthosControllerCheckarMagicLinkMethodMutation,
+  WifiEthosControllerCheckarMagicLinkMethodMutationResponse,
+  WifiEthosControllerCheckarMagicLinkMethodPathParams,
 } from './WifiEthosControllerCheckarMagicLinkMethod';
 export type {
-  WifiEthosControllerGerarCodigoWifiMethodPathParams,
   WifiEthosControllerGerarCodigoWifiMethodError,
+  WifiEthosControllerGerarCodigoWifiMethodMutation,
   WifiEthosControllerGerarCodigoWifiMethodMutationRequest,
   WifiEthosControllerGerarCodigoWifiMethodMutationResponse,
-  WifiEthosControllerGerarCodigoWifiMethodMutation,
+  WifiEthosControllerGerarCodigoWifiMethodPathParams,
 } from './WifiEthosControllerGerarCodigoWifiMethod';
 export type {
   WifiEthosControllerSolicitarCodigoWifiError,
+  WifiEthosControllerSolicitarCodigoWifiMutation,
   WifiEthosControllerSolicitarCodigoWifiMutationRequest,
   WifiEthosControllerSolicitarCodigoWifiMutationResponse,
-  WifiEthosControllerSolicitarCodigoWifiMutation,
 } from './WifiEthosControllerSolicitarCodigoWifi';

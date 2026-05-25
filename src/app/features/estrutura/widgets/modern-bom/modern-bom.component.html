@@ -35,6 +35,24 @@
           </div>
         </div>
 
+        @if (viewMode() === 'tree') {
+        <section class="layer-legend-toolbar">
+          <div class="layer-legend-toolbar-header">
+            <strong class="layer-legend-toolbar-title">Legenda de camadas</strong>
+            <span class="layer-legend-toolbar-subtitle">Cores da tabela por profundidade na estrutura.</span>
+          </div>
+
+          <div class="layer-legend-toolbar-list">
+            @for (layer of layerLegend; track layer) {
+            <div class="layer-legend-toolbar-item">
+              <span class="layer-legend-toolbar-swatch" [ngClass]="'table-layer-' + layer" aria-hidden="true"></span>
+              <span class="layer-legend-toolbar-label">Camada {{ layer + 1 }}</span>
+            </div>
+            }
+          </div>
+        </section>
+        }
+
         <!-- Content Area -->
         <div class="position-relative custom-scrollbar">
           @if (loading()) {

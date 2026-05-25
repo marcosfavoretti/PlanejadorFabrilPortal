@@ -101,7 +101,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
   sharingConversationId = signal<string | null>(null);
 
   private subscriptions = new Subscription();
-  private activeTitleRetryTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
@@ -149,9 +148,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
   }
 
   ngOnDestroy(): void {
-    if (this.activeTitleRetryTimer) {
-      clearTimeout(this.activeTitleRetryTimer);
-    }
     this.subscriptions.unsubscribe();
   }
 
@@ -204,7 +200,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
         },
         error: () => {
           this.conversations.set([]);
-          this.scheduleActiveConversationTitleRetry();
         },
         complete: () => this.conversationsLoading.set(false),
       }),
@@ -998,17 +993,14 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
 
   private syncActiveConversationTitleFromList(): void {
     const activeSessionId = this.chatbotService.sessionId;
-    if (!activeSessionId || this.chatbotService.activeTitle()?.trim()) return;
+    if (!activeSessionId) return;
 
     const activeConversation = this.conversations().find((item) => item.sessionId === activeSessionId);
-    if (!activeConversation?.title?.trim()) {
-      this.scheduleActiveConversationTitleRetry();
-      return;
-    }
+    if (!activeConversation) return;
 
     this.chatbotService.useSession(
       activeSessionId,
-      activeConversation.title,
+      this.chatbotService.activeTitle()?.trim() || activeConversation.title,
       activeConversation.conversationId,
     );
   }
@@ -1022,17 +1014,6 @@ export class ChatbotWidgetComponent implements OnInit, AfterViewChecked, AfterVi
     if (this.restoreHistory) {
       this.chatbotService.loadHistory(this.sessionId);
     }
-  }
-
-  private scheduleActiveConversationTitleRetry(): void {
-    if (!this.sessionId || this.chatbotService.activeTitle()?.trim() || this.activeTitleRetryTimer) {
-      return;
-    }
-
-    this.activeTitleRetryTimer = setTimeout(() => {
-      this.activeTitleRetryTimer = null;
-      this.fetchConversations();
-    }, 800);
   }
 
   private syncRouteWithSession(sessionId?: string): void {

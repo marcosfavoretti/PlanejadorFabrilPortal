@@ -1,3 +1,4 @@
+export { KPIControllerGetGanttInformationMethod } from './KPIControllerGetGanttInformationMethod';
 export { fabricaControllerAtualizarPlanejamentoMethod } from './fabricaControllerAtualizarPlanejamentoMethod';
 export { fabricaControllerConsultaFabricaMethod } from './fabricaControllerConsultaFabricaMethod';
 export { fabricaControllerConsultaFabricaPrincipalMethod } from './fabricaControllerConsultaFabricaPrincipalMethod';
@@ -20,7 +21,6 @@ export { fabricaControllerSincronizarFabricaPrivadaMethod } from './fabricaContr
 export { healthControllerCheck } from './healthControllerCheck';
 export { itemControllerCadastrarItemCapabilidadeMethod } from './itemControllerCadastrarItemCapabilidadeMethod';
 export { itemControllerGetItemCapabilidadeMethod } from './itemControllerGetItemCapabilidadeMethod';
-export { KPIControllerGetGanttInformationMethod } from './KPIControllerGetGanttInformationMethod';
 export { pedidoControllerConsultaItensDoPedidoMethod } from './pedidoControllerConsultaItensDoPedidoMethod';
 export { pedidoControllerConsultaPedidoMethod } from './pedidoControllerConsultaPedidoMethod';
 export { planejamentoControllerDatasPlanejadasMethod } from './planejamentoControllerDatasPlanejadasMethod';

@@ -7,114 +7,114 @@ export type { DesplanejarPedidoDto } from './models/DesplanejarPedidoDto';
 export type { DividaSlimResponseDTO } from './models/DividaSlimResponseDTO';
 export type {
   FabricaControllerAtualizarPlanejamentoMethod200,
+  FabricaControllerAtualizarPlanejamentoMethodMutation,
   FabricaControllerAtualizarPlanejamentoMethodMutationRequest,
   FabricaControllerAtualizarPlanejamentoMethodMutationResponse,
-  FabricaControllerAtualizarPlanejamentoMethodMutation,
 } from './models/FabricaControllerAtualizarPlanejamentoMethod';
 export type {
-  FabricaControllerConsultaFabricaMethodQueryParams,
   FabricaControllerConsultaFabricaMethodError,
-  FabricaControllerConsultaFabricaMethodQueryResponse,
   FabricaControllerConsultaFabricaMethodQuery,
+  FabricaControllerConsultaFabricaMethodQueryParams,
+  FabricaControllerConsultaFabricaMethodQueryResponse,
 } from './models/FabricaControllerConsultaFabricaMethod';
 export type {
   FabricaControllerConsultaFabricaPrincipalMethodError,
-  FabricaControllerConsultaFabricaPrincipalMethodQueryResponse,
   FabricaControllerConsultaFabricaPrincipalMethodQuery,
+  FabricaControllerConsultaFabricaPrincipalMethodQueryResponse,
 } from './models/FabricaControllerConsultaFabricaPrincipalMethod';
 export type {
-  FabricaControllerConsultaHistoricoFabricaMethodQueryParams,
   FabricaControllerConsultaHistoricoFabricaMethodError,
-  FabricaControllerConsultaHistoricoFabricaMethodQueryResponse,
   FabricaControllerConsultaHistoricoFabricaMethodQuery,
+  FabricaControllerConsultaHistoricoFabricaMethodQueryParams,
+  FabricaControllerConsultaHistoricoFabricaMethodQueryResponse,
 } from './models/FabricaControllerConsultaHistoricoFabricaMethod';
 export type {
-  FabricaControllerConsultaPlanejamentosMethodQueryParams,
   FabricaControllerConsultaPlanejamentosMethodError,
-  FabricaControllerConsultaPlanejamentosMethodQueryResponse,
   FabricaControllerConsultaPlanejamentosMethodQuery,
+  FabricaControllerConsultaPlanejamentosMethodQueryParams,
+  FabricaControllerConsultaPlanejamentosMethodQueryResponse,
 } from './models/FabricaControllerConsultaPlanejamentosMethod';
 export type {
-  FabricaControllerConsultarPedidosPlanejadosMethodQueryParams,
   FabricaControllerConsultarPedidosPlanejadosMethodError,
-  FabricaControllerConsultarPedidosPlanejadosMethodQueryResponse,
   FabricaControllerConsultarPedidosPlanejadosMethodQuery,
+  FabricaControllerConsultarPedidosPlanejadosMethodQueryParams,
+  FabricaControllerConsultarPedidosPlanejadosMethodQueryResponse,
 } from './models/FabricaControllerConsultarPedidosPlanejadosMethod';
 export type {
   FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodError,
-  FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodQueryResponse,
   FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodQuery,
+  FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethodQueryResponse,
 } from './models/FabricaControllerConsutlarFabricasDoUsuarioUseCaseMethod';
 export type {
   FabricaControllerDeletarFabricaMethod200,
+  FabricaControllerDeletarFabricaMethodMutation,
   FabricaControllerDeletarFabricaMethodMutationRequest,
   FabricaControllerDeletarFabricaMethodMutationResponse,
-  FabricaControllerDeletarFabricaMethodMutation,
 } from './models/FabricaControllerDeletarFabricaMethod';
 export type {
   FabricaControllerDesplanejarPedidoNaFabricaMethod200,
+  FabricaControllerDesplanejarPedidoNaFabricaMethodMutation,
   FabricaControllerDesplanejarPedidoNaFabricaMethodMutationRequest,
   FabricaControllerDesplanejarPedidoNaFabricaMethodMutationResponse,
-  FabricaControllerDesplanejarPedidoNaFabricaMethodMutation,
 } from './models/FabricaControllerDesplanejarPedidoNaFabricaMethod';
 export type {
   FabricaControllerForkFabricaMethod201,
+  FabricaControllerForkFabricaMethodMutation,
   FabricaControllerForkFabricaMethodMutationRequest,
   FabricaControllerForkFabricaMethodMutationResponse,
-  FabricaControllerForkFabricaMethodMutation,
 } from './models/FabricaControllerForkFabricaMethod';
 export type {
   FabricaControllerGetRequestsFabricaMergeMethodError,
-  FabricaControllerGetRequestsFabricaMergeMethodQueryResponse,
   FabricaControllerGetRequestsFabricaMergeMethodQuery,
+  FabricaControllerGetRequestsFabricaMergeMethodQueryResponse,
 } from './models/FabricaControllerGetRequestsFabricaMergeMethod';
 export type {
   FabricaControllerMergeFabricaMethodError,
+  FabricaControllerMergeFabricaMethodMutation,
   FabricaControllerMergeFabricaMethodMutationRequest,
   FabricaControllerMergeFabricaMethodMutationResponse,
-  FabricaControllerMergeFabricaMethodMutation,
 } from './models/FabricaControllerMergeFabricaMethod';
 export type {
   FabricaControllerPlanejarManualMethodError,
+  FabricaControllerPlanejarManualMethodMutation,
   FabricaControllerPlanejarManualMethodMutationRequest,
   FabricaControllerPlanejarManualMethodMutationResponse,
-  FabricaControllerPlanejarManualMethodMutation,
 } from './models/FabricaControllerPlanejarManualMethod';
 export type {
   FabricaControllerPlanejarPedidoMethod200,
+  FabricaControllerPlanejarPedidoMethodMutation,
   FabricaControllerPlanejarPedidoMethodMutationRequest,
   FabricaControllerPlanejarPedidoMethodMutationResponse,
-  FabricaControllerPlanejarPedidoMethodMutation,
 } from './models/FabricaControllerPlanejarPedidoMethod';
 export type {
   FabricaControllerRemoverPlanejamentoMethod200,
+  FabricaControllerRemoverPlanejamentoMethodMutation,
   FabricaControllerRemoverPlanejamentoMethodMutationRequest,
   FabricaControllerRemoverPlanejamentoMethodMutationResponse,
-  FabricaControllerRemoverPlanejamentoMethodMutation,
 } from './models/FabricaControllerRemoverPlanejamentoMethod';
 export type {
   FabricaControllerReplanejarPedidoUseCase201,
+  FabricaControllerReplanejarPedidoUseCaseMutation,
   FabricaControllerReplanejarPedidoUseCaseMutationRequest,
   FabricaControllerReplanejarPedidoUseCaseMutationResponse,
-  FabricaControllerReplanejarPedidoUseCaseMutation,
 } from './models/FabricaControllerReplanejarPedidoUseCase';
 export type {
   FabricaControllerRequestFabricaMergeMethodError,
+  FabricaControllerRequestFabricaMergeMethodMutation,
   FabricaControllerRequestFabricaMergeMethodMutationRequest,
   FabricaControllerRequestFabricaMergeMethodMutationResponse,
-  FabricaControllerRequestFabricaMergeMethodMutation,
 } from './models/FabricaControllerRequestFabricaMergeMethod';
 export type {
   FabricaControllerResetaFabricaMethodError,
+  FabricaControllerResetaFabricaMethodMutation,
   FabricaControllerResetaFabricaMethodMutationRequest,
   FabricaControllerResetaFabricaMethodMutationResponse,
-  FabricaControllerResetaFabricaMethodMutation,
 } from './models/FabricaControllerResetaFabricaMethod';
 export type {
   FabricaControllerSincronizarFabricaPrivadaMethodError,
+  FabricaControllerSincronizarFabricaPrivadaMethodMutation,
   FabricaControllerSincronizarFabricaPrivadaMethodMutationRequest,
   FabricaControllerSincronizarFabricaPrivadaMethodMutationResponse,
-  FabricaControllerSincronizarFabricaPrivadaMethodMutation,
 } from './models/FabricaControllerSincronizarFabricaPrivadaMethod';
 export type { FabricaForkDTO } from './models/FabricaForkDTO';
 export type { FabricaResponseDto } from './models/FabricaResponseDto';
@@ -124,50 +124,50 @@ export type { GetGanttInformationDto } from './models/GetGanttInformationDto';
 export type {
   HealthControllerCheck200,
   HealthControllerCheck503,
-  HealthControllerCheckQueryResponse,
   HealthControllerCheckQuery,
+  HealthControllerCheckQueryResponse,
 } from './models/HealthControllerCheck';
 export type { InputPedidosDTO } from './models/InputPedidosDTO';
 export type {
   ItemControllerCadastrarItemCapabilidadeMethod201,
+  ItemControllerCadastrarItemCapabilidadeMethodMutation,
   ItemControllerCadastrarItemCapabilidadeMethodMutationRequest,
   ItemControllerCadastrarItemCapabilidadeMethodMutationResponse,
-  ItemControllerCadastrarItemCapabilidadeMethodMutation,
 } from './models/ItemControllerCadastrarItemCapabilidadeMethod';
 export type {
   ItemControllerGetItemCapabilidadeMethodError,
-  ItemControllerGetItemCapabilidadeMethodQueryResponse,
   ItemControllerGetItemCapabilidadeMethodQuery,
+  ItemControllerGetItemCapabilidadeMethodQueryResponse,
 } from './models/ItemControllerGetItemCapabilidadeMethod';
 export type { ItemResDto } from './models/ItemResDto';
 export type {
-  KPIControllerGetGanttInformationMethodQueryParams,
   KPIControllerGetGanttInformationMethod200,
-  KPIControllerGetGanttInformationMethodQueryResponse,
   KPIControllerGetGanttInformationMethodQuery,
+  KPIControllerGetGanttInformationMethodQueryParams,
+  KPIControllerGetGanttInformationMethodQueryResponse,
 } from './models/KPIControllerGetGanttInformationMethod';
 export type { MergeFabricaDto } from './models/MergeFabricaDto';
 export type { MergeRequestPendingDto } from './models/MergeRequestPendingDto';
 export type { MudancasResDto } from './models/MudancasResDto';
 export type {
-  PedidoControllerConsultaItensDoPedidoMethodQueryParams,
   PedidoControllerConsultaItensDoPedidoMethodError,
-  PedidoControllerConsultaItensDoPedidoMethodQueryResponse,
   PedidoControllerConsultaItensDoPedidoMethodQuery,
+  PedidoControllerConsultaItensDoPedidoMethodQueryParams,
+  PedidoControllerConsultaItensDoPedidoMethodQueryResponse,
 } from './models/PedidoControllerConsultaItensDoPedidoMethod';
 export type {
-  PedidoControllerConsultaPedidoMethodQueryParams,
   PedidoControllerConsultaPedidoMethodError,
-  PedidoControllerConsultaPedidoMethodQueryResponse,
   PedidoControllerConsultaPedidoMethodQuery,
+  PedidoControllerConsultaPedidoMethodQueryParams,
+  PedidoControllerConsultaPedidoMethodQueryResponse,
 } from './models/PedidoControllerConsultaPedidoMethod';
 export type { PedidoResponseDTO } from './models/PedidoResponseDTO';
 export type { PedidoSlimResponseDTO } from './models/PedidoSlimResponseDTO';
 export type { PedidosPlanejadosResponseDTO } from './models/PedidosPlanejadosResponseDTO';
 export type {
   PlanejamentoControllerDatasPlanejadasMethod200,
-  PlanejamentoControllerDatasPlanejadasMethodQueryResponse,
   PlanejamentoControllerDatasPlanejadasMethodQuery,
+  PlanejamentoControllerDatasPlanejadasMethodQueryResponse,
 } from './models/PlanejamentoControllerDatasPlanejadasMethod';
 export type { PlanejamentoResponseDTO } from './models/PlanejamentoResponseDTO';
 export type { RemoverPlanejamentoDTO } from './models/RemoverPlanejamentoDTO';
@@ -177,6 +177,7 @@ export type { SetorResDTO } from './models/SetorResDTO';
 export type { SincronizarFabricaPrivadaDTO } from './models/SincronizarFabricaPrivadaDTO';
 export type { UserFabricaResponseDto } from './models/UserFabricaResponseDto';
 export type { UserResDto } from './models/UserResDto';
+export { KPIControllerGetGanttInformationMethod } from './client/KPIControllerGetGanttInformationMethod';
 export { fabricaControllerAtualizarPlanejamentoMethod } from './client/fabricaControllerAtualizarPlanejamentoMethod';
 export { fabricaControllerConsultaFabricaMethod } from './client/fabricaControllerConsultaFabricaMethod';
 export { fabricaControllerConsultaFabricaPrincipalMethod } from './client/fabricaControllerConsultaFabricaPrincipalMethod';
@@ -199,7 +200,6 @@ export { fabricaControllerSincronizarFabricaPrivadaMethod } from './client/fabri
 export { healthControllerCheck } from './client/healthControllerCheck';
 export { itemControllerCadastrarItemCapabilidadeMethod } from './client/itemControllerCadastrarItemCapabilidadeMethod';
 export { itemControllerGetItemCapabilidadeMethod } from './client/itemControllerGetItemCapabilidadeMethod';
-export { KPIControllerGetGanttInformationMethod } from './client/KPIControllerGetGanttInformationMethod';
 export { pedidoControllerConsultaItensDoPedidoMethod } from './client/pedidoControllerConsultaItensDoPedidoMethod';
 export { pedidoControllerConsultaPedidoMethod } from './client/pedidoControllerConsultaPedidoMethod';
 export { planejamentoControllerDatasPlanejadasMethod } from './client/planejamentoControllerDatasPlanejadasMethod';

@@ -1,61 +1,6 @@
 export type { CancelarMensagemReqDto } from './models/CancelarMensagemReqDto';
 export type { CancelarMensagemResDto } from './models/CancelarMensagemResDto';
 export type { ChatAttachmentDto } from './models/ChatAttachmentDto';
-export type {
-  ChatbotEstruturaControllerCancelMessageError,
-  ChatbotEstruturaControllerCancelMessageMutationRequest,
-  ChatbotEstruturaControllerCancelMessageMutationResponse,
-  ChatbotEstruturaControllerCancelMessageMutation,
-} from './models/ChatbotEstruturaControllerCancelMessage';
-export type {
-  ChatbotEstruturaControllerCreateConversationError,
-  ChatbotEstruturaControllerCreateConversationMutationRequest,
-  ChatbotEstruturaControllerCreateConversationMutationResponse,
-  ChatbotEstruturaControllerCreateConversationMutation,
-} from './models/ChatbotEstruturaControllerCreateConversation';
-export type {
-  ChatbotEstruturaControllerDeleteConversationPathParams,
-  ChatbotEstruturaControllerDeleteConversation204,
-  ChatbotEstruturaControllerDeleteConversationMutationResponse,
-  ChatbotEstruturaControllerDeleteConversationMutation,
-} from './models/ChatbotEstruturaControllerDeleteConversation';
-export type {
-  ChatbotEstruturaControllerForkSharedConversationPathParams,
-  ChatbotEstruturaControllerForkSharedConversationError,
-  ChatbotEstruturaControllerForkSharedConversationMutationResponse,
-  ChatbotEstruturaControllerForkSharedConversationMutation,
-} from './models/ChatbotEstruturaControllerForkSharedConversation';
-export type {
-  ChatbotEstruturaControllerGetHistoryPathParams,
-  ChatbotEstruturaControllerGetHistoryError,
-  ChatbotEstruturaControllerGetHistoryQueryResponse,
-  ChatbotEstruturaControllerGetHistoryQuery,
-} from './models/ChatbotEstruturaControllerGetHistory';
-export type {
-  ChatbotEstruturaControllerListConversationsQueryParams,
-  ChatbotEstruturaControllerListConversationsError,
-  ChatbotEstruturaControllerListConversationsQueryResponse,
-  ChatbotEstruturaControllerListConversationsQuery,
-} from './models/ChatbotEstruturaControllerListConversations';
-export type {
-  ChatbotEstruturaControllerSendMessageError,
-  ChatbotEstruturaControllerSendMessageMutationRequest,
-  ChatbotEstruturaControllerSendMessageMutationResponse,
-  ChatbotEstruturaControllerSendMessageMutation,
-} from './models/ChatbotEstruturaControllerSendMessage';
-export type {
-  ChatbotEstruturaControllerShareConversationPathParams,
-  ChatbotEstruturaControllerShareConversationError,
-  ChatbotEstruturaControllerShareConversationMutationResponse,
-  ChatbotEstruturaControllerShareConversationMutation,
-} from './models/ChatbotEstruturaControllerShareConversation';
-export type {
-  ChatbotEstruturaControllerUpdateConversationPathParams,
-  ChatbotEstruturaControllerUpdateConversationError,
-  ChatbotEstruturaControllerUpdateConversationMutationRequest,
-  ChatbotEstruturaControllerUpdateConversationMutationResponse,
-  ChatbotEstruturaControllerUpdateConversationMutation,
-} from './models/ChatbotEstruturaControllerUpdateConversation';
 export type { ChatCompletionDto } from './models/ChatCompletionDto';
 export type { ChatCompletionUsageDto } from './models/ChatCompletionUsageDto';
 export type { ChatConversationForkDto } from './models/ChatConversationForkDto';
@@ -64,40 +9,95 @@ export type { ChatConversationShareDto } from './models/ChatConversationShareDto
 export type { ChatConversationSummaryDto } from './models/ChatConversationSummaryDto';
 export type { ChatMessageDto } from './models/ChatMessageDto';
 export type {
+  ChatbotEstruturaControllerCancelMessageError,
+  ChatbotEstruturaControllerCancelMessageMutation,
+  ChatbotEstruturaControllerCancelMessageMutationRequest,
+  ChatbotEstruturaControllerCancelMessageMutationResponse,
+} from './models/ChatbotEstruturaControllerCancelMessage';
+export type {
+  ChatbotEstruturaControllerCreateConversationError,
+  ChatbotEstruturaControllerCreateConversationMutation,
+  ChatbotEstruturaControllerCreateConversationMutationRequest,
+  ChatbotEstruturaControllerCreateConversationMutationResponse,
+} from './models/ChatbotEstruturaControllerCreateConversation';
+export type {
+  ChatbotEstruturaControllerDeleteConversation204,
+  ChatbotEstruturaControllerDeleteConversationMutation,
+  ChatbotEstruturaControllerDeleteConversationMutationResponse,
+  ChatbotEstruturaControllerDeleteConversationPathParams,
+} from './models/ChatbotEstruturaControllerDeleteConversation';
+export type {
+  ChatbotEstruturaControllerForkSharedConversationError,
+  ChatbotEstruturaControllerForkSharedConversationMutation,
+  ChatbotEstruturaControllerForkSharedConversationMutationResponse,
+  ChatbotEstruturaControllerForkSharedConversationPathParams,
+} from './models/ChatbotEstruturaControllerForkSharedConversation';
+export type {
+  ChatbotEstruturaControllerGetHistoryError,
+  ChatbotEstruturaControllerGetHistoryPathParams,
+  ChatbotEstruturaControllerGetHistoryQuery,
+  ChatbotEstruturaControllerGetHistoryQueryResponse,
+} from './models/ChatbotEstruturaControllerGetHistory';
+export type {
+  ChatbotEstruturaControllerListConversationsError,
+  ChatbotEstruturaControllerListConversationsQuery,
+  ChatbotEstruturaControllerListConversationsQueryParams,
+  ChatbotEstruturaControllerListConversationsQueryResponse,
+} from './models/ChatbotEstruturaControllerListConversations';
+export type {
+  ChatbotEstruturaControllerSendMessageError,
+  ChatbotEstruturaControllerSendMessageMutation,
+  ChatbotEstruturaControllerSendMessageMutationRequest,
+  ChatbotEstruturaControllerSendMessageMutationResponse,
+} from './models/ChatbotEstruturaControllerSendMessage';
+export type {
+  ChatbotEstruturaControllerShareConversationError,
+  ChatbotEstruturaControllerShareConversationMutation,
+  ChatbotEstruturaControllerShareConversationMutationResponse,
+  ChatbotEstruturaControllerShareConversationPathParams,
+} from './models/ChatbotEstruturaControllerShareConversation';
+export type {
+  ChatbotEstruturaControllerUpdateConversationError,
+  ChatbotEstruturaControllerUpdateConversationMutation,
+  ChatbotEstruturaControllerUpdateConversationMutationRequest,
+  ChatbotEstruturaControllerUpdateConversationMutationResponse,
+  ChatbotEstruturaControllerUpdateConversationPathParams,
+} from './models/ChatbotEstruturaControllerUpdateConversation';
+export type {
   CheckListControllerDeleteItemInCheckList200,
+  CheckListControllerDeleteItemInCheckListMutation,
   CheckListControllerDeleteItemInCheckListMutationRequest,
   CheckListControllerDeleteItemInCheckListMutationResponse,
-  CheckListControllerDeleteItemInCheckListMutation,
 } from './models/CheckListControllerDeleteItemInCheckList';
 export type {
-  CheckListControllerGetChecklistQueryParams,
   CheckListControllerGetChecklistError,
-  CheckListControllerGetChecklistQueryResponse,
   CheckListControllerGetChecklistQuery,
+  CheckListControllerGetChecklistQueryParams,
+  CheckListControllerGetChecklistQueryResponse,
 } from './models/CheckListControllerGetChecklist';
 export type {
-  CheckListControllerGetChecklistAvaiableQueryParams,
   CheckListControllerGetChecklistAvaiableError,
-  CheckListControllerGetChecklistAvaiableQueryResponse,
   CheckListControllerGetChecklistAvaiableQuery,
+  CheckListControllerGetChecklistAvaiableQueryParams,
+  CheckListControllerGetChecklistAvaiableQueryResponse,
 } from './models/CheckListControllerGetChecklistAvaiable';
 export type {
-  CheckListControllerGetChecklistTagsQueryParams,
   CheckListControllerGetChecklistTagsError,
-  CheckListControllerGetChecklistTagsQueryResponse,
   CheckListControllerGetChecklistTagsQuery,
+  CheckListControllerGetChecklistTagsQueryParams,
+  CheckListControllerGetChecklistTagsQueryResponse,
 } from './models/CheckListControllerGetChecklistTags';
 export type {
   CheckListControllerInsertItemCheckList201,
+  CheckListControllerInsertItemCheckListMutation,
   CheckListControllerInsertItemCheckListMutationRequest,
   CheckListControllerInsertItemCheckListMutationResponse,
-  CheckListControllerInsertItemCheckListMutation,
 } from './models/CheckListControllerInsertItemCheckList';
 export type {
   CheckListControllerSubmitChecklist201,
+  CheckListControllerSubmitChecklistMutation,
   CheckListControllerSubmitChecklistMutationRequest,
   CheckListControllerSubmitChecklistMutationResponse,
-  CheckListControllerSubmitChecklistMutation,
 } from './models/CheckListControllerSubmitChecklist';
 export type { CheckListItemResDto } from './models/CheckListItemResDto';
 export type { CheckListItemResStatusDto } from './models/CheckListItemResStatusDto';
@@ -108,75 +108,75 @@ export type { ConsultaPorPartcodeReqDTO } from './models/ConsultaPorPartcodeReqD
 export type { CreateChatConversationReqDto } from './models/CreateChatConversationReqDto';
 export type { EnviarMensagemStreamReqDto } from './models/EnviarMensagemStreamReqDto';
 export type {
-  EstruturaControllerAnaliseEstruturaMethodQueryParams,
   EstruturaControllerAnaliseEstruturaMethod200,
-  EstruturaControllerAnaliseEstruturaMethodQueryResponse,
   EstruturaControllerAnaliseEstruturaMethodQuery,
+  EstruturaControllerAnaliseEstruturaMethodQueryParams,
+  EstruturaControllerAnaliseEstruturaMethodQueryResponse,
 } from './models/EstruturaControllerAnaliseEstruturaMethod';
 export type {
-  EstruturaControllerAnaliseEstruturaResumidaMethodQueryParams,
   EstruturaControllerAnaliseEstruturaResumidaMethod200,
-  EstruturaControllerAnaliseEstruturaResumidaMethodQueryResponse,
   EstruturaControllerAnaliseEstruturaResumidaMethodQuery,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryParams,
+  EstruturaControllerAnaliseEstruturaResumidaMethodQueryResponse,
 } from './models/EstruturaControllerAnaliseEstruturaResumidaMethod';
 export type {
-  EstruturaControllerDetalharItensQueryParams,
   EstruturaControllerDetalharItens200,
-  EstruturaControllerDetalharItensQueryResponse,
   EstruturaControllerDetalharItensQuery,
+  EstruturaControllerDetalharItensQueryParams,
+  EstruturaControllerDetalharItensQueryResponse,
 } from './models/EstruturaControllerDetalharItens';
 export type {
-  EstruturaControllerEstrturaAsListMethodQueryParams,
   EstruturaControllerEstrturaAsListMethod200,
-  EstruturaControllerEstrturaAsListMethodQueryResponse,
   EstruturaControllerEstrturaAsListMethodQuery,
+  EstruturaControllerEstrturaAsListMethodQueryParams,
+  EstruturaControllerEstrturaAsListMethodQueryResponse,
 } from './models/EstruturaControllerEstrturaAsListMethod';
 export type {
-  EstruturaControllerEstrturaAsTreeMethodQueryParams,
   EstruturaControllerEstrturaAsTreeMethod200,
-  EstruturaControllerEstrturaAsTreeMethodQueryResponse,
   EstruturaControllerEstrturaAsTreeMethodQuery,
+  EstruturaControllerEstrturaAsTreeMethodQueryParams,
+  EstruturaControllerEstrturaAsTreeMethodQueryResponse,
 } from './models/EstruturaControllerEstrturaAsTreeMethod';
 export type {
-  EstruturaControllerGetEstruturasDedendentesMethodQueryParams,
   EstruturaControllerGetEstruturasDedendentesMethodError,
-  EstruturaControllerGetEstruturasDedendentesMethodQueryResponse,
   EstruturaControllerGetEstruturasDedendentesMethodQuery,
+  EstruturaControllerGetEstruturasDedendentesMethodQueryParams,
+  EstruturaControllerGetEstruturasDedendentesMethodQueryResponse,
 } from './models/EstruturaControllerGetEstruturasDedendentesMethod';
 export type {
-  EstruturaControllerGetItemDeControleQueryParams,
   EstruturaControllerGetItemDeControleError,
-  EstruturaControllerGetItemDeControleQueryResponse,
   EstruturaControllerGetItemDeControleQuery,
+  EstruturaControllerGetItemDeControleQueryParams,
+  EstruturaControllerGetItemDeControleQueryResponse,
 } from './models/EstruturaControllerGetItemDeControle';
 export type {
   EstruturaControllerListAllEstruturasFinaisMethod200,
-  EstruturaControllerListAllEstruturasFinaisMethodQueryResponse,
   EstruturaControllerListAllEstruturasFinaisMethodQuery,
+  EstruturaControllerListAllEstruturasFinaisMethodQueryResponse,
 } from './models/EstruturaControllerListAllEstruturasFinaisMethod';
 export type {
-  EstruturaControllerRemoveInNeo4JQueryParams,
   EstruturaControllerRemoveInNeo4J200,
-  EstruturaControllerRemoveInNeo4JMutationResponse,
   EstruturaControllerRemoveInNeo4JMutation,
+  EstruturaControllerRemoveInNeo4JMutationResponse,
+  EstruturaControllerRemoveInNeo4JQueryParams,
 } from './models/EstruturaControllerRemoveInNeo4J';
 export type {
   EstruturaExportControllerExportToNeo4J201,
+  EstruturaExportControllerExportToNeo4JMutation,
   EstruturaExportControllerExportToNeo4JMutationRequest,
   EstruturaExportControllerExportToNeo4JMutationResponse,
-  EstruturaExportControllerExportToNeo4JMutation,
 } from './models/EstruturaExportControllerExportToNeo4J';
 export type {
-  EstruturaImagemControllerGetImagemDaEstruturaMethodQueryParams,
   EstruturaImagemControllerGetImagemDaEstruturaMethod200,
-  EstruturaImagemControllerGetImagemDaEstruturaMethodQueryResponse,
   EstruturaImagemControllerGetImagemDaEstruturaMethodQuery,
+  EstruturaImagemControllerGetImagemDaEstruturaMethodQueryParams,
+  EstruturaImagemControllerGetImagemDaEstruturaMethodQueryResponse,
 } from './models/EstruturaImagemControllerGetImagemDaEstruturaMethod';
 export type {
-  EstruturaRoteiroControllerConsultarRoteiroMethodQueryParams,
   EstruturaRoteiroControllerConsultarRoteiroMethodError,
-  EstruturaRoteiroControllerConsultarRoteiroMethodQueryResponse,
   EstruturaRoteiroControllerConsultarRoteiroMethodQuery,
+  EstruturaRoteiroControllerConsultarRoteiroMethodQueryParams,
+  EstruturaRoteiroControllerConsultarRoteiroMethodQueryResponse,
 } from './models/EstruturaRoteiroControllerConsultarRoteiroMethod';
 export type { GetAnaliseResDTO } from './models/GetAnaliseResDTO';
 export type { InsertItemChecklistDTO } from './models/InsertItemChecklistDTO';

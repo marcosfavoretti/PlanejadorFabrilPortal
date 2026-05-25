@@ -21,9 +21,18 @@
       </div>
     </div>
   </ng-template>
+  <ng-template pTemplate="colgroup">
+    <colgroup>
+      <col style="width: 380px;">
+      <col>
+      <col style="width: 120px;">
+      <col style="width: 150px;">
+      <col style="width: 150px;">
+    </colgroup>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th class="text-center text-responsive">ID DO ITEM</th>
+      <th class="text-responsive text-start" style="min-width: 280px;">ID DO ITEM</th>
       <th class="text-center text-responsive">NOME DO COMPONENTE</th>
       <th class="text-center text-responsive">QTD</th>
       <th class="text-center text-responsive">STATUS</th>
@@ -31,10 +40,12 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-    <tr class="text-responsive">
+    <tr class="text-responsive" [ngClass]="'table-layer-' + rowNode.level">
       <td>
-        <p-treeTableToggler [rowNode]="rowNode" />
-        {{ rowData.partcode }}
+        <div class="d-flex align-items-center text-nowrap">
+          <p-treeTableToggler [rowNode]="rowNode" class="flex-shrink-0" />
+          <span class="ms-1 fw-medium">{{ rowData.partcode }}</span>
+        </div>
       </td>
       <td>{{ rowData.pa }}</td>
       <td class="text-center">{{ rowData.quantidade }}</td>
@@ -70,6 +81,7 @@
       <span class="selection-label">Selecionado</span>
       <strong>{{ selectedGraphNode?.node?.data?.partcode }}</strong>
       <span>{{ selectedGraphNode?.node?.data?.pa }}</span>
+      <span class="selection-meta">Camada {{ selectedGraphNode ? selectedGraphNode.layer + 1 : 0 }} • {{ selectedNodeChildrenCount }} filhos</span>
     </div>
     }
   </div>
@@ -93,22 +105,32 @@
           </marker>
         </defs>
 
+        @for (guide of layerGuides; track guide.layer) {
+        <line class="graph-layer-guide" x1="0" [attr.y1]="guide.y" [attr.x2]="graphWidth" [attr.y2]="guide.y" />
+        <text class="graph-layer-label" x="16" [attr.y]="guide.labelY">Camada {{ guide.layer + 1 }}</text>
+        }
+
         @for (edge of graphEdges; track edge.from.id + '-' + edge.to.id) {
+        <path class="graph-edge graph-edge-halo" [attr.d]="edge.path" />
         <path class="graph-edge" [attr.d]="edge.path" marker-end="url(#graphArrow)" />
         }
 
         @for (graphNode of graphNodes; track graphNode.id) {
         <g class="graph-node" [class.graph-node-selected]="isGraphNodeSelected(graphNode)"
           (click)="selectGraphNode(graphNode)">
-          <rect [attr.x]="graphNode.x" [attr.y]="graphNode.y" width="220" height="80" rx="8" />
-          <text class="graph-node-partcode" [attr.x]="graphNode.x + 20" [attr.y]="graphNode.y + 32">
-            {{ graphNode.node.data?.partcode }}
+          <title>{{ graphNode.node.data?.partcode }} - {{ graphNode.node.data?.pa }}</title>
+          <rect [attr.x]="graphNode.x" [attr.y]="graphNode.y" width="240" height="92" rx="12" />
+          <text class="graph-node-partcode" [attr.x]="graphNode.x + 18" [attr.y]="graphNode.y + 30">
+            {{ getNodePartcode(graphNode.node) }}
           </text>
-          <text class="graph-node-pa" [attr.x]="graphNode.x + 20" [attr.y]="graphNode.y + 60">
-            {{ graphNode.node.data?.pa }}
+          <text class="graph-node-pa" [attr.x]="graphNode.x + 18" [attr.y]="graphNode.y + 54">
+            {{ getNodeDescription(graphNode.node) }}
           </text>
-          <text class="graph-node-layer" [attr.x]="graphNode.x + 180" [attr.y]="graphNode.y + 32">
+          <text class="graph-node-layer" [attr.x]="graphNode.x + 182" [attr.y]="graphNode.y + 28">
             C{{ graphNode.layer + 1 }}
+          </text>
+          <text class="graph-node-children" [attr.x]="graphNode.x + 18" [attr.y]="graphNode.y + 76">
+            {{ graphNode.node.children?.length || 0 }} filhos
           </text>
         </g>
         }
