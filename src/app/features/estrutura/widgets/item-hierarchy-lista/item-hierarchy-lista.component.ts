@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, ViewChild, signal} from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, EventEmitter, Input, Output, ViewChild, signal } from '@angular/core';
 import {ImageModule} from 'primeng/image'
 import {TreeModule} from 'primeng/tree'
 import { TreeNode } from 'primeng/api';
@@ -23,12 +24,27 @@ interface GraphEdge {
   path: string;
 }
 
+interface LayerGuide {
+  layer: number;
+  y: number;
+  labelY: number;
+}
+
+interface LayoutTreeNode {
+  id: string;
+  source: TreeNode<TreeNodeData>;
+  layer: number;
+  width: number;
+  children: LayoutTreeNode[];
+}
+
 @Component({
   selector: 'app-item-hierarchy-lista',
   templateUrl: './item-hierarchy-lista.component.html',
   styleUrls: ['./item-hierarchy-lista.component.css'],
   standalone: true,
   imports : [
+    NgClass,
     ImageModule,
     TreeModule,
     TreeTableModule,
@@ -39,14 +55,16 @@ interface GraphEdge {
 })
 export class ItemHierarchyListaComponent{
 
-  private readonly graphMargin = 60;
-  private readonly nodeWidth = 220;
-  private readonly nodeHeight = 80;
-  private readonly horizontalGap = 120;
-  private readonly verticalGap = 180;
+  private readonly graphMargin = 72;
+  private readonly nodeWidth = 240;
+  private readonly nodeHeight = 92;
+  private readonly siblingGap = 32;
+  private readonly verticalGap = 96;
+  private readonly edgeBendOffset = 36;
 
   graphNodes: GraphNode[] = [];
   graphEdges: GraphEdge[] = [];
+  layerGuides: LayerGuide[] = [];
   graphWidth = 720;
   graphHeight = 320;
   selectedGraphNode?: GraphNode;
@@ -94,7 +112,11 @@ export class ItemHierarchyListaComponent{
   }
 
   get totalLayers(): number {
-    return this.graphNodes.reduce((total, node) => Math.max(total, node.layer + 1), 0);
+    return this.layerGuides.length;
+  }
+
+  get selectedNodeChildrenCount(): number {
+    return this.selectedGraphNode?.node.children?.length ?? 0;
   }
 
   selectGraphNode(node: GraphNode) {
@@ -134,6 +156,14 @@ export class ItemHierarchyListaComponent{
 
   isGraphNodeSelected(node: GraphNode): boolean {
     return this.selectedGraphNode?.id === node.id;
+  }
+
+  getNodePartcode(node: TreeNode<TreeNodeData> | undefined): string {
+    return this.ellipsis(node?.data?.partcode, 24);
+  }
+
+  getNodeDescription(node: TreeNode<TreeNodeData> | undefined): string {
+    return this.ellipsis(node?.data?.pa, 28);
   }
 
   async exportarExcel() {
@@ -177,68 +207,140 @@ export class ItemHierarchyListaComponent{
   }
 
   private buildGraph() {
-    const layers: GraphNode[][] = [];
-    const edges: GraphEdge[] = [];
-    const queue = this.item.map((node, index) => ({
-      node,
-      layer: 0,
-      parent: undefined as GraphNode | undefined,
-      id: `${index}`,
-    }));
+    const previousSelectionId = this.selectedGraphNode?.id;
+    const roots = this.item.map((node, index) => this.createLayoutNode(node, 0, `${index}`));
+    const totalWidth = this.computeForestWidth(roots);
+    const layers = new Map<number, GraphNode[]>();
+    const graphNodes: GraphNode[] = [];
+    const graphEdges: GraphEdge[] = [];
+    const layerCount = this.computeLayerCount(roots);
 
-    while (queue.length) {
-      const current = queue.shift()!;
-      const graphNode: GraphNode = {
-        id: current.id,
-        node: current.node,
-        layer: current.layer,
-        x: 0,
-        y: this.graphMargin + current.layer * (this.nodeHeight + this.verticalGap),
+    this.graphWidth = Math.max(720, Math.ceil(totalWidth + this.graphMargin * 2));
+    this.graphHeight = Math.max(
+      320,
+      this.graphMargin * 2 + layerCount * this.nodeHeight + Math.max(0, layerCount - 1) * this.verticalGap,
+    );
+
+    let startX = this.graphMargin;
+    roots.forEach((root, index) => {
+      this.placeLayoutNode(root, startX, graphNodes, graphEdges, layers, undefined);
+      startX += root.width + (index < roots.length - 1 ? this.siblingGap : 0);
+    });
+
+    graphEdges.forEach((edge) => {
+      edge.path = this.buildEdgePath(edge.from, edge.to);
+    });
+
+    this.layerGuides = Array.from({ length: layerCount }, (_, layer) => {
+      const y = this.graphMargin + layer * (this.nodeHeight + this.verticalGap) - this.verticalGap / 2;
+      return {
+        layer,
+        y: Math.max(this.graphMargin / 2, y),
+        labelY: this.graphMargin + layer * (this.nodeHeight + this.verticalGap) - 14,
       };
+    });
 
-      layers[current.layer] = layers[current.layer] ?? [];
-      layers[current.layer].push(graphNode);
+    this.graphNodes = graphNodes;
+    this.graphEdges = graphEdges;
+    this.selectedGraphNode =
+      this.graphNodes.find((node) => node.id === previousSelectionId)
+      ?? this.graphNodes[0];
+    this.selectedTreeNode = this.selectedGraphNode?.node;
+  }
 
-      if (current.parent) {
-        edges.push({ from: current.parent, to: graphNode, path: '' });
-      }
+  private createLayoutNode(node: TreeNode<TreeNodeData>, layer: number, id: string): LayoutTreeNode {
+    const children = (node.children ?? []).map((child, index) =>
+      this.createLayoutNode(child as TreeNode<TreeNodeData>, layer + 1, `${id}-${index}`),
+    );
 
-      (current.node.children ?? []).forEach((child, index) => {
-        queue.push({
-          node: child as TreeNode<TreeNodeData>,
-          layer: current.layer + 1,
-          parent: graphNode,
-          id: `${current.id}-${index}`,
-        });
-      });
+    return {
+      id,
+      source: node,
+      layer,
+      width: this.computeSubtreeWidth(children),
+      children,
+    };
+  }
+
+  private computeSubtreeWidth(children: LayoutTreeNode[]): number {
+    if (!children.length) {
+      return this.nodeWidth;
     }
 
-    const widestLayer = Math.max(1, ...layers.map(layer => layer.length));
-    this.graphWidth = Math.max(720, this.graphMargin * 2 + widestLayer * this.nodeWidth + Math.max(0, widestLayer - 1) * this.horizontalGap);
-    this.graphHeight = Math.max(320, this.graphMargin * 2 + layers.length * this.nodeHeight + Math.max(0, layers.length - 1) * this.verticalGap);
+    const childrenWidth = children.reduce((total, child) => total + child.width, 0);
+    const gapsWidth = this.siblingGap * Math.max(0, children.length - 1);
+    return Math.max(this.nodeWidth, childrenWidth + gapsWidth);
+  }
 
-    layers.forEach(layer => {
-      const layerWidth = layer.length * this.nodeWidth + Math.max(0, layer.length - 1) * this.horizontalGap;
-      const startX = Math.max(this.graphMargin, (this.graphWidth - layerWidth) / 2);
+  private computeForestWidth(roots: LayoutTreeNode[]): number {
+    if (!roots.length) {
+      return this.nodeWidth;
+    }
 
-      layer.forEach((node, index) => {
-        node.x = startX + index * (this.nodeWidth + this.horizontalGap);
-      });
+    return roots.reduce((total, root) => total + root.width, 0) + this.siblingGap * Math.max(0, roots.length - 1);
+  }
+
+  private computeLayerCount(roots: LayoutTreeNode[]): number {
+    return roots.reduce((max, root) => Math.max(max, this.getMaxLayer(root)), 0) + (roots.length ? 1 : 0);
+  }
+
+  private getMaxLayer(node: LayoutTreeNode): number {
+    if (!node.children.length) {
+      return node.layer;
+    }
+
+    return node.children.reduce((max, child) => Math.max(max, this.getMaxLayer(child)), node.layer);
+  }
+
+  private placeLayoutNode(
+    layoutNode: LayoutTreeNode,
+    startX: number,
+    graphNodes: GraphNode[],
+    graphEdges: GraphEdge[],
+    layers: Map<number, GraphNode[]>,
+    parent?: GraphNode,
+  ) {
+    const x = startX + (layoutNode.width - this.nodeWidth) / 2;
+    const y = this.graphMargin + layoutNode.layer * (this.nodeHeight + this.verticalGap);
+    const graphNode: GraphNode = {
+      id: layoutNode.id,
+      node: layoutNode.source,
+      x,
+      y,
+      layer: layoutNode.layer,
+    };
+
+    graphNodes.push(graphNode);
+    const layerNodes = layers.get(layoutNode.layer) ?? [];
+    layerNodes.push(graphNode);
+    layers.set(layoutNode.layer, layerNodes);
+
+    if (parent) {
+      graphEdges.push({ from: parent, to: graphNode, path: '' });
+    }
+
+    let childStartX = startX;
+    layoutNode.children.forEach((child) => {
+      this.placeLayoutNode(child, childStartX, graphNodes, graphEdges, layers, graphNode);
+      childStartX += child.width + this.siblingGap;
     });
+  }
 
-    edges.forEach(edge => {
-      const fromX = edge.from.x + this.nodeWidth / 2;
-      const fromY = edge.from.y + this.nodeHeight;
-      const toX = edge.to.x + this.nodeWidth / 2;
-      const toY = edge.to.y;
-      const midY = fromY + (toY - fromY) / 2;
+  private buildEdgePath(from: GraphNode, to: GraphNode): string {
+    const fromX = from.x + this.nodeWidth / 2;
+    const fromY = from.y + this.nodeHeight;
+    const toX = to.x + this.nodeWidth / 2;
+    const toY = to.y;
+    const bendY = Math.min(toY - 20, fromY + this.edgeBendOffset);
 
-      edge.path = `M ${fromX} ${fromY} C ${fromX} ${midY}, ${toX} ${midY}, ${toX} ${toY}`;
-    });
+    return `M ${fromX} ${fromY} V ${bendY} H ${toX} V ${toY}`;
+  }
 
-    this.graphNodes = layers.flat();
-    this.graphEdges = edges;
-    this.selectedGraphNode = this.graphNodes[0];
-    this.selectedTreeNode = this.selectedGraphNode?.node;
+  private ellipsis(value: string | undefined, maxLength: number): string {
+    if (!value) {
+      return '---';
+    }
+
+    return value.length > maxLength ? `${value.slice(0, maxLength - 1)}…` : value;
   }
 }
