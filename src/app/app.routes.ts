@@ -60,5 +60,9 @@ export const routes: Routes = [
         path: 'administracao',
         loadChildren: () => import('./features/administracao/routes').then((m) => m.ADMINISTRACAO_ROUTES),
     },
+    {
+        path: 'etiquetasAlmox',
+        loadChildren: () => import('./features/etiquetas-almox/routes').then((m) => m.ETIQUETAS_ALMOX_ROUTES),
+    },
     ...AUTH_ROUTES,
 ];

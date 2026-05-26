@@ -5,6 +5,7 @@
 
 export enum SetUserCargoDTOCargoEnum {
   ADMIN = 'ADMIN',
+  ALMOX = 'ALMOX',
   ESTRUTURA = 'ESTRUTURA',
   PCP = 'PCP',
   USER = 'USER',

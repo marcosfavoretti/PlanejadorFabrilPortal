@@ -1,0 +1,123 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.selected-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 1rem;
+  background: linear-gradient(180deg, #f5faf7 0%, #ffffff 100%);
+  border: 1px solid #d7e7dd;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.selected-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.selected-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1d3b2a;
+}
+
+.selected-card__subtitle {
+  margin: 0.15rem 0 0;
+  color: #5e6f64;
+  font-size: 0.86rem;
+}
+
+.selected-card__empty {
+  display: grid;
+  place-items: center;
+  min-height: 9rem;
+  text-align: center;
+  color: #7b8d81;
+  border: 1px dashed #c6d7cc;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.selected-card__empty i {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.selected-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.selected-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.9rem;
+  background: #fff;
+  border: 1px solid #e4efe8;
+}
+
+.selected-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.selected-card__info strong {
+  color: #153222;
+}
+
+.selected-card__info span {
+  color: #607065;
+  font-size: 0.84rem;
+}
+
+.selected-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.selected-card__quantity {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 700;
+  color: #214330;
+}
+
+@media (min-width: 1200px) {
+  .selected-card__empty {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 991px) {
+  .selected-card__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .selected-card__actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}

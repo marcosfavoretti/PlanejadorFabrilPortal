@@ -1,0 +1,206 @@
+/* ─── Layout base ─────────────────────────────────────── */
+.etiquetas-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background:
+    radial-gradient(circle at top right, rgba(34, 139, 94, 0.12), transparent 28%),
+    linear-gradient(180deg, #f3f7f4 0%, #eef4f0 100%);
+}
+
+/* A seção tabela+lista ocupa todo o espaço restante */
+.etiquetas-content {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* A coluna da lista selecionada precisa crescer em coluna */
+.etiquetas-list-col,
+.etiquetas-table-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Cards comuns ────────────────────────────────────── */
+.etiquetas-hero,
+.etiquetas-filter-card,
+.etiquetas-table-card {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(27, 77, 49, 0.08);
+  box-shadow: 0 18px 40px rgba(23, 47, 33, 0.06);
+}
+
+/* ─── Hero ─────────────────────────────────────────────── */
+.etiquetas-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1.1rem;
+  background: linear-gradient(135deg, #173624 0%, #225937 65%, #2f6f47 100%);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.etiquetas-hero__content {
+  min-width: 0;
+}
+
+.etiquetas-hero__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.15rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  opacity: 0.78;
+}
+
+.etiquetas-hero__title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* Subtitle oculto em telas onde espaço é escasso */
+.etiquetas-hero__subtitle {
+  display: none;
+}
+
+.etiquetas-hero__meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.etiquetas-hero__meta div {
+  min-width: 7rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.etiquetas-hero__meta strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.etiquetas-hero__meta span {
+  display: block;
+  margin-top: 0.15rem;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.78rem;
+}
+
+/* ─── Filtro ───────────────────────────────────────────── */
+.etiquetas-filter-card {
+  padding: 0.6rem 1rem;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.etiquetas-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4d6154;
+}
+
+.etiquetas-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.9rem;
+  height: 2.4rem;
+  background: #f4f8f5;
+  border: 1px solid #dce8df;
+  border-radius: 0.95rem;
+}
+
+.etiquetas-filter-card__actions .btn {
+  min-height: 2.2rem;
+}
+
+.etiquetas-search i {
+  color: #5d7466;
+}
+
+.etiquetas-search__input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-left: 0;
+}
+
+.etiquetas-search__input:enabled:focus {
+  box-shadow: none;
+}
+
+/* ─── Tabela ───────────────────────────────────────────── */
+.etiquetas-table-card {
+  overflow: hidden;
+  background: #fff;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.etiquetas-empty-state {
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  color: #748579;
+}
+
+.etiquetas-empty-state i {
+  font-size: 1.4rem;
+}
+
+.etiquetas-paginator {
+  padding: 0.2rem 0.75rem 0.5rem;
+  border-top: 1px solid #edf2ee;
+  flex-shrink: 0;
+}
+
+/* ─── Responsivo ───────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .etiquetas-page {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .etiquetas-content {
+    flex: 0 0 auto;
+  }
+
+  /* Lista selecionada tem altura mínima visível em telas menores */
+  .etiquetas-list-col {
+    min-height: 18rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .etiquetas-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .etiquetas-hero__meta {
+    width: 100%;
+  }
+
+  .etiquetas-hero__meta div {
+    flex: 1 1 8rem;
+  }
+
+  .etiquetas-filter-card {
+    padding: 0.6rem 0.9rem;
+  }
+}

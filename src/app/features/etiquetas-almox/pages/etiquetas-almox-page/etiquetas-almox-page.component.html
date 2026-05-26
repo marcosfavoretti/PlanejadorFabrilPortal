@@ -1,0 +1,83 @@
+<app-page-layout>
+  <div class="etiquetas-page p-1 p-lg-2">
+    <div class="etiquetas-hero">
+      <div class="etiquetas-hero__content">
+        <span class="etiquetas-hero__eyebrow">ALMOXARIFADO</span>
+        <h1 class="etiquetas-hero__title">Geracao de etiquetas</h1>
+        <p class="etiquetas-hero__subtitle">
+          Busque itens, monte a lista de impressao e gere o PDF pronto para etiqueta.
+        </p>
+      </div>
+
+      <div class="etiquetas-hero__meta">
+        <div>
+          <strong>{{ selectedItems().length }}</strong>
+          <span>itens distintos</span>
+        </div>
+        <div>
+          <strong>{{ selectedTotal() }}</strong>
+          <span>etiquetas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="etiquetas-filter-card">
+      <form [formGroup]="filterForm" class="row g-2 align-items-end">
+        <div class="col-12 col-lg-8">
+          <label class="form-label etiquetas-label">Buscar item</label>
+          <div class="etiquetas-search">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" formControlName="item" class="etiquetas-search__input"
+              placeholder="Ex: 5-220-04219">
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4 d-flex gap-2 justify-content-lg-end etiquetas-filter-card__actions">
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilters()">
+            Limpar busca
+          </button>
+          <button type="button" class="btn btn-success" (click)="generatePdf()" [disabled]="pdfLoading()">
+            <i class="pi pi-file-pdf me-2"></i>
+            {{ pdfLoading() ? 'Gerando PDF...' : 'Gerar PDF' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row g-2 align-items-stretch etiquetas-content">
+      <div class="col-12 col-xl-8 etiquetas-table-col">
+        <div class="etiquetas-table-card">
+          @if (itensResource.isLoading()) {
+          <div class="p-3">
+            <p-skeleton width="100%" height="100%" borderRadius="1rem"></p-skeleton>
+          </div>
+          } @else {
+          <app-table-dynamic [data]="itens()" [tableModel]="tableSchema" [exportable]="false" [scrollable]="true"
+            [scrollHeight]="'calc(100vh - 410px)'">
+          </app-table-dynamic>
+
+          @if (itens().length === 0) {
+          <div class="etiquetas-empty-state">
+            <i class="pi pi-search"></i>
+            <p>Nenhum item encontrado para o filtro informado.</p>
+          </div>
+          }
+          }
+
+          <div class="etiquetas-paginator">
+            <p-paginator (onPageChange)="onPageChange($event)" [first]="paginatorFirst()" [rows]="rows()"
+              [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10, 50, 100]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first} - {last} de {totalRecords}">
+            </p-paginator>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-4 etiquetas-list-col">
+        <app-etiquetas-almox-selected-list [items]="selectedItems()" (increase)="increaseQuantity($event)"
+          (decrease)="decreaseQuantity($event)" (remove)="removeItem($event)" (clear)="clearSelection()">
+        </app-etiquetas-almox-selected-list>
+      </div>
+    </div>
+  </div>
+</app-page-layout>
