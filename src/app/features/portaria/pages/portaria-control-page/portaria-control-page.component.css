@@ -43,20 +43,33 @@
   margin: 0 auto;
 }
 
-.portaria-kpi-grid .col {
-  align-self: stretch;
+.portaria-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
-.portaria-kpi-slot {
+.portaria-kpi-grid > * {
+  min-width: 0;
+}
+
+.portaria-kpi-slot,
+.portaria-kpi-skeleton-slot {
   width: 100%;
-  min-height: 100%;
   display: flex;
+  min-height: 11rem;
+}
+
+.portaria-kpi-slot app-kpi-card-veiculos,
+.portaria-kpi-skeleton-slot p-skeleton {
+  width: 100%;
+  height: 100%;
 }
 
 .portaria-kpi-skeleton {
   display: block;
   width: 100%;
-  min-height: 11rem;
+  height: 100%;
 }
 
 /* Glass Effects */
@@ -169,17 +182,19 @@
  }
 
 @media (max-width: 1199.98px) {
-  .portaria-kpi-slot {
-    min-height: 11rem;
+  .portaria-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 575.98px) {
   .portaria-kpi-grid {
-    gap: 1rem 0;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .portaria-kpi-slot {
+  .portaria-kpi-slot,
+  .portaria-kpi-skeleton-slot {
     min-height: 10rem;
   }
 }

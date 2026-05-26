@@ -1,0 +1,45 @@
+<div class="selected-card">
+  <div class="selected-card__header">
+    <div>
+      <h2 class="selected-card__title">Itens selecionados</h2>
+      <p class="selected-card__subtitle">Monte a fila de impressão e ajuste as quantidades.</p>
+    </div>
+
+    @if (items.length > 0) {
+      <button type="button" class="btn btn-link btn-sm text-decoration-none" (click)="clear.emit()">
+        Limpar lista
+      </button>
+    }
+  </div>
+
+  @if (items.length === 0) {
+    <div class="selected-card__empty">
+      <i class="pi pi-inbox"></i>
+      <p>Nenhum item selecionado para impressão.</p>
+    </div>
+  } @else {
+    <div class="selected-card__list">
+      @for (item of items; track trackByItem($index, item)) {
+        <div class="selected-card__row">
+          <div class="selected-card__info">
+            <strong>{{ item.item }}</strong>
+            <span>{{ item.den_item || 'Sem descrição disponível' }}</span>
+          </div>
+
+          <div class="selected-card__actions">
+            <button type="button" class="btn btn-light btn-sm" (click)="decrease.emit(item.item)">
+              <i class="pi pi-minus"></i>
+            </button>
+            <span class="selected-card__quantity">{{ item.quantity }}</span>
+            <button type="button" class="btn btn-light btn-sm" (click)="increase.emit(item.item)">
+              <i class="pi pi-plus"></i>
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="remove.emit(item.item)">
+              Remover
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
