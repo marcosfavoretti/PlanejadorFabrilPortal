@@ -45,6 +45,27 @@
     background-color: rgba(0, 167, 127, 0.03) !important;
 }
 
+.table-code-block {
+    background: rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    color: #1f2937;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 24rem;
+    overflow: auto;
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.table-code-block--empty {
+    color: #52606d;
+}
+
 :host ::ng-deep .custom-table .p-datatable-thead > tr > th {
     background-color: #f8f9fa;
     color: #495057;

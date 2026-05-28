@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, DestroyRef, HostListener, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { firstValueFrom } from 'rxjs';
+import { debounceTime, distinctUntilChanged, firstValueFrom } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -13,10 +13,12 @@ import { ToastModule } from 'primeng/toast';
 import { FloatLabel } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import {
   AuthControllerGenerateInviteMutationRequest,
   AuthControllerGenerateInviteMutationResponse,
   SetUserCargoDTOCargoEnum,
+  UserResponseDTO,
 } from '@/api/auth';
 import {
   AtualizaAppRouteReqDTO,
@@ -30,8 +32,11 @@ import { UserService } from '@/app/core/auth/services/user.service';
 import { RoutePermissionApiService } from '@/app/core/route-permission/services/route-permission-api.service';
 import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { LoadingPopupService } from '@/app/shared/services/loading-popup.service';
+import { TableDynamicComponent } from '@/app/shared/components/table-dynamic/table-dynamic.component';
+import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 import { AdminSectionCardComponent } from '../../shared/admin-section-card/admin-section-card.component';
 import { RouteConfigFormComponent } from '../../components/route-config-form/route-config-form.component';
+import { AuditLogApiService, AuditLogListItem } from '../../services/audit-log-api.service';
 // import { MobilePrinterApiService } from '../../services/mobile-printer-api.service';
 
 type RouteFormSubmitValue = {
@@ -62,6 +67,8 @@ type RouteFormSubmitValue = {
     ToastModule,
     FloatLabel,
     PasswordModule,
+    PaginatorModule,
+    TableDynamicComponent,
     AdminSectionCardComponent,
     RouteConfigFormComponent,
   ],
@@ -70,13 +77,15 @@ type RouteFormSubmitValue = {
   styleUrl: './system-settings-page.component.css'
 })
 export class SystemSettingsPageComponent implements AfterViewInit {
-  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'create-user'] as const;
+  private static readonly AUDIT_SEARCH_DEBOUNCE_MS = 700;
+  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'users-overview', 'create-user', 'audit-logs'] as const;
   private sectionObserver?: IntersectionObserver;
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly userService = inject(UserService);
   private readonly routePermissionApiService = inject(RoutePermissionApiService);
   private readonly routePermissionStore = inject(RoutePermissionStoreService);
+  private readonly auditLogApiService = inject(AuditLogApiService);
   // private readonly mobilePrinterApiService = inject(MobilePrinterApiService);
   private readonly popup = inject(LoadingPopupService);
   private readonly messageService = inject(MessageService);
@@ -90,13 +99,25 @@ export class SystemSettingsPageComponent implements AfterViewInit {
     label: value,
     value: String(value),
   }));
+  protected readonly auditMethodOptions = [
+    { label: 'Todos os métodos', value: null },
+    { label: 'GET', value: 'GET' },
+    { label: 'POST', value: 'POST' },
+    { label: 'PUT', value: 'PUT' },
+    { label: 'PATCH', value: 'PATCH' },
+    { label: 'DELETE', value: 'DELETE' },
+  ];
 
   protected readonly routes = signal<ResAppRouteAppDTO[]>([]);
+  protected readonly auditLogs = signal<AuditLogListItem[]>([]);
+  protected readonly users = signal<UserResponseDTO[]>([]);
   // protected readonly printers = signal<ImpressoraBluetoothResponseDto[]>([]);
   protected readonly generatedInvite = signal<AuthControllerGenerateInviteMutationResponse | null>(null);
   protected readonly editingRoute = signal<ResAppRouteAppDTO | null>(null);
 
   protected readonly routesLoading = signal(false);
+  protected readonly auditLogsLoading = signal(false);
+  protected readonly usersLoading = signal(false);
   protected readonly routeSaving = signal(false);
   protected readonly inviteSaving = signal(false);
   protected readonly roleSaving = signal(false);
@@ -106,12 +127,35 @@ export class SystemSettingsPageComponent implements AfterViewInit {
   protected readonly activeSection = signal('route-config');
 
   protected readonly routeCount = computed(() => this.routes().length);
+  protected readonly userCount = computed(() => this.users().length);
+  protected readonly auditErrorCount = computed(() =>
+    this.auditLogs().filter((log) => !!log.errorMessageText).length
+  );
+  protected readonly userOptions = computed(() =>
+    this.users().map((user) => ({
+      label: `${user.name} (${user.email})`,
+      value: user.id,
+      auditValue: user.email,
+    }))
+  );
+  protected readonly userSummaryRows = computed(() =>
+    this.users().map((user) => ({
+      ...user,
+      cargosCount: user.cargosLista.length,
+    }))
+  );
+  protected readonly auditCurrentPage = signal(1);
+  protected readonly auditRows = signal(10);
+  protected readonly auditTotalRecords = signal(0);
+  protected readonly auditFirst = computed(() => (this.auditCurrentPage() - 1) * this.auditRows());
   // protected readonly printerCount = computed(() => this.printers().length);
   protected readonly sections = [
     { id: 'route-config', label: 'Configuração de Rotas' },
     { id: 'invites', label: 'Convites' },
     { id: 'role-management', label: 'Gestão de Cargos' },
+    { id: 'users-overview', label: 'Usuários do Sistema' },
     { id: 'create-user', label: 'Criar Usuário' },
+    { id: 'audit-logs', label: 'Logs de Erro' },
     // { id: 'printers', label: 'Impressoras' },
   ] as const;
   protected readonly activeSectionLabel = computed(() =>
@@ -123,7 +167,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
   });
 
   protected readonly userCargoForm = this.fb.nonNullable.group({
-    userId: ['', Validators.required],
+    userId: this.fb.nonNullable.control('', Validators.required),
     cargo: this.fb.nonNullable.control<SetUserCargoDTOCargoEnum | null>(null, Validators.required),
   });
 
@@ -131,6 +175,35 @@ export class SystemSettingsPageComponent implements AfterViewInit {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
+  });
+  protected readonly auditTableSchema: TableModel = {
+    title: '',
+    paginator: false,
+    totalize: false,
+    columns: [
+      { field: 'timestampDate', alias: 'Quando', isDate: true },
+      { field: 'serviceName', alias: 'Serviço' },
+      { field: 'userDisplayText', alias: 'Usuário', isCodeBlock: true },
+      { field: 'method', alias: 'Método' },
+      { field: 'url', alias: 'Rota' },
+      {
+        field: 'statusCodeText',
+        alias: 'Status',
+        isTag: true,
+        tagSeverityFn: (value: string) => this.getAuditStatusSeverity(value ? Number(value) : undefined),
+      },
+      { field: 'durationMsText', alias: 'Duração' },
+      { field: 'queryText', alias: 'Query Params', isCodeBlock: true },
+      { field: 'headersText', alias: 'Headers', isCodeBlock: true },
+      { field: 'bodyText', alias: 'Body', isCodeBlock: true },
+      { field: 'errorMessageText', alias: 'Erro', isCodeBlock: true },
+    ],
+  };
+  protected readonly auditFilterForm = this.fb.group({
+    user: this.fb.control<string | null>(null),
+    serviceName: [''],
+    url: [''],
+    method: this.fb.control<string | null>(null),
   });
 
   // protected readonly printerForm = this.fb.nonNullable.group({
@@ -140,6 +213,18 @@ export class SystemSettingsPageComponent implements AfterViewInit {
 
   constructor() {
     this.loadRoutes();
+    this.loadUsers();
+    this.loadAuditLogs();
+    this.auditFilterForm.valueChanges
+      .pipe(
+        debounceTime(SystemSettingsPageComponent.AUDIT_SEARCH_DEBOUNCE_MS),
+        distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.auditCurrentPage.set(1);
+        this.loadAuditLogs();
+      });
     // this.loadPrinters();
     this.destroyRef.onDestroy(() => this.sectionObserver?.disconnect());
   }
@@ -288,6 +373,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
         next: () => {
           this.roleSaving.set(false);
           this.userCargoForm.reset({ userId: '', cargo: null });
+          this.loadUsers();
           this.showSuccess('Cargo atualizado com sucesso.');
         },
         error: err => {
@@ -316,6 +402,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
         next: () => {
           this.userSaving.set(false);
           this.createUserForm.reset({ name: '', email: '', password: '' });
+          this.loadUsers();
           this.showSuccess('Usuário criado com sucesso.');
         },
         error: err => {
@@ -323,6 +410,49 @@ export class SystemSettingsPageComponent implements AfterViewInit {
           this.handleError(err, 'Não foi possível criar o usuário.');
         }
       });
+  }
+
+  protected onAuditPageChange(event: PaginatorState) {
+    const nextRows = event.rows ?? this.auditRows();
+    const nextPage = Math.floor((event.first ?? 0) / nextRows) + 1;
+
+    this.auditRows.set(nextRows);
+    this.auditCurrentPage.set(nextPage);
+    this.loadAuditLogs();
+  }
+
+  protected clearAuditFilters() {
+    this.auditCurrentPage.set(1);
+    this.auditFilterForm.reset({
+      user: null,
+      serviceName: '',
+      url: '',
+      method: null,
+    }, { emitEvent: true });
+  }
+
+  protected onRoleUserChange(userId: string | null) {
+    this.userCargoForm.controls.userId.setValue(userId ?? '');
+  }
+
+  protected getAuditStatusSeverity(statusCode?: number) {
+    if (statusCode == null) {
+      return 'secondary';
+    }
+
+    if (statusCode >= 500) {
+      return 'danger';
+    }
+
+    if (statusCode >= 400) {
+      return 'warn';
+    }
+
+    if (statusCode >= 200 && statusCode < 400) {
+      return 'success';
+    }
+
+    return 'secondary';
   }
 
   // protected createPrinter() {
@@ -390,6 +520,52 @@ export class SystemSettingsPageComponent implements AfterViewInit {
       });
   }
 
+  private loadUsers() {
+    this.usersLoading.set(true);
+    this.userService.listUsers()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: users => {
+          this.users.set(this.normalizeUsers(users));
+          this.usersLoading.set(false);
+        },
+        error: err => {
+          this.usersLoading.set(false);
+          this.users.set([]);
+          this.handleError(err, 'Não foi possível carregar os usuários do sistema.');
+        }
+      });
+  }
+
+  private loadAuditLogs() {
+    this.auditLogsLoading.set(true);
+    const auditFilters = this.auditFilterForm.getRawValue();
+    this.auditLogApiService.listLogs({
+      page: this.auditCurrentPage() - 1,
+      limit: this.auditRows(),
+      user: auditFilters.user || undefined,
+      serviceName: auditFilters.serviceName?.trim() || undefined,
+      url: auditFilters.url?.trim() || undefined,
+      method: auditFilters.method || undefined,
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: response => {
+          this.auditLogs.set(response.data);
+          this.auditTotalRecords.set(response.total ?? 0);
+          this.auditCurrentPage.set(response.page != null ? response.page + 1 : this.auditCurrentPage());
+          this.auditRows.set(response.limit || this.auditRows());
+          this.auditLogsLoading.set(false);
+        },
+        error: err => {
+          this.auditLogsLoading.set(false);
+          this.auditLogs.set([]);
+          this.auditTotalRecords.set(0);
+          this.handleError(err, 'Não foi possível carregar os logs de auditoria.');
+        }
+      });
+  }
+
   // private loadPrinters() {
   //   this.mobilePrinterApiService.listPrinters()
   //     .pipe(takeUntilDestroyed(this.destroyRef))
@@ -442,6 +618,20 @@ export class SystemSettingsPageComponent implements AfterViewInit {
       cargos: Array.isArray(route.cargos) ? route.cargos : [],
       subRoutes: Array.isArray(route.subRoutes) ? route.subRoutes : [],
     };
+  }
+
+  private normalizeUsers(users: unknown): UserResponseDTO[] {
+    if (!Array.isArray(users)) {
+      return [];
+    }
+
+    return users
+      .filter((user): user is UserResponseDTO => !!user && typeof user === 'object')
+      .map((user) => ({
+        ...user,
+        cargosLista: Array.isArray(user.cargosLista) ? user.cargosLista.map(cargo => String(cargo)) : [],
+      }))
+      .sort((left, right) => left.name.localeCompare(right.name, 'pt-BR'));
   }
 
   private showSuccess(detail: string) {
