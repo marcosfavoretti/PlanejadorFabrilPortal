@@ -18,6 +18,11 @@ export type {
   AppEthosControllerDeletaRoutesPathParams,
 } from './models/AppEthosControllerDeletaRoutes';
 export type {
+  AppEthosControllerGetAllRoutes200,
+  AppEthosControllerGetAllRoutesQuery,
+  AppEthosControllerGetAllRoutesQueryResponse,
+} from './models/AppEthosControllerGetAllRoutes';
+export type {
   AppEthosControllerGetRoutesForUser200,
   AppEthosControllerGetRoutesForUserQuery,
   AppEthosControllerGetRoutesForUserQueryResponse,
@@ -31,6 +36,7 @@ export type { ResAppRouteAppDTO } from './models/ResAppRouteAppDTO';
 export { appEthosControllerAtualizaRoutes } from './client/appEthosControllerAtualizaRoutes';
 export { appEthosControllerCriaRoutes } from './client/appEthosControllerCriaRoutes';
 export { appEthosControllerDeletaRoutes } from './client/appEthosControllerDeletaRoutes';
+export { appEthosControllerGetAllRoutes } from './client/appEthosControllerGetAllRoutes';
 export { appEthosControllerGetRoutesForUser } from './client/appEthosControllerGetRoutesForUser';
 export { AtualizaAppRouteReqDTOCargosEnum } from './models/AtualizaAppRouteReqDTO';
 export { CriaAppRouteReqDtoCargosEnum } from './models/CriaAppRouteReqDto';
