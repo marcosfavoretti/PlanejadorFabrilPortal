@@ -16,6 +16,11 @@ export type {
   AuthControllerGenerateInviteMutationResponse,
 } from './models/AuthControllerGenerateInvite';
 export type {
+  AuthControllerListUsers200,
+  AuthControllerListUsersQuery,
+  AuthControllerListUsersQueryResponse,
+} from './models/AuthControllerListUsers';
+export type {
   AuthControllerLogin200,
   AuthControllerLogin401,
   AuthControllerLoginMutation,
@@ -68,6 +73,7 @@ export type { UserResponseDTO } from './models/UserResponseDTO';
 export { authControllerCheckToken } from './client/authControllerCheckToken';
 export { authControllerDetail } from './client/authControllerDetail';
 export { authControllerGenerateInvite } from './client/authControllerGenerateInvite';
+export { authControllerListUsers } from './client/authControllerListUsers';
 export { authControllerLogin } from './client/authControllerLogin';
 export { authControllerLogout } from './client/authControllerLogout';
 export { authControllerRegister } from './client/authControllerRegister';

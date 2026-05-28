@@ -26,7 +26,9 @@ const {
     API_URL_PORTARIA,
     API_SWAGGER_PORTARIA,
     API_URL_ESTRUTURA,
-    API_SWAGGER_ESTRUTURA
+    API_SWAGGER_ESTRUTURA,
+    API_URL_AUDIT,
+    API_SWAGGER_AUDIT,
 } = process.env as Record<string, string>;
 
 interface ApiConfigParams {
@@ -74,6 +76,12 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_AUTH,
         outputPath: './src/api/auth',
         baseUrl: API_URL_AUTH
+    }),
+    createApiConfig({
+        name: 'audit-api',
+        swaggerPath: API_SWAGGER_AUDIT,
+        outputPath: './src/api/audit',
+        baseUrl: API_URL_AUDIT
     }),
     createApiConfig({
         name: 'app-routes-api',

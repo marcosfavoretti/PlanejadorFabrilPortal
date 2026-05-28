@@ -1,0 +1,237 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo AuditLogResponseDto.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "serviceName": { "type": "string" },
+          "method": { "type": "string" },
+          "url": { "type": "string" },
+          "body": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "string", "example": "value" },
+                { "type": "number", "example": 123 },
+                { "type": "boolean", "example": true },
+                { "type": "null", "example": null },
+                {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "object",
+                        "additionalProperties": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": ["item", 1, true]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": {
+                    "nestedKey": "nestedValue",
+                    "nestedCount": 1,
+                    "nestedFlag": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "route": "/audit/log",
+              "metadata": { "requestId": "req-123", "retry": false },
+              "items": ["a", 1, true]
+            },
+            "nullable": true
+          },
+          "query": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "string", "example": "value" },
+                { "type": "number", "example": 123 },
+                { "type": "boolean", "example": true },
+                { "type": "null", "example": null },
+                {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "object",
+                        "additionalProperties": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": ["item", 1, true]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": {
+                    "nestedKey": "nestedValue",
+                    "nestedCount": 1,
+                    "nestedFlag": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "route": "/audit/log",
+              "metadata": { "requestId": "req-123", "retry": false },
+              "items": ["a", 1, true]
+            },
+            "nullable": true
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                { "type": "string", "example": "value" },
+                { "type": "number", "example": 123 },
+                { "type": "boolean", "example": true },
+                { "type": "null", "example": null },
+                {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "object",
+                        "additionalProperties": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": ["item", 1, true]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      { "type": "string", "example": "value" },
+                      { "type": "number", "example": 123 },
+                      { "type": "boolean", "example": true },
+                      { "type": "null", "example": null },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            { "type": "string", "example": "value" },
+                            { "type": "number", "example": 123 },
+                            { "type": "boolean", "example": true },
+                            { "type": "null", "example": null }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "example": {
+                    "nestedKey": "nestedValue",
+                    "nestedCount": 1,
+                    "nestedFlag": true
+                  }
+                }
+              ]
+            },
+            "example": {
+              "route": "/audit/log",
+              "metadata": { "requestId": "req-123", "retry": false },
+              "items": ["a", 1, true]
+            },
+            "nullable": true
+          },
+          "userId": { "type": "object", "nullable": true },
+          "userName": { "type": "object", "nullable": true },
+          "userLogin": { "type": "object", "nullable": true },
+          "ip": { "type": "string" },
+          "statusCode": { "type": "number" },
+          "durationMs": { "type": "number" },
+          "errorMessage": { "type": "object", "nullable": true },
+          "timestamp": { "format": "date-time", "type": "string" },
+          "receivedAt": { "format": "date-time", "type": "string" },
+          "createdAt": { "format": "date-time", "type": "string" }
+        },
+        "required": ["id", "timestamp", "receivedAt", "createdAt"],
+        "x-readme-ref-name": "AuditLogResponseDto"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedAuditLogResponseDtoDto"
+}
