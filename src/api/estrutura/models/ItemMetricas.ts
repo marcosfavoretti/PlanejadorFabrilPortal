@@ -15,4 +15,25 @@ export type ItemMetricas = {
    * @type array
    */
   metricas: MetricasDTO[];
+  /**
+   * @type object | undefined
+   */
+  processo?: {
+    /**
+     * @type string | undefined
+     */
+    operacao?: string;
+    /**
+     * @type number | undefined
+     */
+    seqOperacao?: number;
+    /**
+     * @type string | undefined
+     */
+    roteiro?: string;
+    /**
+     * @type number | undefined
+     */
+    roteiroAlternativo?: number;
+  };
 };

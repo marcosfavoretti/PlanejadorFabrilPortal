@@ -50,7 +50,7 @@
 .system-settings-page__stats {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .system-settings-page__stats div {
@@ -76,8 +76,9 @@
   align-items: start;
   display: grid;
   gap: 2rem;
-  grid-template-columns: 270px minmax(0, 1fr);
-  max-width: 1400px;
+  grid-template-columns: 240px minmax(0, 1fr);
+  max-width: 1760px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -198,11 +199,89 @@
   font-size: 0.92rem;
 }
 
+.system-settings-page__audit-filter-card,
+.system-settings-page__audit-table-card,
+.system-settings-page__users-table-card {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(27, 77, 49, 0.08);
+  box-shadow: 0 18px 40px rgba(23, 47, 33, 0.06);
+}
+
+.system-settings-page__audit-filter-card {
+  background: #fff;
+  padding: 0.6rem 1rem;
+}
+
+.system-settings-page__filter-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4d6154;
+}
+
+.system-settings-page__search-shell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.9rem;
+  height: 2.4rem;
+  background: #f4f8f5;
+  border: 1px solid #dce8df;
+  border-radius: 0.95rem;
+}
+
+.system-settings-page__search-shell i {
+  color: #5d7466;
+}
+
+.system-settings-page__search-input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-left: 0;
+}
+
+.system-settings-page__search-input:enabled:focus {
+  box-shadow: none;
+}
+
+.system-settings-page__audit-filter-actions .btn {
+  min-height: 2.2rem;
+}
+
+.system-settings-page__method-select {
+  min-height: 2.4rem;
+}
+
+.system-settings-page__audit-table-card,
+.system-settings-page__users-table-card {
+  overflow: hidden;
+  background: #fff;
+  margin-top: 1rem;
+}
+
+.system-settings-page__empty-text {
+  color: #6b7a90;
+  font-size: 0.9rem;
+}
+
 .system-settings-page__tag-list,
 .system-settings-page__action-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.system-settings-page__audit-footer {
+  background: #fff;
+  border: 1px solid rgba(27, 77, 49, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 18px 40px rgba(23, 47, 33, 0.06);
+  margin-top: 1rem;
+  padding: 0.2rem 0.75rem 0.5rem;
 }
 
 .system-settings-page__actions-column {
@@ -577,6 +656,12 @@
   font-weight: 700;
 }
 
+:host ::ng-deep .system-settings-page__audit-footer .p-paginator {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
 /* Ensure all inputs and selectors take up the full container width */
 :host ::ng-deep .p-select,
 :host ::ng-deep .p-multiselect,
@@ -672,6 +757,10 @@
   .system-settings-page__sticky-nav {
     margin: 0 -1rem 1.5rem -1rem;
     padding: 0.75rem 1rem;
+  }
+
+  .system-settings-page__audit-filter-card {
+    padding: 0.6rem 0.9rem;
   }
 }
 
