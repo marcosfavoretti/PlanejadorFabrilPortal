@@ -44,15 +44,6 @@
               "required": ["nome", "valor"],
               "x-readme-ref-name": "MetricasDTO"
             }
-          },
-          "processo": {
-            "type": "object",
-            "properties": {
-              "operacao": { "type": "string" },
-              "seqOperacao": { "type": "number" },
-              "roteiro": { "type": "string" },
-              "roteiroAlternativo": { "type": "number" }
-            }
           }
         },
         "required": ["item", "metricas"],

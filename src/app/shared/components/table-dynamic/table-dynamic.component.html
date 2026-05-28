@@ -130,8 +130,6 @@
                 [rounded]="true"
                 class="shadow-none smallest fw-bold"
                 [value]="getNestedValue(item, key.field) || '---'"></p-tag>
-            } @else if (key?.isCodeBlock) {
-              <pre class="table-code-block" [class.table-code-block--empty]="!getNestedValue(item, key.field)">{{ getNestedValue(item, key.field) || '---' }}</pre>
             } @else if (key?.isInputText) {
               <p-inputnumber [ngModel]="getNestedValue(item, key.field)" [showButtons]="false" 
                 [inputStyle]="{ width: '4rem', textAlign: 'center', borderRadius: '0.5rem', border: '1px solid #dee2e6'}"

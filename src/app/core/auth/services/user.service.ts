@@ -11,7 +11,6 @@ import {
   authControllerCheckToken,
   authControllerDetail,
   authControllerGenerateInvite,
-  authControllerListUsers,
   authControllerLogin,
   authControllerLogout,
   authControllerRegister,
@@ -86,10 +85,6 @@ export class UserService {
 
   generateInvite(dto: AuthControllerGenerateInviteMutationRequest): Observable<AuthControllerGenerateInviteMutationResponse> {
     return from(authControllerGenerateInvite(dto));
-  }
-
-  listUsers(): Observable<UserResponseDTO[]> {
-    return from(authControllerListUsers());
   }
 
   setUserCargo(dto: CargoControllerSetUserCargoMethodMutationRequest): Observable<void> {

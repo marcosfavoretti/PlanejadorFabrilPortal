@@ -7,7 +7,7 @@
       <h1>Cadastros, parâmetros e configurações administrativas</h1>
       <p>
         Central única para gerenciar rotas do app, convites com cargos, mudança de cargo
-        e monitoramento dos logs de erro da aplicação.
+        e cadastro de impressoras Bluetooth.
       </p>
     </div>
 
@@ -16,14 +16,10 @@
         <strong>{{ routeCount() }}</strong>
         <span>rotas carregadas</span>
       </div>
-      <div>
-        <strong>{{ userCount() }}</strong>
-        <span>usuários cadastrados</span>
-      </div>
-      <div>
-        <strong>{{ auditErrorCount() }}</strong>
-        <span>erros nesta página</span>
-      </div>
+      <!-- <div>
+        <strong>{{ printerCount() }}</strong>
+        <span>impressoras cadastradas</span>
+      </div> -->
     </div>
   </section>
 
@@ -134,22 +130,22 @@
       </app-admin-section-card>
 
       <app-admin-section-card id="role-management" title="Gestão de cargos"
-        description="Altere o cargo principal de um usuário escolhendo um cadastro válido já disponível no sistema.">
+        description="Altere o cargo principal de um usuário informando o identificador usado pelo backend.">
         <div class="system-settings-page__role-layout">
           <aside class="system-settings-page__role-panel">
             <span class="system-settings-page__role-kicker">Fluxo rápido</span>
             <h3>Troca de cargo com referência direta ao usuário</h3>
             <p>
-              A listagem de usuários agora é carregada nesta tela. Selecione o cadastro correto,
-              escolha o novo cargo e confirme a atualização.
+              Como esta tela ainda não lista usuários, a operação usa o identificador do backend.
+              Informe o `userId`, escolha o novo cargo e confirme a atualização.
             </p>
 
             <div class="system-settings-page__role-steps">
-            <div class="system-settings-page__role-step">
-              <strong>1</strong>
-              <div>
-                  <span>Selecione o usuário</span>
-                  <small>Escolha um cadastro válido já carregado do sistema.</small>
+              <div class="system-settings-page__role-step">
+                <strong>1</strong>
+                <div>
+                  <span>Identifique o usuário</span>
+                  <small>Use o ID persistido no backend.</small>
                 </div>
               </div>
 
@@ -172,7 +168,7 @@
 
             <div class="system-settings-page__role-note">
               <strong>Atenção</strong>
-              <span>Confirme o usuário selecionado antes de aplicar a troca do cargo principal.</span>
+              <span>Revise o ID antes de enviar para evitar alteração no usuário errado.</span>
             </div>
           </aside>
 
@@ -184,23 +180,13 @@
               </div>
 
               <div class="system-settings-page__field">
-                <label class="system-settings-page__field-label" for="user-id">Usuário</label>
-                <p-select
-                  inputId="user-id"
+                <label class="system-settings-page__field-label" for="user-id">ID do Usuário</label>
+                <input
+                  id="user-id"
+                  pInputText
                   formControlName="userId"
-                  [options]="userOptions()"
-                  optionLabel="label"
-                  optionValue="value"
-                  [filter]="true"
-                  filterBy="label"
-                  [loading]="usersLoading()"
-                  placeholder="Selecione um usuário válido"
-                  styleClass="w-full system-settings-page__control system-settings-page__control--select"
-                  appendTo="body"
-                  (onChange)="onRoleUserChange($event.value)" />
-                <small class="system-settings-page__field-helper">
-                  O backend continua recebendo o `userId`, mas agora a seleção vem da lista real de usuários.
-                </small>
+                  class="w-full system-settings-page__control" />
+                <small class="system-settings-page__field-helper">Ex: 664c0c9f3b0f0d21a8e91f44</small>
               </div>
 
               <div class="system-settings-page__field">
@@ -216,7 +202,7 @@
               </div>
 
               <div class="system-settings-page__hint system-settings-page__hint--soft">
-                A atualização envia o `userId` do usuário selecionado e aplica o novo cargo imediatamente.
+                A atualização usa o `userId` diretamente porque esta área administrativa ainda não consome uma listagem de usuários.
               </div>
 
               <div class="system-settings-page__inline-actions system-settings-page__inline-actions--end">
@@ -224,57 +210,6 @@
               </div>
             </div>
           </form>
-        </div>
-      </app-admin-section-card>
-
-      <app-admin-section-card id="users-overview" title="Usuários do sistema"
-        description="Resumo dos usuários atualmente cadastrados, com e-mail, identificador e lista completa de cargos.">
-        <div class="system-settings-page__table-header">
-          <h3>Resumo de usuários</h3>
-          @if (usersLoading()) {
-            <span>Carregando...</span>
-          } @else {
-            <span>{{ userCount() }} usuários encontrados</span>
-          }
-        </div>
-
-        <div class="system-settings-page__users-table-card">
-          <p-table [value]="userSummaryRows()" [tableStyle]="{ 'min-width': '64rem' }" responsiveLayout="scroll"
-            styleClass="p-datatable-sm">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>ID</th>
-                <th>Todos os cargos</th>
-              </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-user>
-              <tr>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td><code>{{ user.id }}</code></td>
-                <td>
-                  <div class="system-settings-page__tag-list">
-                    @if (user.cargosLista.length) {
-                      @for (cargo of user.cargosLista; track cargo) {
-                        <p-tag [value]="cargo" severity="secondary" />
-                      }
-                    } @else {
-                      <span class="system-settings-page__empty-text">Sem cargo</span>
-                    }
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="4">Nenhum usuário disponível.</td>
-              </tr>
-            </ng-template>
-          </p-table>
         </div>
       </app-admin-section-card>
 
@@ -361,73 +296,6 @@
               </div>
             </div>
           </form>
-        </div>
-      </app-admin-section-card>
-
-      <app-admin-section-card id="audit-logs" title="Logs de erro"
-        description="Acompanhe os eventos mais recentes registrados pelo endpoint de auditoria, com paginação no backend.">
-        <div class="system-settings-page__table-header">
-          <h3>Ocorrências auditadas</h3>
-          @if (auditLogsLoading()) {
-            <span>Carregando...</span>
-          } @else {
-            <span>{{ auditTotalRecords() }} registros encontrados</span>
-          }
-        </div>
-
-        <div class="system-settings-page__audit-filter-card">
-          <form [formGroup]="auditFilterForm" class="row g-2 align-items-end">
-            <div class="col-12 col-lg-4">
-              <label class="system-settings-page__filter-label">Buscar usuário</label>
-              <p-select formControlName="user" [options]="userOptions()" optionLabel="label" optionValue="auditValue"
-                [filter]="true" filterBy="label" [showClear]="true" [loading]="usersLoading()"
-                placeholder="Selecione nome ou e-mail" styleClass="w-100 system-settings-page__method-select"
-                appendTo="body" />
-            </div>
-
-            <div class="col-12 col-lg-3">
-              <label class="system-settings-page__filter-label">Serviço</label>
-              <div class="system-settings-page__search-shell">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" formControlName="serviceName" class="system-settings-page__search-input"
-                  placeholder="Ex: AuditService">
-              </div>
-            </div>
-
-            <div class="col-12 col-lg-3">
-              <label class="system-settings-page__filter-label">Rota</label>
-              <div class="system-settings-page__search-shell">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" formControlName="url" class="system-settings-page__search-input"
-                  placeholder="Ex: /api/audit/log">
-              </div>
-            </div>
-
-            <div class="col-12 col-lg-2">
-              <label class="system-settings-page__filter-label">Método</label>
-              <p-select formControlName="method" [options]="auditMethodOptions" optionLabel="label" optionValue="value"
-                placeholder="Todos" styleClass="w-100 system-settings-page__method-select" appendTo="body" />
-            </div>
-
-            <div class="col-12 d-flex gap-2 justify-content-lg-end system-settings-page__audit-filter-actions">
-              <button type="button" class="btn btn-outline-secondary" (click)="clearAuditFilters()">
-                Limpar busca
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div class="system-settings-page__audit-table-card">
-          <app-table-dynamic [data]="auditLogs()" [tableModel]="auditTableSchema" [exportable]="false"
-            [scrollable]="true" [scrollHeight]="'calc(100vh - 420px)'">
-          </app-table-dynamic>
-        </div>
-
-        <div class="system-settings-page__audit-footer">
-          <p-paginator (onPageChange)="onAuditPageChange($event)" [first]="auditFirst()" [rows]="auditRows()"
-            [totalRecords]="auditTotalRecords()" [rowsPerPageOptions]="[10, 50, 100]"
-            [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} de {totalRecords}">
-          </p-paginator>
         </div>
       </app-admin-section-card>
 

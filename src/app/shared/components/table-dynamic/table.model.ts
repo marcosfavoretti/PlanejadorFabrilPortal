@@ -3,7 +3,6 @@ export interface tableColumns {
     field: string;
     isImg?: boolean;
     isTag?: boolean;
-    isCodeBlock?: boolean;
     tagSeverityFn?: (value: string) => string;
     isCheckBox?: boolean;
     isDate?: boolean,

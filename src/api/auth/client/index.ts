@@ -1,7 +1,6 @@
 export { authControllerCheckToken } from './authControllerCheckToken';
 export { authControllerDetail } from './authControllerDetail';
 export { authControllerGenerateInvite } from './authControllerGenerateInvite';
-export { authControllerListUsers } from './authControllerListUsers';
 export { authControllerLogin } from './authControllerLogin';
 export { authControllerLogout } from './authControllerLogout';
 export { authControllerRegister } from './authControllerRegister';

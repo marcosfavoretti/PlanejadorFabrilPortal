@@ -18,11 +18,6 @@ export type {
   AppEthosControllerDeletaRoutesPathParams,
 } from './AppEthosControllerDeletaRoutes';
 export type {
-  AppEthosControllerGetAllRoutes200,
-  AppEthosControllerGetAllRoutesQuery,
-  AppEthosControllerGetAllRoutesQueryResponse,
-} from './AppEthosControllerGetAllRoutes';
-export type {
   AppEthosControllerGetRoutesForUser200,
   AppEthosControllerGetRoutesForUserQuery,
   AppEthosControllerGetRoutesForUserQueryResponse,
