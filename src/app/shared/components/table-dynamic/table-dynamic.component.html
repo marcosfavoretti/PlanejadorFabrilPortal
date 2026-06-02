@@ -5,7 +5,8 @@
     </div>
   }
 
-  <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data" groupRowsBy="atr_group" [dataKey]="tableDataKey"
+  <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data"
+    [groupRowsBy]="tableModel.totalize ? 'atr_group' : undefined" [dataKey]="tableDataKey"
     [expandedRowKeys]="expandedRowKeys"
     [paginator]="tableModel.paginator? true: false" [rows]="10" [columns]="tableModel.columns"
     [rowsPerPageOptions]="30 < (data ? data.length : 0) ? [10, 20, 30, data ? data.length : 0 ]: [10,20,30]"

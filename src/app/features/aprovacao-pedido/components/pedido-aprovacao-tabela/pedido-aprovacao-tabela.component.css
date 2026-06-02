@@ -5,6 +5,40 @@
   min-height: 0;
 }
 
+:host ::ng-deep app-table-dynamic {
+  min-width: 0;
+}
+
+:host ::ng-deep .custom-table .p-datatable-wrapper {
+  overflow-x: auto;
+}
+
+:host ::ng-deep .custom-table .p-datatable-table {
+  min-width: 980px;
+}
+
+:host ::ng-deep .custom-table .p-datatable-thead > tr > th:first-child,
+:host ::ng-deep .custom-table .p-datatable-tbody > tr > td:first-child {
+  width: 3rem;
+  min-width: 3rem;
+}
+
+:host ::ng-deep .custom-table .p-datatable-thead > tr > th:last-child,
+:host ::ng-deep .custom-table .p-datatable-tbody > tr > td:last-child {
+  width: 5rem;
+  min-width: 5rem;
+}
+
+:host ::ng-deep .custom-table .p-datatable-tbody > tr > td {
+  white-space: nowrap;
+}
+
+:host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(6) {
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .approval-details-cards {
   display: none;
 }

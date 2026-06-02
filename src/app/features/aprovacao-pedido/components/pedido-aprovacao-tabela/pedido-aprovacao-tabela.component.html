@@ -1,6 +1,6 @@
 <app-table-dynamic class="d-flex flex-column" [tableModel]="schema()" [data]="rows()"
   [rowExpansionTemplate]="expansionTemplate" [exportable]="false" (onRowExpanded)="handleRowExpand($event)"
-  [scrollable]="true" [scrollHeight]="scrollHeight()" responsiveLayout="stack" breakpoint="900px">
+  [scrollable]="true" [scrollHeight]="scrollHeight()" responsiveLayout="scroll" breakpoint="900px">
 </app-table-dynamic>
 
 <ng-template #expansionTemplate let-row>
