@@ -21,7 +21,7 @@ export class PedidoAprovacaoTabelaComponent {
   private readonly logixApi = inject(LogixAceiteCompraApiService);
 
   rowsOverride = input<PedidoAprovacaoRow[] | null>(null);
-  scrollHeight = input<string>('flex');
+  scrollHeight = input<string>('520px');
 
   @Output() approveOne = new EventEmitter<string>();
 

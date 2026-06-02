@@ -230,7 +230,14 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   }
 
   private syncExpandedRowKeys(): void {
-    this.expandedRowKeys = this.tableModel?.totalize ? { GROUP: true } : {};
+    if (this.tableModel?.totalize) {
+      this.expandedRowKeys = { GROUP: true };
+      return;
+    }
+
+    if (!this.tableModel?.expandable) {
+      this.expandedRowKeys = {};
+    }
   }
 
   filterTable(payload: { value: string, field: string, method: 'contains' | 'notEquals' }): void {
