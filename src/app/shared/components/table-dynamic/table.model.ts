@@ -30,10 +30,6 @@ export interface ghostControllColumn {
 export interface TableModel {
     title: string;
     paginator?: boolean;
-    rows?: number;
-    rowsPerPageOptions?: number[];
-    showCurrentPageReport?: boolean;
-    currentPageReportTemplate?: string;
     totalize: boolean;
     columns: Array<tableColumns>;
     ghostControll?: Array<ghostControllColumn>;

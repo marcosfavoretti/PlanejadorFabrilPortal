@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, signal, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, signal } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FormsModule } from '@angular/forms';
 import { tableColumns, TableModel } from './table.model';
@@ -18,7 +18,6 @@ import { TagModule } from 'primeng/tag'
   styleUrls: ['./table-dynamic.component.css'],
   imports: [
     TableModule,
-    CurrencyPipe,
     DatePipe,
     InputNumberModule,
     ButtonModule,
@@ -32,23 +31,7 @@ import { TagModule } from 'primeng/tag'
 export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() data: any[] = [];
   @Input() tableModel!: TableModel
-  expandedRowKeys: { [key: string]: boolean } = {};
-
-  get tableRows(): number {
-    return this.tableModel?.rows ?? 10;
-  }
-
-  get tableRowsPerPageOptions(): number[] {
-    return this.tableModel?.rowsPerPageOptions ?? [10, 50, 100];
-  }
-
-  get tableShowCurrentPageReport(): boolean {
-    return this.tableModel?.showCurrentPageReport ?? true;
-  }
-
-  get tableCurrentPageReportTemplate(): string {
-    return this.tableModel?.currentPageReportTemplate ?? '{first} - {last} de {totalRecords}';
-  }
+  expandedRowKeys: Record<string, boolean> = {};
 
   get tableSortField(): string | undefined {
     return this.tableModel?.sortField;
@@ -57,9 +40,9 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   get tableSortOrder(): number {
     return this.tableModel?.sortOrder ?? 0;
   }
-  
+
   get tableDataKey(): string {
-    return this.tableModel?.dataKey || (this.tableModel?.totalize ? 'atr_group' : 'id');
+    return this.tableModel?.dataKey || 'atr_group';
   }
 
   @Output('OnChecked') onChecked: EventEmitter<{ row: any, column: any, checked: any, oldValue: any }> = new EventEmitter();
@@ -160,10 +143,7 @@ export class TableDynamicComponent implements OnChanges, OnInit {
       this.data = this.tableModel.totalize 
         ? processedData.map(item => ({ ...item, atr_group: 'GROUP' }))
         : processedData;
-      // Only reset expandedRowKeys for totalize mode; for expandable mode, preserve user state
-      if (this.tableModel.totalize) {
-        this.syncExpandedRowKeys();
-      }
+      this.syncExpandedRowKeys();
       this.updateFilterStatus();
     }
     
@@ -250,12 +230,7 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   }
 
   private syncExpandedRowKeys(): void {
-    if (this.tableModel?.totalize) {
-      // Mutate in-place so PrimeNG keeps the reference
-      Object.keys(this.expandedRowKeys).forEach(k => delete this.expandedRowKeys[k]);
-      this.expandedRowKeys['GROUP'] = true;
-    }
-    // For expandable rows: PrimeNG manages the object directly via pRowToggler, don't touch it
+    this.expandedRowKeys = this.tableModel?.totalize ? { GROUP: true } : {};
   }
 
   filterTable(payload: { value: string, field: string, method: 'contains' | 'notEquals' }): void {
@@ -327,59 +302,10 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     }
 
     if (typeof value === 'string') {
-      return this.parseNumericString(value);
-    }
-
-    if (value && typeof value === 'object') {
-      const objectValue = value as Record<string, unknown>;
-      const candidateKeys = [
-        '$numberDecimal',
-        '$numberDouble',
-        '$numberInt',
-        '$numberLong',
-        'value',
-        'Value',
-        'amount',
-        'Amount',
-      ];
-
-      for (const key of candidateKeys) {
-        if (key in objectValue) {
-          return this.normalizeCurrencyValue(objectValue[key]);
-        }
-      }
-
-      const primitiveEntry = Object.values(objectValue).find((entry) =>
-        typeof entry === 'number' || typeof entry === 'string' || (entry && typeof entry === 'object'),
-      );
-
-      if (primitiveEntry !== undefined) {
-        return this.normalizeCurrencyValue(primitiveEntry);
-      }
+      const parsed = Number(value.replace(/[^\d,.-]/g, '').replace(',', '.'));
+      return Number.isFinite(parsed) ? parsed : null;
     }
 
     return null;
-  }
-
-  private parseNumericString(value: string): number | null {
-    const trimmed = value.trim();
-    if (!trimmed) {
-      return null;
-    }
-
-    const sanitized = trimmed.replace(/[^\d,.-]/g, '');
-    const hasComma = sanitized.includes(',');
-    const hasDot = sanitized.includes('.');
-
-    let normalized = sanitized;
-
-    if (hasComma && hasDot) {
-      normalized = sanitized.replace(/\./g, '').replace(',', '.');
-    } else if (hasComma) {
-      normalized = sanitized.replace(',', '.');
-    }
-
-    const parsed = Number(normalized);
-    return Number.isFinite(parsed) ? parsed : null;
   }
 }
