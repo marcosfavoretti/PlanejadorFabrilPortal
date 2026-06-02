@@ -9,6 +9,7 @@ export interface tableColumns {
     isDate?: boolean,
     isInputText?: boolean,
     isNumber?: boolean;
+    isCurrency?: boolean;
     toTotalize?: boolean;
     isButton?: boolean;
     button?: {
@@ -29,9 +30,15 @@ export interface ghostControllColumn {
 export interface TableModel {
     title: string;
     paginator?: boolean;
+    rows?: number;
+    rowsPerPageOptions?: number[];
+    showCurrentPageReport?: boolean;
+    currentPageReportTemplate?: string;
     totalize: boolean;
     columns: Array<tableColumns>;
     ghostControll?: Array<ghostControllColumn>;
     sortField?: string;
     sortOrder?: 1 | -1;
+    dataKey?: string;
+    expandable?: boolean;
 }

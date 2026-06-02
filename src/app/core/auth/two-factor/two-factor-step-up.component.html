@@ -1,0 +1,94 @@
+<div class="two-factor-modal">
+  <div class="two-factor-modal__header">
+    <div class="two-factor-modal__title-row">
+      <div>
+        <p class="two-factor-modal__eyebrow">Step-up authentication</p>
+        <h2>Confirmar identidade</h2>
+      </div>
+
+      <button
+        class="two-factor-modal__close"
+        type="button"
+        aria-label="Fechar confirmação de identidade"
+        (click)="cancel()">
+        ×
+      </button>
+    </div>
+
+    <p class="two-factor-modal__subtitle">
+      Esta ação exige uma confirmação adicional. O challenge atual expira às {{ expiresAtLabel }}.
+    </p>
+  </div>
+
+  <div class="two-factor-modal__card">
+    <p class="two-factor-modal__label">Método principal</p>
+
+    <button
+      *ngIf="canUseEmail"
+      class="two-factor-modal__action"
+      type="button"
+      [disabled]="sendPending || cooldownSeconds > 0"
+      (click)="sendEmail()">
+      <span>{{ emailSent ? 'Reenviar código por e-mail' : 'Receber código por e-mail' }}</span>
+      <small *ngIf="cooldownSeconds > 0">Disponível em {{ cooldownSeconds }}s</small>
+    </button>
+
+    <p *ngIf="maskedEmail" class="two-factor-modal__hint">
+      Enviamos um código para {{ maskedEmail }}.
+    </p>
+
+    <p *ngIf="sendError" class="two-factor-modal__error">{{ sendError }}</p>
+
+    <button
+      *ngIf="canUseRecoveryCode"
+      class="two-factor-modal__secondary"
+      type="button"
+      (click)="useRecoveryCode()">
+      Usar recovery code
+    </button>
+  </div>
+
+  <form class="two-factor-modal__form" [formGroup]="codeForm" (ngSubmit)="verify()">
+    <label class="two-factor-modal__field">
+      <span>{{ method === 'recovery_code' ? 'Recovery code' : 'Código recebido por e-mail' }}</span>
+      <input
+        pInputText
+        formControlName="code"
+        [attr.autocomplete]="method === 'recovery_code' ? 'one-time-code' : 'one-time-code'"
+        [placeholder]="method === 'recovery_code' ? 'Digite seu recovery code' : 'Digite o código de 6 dígitos'">
+    </label>
+
+    <p
+      *ngIf="codeForm.controls.code.invalid && codeForm.controls.code.touched"
+      class="two-factor-modal__error">
+      Informe o {{ method === 'recovery_code' ? 'recovery code' : 'código' }} para continuar.
+    </p>
+
+    <p *ngIf="verifyError" class="two-factor-modal__error">{{ verifyError }}</p>
+
+    <div class="two-factor-modal__footer">
+      <button
+        class="two-factor-modal__secondary"
+        type="button"
+        (click)="cancel()">
+        Fechar
+      </button>
+
+      <button
+        *ngIf="canUseEmail && method === 'recovery_code'"
+        class="two-factor-modal__secondary"
+        type="button"
+        (click)="method = defaultMethod">
+        Voltar para e-mail
+      </button>
+
+      <button
+        pButton
+        class="two-factor-modal__submit"
+        type="submit"
+        [disabled]="verifyPending">
+        {{ verifyPending ? 'Validando...' : 'Confirmar e continuar' }}
+      </button>
+    </div>
+  </form>
+</div>

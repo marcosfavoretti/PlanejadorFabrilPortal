@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "action": { "type": "string" },
+    "maxAgeSeconds": { "type": "number" },
+    "bindToParams": { "type": "array", "items": { "type": "string" } },
+    "methods": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["email", "totp", "recovery_code"] }
+    },
+    "singleUse": { "type": "boolean" },
+    "bindIp": { "type": "boolean" },
+    "bindUserAgent": { "type": "boolean" },
+    "challengeTtlSeconds": { "type": "number" },
+    "assertionTtlSeconds": { "type": "number" },
+    "maxAttempts": { "type": "number" },
+    "requiredRoles": { "type": "array", "items": { "type": "string" } },
+    "exemptRoles": { "type": "array", "items": { "type": "string" } },
+    "allowServiceAccountBypass": { "type": "boolean" },
+    "bypassReason": { "type": "string" }
+  },
+  "required": ["action", "maxAgeSeconds"],
+  "x-readme-ref-name": "TwoFactorGuardPolicyDto"
+}

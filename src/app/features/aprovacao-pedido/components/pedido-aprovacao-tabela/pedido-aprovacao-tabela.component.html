@@ -1,0 +1,72 @@
+<app-table-dynamic class="d-flex flex-column" [tableModel]="schema()" [data]="rows()"
+  [rowExpansionTemplate]="expansionTemplate" [exportable]="false" (onRowExpanded)="handleRowExpand($event)"
+  [scrollable]="true" [scrollHeight]="scrollHeight()" responsiveLayout="stack" breakpoint="900px">
+</app-table-dynamic>
+
+<ng-template #expansionTemplate let-row>
+  <div class="p-3 bg-light rounded m-2 border border-light">
+    @if (rowDetailsLoading(row.id)) {
+    <div class="d-flex align-items-center justify-content-center p-4">
+      <i class="pi pi-spin pi-spinner fs-3 text-success"></i>
+      <span class="ms-3 text-muted">Carregando detalhes do pedido...</span>
+    </div>
+    } @else if (rowDetails(row.id)) {
+    <h6 class="fw-bold mb-3 text-success"><i class="pi pi-list me-2"></i>Itens do Pedido (OCs)</h6>
+    <div class="table-responsive approval-details-table">
+      <table class="table table-sm table-bordered bg-white mb-0 shadow-sm" style="font-size: 0.85rem;">
+        <thead class="table-light">
+          <tr>
+            <th class="text-center text-secondary">OC</th>
+            <th class="text-center text-secondary">Item</th>
+            <th class="text-secondary">Descrição</th>
+            <th class="text-center text-secondary">Qtd Solicitada</th>
+            <th class="text-end text-secondary">Preço Unit.</th>
+            <th class="text-end text-secondary">Valor Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (detalhe of rowDetails(row.id); track detalhe.numeroOc) {
+          <tr>
+            <td class="text-center">{{ detalhe.numeroOc || '---' }}</td>
+            <td class="text-center fw-medium">{{ detalhe.codItem || '---' }}</td>
+            <td>{{ detalhe.descricaoItem || '---' }}</td>
+            <td class="text-center">{{ detalhe.quantidadeSolicitada || 0 }} {{ detalhe.unidadeMedida || '' }}</td>
+            <td class="text-end">{{ $any(detalhe.precoUnitario) | number:'1.2-2' }}</td>
+            <td class="text-end fw-medium">{{ $any(detalhe.valorOc) | number:'1.2-2' }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="approval-details-cards">
+      @for (detalhe of rowDetails(row.id); track detalhe.numeroOc) {
+      <article class="approval-detail-card">
+        <div class="approval-detail-card__header">
+          <span class="approval-detail-card__badge">OC {{ detalhe.numeroOc || '---' }}</span>
+          <strong>Item {{ detalhe.codItem || '---' }}</strong>
+        </div>
+        <p class="approval-detail-card__description">{{ detalhe.descricaoItem || '---' }}</p>
+        <dl class="approval-detail-card__meta">
+          <div>
+            <dt>Quantidade</dt>
+            <dd>{{ detalhe.quantidadeSolicitada || 0 }} {{ detalhe.unidadeMedida || '' }}</dd>
+          </div>
+          <div>
+            <dt>Preço unit.</dt>
+            <dd>{{ $any(detalhe.precoUnitario) | number:'1.2-2' }}</dd>
+          </div>
+          <div>
+            <dt>Valor total</dt>
+            <dd>{{ $any(detalhe.valorOc) | number:'1.2-2' }}</dd>
+          </div>
+        </dl>
+      </article>
+      }
+    </div>
+    } @else {
+    <div class="text-center p-3 text-muted">
+      <i class="pi pi-exclamation-circle me-2"></i> Nenhum detalhe encontrado para este pedido.
+    </div>
+    }
+  </div>
+</ng-template>

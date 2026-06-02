@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, input, OnInit, viewChild, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, OnInit, viewChild } from '@angular/core';
 import { GanttData, KPIControllerGetGanttInformationMethodQueryParamsColorirEnum } from '@/api/planejador';
 import { ContextoFabricaService } from '@/app/features/planejamento/services/ContextoFabrica.service';
 import { tap } from 'rxjs';
@@ -7,9 +7,10 @@ import { EdicaoDePlanejamentoPopUpComponent } from '../edicao-de-planejamento-po
 import { GanttStoreService } from '@/app/features/planejamento/services/GanttStore.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
-import { addMonths, min, startOfToday } from 'date-fns';
+import { addMonths, startOfToday } from 'date-fns';
 import { LoadingPopupService } from '@/app/shared/services/loading-popup.service';
 import { Skeleton } from 'primeng/skeleton';
+
 @Component({
   selector: 'app-gantt-chart',
   standalone: true,
@@ -22,7 +23,6 @@ import { Skeleton } from 'primeng/skeleton';
   styleUrl: './gantt-chart.component.css'
 })
 export class GanttChartComponent implements OnInit {
-
   public readonly ganttStore = inject(GanttStoreService);
   private readonly popup = inject(LoadingPopupService);
   private readonly contextoFabrica = inject(ContextoFabricaService);
@@ -33,7 +33,7 @@ export class GanttChartComponent implements OnInit {
 
   viewMode: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum = KPIControllerGetGanttInformationMethodQueryParamsColorirEnum.operacao;
 
-  loadingRequest: boolean = false
+  loadingRequest: boolean = false;
 
   ganttEffect = effect(() => {
     const data = this.ganttStore.item()?.data || [];
@@ -45,11 +45,11 @@ export class GanttChartComponent implements OnInit {
   setViewMode(ev: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum): void {
     [this.ganttStore.viewMode, this.viewMode] = [ev, ev];
     if (!this.contextoFabrica.item()) return;
-    this.loadingRequest = true
+    this.loadingRequest = true;
     this.ganttStore.refresh(this.contextoFabrica.item()!.fabricaId)
       .pipe(
         tap(() => {
-          this.loadingRequest = false
+          this.loadingRequest = false;
         })
       )
       .subscribe();
@@ -57,8 +57,8 @@ export class GanttChartComponent implements OnInit {
 
   private generateChart(fiterData?: GanttData[]): void {
     const el = this.ganttElement()?.nativeElement;
-    el.innerHTML = '';
     if (!el) return;
+    el.innerHTML = '';
     const dates = (fiterData?.map(f => new Date(f.start))
       || this.ganttStore.item()?.data.map(b => new Date(b.start))
     ) || [];
@@ -72,18 +72,11 @@ export class GanttChartComponent implements OnInit {
       {
         view_mode: 'Day',
         date_format: 'YYYY-MM-DD',
-        
-        // ================== ALTERAÇÕES CRÍTICAS ==================
-        // 1. Reduza drasticamente a largura da coluna. Um valor entre 30 e 50 é o ideal para a visão diária.
-        column_width: 400, 
-        
-        // 2. Remova a altura do contêiner daqui. O CSS vai cuidar disso.
+        column_width: 400,
         container_height: 500,
-        // =========================================================
-
         bar_height: 15,
         infinite_padding: false,
-        on_date_change: (task, start, end) =>
+        on_date_change: (task, start) =>
           console.log(`data mudou para ${task} ${start} `),
         move_dependencies: true,
         lines: 'both',
@@ -97,14 +90,12 @@ export class GanttChartComponent implements OnInit {
     if (this.editavel()) {
       gantt.options.on_click = (ev) => {
         this.showEdicaoPopUP(JSON.parse(ev.dependencies as string));
-      }
+      };
     }
-  
   }
 
   private archorTask(lastDay: Date): GanttData {
     return {
-
       id: 'anchor_task_for_view_extension',
       color: 'transparent',
       name: '',
@@ -119,7 +110,7 @@ export class GanttChartComponent implements OnInit {
   private showEdicaoPopUP(row: any): void {
     this.popup.showPopUpComponent(EdicaoDePlanejamentoPopUpComponent, {
       planejamento: row
-    })
+    });
   }
 
   ngOnInit(): void {

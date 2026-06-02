@@ -1,0 +1,75 @@
+<p-toast />
+<div class="approval-page p-1 p-lg-2">
+  <div class="approval-page__header flex-shrink-0 mb-2">
+    <app-pedido-aprovacao-toolbar
+      [total]="approvalStore.totalCount()"
+      [valorTotal]="approvalStore.totalValue()"
+      [pendingCount]="approvalStore.pendingCount()">
+    </app-pedido-aprovacao-toolbar>
+  </div>
+
+  <div class="approval-page__filters">
+    <form [formGroup]="filterForm" class="row g-2">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <label class="approval-page__input-label">Pedido</label>
+        <div class="approval-page__search-field">
+          <i class="pi pi-hashtag"></i>
+          <input
+            pInputText
+            type="text"
+            formControlName="pedido"
+            placeholder="Ex: 123456"
+            class="approval-page__input">
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <label class="approval-page__input-label">Fornecedor</label>
+        <div class="approval-page__search-field">
+          <i class="pi pi-truck"></i>
+          <input
+            pInputText
+            type="text"
+            formControlName="fornecedor"
+            placeholder="Nome do fornecedor"
+            class="approval-page__input">
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <label class="approval-page__input-label">Emissão</label>
+        <div class="approval-page__search-field">
+          <i class="pi pi-calendar"></i>
+          <input
+            type="date"
+            formControlName="emissao"
+            class="approval-page__input">
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <label class="approval-page__input-label">Comprador</label>
+        <div class="approval-page__search-field">
+          <i class="pi pi-user"></i>
+          <input
+            pInputText
+            type="text"
+            formControlName="comprador"
+            placeholder="Nome do comprador"
+            class="approval-page__input">
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="approval-page__table">
+    <app-pedido-aprovacao-tabela [rowsOverride]="filteredRows()" (approveOne)="approveOne($event)"></app-pedido-aprovacao-tabela>
+
+    <div class="approval-page__paginator">
+      <p-paginator (onPageChange)="onPageChange($event)" [first]="paginatorFirst()" [rows]="rows()"
+        [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10, 20, 50, 100]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="{first} - {last} de {totalRecords}" dropdownAppendTo="body">
+      </p-paginator>
+    </div>
+  </div>
+</div>

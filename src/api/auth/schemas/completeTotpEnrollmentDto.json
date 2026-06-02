@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "enrollmentId": { "type": "string" },
+    "code": { "type": "string" }
+  },
+  "required": ["enrollmentId", "code"],
+  "x-readme-ref-name": "CompleteTotpEnrollmentDto"
+}

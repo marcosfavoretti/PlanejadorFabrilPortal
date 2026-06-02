@@ -9,7 +9,6 @@ import { FabricaPageReadOnlyComponent } from '@/app/features/planejamento/pages/
 import { FabricaPrincipalViewComponent } from '@/app/features/planejamento/pages/fabrica-principal-view/fabrica-principal-view.component';
 import { ItemPaginaComponent } from '@/app/features/planejamento/pages/item-pagina/item-pagina.component';
 import { MinhasFabricasPageComponent } from '@/app/features/planejamento/pages/minhas-fabricas-page/minhas-fabricas-page.component';
-import { PedidosFabricaViewComponent } from '@/app/features/planejamento/pages/pedidos-fabrica-view/pedidos-fabrica-view.component';
 
 export const PLANEJAMENTO_ROUTES: Routes = [
   {
@@ -69,17 +68,6 @@ export const PLANEJAMENTO_ROUTES: Routes = [
             SetUserCargoDTOCargoEnum.ADMIN,
             SetUserCargoDTOCargoEnum.PCP,
             SetUserCargoDTOCargoEnum.USER,
-          ],
-        },
-      },
-      {
-        path: 'pedidos',
-        canActivate: [AuthGuard, CargoGuard],
-        loadComponent: () => PedidosFabricaViewComponent,
-        data: {
-          roles: [
-            SetUserCargoDTOCargoEnum.ADMIN,
-            SetUserCargoDTOCargoEnum.PCP,
           ],
         },
       },

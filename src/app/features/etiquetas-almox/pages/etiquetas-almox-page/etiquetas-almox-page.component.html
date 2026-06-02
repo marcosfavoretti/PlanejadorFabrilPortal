@@ -67,7 +67,7 @@
           <div class="etiquetas-paginator">
             <p-paginator (onPageChange)="onPageChange($event)" [first]="paginatorFirst()" [rows]="rows()"
               [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10, 50, 100]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="{first} - {last} de {totalRecords}">
+              currentPageReportTemplate="{first} - {last} de {totalRecords}" dropdownAppendTo="body">
             </p-paginator>
           </div>
         </div>

@@ -1,0 +1,5 @@
+{
+  "type": "object",
+  "properties": { "issuer": { "type": "string" } },
+  "x-readme-ref-name": "BeginTotpEnrollmentDto"
+}

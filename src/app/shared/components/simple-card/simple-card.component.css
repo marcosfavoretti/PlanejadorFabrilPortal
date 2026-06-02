@@ -1,13 +1,34 @@
 .simple-card-shell {
   min-height: 100%;
+  min-width: 0;
+  padding: var(--simple-card-padding, 1rem);
 }
 
 .simple-card-shell__content {
   flex: 1 1 auto;
+  min-width: 0;
+}
+
+.simple-card-shell__title {
+  margin: 0;
+  line-height: 1.35;
+  font-size: var(--simple-card-title-size, 1rem);
+}
+
+.simple-card-shell__value {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  line-height: 1.1;
+  font-size: var(--simple-card-value-size, clamp(1.5rem, 2.8vw, 2.5rem));
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .data-card {
   transition: all 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .data-card:hover {
@@ -17,7 +38,13 @@
 
 .data-card hr {
   width: 100%;
-  margin: 0.25rem 0 1rem;
+  margin: var(--simple-card-divider-margin, 0.25rem 0 1rem);
   border: 0;
   border-top: 1px dashed rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 640px) {
+  .simple-card-shell__value {
+    font-size: clamp(1.25rem, 7vw, 2rem);
+  }
 }

@@ -9,3 +9,13 @@ export { authControllerRegisterWithInvite } from './authControllerRegisterWithIn
 export { authControllerValidateInvite } from './authControllerValidateInvite';
 export { authControllerValidateUser } from './authControllerValidateUser';
 export { cargoControllerSetUserCargoMethod } from './cargoControllerSetUserCargoMethod';
+export { twoFactorControllerSendEmailCode } from './twoFactorControllerSendEmailCode';
+export { twoFactorControllerVerifyChallenge } from './twoFactorControllerVerifyChallenge';
+export { twoFactorGuardEvaluationControllerEvaluate } from './twoFactorGuardEvaluationControllerEvaluate';
+export { twoFactorSelfServiceControllerCompleteEnrollment } from './twoFactorSelfServiceControllerCompleteEnrollment';
+export { twoFactorSelfServiceControllerDisable } from './twoFactorSelfServiceControllerDisable';
+export { twoFactorSelfServiceControllerGetAdminStatus } from './twoFactorSelfServiceControllerGetAdminStatus';
+export { twoFactorSelfServiceControllerGetStatus } from './twoFactorSelfServiceControllerGetStatus';
+export { twoFactorSelfServiceControllerRotateRecoveryCodes } from './twoFactorSelfServiceControllerRotateRecoveryCodes';
+export { twoFactorSelfServiceControllerSetServiceAccountBypass } from './twoFactorSelfServiceControllerSetServiceAccountBypass';
+export { twoFactorSelfServiceControllerStartEnrollment } from './twoFactorSelfServiceControllerStartEnrollment';
