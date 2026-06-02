@@ -1,0 +1,155 @@
+.approval-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background:
+    radial-gradient(circle at top, rgba(22, 163, 74, 0.1), transparent 30%),
+    linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+.approval-page__header {
+  flex-shrink: 0;
+}
+
+.approval-page__filters {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 1.25rem;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+  padding: 0.85rem 1rem 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.approval-page__input-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.approval-page__search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.8rem;
+  padding: 0 0.9rem;
+  border-radius: 0.95rem;
+  background: #f8fafc;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.approval-page__search-field:focus-within {
+  background: #fff;
+  border-color: rgba(22, 163, 74, 0.28);
+  box-shadow: 0 0 0 0.2rem rgba(22, 163, 74, 0.1);
+}
+
+.approval-page__search-field i {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.approval-page__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  color: #0f172a;
+}
+
+.approval-page__input:enabled:focus {
+  box-shadow: none;
+}
+
+.approval-page__table {
+  overflow: hidden;
+  background: #fff;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.approval-page__table app-pedido-aprovacao-tabela {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.approval-page__paginator {
+  padding: 0.2rem 0.75rem 0.5rem;
+  border-top: 1px solid #edf2ee;
+  flex-shrink: 0;
+}
+
+:host ::ng-deep .approval-page__paginator .p-paginator {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+@media (max-width: 900px) {
+  .approval-page {
+    padding: 0.35rem;
+    gap: 0.75rem;
+  }
+
+  .approval-page__table {
+    border-radius: 1rem;
+  }
+
+  .approval-page__filters {
+    border-radius: 1rem;
+    padding: 0.8rem 0.85rem 0.9rem;
+  }
+
+  .approval-page__paginator {
+    padding: 0.5rem 0.75rem 0.65rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .approval-page {
+    height: auto;
+    min-height: 100%;
+    padding: 0.25rem;
+  }
+
+  .approval-page__header {
+    margin-bottom: 0;
+  }
+
+  .approval-page__table {
+    border-radius: 0.9rem;
+  }
+
+  .approval-page__filters {
+    border-radius: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .approval-page__paginator {
+    padding: 0.55rem 0.65rem 0.7rem;
+  }
+
+  :host ::ng-deep .approval-page__paginator .p-paginator {
+    justify-content: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  :host ::ng-deep .approval-page__paginator .p-paginator-current {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    order: 10;
+  }
+}

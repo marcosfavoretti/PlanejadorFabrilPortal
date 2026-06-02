@@ -11,12 +11,18 @@ import { catchError, concatMap, firstValueFrom, of, tap } from 'rxjs';
 import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { registerTwoFactorHandler } from '@/client';
+import { TwoFactorStepUpService } from '@/app/core/auth/services/two-factor-step-up.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     DialogService,
     DynamicDialogRef,
     DynamicDialogConfig,
+    provideAppInitializer(() => {
+      const twoFactorService = inject(TwoFactorStepUpService);
+      registerTwoFactorHandler(twoFactorService.handleAxiosChallenge.bind(twoFactorService));
+    }),
     provideAppInitializer(async () => {
       const userStore = inject(UserstoreService);
       const routePermission = inject(RoutePermissionStoreService);

@@ -5,14 +5,22 @@
     </div>
   }
 
-  <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data" groupRowsBy="atr_group" dataKey="atr_group"
+  <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data"
+    [dataKey]="tableDataKey"
     [expandedRowKeys]="expandedRowKeys"
-    [paginator]="tableModel.paginator? true: false" [rows]="10" [columns]="tableModel.columns"
-    [rowsPerPageOptions]="30 < (data ? data.length : 0) ? [10, 20, 30, data ? data.length : 0 ]: [10,20,30]"
+    [groupRowsBy]="tableModel.totalize ? 'atr_group' : undefined"
     [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined"
+    [paginator]="tableModel.paginator ? true : false" [rows]="tableRows" [columns]="tableModel.columns"
+    [rowsPerPageOptions]="tableRowsPerPageOptions"
+    [showCurrentPageReport]="tableShowCurrentPageReport"
+    [currentPageReportTemplate]="tableCurrentPageReportTemplate"
+    paginatorDropdownAppendTo="body"
     class="custom-table" sortMode="single"
     [sortField]="tableSortField" [sortOrder]="tableSortOrder"
-    [scrollable]="scrollable" [scrollHeight]="scrollHeight" (onFilter)="onTableFilter($event)">
+    [responsiveLayout]="responsiveLayout"
+    [breakpoint]="breakpoint"
+    [scrollable]="scrollable" [scrollHeight]="scrollHeight" (onFilter)="onTableFilter($event)"
+    (onRowExpand)="handleRowExpand($event)" (onRowCollapse)="handleRowCollapse($event)">
 
     <ng-template #caption>
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-3 p-2">
@@ -42,8 +50,14 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
+        @if (tableModel.expandable) {
+          <th style="width: 3rem"></th>
+        }
         @for (key of columns ; track $index) {
-          <th pSortableColumn="{{ key.field }}" class="text-center text-uppercase smallest fw-bold tracking-wider py-3">
+          <th
+            pSortableColumn="{{ key.field }}"
+            class="text-center text-uppercase smallest fw-bold tracking-wider py-3"
+            [class.table-action-column]="key.isButton">
             <div class="d-flex align-items-center justify-content-center gap-2">
               @if (!key.isButton) {
                 @if (key.isDate) {
@@ -93,10 +107,18 @@
       </ng-template>
     }
 
-    <ng-template pTemplate="body" let-item let-columns="columns" #body>
+    <ng-template pTemplate="body" let-item let-columns="columns" let-expanded="expanded" #body>
       <tr [ngStyle]="checkHighLight(item)" class="hover-row">
+        @if (tableModel.expandable) {
+          <td>
+            <button type="button" pButton pRipple [pRowToggler]="item" class="p-button-text p-button-rounded p-button-plain shadow-none" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+          </td>
+        }
         @for (key of columns; track $index) {
-          <td class="text-center py-2 border-bottom border-light">
+          <td
+            class="text-center py-2 border-bottom border-light"
+            [class.table-action-column]="key.isButton">
+            <span class="table-column-title">{{ key.alias || key.field }}</span>
             @if (key?.isImg) {
               @let image = getNestedValue(item, key.field);
               <div class="d-flex justify-content-center align-items-center">
@@ -121,8 +143,10 @@
               </div>
             } @else if(key?.isButton){
               <button (click)="key.button.command(item, $event); onNewCheckEvent(item, key.field, getNestedValue(item, key.field))"
-                class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 px-3 shadow-none border-0">
-                <span>{{key.button.label}}</span>
+                class="btn btn-sm btn-outline-success d-inline-flex align-items-center justify-content-center gap-2 px-3 shadow-none">
+                @if (key.button.label) {
+                  <span>{{key.button.label}}</span>
+                }
                 <i [class]="key.button.icon || ''"></i>
               </button>
             } @else if (key?.isTag) {
@@ -137,6 +161,15 @@
                 [inputStyle]="{ width: '4rem', textAlign: 'center', borderRadius: '0.5rem', border: '1px solid #dee2e6'}"
                 (ngModelChange)="onInputChangeDebounced(item, key.field, $event)" maxlength="2">
               </p-inputnumber>
+            } @else if (key.isCurrency) {
+              @let currencyValue = normalizeCurrencyValue(getNestedValue(item, key.field));
+              @if (currencyValue !== null) {
+                <span class="fw-medium text-dark">
+                  {{ currencyValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                </span>
+              } @else {
+                <span class="small fw-medium">---</span>
+              }
             } @else if (key.isNumber) {
               <span class="fw-medium text-dark">{{ getNestedValue(item, key.field) | number: '1.0-5' }}</span>
             } @else {
@@ -154,8 +187,18 @@
     <ng-template pTemplate="emptymessage" let-columns>
       <tr>
         <td [attr.colspan]="columns.length" class="text-center py-5">
-          <img src="assets/no_data.svg" alt="Sem dados" style="max-width: 120px; opacity: 0.5" class="mb-3">
+          <i class="pi pi-inbox text-muted opacity-50 mb-3" style="font-size: 3rem;"></i>
           <p class="text-muted small">Não há dados para exibir nesta tabela.</p>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #expandedrow let-item>
+      <tr>
+        <td [attr.colspan]="(tableModel.columns.length || 0) + (tableModel.expandable ? 1 : 0)" class="p-0 border-bottom border-light">
+          @if (rowExpansionTemplate) {
+            <ng-container *ngTemplateOutlet="rowExpansionTemplate; context: { $implicit: item }"></ng-container>
+          }
         </td>
       </tr>
     </ng-template>

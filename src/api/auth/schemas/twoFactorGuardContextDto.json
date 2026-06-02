@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "userEmail": { "type": "string" },
+    "cargosLista": { "type": "array", "items": { "type": "string" } },
+    "serviceAccount": { "type": "boolean" },
+    "routeSignature": { "type": "string" },
+    "resourceHash": { "type": "string" },
+    "ip": { "type": "object" },
+    "userAgent": { "type": "string" }
+  },
+  "required": ["userId", "routeSignature", "resourceHash"],
+  "x-readme-ref-name": "TwoFactorGuardContextDto"
+}

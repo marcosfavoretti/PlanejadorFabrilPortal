@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "code": { "type": "string" },
+    "method": {
+      "type": "string",
+      "enum": ["email", "totp", "recovery_code"],
+      "default": "totp"
+    }
+  },
+  "required": ["code"],
+  "x-readme-ref-name": "VerifyTwoFactorDto"
+}

@@ -1,0 +1,72 @@
+{
+  "type": "object",
+  "properties": {
+    "solicitante": { "type": "object", "example": "m.silva", "nullable": true },
+    "numeroOc": { "type": "string", "example": "450123" },
+    "numeroVersao": { "type": "string", "example": "1" },
+    "codItem": {
+      "type": "object",
+      "example": "20-000-00001",
+      "nullable": true
+    },
+    "descricaoItem": {
+      "type": "object",
+      "example": "CHAPA ACO CARBONO",
+      "nullable": true
+    },
+    "numeroPedido": { "type": "string", "example": "123456" },
+    "unidadeMedida": { "type": "object", "example": "PC", "nullable": true },
+    "dataEmissao": {
+      "type": "object",
+      "example": "2026-05-29T00:00:00.000Z",
+      "nullable": true
+    },
+    "quantidadeSolicitada": {
+      "type": "object",
+      "example": 10,
+      "nullable": true
+    },
+    "quantidadeRecebida": { "type": "object", "example": 4, "nullable": true },
+    "dataAberturaOc": {
+      "type": "object",
+      "example": "2026-05-29T00:00:00.000Z",
+      "nullable": true
+    },
+    "precoUnitario": { "type": "object", "example": 150.5, "nullable": true },
+    "valorOc": { "type": "object", "example": 1505, "nullable": true },
+    "fornecedor": {
+      "type": "object",
+      "example": "FORNECEDOR ABC LTDA",
+      "nullable": true
+    },
+    "condicaoPagamento": {
+      "type": "object",
+      "example": "30DD",
+      "nullable": true
+    },
+    "modalidadeEmbarque": {
+      "type": "object",
+      "example": "FOB",
+      "nullable": true
+    }
+  },
+  "required": [
+    "solicitante",
+    "numeroOc",
+    "numeroVersao",
+    "codItem",
+    "descricaoItem",
+    "numeroPedido",
+    "unidadeMedida",
+    "dataEmissao",
+    "quantidadeSolicitada",
+    "quantidadeRecebida",
+    "dataAberturaOc",
+    "precoUnitario",
+    "valorOc",
+    "fornecedor",
+    "condicaoPagamento",
+    "modalidadeEmbarque"
+  ],
+  "x-readme-ref-name": "PedidoAceiteCompraDetalheDto"
+}

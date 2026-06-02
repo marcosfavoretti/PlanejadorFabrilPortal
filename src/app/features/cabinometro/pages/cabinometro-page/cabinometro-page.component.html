@@ -1,0 +1,23 @@
+<div class="cabinometro-light-container background">
+  
+  <div class="content-wrapper">
+    <header class="header">
+      <h1 class="title">CABINÔMETRO</h1>
+      <p class="subtitle">Acompanhando nossa produção em tempo real</p>
+    </header>
+
+    <main class="counter-display">
+      <div class="counter-card">
+        <span class="counter-value">{{ displayCounter | number:'1.0-0' }}</span>
+      </div>
+      <div class="counter-label">Produtos fabricados e entregues</div>
+    </main>
+
+    <footer class="footer">
+      <div class="pulse-indicator">
+        <div class="pulse-dot"></div>
+        <span>Atualização Ao Vivo</span>
+      </div>
+    </footer>
+  </div>
+</div>

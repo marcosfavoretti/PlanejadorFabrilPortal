@@ -1,0 +1,102 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.approval-details-cards {
+  display: none;
+}
+
+.approval-detail-card {
+  padding: 0.9rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.approval-detail-card+.approval-detail-card {
+  margin-top: 0.85rem;
+}
+
+.approval-detail-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.approval-detail-card__badge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.approval-detail-card__description {
+  margin-bottom: 0.75rem;
+  color: #334155;
+  font-size: 0.92rem;
+}
+
+.approval-detail-card__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.approval-detail-card__meta dt {
+  margin: 0 0 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.approval-detail-card__meta dd {
+  margin: 0;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  :host {
+    overflow: visible;
+  }
+
+  .approval-details-table,
+  .approval-details-cards {
+    margin-top: 0.75rem;
+  }
+
+  .approval-details-table {
+    display: none;
+  }
+
+  .approval-details-cards {
+    display: block;
+  }
+
+  .approval-detail-card {
+    padding: 0.85rem 0.9rem;
+    border-radius: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .approval-detail-card__description {
+    font-size: 0.88rem;
+  }
+
+  .approval-detail-card__meta {
+    gap: 0.5rem;
+  }
+}

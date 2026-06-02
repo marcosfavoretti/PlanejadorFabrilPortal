@@ -33,6 +33,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/planejamento/routes').then((m) => m.PLANEJAMENTO_ROUTES),
     },
     {
+        path: 'aprovacao-pedido',
+        loadChildren: () => import('./features/aprovacao-pedido/routes').then((m) => m.APROVACAO_PEDIDO_ROUTES),
+    },
+    {
         path: 'certificados',
         loadChildren: () => import('./features/certificados/routes').then((m) => m.CERTIFICADOS_ROUTES),
     },
@@ -63,6 +67,10 @@ export const routes: Routes = [
     {
         path: 'etiquetasAlmox',
         loadChildren: () => import('./features/etiquetas-almox/routes').then((m) => m.ETIQUETAS_ALMOX_ROUTES),
+    },
+    {
+        path: 'cabinometro',
+        loadComponent: () => import('./features/cabinometro/pages/cabinometro-page/cabinometro-page.component').then(m => m.CabinometroPageComponent)
     },
     ...AUTH_ROUTES,
 ];

@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "pedido": {
+      "type": "string",
+      "description": "Número do pedido no Logix",
+      "example": "123456"
+    },
+    "codEmpresa": {
+      "type": "string",
+      "description": "Código da empresa no Logix",
+      "example": "01",
+      "default": "01"
+    }
+  },
+  "required": ["pedido"],
+  "x-readme-ref-name": "ProcessarAceiteCompraDto"
+}

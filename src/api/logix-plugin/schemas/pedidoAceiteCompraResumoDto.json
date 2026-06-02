@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "codEmpresa": { "type": "string", "example": "01" },
+    "numeroPedido": { "type": "string", "example": "123456" },
+    "numeroVersao": { "type": "string", "example": "1" },
+    "dataEmissao": {
+      "type": "object",
+      "example": "2026-05-29T00:00:00.000Z",
+      "nullable": true
+    },
+    "comprador": {
+      "type": "object",
+      "example": "JOAO COMPRADOR",
+      "nullable": true
+    },
+    "fornecedor": {
+      "type": "object",
+      "example": "FORNECEDOR ABC LTDA",
+      "nullable": true
+    },
+    "valorTotal": { "type": "object", "example": 15230.44, "nullable": true }
+  },
+  "required": [
+    "codEmpresa",
+    "numeroPedido",
+    "numeroVersao",
+    "dataEmissao",
+    "comprador",
+    "fornecedor",
+    "valorTotal"
+  ],
+  "x-readme-ref-name": "PedidoAceiteCompraResumoDto"
+}

@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "status": { "type": "string", "example": "approved" },
+    "message": { "type": "string", "example": "Pedido aprovado com sucesso." },
+    "pedido": { "type": "string", "example": "123456" },
+    "versaoPedido": { "type": "string", "example": "1" },
+    "aprovador": { "type": "string", "example": "m.silva" },
+    "niveisAtualizados": { "type": "number", "example": 2 },
+    "ordensAtualizadas": { "type": "number", "example": 4 }
+  },
+  "required": [
+    "status",
+    "message",
+    "pedido",
+    "versaoPedido",
+    "aprovador",
+    "niveisAtualizados",
+    "ordensAtualizadas"
+  ],
+  "x-readme-ref-name": "AceiteCompraResponseDto"
+}
