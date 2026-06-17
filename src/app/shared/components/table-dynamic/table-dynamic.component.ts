@@ -133,6 +133,16 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     });
   }
 
+  onButtonClick(row: any, column: string, event: Event, command?: (row: any, event: Event) => void): void {
+    command?.(row, event);
+    this.onChecked.emit({
+      row,
+      column,
+      checked: true,
+      oldValue: this.getNestedValue(row, column)
+    });
+  }
+
   public applyFilterGlobal($event: any, stringVal: any) {
     this.dt2!.filterGlobal(($event.target as HTMLInputElement).value.trim(), stringVal.trim());
   }

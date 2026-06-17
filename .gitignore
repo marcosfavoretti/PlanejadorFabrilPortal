@@ -23,6 +23,7 @@ gemini/
 .codex/
 .codex
 .playwright-mcp/
+worktree/
 # Opcional: Se você quiser que as regras de projeto fiquem só com você
 CLAUDE.md
 .mcp.json

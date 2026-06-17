@@ -1,0 +1,19 @@
+<div class="container-fluid h-100 overflow-y-auto">
+  <div class="row justify-content-center align-items-start g-3">
+    <div class="col-12">
+      <app-pedidos-tabela [planejavel]="true"></app-pedidos-tabela>
+    </div>
+
+    <div class="col-12">
+      <div class="row g-3">
+        <div class="col-12 col-lg-6">
+          <app-pedidos-carga-chart></app-pedidos-carga-chart>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <app-pedidos-carga-lote-chart></app-pedidos-carga-lote-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
