@@ -5,6 +5,7 @@
 
 export enum AdicionarPlanejamentoDTOSetorEnum {
   AdicionarPlanejamentoDTOSetorEnum_00015 = '00015',
+  AdicionarPlanejamentoDTOSetorEnum_00055 = '00055',
   AdicionarPlanejamentoDTOSetorEnum_00035 = '00035',
   AdicionarPlanejamentoDTOSetorEnum_00050 = '00050',
   AdicionarPlanejamentoDTOSetorEnum_00025 = '00025',

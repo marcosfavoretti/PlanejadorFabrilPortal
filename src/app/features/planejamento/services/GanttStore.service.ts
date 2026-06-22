@@ -9,14 +9,16 @@ export class GanttStoreService extends SignalStore<GetGanttInformationDto> {
     planejamentoAPI = inject(PlanejamentoAPIService);
     viewMode: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum = KPIControllerGetGanttInformationMethodQueryParamsColorirEnum.operacao;
     private _original: GetGanttInformationDto | null = null;
+    private _filterTerm = '';
 
     override set(value: GetGanttInformationDto): void {
         this._original = value;
-        super.set(value);
+        super.set(this.filterValue(value));
     }
 
     override clear(): void {
         this._original = null;
+        this._filterTerm = '';
         super.clear();
     }
 
@@ -38,30 +40,34 @@ export class GanttStoreService extends SignalStore<GetGanttInformationDto> {
     }
 
     applyFilter(term: string): void {
+        this._filterTerm = term;
         if (!this._original) return;
-        if (!Array.isArray(this._original.data)) {
-            this._item.set(this._original);
-            return;
-        }
-
-        const normalizedTerm = term.trim().toLowerCase();
-        if (!normalizedTerm) {
-            this.clearFilter();
-            return;
-        }
-
-        const filteredData = this._original.data.filter(item =>
-            JSON.stringify(item).toLowerCase().includes(normalizedTerm)
-        );
-
-        this._item.set({
-            ...this._original,
-            data: filteredData
-        } as GetGanttInformationDto);
+        this._item.set(this.filterValue(this._original));
     }
 
     clearFilter(): void {
+        this._filterTerm = '';
         if (!this._original) return;
         this._item.set(this._original);
+    }
+
+    private filterValue(value: GetGanttInformationDto): GetGanttInformationDto {
+        if (!Array.isArray(value.data)) {
+            return value;
+        }
+
+        const normalizedTerm = this._filterTerm.trim().toLowerCase();
+        if (!normalizedTerm) {
+            return value;
+        }
+
+        const filteredData = value.data.filter(item =>
+            JSON.stringify(item).toLowerCase().includes(normalizedTerm)
+        );
+
+        return {
+            ...value,
+            data: filteredData
+        } as GetGanttInformationDto;
     }
 }

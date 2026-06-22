@@ -24,4 +24,6 @@ export { estruturaControllerListAllEstruturasFinaisMethod } from './estruturaCon
 export { estruturaControllerRemoveInNeo4J } from './estruturaControllerRemoveInNeo4J';
 export { estruturaExportControllerExportToNeo4J } from './estruturaExportControllerExportToNeo4J';
 export { estruturaImagemControllerGetImagemDaEstruturaMethod } from './estruturaImagemControllerGetImagemDaEstruturaMethod';
+export { estruturaInternalControllerConsultarRoteiro } from './estruturaInternalControllerConsultarRoteiro';
+export { estruturaInternalControllerGetItemDeControle } from './estruturaInternalControllerGetItemDeControle';
 export { estruturaRoteiroControllerConsultarRoteiroMethod } from './estruturaRoteiroControllerConsultarRoteiroMethod';

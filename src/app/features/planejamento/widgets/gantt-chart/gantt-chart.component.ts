@@ -34,6 +34,7 @@ export class GanttChartComponent implements OnInit {
   viewMode: KPIControllerGetGanttInformationMethodQueryParamsColorirEnum = KPIControllerGetGanttInformationMethodQueryParamsColorirEnum.operacao;
 
   loadingRequest: boolean = false;
+  pedidoFilter = '';
 
   ganttEffect = effect(() => {
     const data = this.ganttStore.item()?.data || [];
@@ -53,6 +54,15 @@ export class GanttChartComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  filterByPedido(): void {
+    this.ganttStore.applyFilter(this.pedidoFilter);
+  }
+
+  clearPedidoFilter(): void {
+    this.pedidoFilter = '';
+    this.ganttStore.clearFilter();
   }
 
   private generateChart(fiterData?: GanttData[]): void {

@@ -1,19 +1,44 @@
 <div class="container-fluid">
     <!-- Toolbar -->
-    <div class="d-flex flex-wrap gap-2 align-items-center p-2">
-        <p class="small mb-0 fw-semibold">Colorir Gantt por:</p>
-        <ng-container *ngFor="let item of viewModeOp; let i = index">
-            <button
-                [disabled]="loadingRequest"
-                (click)="setViewMode(item[1])"
-                class="btn btn-sm"
-                [ngClass]='item[1] !== viewMode
-                    ? "btn-outline-success"
-                    : "btn-success"'
-            >
-                {{ item[0] }}
-            </button>
-        </ng-container>
+    <div class="gantt-toolbar p-2">
+        <div class="gantt-toolbar__colors">
+            <p class="small mb-0 fw-semibold">Colorir Gantt por:</p>
+            <ng-container *ngFor="let item of viewModeOp; let i = index">
+                <button
+                    [disabled]="loadingRequest"
+                    (click)="setViewMode(item[1])"
+                    class="btn btn-sm"
+                    [ngClass]='item[1] !== viewMode
+                        ? "btn-outline-success"
+                        : "btn-success"'
+                >
+                    {{ item[0] }}
+                </button>
+            </ng-container>
+        </div>
+
+        <div class="gantt-toolbar__filter">
+            <label class="gantt-toolbar__input-label">Pedido</label>
+            <div class="gantt-toolbar__search-field">
+                <i class="pi pi-hashtag"></i>
+                <input
+                    type="text"
+                    [(ngModel)]="pedidoFilter"
+                    (ngModelChange)="filterByPedido()"
+                    placeholder="Filtrar pedido"
+                    class="gantt-toolbar__input">
+                @if (pedidoFilter) {
+                    <button
+                        type="button"
+                        class="gantt-toolbar__clear-button"
+                        (click)="clearPedidoFilter()"
+                        aria-label="Limpar filtro de pedido"
+                    >
+                        <i class="pi pi-times"></i>
+                    </button>
+                }
+            </div>
+        </div>
     </div>
     <hr class="my-2">
     <!-- Layout responsivo -->

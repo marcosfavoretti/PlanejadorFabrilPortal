@@ -173,6 +173,18 @@ export type {
   EstruturaImagemControllerGetImagemDaEstruturaMethodQueryResponse,
 } from './models/EstruturaImagemControllerGetImagemDaEstruturaMethod';
 export type {
+  EstruturaInternalControllerConsultarRoteiroError,
+  EstruturaInternalControllerConsultarRoteiroQuery,
+  EstruturaInternalControllerConsultarRoteiroQueryParams,
+  EstruturaInternalControllerConsultarRoteiroQueryResponse,
+} from './models/EstruturaInternalControllerConsultarRoteiro';
+export type {
+  EstruturaInternalControllerGetItemDeControleError,
+  EstruturaInternalControllerGetItemDeControleQuery,
+  EstruturaInternalControllerGetItemDeControleQueryParams,
+  EstruturaInternalControllerGetItemDeControleQueryResponse,
+} from './models/EstruturaInternalControllerGetItemDeControle';
+export type {
   EstruturaRoteiroControllerConsultarRoteiroMethodError,
   EstruturaRoteiroControllerConsultarRoteiroMethodQuery,
   EstruturaRoteiroControllerConsultarRoteiroMethodQueryParams,
@@ -225,6 +237,8 @@ export { estruturaControllerListAllEstruturasFinaisMethod } from './client/estru
 export { estruturaControllerRemoveInNeo4J } from './client/estruturaControllerRemoveInNeo4J';
 export { estruturaExportControllerExportToNeo4J } from './client/estruturaExportControllerExportToNeo4J';
 export { estruturaImagemControllerGetImagemDaEstruturaMethod } from './client/estruturaImagemControllerGetImagemDaEstruturaMethod';
+export { estruturaInternalControllerConsultarRoteiro } from './client/estruturaInternalControllerConsultarRoteiro';
+export { estruturaInternalControllerGetItemDeControle } from './client/estruturaInternalControllerGetItemDeControle';
 export { estruturaRoteiroControllerConsultarRoteiroMethod } from './client/estruturaRoteiroControllerConsultarRoteiroMethod';
 export { ChatAttachmentDtoTypeEnum } from './models/ChatAttachmentDto';
 export { ChatCompletionDtoFinishReasonEnum } from './models/ChatCompletionDto';

@@ -173,6 +173,18 @@ export type {
   EstruturaImagemControllerGetImagemDaEstruturaMethodQueryResponse,
 } from './EstruturaImagemControllerGetImagemDaEstruturaMethod';
 export type {
+  EstruturaInternalControllerConsultarRoteiroError,
+  EstruturaInternalControllerConsultarRoteiroQuery,
+  EstruturaInternalControllerConsultarRoteiroQueryParams,
+  EstruturaInternalControllerConsultarRoteiroQueryResponse,
+} from './EstruturaInternalControllerConsultarRoteiro';
+export type {
+  EstruturaInternalControllerGetItemDeControleError,
+  EstruturaInternalControllerGetItemDeControleQuery,
+  EstruturaInternalControllerGetItemDeControleQueryParams,
+  EstruturaInternalControllerGetItemDeControleQueryResponse,
+} from './EstruturaInternalControllerGetItemDeControle';
+export type {
   EstruturaRoteiroControllerConsultarRoteiroMethodError,
   EstruturaRoteiroControllerConsultarRoteiroMethodQuery,
   EstruturaRoteiroControllerConsultarRoteiroMethodQueryParams,

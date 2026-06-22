@@ -1,5 +1,84 @@
 .cc-red .bar-progress { fill: red !important; }
 
+.gantt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.gantt-toolbar__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.gantt-toolbar__filter {
+  flex: 1 1 16rem;
+  max-width: 22rem;
+}
+
+.gantt-toolbar__input-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.gantt-toolbar__search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 0.95rem;
+  background: #f8fafc;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.gantt-toolbar__search-field:focus-within {
+  background: #fff;
+  border-color: rgba(22, 163, 74, 0.28);
+  box-shadow: 0 0 0 0.2rem rgba(22, 163, 74, 0.1);
+}
+
+.gantt-toolbar__search-field i {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.gantt-toolbar__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  color: #0f172a;
+  outline: 0;
+}
+
+.gantt-toolbar__clear-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #64748b;
+}
+
+.gantt-toolbar__clear-button:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
 :ng-deep .bar-wrapper{
   background-color: black !important;
 }
@@ -7,4 +86,14 @@
 :host ::ng-deep .gantt-atrasado .bar {
   stroke: red !important;
   stroke-width: 3px !important;
+}
+
+@media (max-width: 768px) {
+  .gantt-toolbar {
+    align-items: stretch;
+  }
+
+  .gantt-toolbar__filter {
+    max-width: none;
+  }
 }
