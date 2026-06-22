@@ -77,6 +77,8 @@
   },
   "overrides": {
     "brace-expansion": "^2.1.0",
+    "http-proxy-middleware": "^3.0.7",
+    "piscina": "^4.9.3",
     "serialize-javascript": "^7.0.5",
     "tar": "^7.5.15",
     "tmp": "^0.2.6",
