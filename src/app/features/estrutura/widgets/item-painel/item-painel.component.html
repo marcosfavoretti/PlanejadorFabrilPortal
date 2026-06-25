@@ -56,32 +56,26 @@
       <div id="list">
         @if (targetItemDisplayList && targetItemDisplayList.length && hasFiltersApply) {
           @if (modo === 'cadastro') {
-            <app-item-result-list-register-checklist
-              [submitButton]="false"
+            <app-checklist-cadastro-result
               [paginator]="paginator"
               [exportable]="exportable"
               [quickSearchCode]="quickSearchCode"
               [checklistTag]="selectedTag"
-              [stickyToolbar]="false"
-              [showToolbarActions]="false"
-              [target_item]="$any(targetItemOriginal)?.partcode"
-              (onSubmitResponse)="eventValidStategy($event)"
+              [targetItem]="targetItemOriginal"
               [itens]="targetItemDisplayList"
-              [target_columns]="['paRecorded', 'checkListAvaiable']"></app-item-result-list-register-checklist>
+              (onSubmitResponse)="eventValidStategy($event)"
+            ></app-checklist-cadastro-result>
           }
  @else if (modo === 'coleta') {
-            <app-item-result-list-register-checklist
-              [submitButton]="true"
+            <app-checklist-coleta-result
               [paginator]="paginator"
               [exportable]="exportable"
               [quickSearchCode]="quickSearchCode"
               [checklistTag]="selectedTag"
-              [stickyToolbar]="true"
-              [showToolbarActions]="true"
+              [targetItem]="targetItemOriginal"
+              [itens]="targetItemDisplayList"
               (onSubmitResponse)="eventValidStategy($event)"
-              [target_item]="$any(targetItemOriginal)?.partcode"
-              [itens]="targetItemDisplayList" 
-              [target_columns]="['collected']"></app-item-result-list-register-checklist>
+            ></app-checklist-coleta-result>
           } @else {
             <app-item-result-list-register-checklist 
               [itens]="targetItemDisplayList" 

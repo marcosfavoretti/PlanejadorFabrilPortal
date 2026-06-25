@@ -1,0 +1,13 @@
+<app-item-result-list-register-checklist
+  [submitButton]="true"
+  [paginator]="paginator"
+  [exportable]="exportable"
+  [quickSearchCode]="quickSearchCode"
+  [checklistTag]="checklistTag"
+  [stickyToolbar]="true"
+  [showToolbarActions]="true"
+  [target_item]="$any(targetItem)?.partcode"
+  [itens]="itens"
+  [target_columns]="['collected']"
+  (onSubmitResponse)="onSubmitResponse.emit($event)">
+</app-item-result-list-register-checklist>

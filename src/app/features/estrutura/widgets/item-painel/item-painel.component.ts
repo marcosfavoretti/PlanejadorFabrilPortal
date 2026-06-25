@@ -18,6 +18,8 @@ import { PartcodeImageService } from '@/app/shared/services/partcode-image.servi
 import { EstruturaContextService } from '@/app/features/estrutura/services/EstruturaContext.service';
 import { OnInit, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChecklistCadastroResultComponent } from '../checklist-cadastro-result/checklist-cadastro-result.component';
+import { ChecklistColetaResultComponent } from '../checklist-coleta-result/checklist-coleta-result.component';
 @Component({
   selector: 'app-item-painel',
   templateUrl: './item-painel.component.html',
@@ -28,7 +30,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     ProgressSpinnerModule,
     ItemHierarchyListaComponent,
     ItemPainelFilterComponent,
-    ItemResultListRegisterChecklistComponent
+    ItemResultListRegisterChecklistComponent,
+    ChecklistCadastroResultComponent,
+    ChecklistColetaResultComponent
   ]
 })
 export class ItemPainelComponent implements OnInit {
@@ -314,7 +318,11 @@ export class ItemPainelComponent implements OnInit {
       return;
     }
 
-    this.itemrelationservice.getItemHierarchy(this.givenPartcode, this.selectedTag)
+    const itemRequest$ = this.modo === 'coleta'
+      ? this.itemrelationservice.getChecklistHierarchy(this.givenPartcode, this.selectedTag)
+      : this.itemrelationservice.getItemHierarchy(this.givenPartcode, this.selectedTag);
+
+    itemRequest$
       .pipe(
         tap(
           (data) => {
@@ -322,6 +330,16 @@ export class ItemPainelComponent implements OnInit {
             this.targetItemOriginal = data
             this.targetItemDisplayTreeNode = parseToTreeNode(data, (p) => this.imageService.pictureRenderLink({ partcode: p }))
             this.requestingData = false
+            if (this.modo === 'coleta') {
+              this.hasFiltersApply = true
+              this.targetItemDisplayList = parseToList(
+                data,
+                true,
+                (partcode) => this.imageService.pictureRenderLink({ partcode })
+              );
+              return;
+            }
+
             if (this.filters.length > 0 || this.modo === 'cadastro') {
               this.filterData(this.filters);
             }

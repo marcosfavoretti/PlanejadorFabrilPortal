@@ -223,6 +223,50 @@ export class EstruturaApiService {
         )
     }
 
+    getChecklistHierarchy(partcode: string, tag: string): Observable<ResEstruturaItemTreeDTO> {
+        const trimmedPartcode = partcode.trim().toUpperCase();
+        const trimmedTag = tag.trim().toLowerCase();
+
+        return from(
+            checkListControllerGetChecklist({
+                partcode: trimmedPartcode,
+                tag: trimmedTag
+            }).then(data => {
+                const response = Array.isArray(data) ? data[0] : data;
+                const items = Array.isArray((response as any)?.itens) ? (response as any).itens : [];
+                const checklistItems = items.map((item: any) => this.normalizeChecklistItem(item));
+
+                return {
+                    partcode: (response as any)?.estrutura || trimmedPartcode,
+                    pa: (response as any)?.estrutura || trimmedPartcode,
+                    itemCliente: (response as any)?.estrutura || trimmedPartcode,
+                    item_status: '',
+                    qtd: 1,
+                    filhos: checklistItems,
+                    children: checklistItems,
+                } as any;
+            })
+        );
+    }
+
+    private normalizeChecklistItem(item: any): ResEstruturaItemTreeDTO {
+        const partcode = this.normalizePartcode(item?.partcode);
+
+        return {
+            ...item,
+            partcode,
+            pa: item?.pa ?? item?.itemCliente,
+            itemCliente: item?.itemCliente ?? item?.pa,
+            item_status: item?.item_status ?? item?.tipo,
+            status: item?.status ?? item?.tipo,
+            qtd: item?.qtd ?? item?.quantidade ?? 0,
+            filhos: [],
+            children: [],
+            checkListAvaiable: true,
+            collected: false,
+        } as any;
+    }
+
     private mergeChecklistStatus(node: any, checklistMap: Map<string, boolean>): any {
         const pc = this.normalizePartcode(node.partcode);
         if (pc) {

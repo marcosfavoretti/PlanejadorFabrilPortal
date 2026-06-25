@@ -1,0 +1,13 @@
+<app-item-result-list-register-checklist
+  [submitButton]="false"
+  [paginator]="paginator"
+  [exportable]="exportable"
+  [quickSearchCode]="quickSearchCode"
+  [checklistTag]="checklistTag"
+  [stickyToolbar]="false"
+  [showToolbarActions]="false"
+  [target_item]="$any(targetItem)?.partcode"
+  [itens]="itens"
+  [target_columns]="['paRecorded', 'checkListAvaiable']"
+  (onSubmitResponse)="onSubmitResponse.emit($event)">
+</app-item-result-list-register-checklist>
