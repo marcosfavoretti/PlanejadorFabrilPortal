@@ -16,23 +16,39 @@
       <table class="table table-sm table-bordered bg-white mb-0 shadow-sm" style="font-size: 0.85rem;">
         <thead class="table-light">
           <tr>
+            <th class="text-secondary">Solicitante</th>
             <th class="text-center text-secondary">OC</th>
+            <th class="text-center text-secondary">Pedido</th>
             <th class="text-center text-secondary">Item</th>
             <th class="text-secondary">Descrição</th>
+            <th class="text-center text-secondary">Emissão</th>
+            <th class="text-center text-secondary">Abertura OC</th>
             <th class="text-center text-secondary">Qtd Solicitada</th>
+            <th class="text-center text-secondary">UM</th>
             <th class="text-end text-secondary">Preço Unit.</th>
             <th class="text-end text-secondary">Valor Total</th>
+            <th class="text-secondary">Fornecedor</th>
           </tr>
         </thead>
         <tbody>
           @for (detalhe of rowDetails(row.id); track detalhe.numeroOc) {
           <tr>
+            <td>{{ normalizeText(detalhe.solicitante) }}</td>
             <td class="text-center">{{ detalhe.numeroOc || '---' }}</td>
-            <td class="text-center fw-medium">{{ detalhe.codItem || '---' }}</td>
-            <td>{{ detalhe.descricaoItem || '---' }}</td>
-            <td class="text-center">{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }} {{ detalhe.unidadeMedida || '' }}</td>
-            <td class="text-end">{{ normalizeNumber(detalhe.precoUnitario) !== null ? (normalizeNumber(detalhe.precoUnitario) | number:'1.2-2') : '---' }}</td>
-            <td class="text-end fw-medium">{{ normalizeNumber(detalhe.valorOc) !== null ? (normalizeNumber(detalhe.valorOc) | number:'1.2-2') : '---' }}</td>
+            <td class="text-center">{{ detalhe.numeroPedido || '---' }}</td>
+            <td class="text-center fw-medium">{{ normalizeText(detalhe.codItem) }}</td>
+            <td>{{ normalizeText(detalhe.descricaoItem) }}</td>
+            <td class="text-center">{{ normalizeDate(detalhe.dataEmissao) ? (normalizeDate(detalhe.dataEmissao) |
+              date:'dd/MM/yyyy') : '---' }}</td>
+            <td class="text-center">{{ normalizeDate(detalhe.dataAberturaOc) ? (normalizeDate(detalhe.dataAberturaOc) |
+              date:'dd/MM/yyyy') : '---' }}</td>
+            <td class="text-center">{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }}</td>
+            <td class="text-center">{{ normalizeText(detalhe.unidadeMedida) }}</td>
+            <td class="text-end">{{ normalizeNumber(detalhe.precoUnitario) !== null ?
+              (normalizeNumber(detalhe.precoUnitario) | number:'1.2-2') : '---' }}</td>
+            <td class="text-end fw-medium">{{ normalizeNumber(detalhe.valorOc) !== null ?
+              (normalizeNumber(detalhe.valorOc) | number:'1.2-2') : '---' }}</td>
+            <td>{{ normalizeText(detalhe.fornecedor) }}</td>
           </tr>
           }
         </tbody>
@@ -43,21 +59,61 @@
       <article class="approval-detail-card">
         <div class="approval-detail-card__header">
           <span class="approval-detail-card__badge">OC {{ detalhe.numeroOc || '---' }}</span>
-          <strong>Item {{ detalhe.codItem || '---' }}</strong>
+          <strong>Item {{ normalizeText(detalhe.codItem) }}</strong>
         </div>
-        <p class="approval-detail-card__description">{{ detalhe.descricaoItem || '---' }}</p>
+        <p class="approval-detail-card__description">{{ normalizeText(detalhe.descricaoItem) }}</p>
         <dl class="approval-detail-card__meta">
           <div>
-            <dt>Quantidade</dt>
-            <dd>{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }} {{ detalhe.unidadeMedida || '' }}</dd>
+            <dt>Solicitante</dt>
+            <dd>{{ normalizeText(detalhe.solicitante) }}</dd>
+          </div>
+          <div>
+            <dt>Pedido</dt>
+            <dd>{{ detalhe.numeroPedido || '---' }}</dd>
+          </div>
+          <div>
+            <dt>Versão</dt>
+            <dd>{{ detalhe.numeroVersao || '---' }}</dd>
+          </div>
+          <div>
+            <dt>Emissão</dt>
+            <dd>{{ normalizeDate(detalhe.dataEmissao) ? (normalizeDate(detalhe.dataEmissao) | date:'dd/MM/yyyy') : '---'
+              }}</dd>
+          </div>
+          <div>
+            <dt>Abertura OC</dt>
+            <dd>{{ normalizeDate(detalhe.dataAberturaOc) ? (normalizeDate(detalhe.dataAberturaOc) | date:'dd/MM/yyyy') :
+              '---' }}</dd>
+          </div>
+          <div>
+            <dt>Qtd solicitada</dt>
+            <dd>{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }} {{ normalizeText(detalhe.unidadeMedida) }}</dd>
+          </div>
+          <div>
+            <dt>Qtd recebida</dt>
+            <dd>{{ normalizeNumber(detalhe.quantidadeRecebida) ?? 0 }} {{ normalizeText(detalhe.unidadeMedida) }}</dd>
           </div>
           <div>
             <dt>Preço unit.</dt>
-            <dd>{{ normalizeNumber(detalhe.precoUnitario) !== null ? (normalizeNumber(detalhe.precoUnitario) | number:'1.2-2') : '---' }}</dd>
+            <dd>{{ normalizeNumber(detalhe.precoUnitario) !== null ? (normalizeNumber(detalhe.precoUnitario) |
+              number:'1.2-2') : '---' }}</dd>
           </div>
           <div>
             <dt>Valor total</dt>
-            <dd>{{ normalizeNumber(detalhe.valorOc) !== null ? (normalizeNumber(detalhe.valorOc) | number:'1.2-2') : '---' }}</dd>
+            <dd>{{ normalizeNumber(detalhe.valorOc) !== null ? (normalizeNumber(detalhe.valorOc) | number:'1.2-2') :
+              '---' }}</dd>
+          </div>
+          <div>
+            <dt>Fornecedor</dt>
+            <dd>{{ normalizeText(detalhe.fornecedor) }}</dd>
+          </div>
+          <div>
+            <dt>Cond. pgto</dt>
+            <dd>{{ normalizeText(detalhe.condicaoPagamento) }}</dd>
+          </div>
+          <div>
+            <dt>Modalidade</dt>
+            <dd>{{ normalizeText(detalhe.modalidadeEmbarque) }}</dd>
           </div>
         </dl>
       </article>

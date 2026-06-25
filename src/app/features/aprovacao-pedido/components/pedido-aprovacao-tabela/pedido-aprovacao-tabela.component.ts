@@ -38,7 +38,61 @@ export class PedidoAprovacaoTabelaComponent {
     return !!this.rowLoadingMap()[id];
   }
 
-  protected normalizeNumber(value: unknown): number | null {
+  public normalizeText(value: unknown): string {
+    if (value === null || value === undefined || value === '') {
+      return '---';
+    }
+
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+
+    if (value instanceof Date) {
+      return value.toLocaleDateString('pt-BR');
+    }
+
+    if (typeof value === 'object') {
+      const objectValue = value as Record<string, unknown>;
+      const candidateKeys = ['value', 'Value', 'text', 'Text', 'label', 'Label'];
+
+      for (const key of candidateKeys) {
+        if (key in objectValue) {
+          return this.normalizeText(objectValue[key]);
+        }
+      }
+
+      const primitiveEntry = Object.values(objectValue).find((entry) =>
+        typeof entry === 'string' || typeof entry === 'number' || typeof entry === 'boolean',
+      );
+
+      if (primitiveEntry !== undefined) {
+        return this.normalizeText(primitiveEntry);
+      }
+    }
+
+    return '---';
+  }
+
+  public normalizeDate(value: unknown): Date | null {
+    if (!value) {
+      return null;
+    }
+
+    if (value instanceof Date) {
+      return Number.isNaN(value.getTime()) ? null : value;
+    }
+
+    const textValue = this.normalizeText(value);
+
+    if (textValue === '---') {
+      return null;
+    }
+
+    const parsed = new Date(textValue);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  public normalizeNumber(value: unknown): number | null {
     if (typeof value === 'number') {
       return Number.isFinite(value) ? value : null;
     }
