@@ -117,6 +117,8 @@ export class TwoFactorStepUpComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const trimmedCode = this.codeForm.controls.code.getRawValue().trim();
+    this.codeForm.controls.code.setValue(trimmedCode);
     this.codeForm.markAllAsTouched();
     if (this.codeForm.invalid) {
       return;
@@ -127,7 +129,7 @@ export class TwoFactorStepUpComponent implements OnInit, OnDestroy {
 
     try {
       const response = await this.twoFactorService.verifyChallenge(this.challenge.challengeId, {
-        code: this.codeForm.controls.code.getRawValue().trim(),
+        code: trimmedCode,
         method: this.method,
       });
 

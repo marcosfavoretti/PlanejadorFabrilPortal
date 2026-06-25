@@ -14,23 +14,33 @@
 
 :host ::ng-deep app-table-dynamic > .d-flex {
   flex: 1 1 0;
+  min-width: 0;
   min-height: 0;
 }
 
 :host ::ng-deep .custom-table {
   display: flex;
   flex: 1 1 0;
+  min-width: 0;
   min-height: 0;
   flex-direction: column;
 }
 
+:host ::ng-deep .custom-table .p-datatable-header {
+  display: none;
+}
+
 :host ::ng-deep .custom-table .p-datatable-wrapper {
   flex: 1 1 0;
-  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 :host ::ng-deep .custom-table .p-datatable-table {
   min-width: 980px;
+  table-layout: fixed;
 }
 
 :host ::ng-deep .custom-table .p-datatable-thead > tr > th:first-child,
@@ -53,6 +63,10 @@
   max-width: 18rem;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+:host ::ng-deep .custom-table .p-datatable-tbody .pi-check-circle {
+  color: #15803d;
 }
 
 .approval-details-cards {
@@ -122,17 +136,91 @@
     overflow: visible;
   }
 
+  :host ::ng-deep .custom-table .p-datatable-wrapper {
+    overflow-x: auto !important;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-table {
+    min-width: 940px;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th,
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td {
+    padding: 0.68rem 0.62rem !important;
+    font-size: 0.84rem;
+    line-height: 1.25;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:first-child,
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:first-child {
+    width: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(2),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(2) {
+    width: 4.75rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(3),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(3) {
+    width: 6.25rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(4),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(4) {
+    width: 7.75rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(5),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(5) {
+    width: 8.75rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(6),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(6) {
+    width: 15rem;
+    max-width: 15rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:nth-child(7),
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:nth-child(7) {
+    width: 7.75rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-thead > tr > th:last-child,
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td:last-child {
+    width: 4.5rem;
+    min-width: 4.5rem;
+  }
+
+  :host ::ng-deep .custom-table .p-datatable-tbody > tr > td .small {
+    font-size: 0.84rem;
+  }
+
+  :host ::ng-deep .custom-table .p-button.p-button-sm {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+  }
+
   .approval-details-table,
   .approval-details-cards {
     margin-top: 0.75rem;
   }
 
   .approval-details-table {
-    display: none;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .approval-details-cards {
-    display: block;
+    display: none;
+  }
+
+  .approval-details-table table {
+    min-width: 920px;
   }
 
   .approval-detail-card {
