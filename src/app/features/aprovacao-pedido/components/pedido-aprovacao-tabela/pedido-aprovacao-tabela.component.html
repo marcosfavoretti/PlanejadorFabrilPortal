@@ -30,9 +30,9 @@
             <td class="text-center">{{ detalhe.numeroOc || '---' }}</td>
             <td class="text-center fw-medium">{{ detalhe.codItem || '---' }}</td>
             <td>{{ detalhe.descricaoItem || '---' }}</td>
-            <td class="text-center">{{ detalhe.quantidadeSolicitada || 0 }} {{ detalhe.unidadeMedida || '' }}</td>
-            <td class="text-end">{{ $any(detalhe.precoUnitario) | number:'1.2-2' }}</td>
-            <td class="text-end fw-medium">{{ $any(detalhe.valorOc) | number:'1.2-2' }}</td>
+            <td class="text-center">{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }} {{ detalhe.unidadeMedida || '' }}</td>
+            <td class="text-end">{{ normalizeNumber(detalhe.precoUnitario) !== null ? (normalizeNumber(detalhe.precoUnitario) | number:'1.2-2') : '---' }}</td>
+            <td class="text-end fw-medium">{{ normalizeNumber(detalhe.valorOc) !== null ? (normalizeNumber(detalhe.valorOc) | number:'1.2-2') : '---' }}</td>
           </tr>
           }
         </tbody>
@@ -49,15 +49,15 @@
         <dl class="approval-detail-card__meta">
           <div>
             <dt>Quantidade</dt>
-            <dd>{{ detalhe.quantidadeSolicitada || 0 }} {{ detalhe.unidadeMedida || '' }}</dd>
+            <dd>{{ normalizeNumber(detalhe.quantidadeSolicitada) ?? 0 }} {{ detalhe.unidadeMedida || '' }}</dd>
           </div>
           <div>
             <dt>Preço unit.</dt>
-            <dd>{{ $any(detalhe.precoUnitario) | number:'1.2-2' }}</dd>
+            <dd>{{ normalizeNumber(detalhe.precoUnitario) !== null ? (normalizeNumber(detalhe.precoUnitario) | number:'1.2-2') : '---' }}</dd>
           </div>
           <div>
             <dt>Valor total</dt>
-            <dd>{{ $any(detalhe.valorOc) | number:'1.2-2' }}</dd>
+            <dd>{{ normalizeNumber(detalhe.valorOc) !== null ? (normalizeNumber(detalhe.valorOc) | number:'1.2-2') : '---' }}</dd>
           </div>
         </dl>
       </article>

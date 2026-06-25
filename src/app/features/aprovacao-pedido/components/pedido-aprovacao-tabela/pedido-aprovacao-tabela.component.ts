@@ -21,7 +21,7 @@ export class PedidoAprovacaoTabelaComponent {
   private readonly logixApi = inject(LogixAceiteCompraApiService);
 
   rowsOverride = input<PedidoAprovacaoRow[] | null>(null);
-  scrollHeight = input<string>('520px');
+  scrollHeight = input<string>('flex');
 
   @Output() approveOne = new EventEmitter<string>();
 
@@ -36,6 +36,54 @@ export class PedidoAprovacaoTabelaComponent {
 
   protected rowDetailsLoading(id: string): boolean {
     return !!this.rowLoadingMap()[id];
+  }
+
+  protected normalizeNumber(value: unknown): number | null {
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : null;
+    }
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+
+      if (!trimmed) {
+        return null;
+      }
+
+      const sanitized = trimmed.replace(/[^\d,.-]/g, '');
+      const hasComma = sanitized.includes(',');
+      const hasDot = sanitized.includes('.');
+      const normalized = hasComma && hasDot
+        ? sanitized.replace(/\./g, '').replace(',', '.')
+        : hasComma
+          ? sanitized.replace(',', '.')
+          : sanitized;
+      const parsed = Number(normalized);
+
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    if (value && typeof value === 'object') {
+      const objectValue = value as Record<string, unknown>;
+      const candidateKeys = [
+        '$numberDecimal',
+        '$numberDouble',
+        '$numberInt',
+        '$numberLong',
+        'value',
+        'Value',
+        'amount',
+        'Amount',
+      ];
+
+      for (const key of candidateKeys) {
+        if (key in objectValue) {
+          return this.normalizeNumber(objectValue[key]);
+        }
+      }
+    }
+
+    return null;
   }
 
   protected readonly schema = computed<TableModel>(() => ({

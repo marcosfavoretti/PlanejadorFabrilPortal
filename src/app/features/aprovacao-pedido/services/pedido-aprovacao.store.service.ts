@@ -32,7 +32,7 @@ export class PedidoAprovacaoStoreService {
       dataEmissao: this.normalizeDate(pedido.dataEmissao),
       comprador: this.normalizeText(pedido.comprador),
       fornecedor: this.normalizeText(pedido.fornecedor),
-      valorTotal: this.normalizeNumber(pedido.valorTotal),
+      valorTotal: this.normalizePedidoTotal(pedido),
     }));
   });
 
@@ -125,6 +125,33 @@ export class PedidoAprovacaoStoreService {
     }
 
     return String(value);
+  }
+
+  private normalizePedidoTotal(pedido: PedidoAceiteCompraResumoDto): number | null {
+    const record = pedido as unknown as Record<string, unknown>;
+    const candidateKeys = [
+      'valorTotal',
+      'valor_total',
+      'total',
+      'precoTotal',
+      'preco_total',
+      'valorPedido',
+      'valor_pedido',
+      'valorOc',
+      'valor_oc',
+    ];
+
+    for (const key of candidateKeys) {
+      if (key in record) {
+        const normalized = this.normalizeNumber(record[key]);
+
+        if (normalized !== null) {
+          return normalized;
+        }
+      }
+    }
+
+    return null;
   }
 
   private normalizeNumber(value: unknown): number | null {
