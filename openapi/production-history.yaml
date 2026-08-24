@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: Production history
+  version: 1.0.0
+paths:
+  /mobile/scanner/label-pdi/{pdiLabel}:
+    get:
+      operationId: resolveProductLabel
+      parameters:
+        - $ref: '#/components/parameters/pdiLabel'
+      responses: { '200': { description: Product context, content: { application/json: { schema: { $ref: '#/components/schemas/ProductContextResponse' } } } } }
+  /mobile/galeria/report-fotos/app-names:
+    get:
+      operationId: getProductAlbums
+      parameters:
+        - $ref: '#/components/parameters/pn'
+        - $ref: '#/components/parameters/serialNumber'
+        - $ref: '#/components/parameters/reportType'
+        - $ref: '#/components/parameters/status'
+        - $ref: '#/components/parameters/mediaType'
+      responses: { '200': { description: Albums, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PhotoAlbumResponse' } } } } } }
+  /mobile/galeria/report-fotos:
+    get:
+      operationId: getAlbumHistory
+      parameters:
+        - { name: page, in: query, schema: { type: number } }
+        - { name: limit, in: query, schema: { type: number } }
+        - $ref: '#/components/parameters/pn'
+        - $ref: '#/components/parameters/serialNumber'
+        - { name: appName, in: query, required: true, schema: { type: string } }
+        - { name: properties.codItem, in: query, schema: { type: string } }
+        - { name: properties.gate, in: query, schema: { type: string } }
+        - $ref: '#/components/parameters/reportType'
+        - $ref: '#/components/parameters/status'
+        - $ref: '#/components/parameters/mediaType'
+      responses: { '200': { description: Paginated reports, content: { application/json: { schema: { $ref: '#/components/schemas/PaginatedReportsResponse' } } } } }
+  /mobile/syneco/inspection-detailed-reason:
+    get:
+      operationId: getInspectionFailures
+      parameters:
+        - { name: startDate, in: query, required: true, schema: { type: string } }
+        - { name: endDate, in: query, required: true, schema: { type: string } }
+        - { name: nSerie, in: query, required: true, schema: { type: string } }
+        - { name: partCode, in: query, required: true, schema: { type: string } }
+      responses: { '200': { description: Inspection failures, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/InspectionFailureResponse' } } } } } }
+  /mobile/galeria/media:
+    get:
+      operationId: getMediaUrl
+      parameters:
+        - { name: path, in: query, required: true, schema: { type: string } }
+        - { name: name, in: query, required: true, schema: { type: string } }
+      responses: { '200': { description: Media file, content: { application/octet-stream: { schema: { type: string, format: binary } } } } }
+  /mobile/galeria/pack/{code}:
+    get:
+      operationId: getPackDetailUrl
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string } }
+      responses: { '200': { description: Pack HTML, content: { text/html: { schema: { type: string } } } } }
+components:
+  parameters:
+    pdiLabel: { name: pdiLabel, in: path, required: true, schema: { type: string } }
+    pn: { name: pn, in: query, required: true, schema: { type: string } }
+    serialNumber: { name: serialNumber, in: query, required: true, schema: { type: string } }
+    reportType: { name: reportType, in: query, schema: { type: string } }
+    status: { name: status, in: query, schema: { type: string } }
+    mediaType: { name: mediaType, in: query, schema: { type: string } }
+  schemas:
+    ProductContextResponse:
+      type: object
+      required: [id, orderNum, productionId, partCode, serialNumber]
+      properties:
+        id: { type: number }
+        orderNum: { type: string }
+        productionId: { type: number }
+        partCode: { type: string }
+        partName: { type: string }
+        serialNumber: { type: string }
+        serverTime: { type: string }
+    PhotoAlbumResponse:
+      type: object
+      required: [nome, quantidadeFotos]
+      properties:
+        nome: { type: string }
+        quantidadeFotos: { type: number }
+    MediaAssetResponse:
+      type: object
+      required: [path, physicalName]
+      properties:
+        path: { type: string }
+        physicalName: { type: string }
+        originalName: { type: string }
+        type: { type: string, enum: [IMAGE, VIDEO] }
+        mimeType: { type: string }
+    ProductionHistoryRecordResponse:
+      type: object
+      required: [_id, featureColumn, status, media]
+      properties:
+        _id: { type: string }
+        code: { type: string }
+        appName: { type: string }
+        pn: { type: string }
+        serialNumber: { type: string }
+        productionId: { type: string }
+        codItem: { type: string }
+        gate: { type: string }
+        featureColumn: { type: string, enum: [MONTAGEM, QUALIDADE, INSPECAO] }
+        status: { type: string, enum: [UPLOADED, FAILED] }
+        attempts: { type: number }
+        media: { type: array, items: { $ref: '#/components/schemas/MediaAssetResponse' } }
+    PaginatedReportsResponse:
+      type: object
+      required: [items, total, page, limit, pages]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/ProductionHistoryRecordResponse' } }
+        total: { type: number }
+        page: { type: number }
+        limit: { type: number }
+        pages: { type: number }
+    InspectionFailureResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        ResourceName: { type: string }
+        OperatorName: { type: string }
+        PartCode: { type: string }
+        NSerie: { type: string }
+        Detalhamento: { type: string }
+        ServerTimestamp: { type: string }
+        OrderNum: { type: string }
+        Operation: { type: string }
+        Sequence: { type: string }
+        Book: { type: string }

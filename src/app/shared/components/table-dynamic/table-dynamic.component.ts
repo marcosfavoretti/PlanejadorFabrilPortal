@@ -143,6 +143,10 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     });
   }
 
+  getButtonLabel(row: any, label: string | ((row: any) => string)): string {
+    return typeof label === 'function' ? label(row) : label;
+  }
+
   public applyFilterGlobal($event: any, stringVal: any) {
     this.dt2!.filterGlobal(($event.target as HTMLInputElement).value.trim(), stringVal.trim());
   }

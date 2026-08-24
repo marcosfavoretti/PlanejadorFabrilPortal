@@ -1,0 +1,128 @@
+<div class="checklist-history-page p-4 bg-light overflow-auto">
+  <header class="checklist-history-page__header">
+    <div>
+      <a class="btn btn-link px-0 mb-2" routerLink="/estrutura/checklist">
+        <i class="pi pi-arrow-left me-2"></i>Voltar para checklist
+      </a>
+      <h1>Histórico de checklists</h1>
+      <p>Consulte os checklists realizados por ordem, partcode ou tag.</p>
+    </div>
+    <span class="checklist-history-page__total">{{ total }} realizados</span>
+  </header>
+
+  <section class="checklist-history-card">
+    <form class="checklist-history-filters" (ngSubmit)="search()">
+      <div class="checklist-history-field">
+        <label class="checklist-history-field__label" for="history-order-input"
+          >Ordem de produção</label
+        >
+        <div class="checklist-history-input">
+          <i class="pi pi-barcode checklist-history-input__icon"></i>
+          <app-barcode-scanner-input
+            readerType="all"
+            inputId="history-order-input"
+            name="orderNum"
+            placeholder="Ordem de produção"
+            [value]="filters.orderNum"
+            (valueChange)="onOrderValueChange($event)"
+            (scanned)="onOrderScanned($event)"
+          >
+          </app-barcode-scanner-input>
+        </div>
+      </div>
+
+      <div class="checklist-history-field">
+        <label
+          class="checklist-history-field__label"
+          for="history-partcode-input"
+          >Partcode</label
+        >
+        <div class="checklist-history-input">
+          <i class="pi pi-search checklist-history-input__icon"></i>
+          <app-partcode-input
+            inputId="history-partcode-input"
+            name="codigoItem"
+            placeholder="Partcode"
+            [value]="filters.codigoItem"
+            (valueChange)="filters.codigoItem = $event"
+          >
+          </app-partcode-input>
+        </div>
+      </div>
+
+      <div class="checklist-history-field">
+        <label class="checklist-history-field__label" for="history-tag-input"
+          >Tag</label
+        >
+        <div class="checklist-history-input">
+          <i class="pi pi-tag checklist-history-input__icon"></i>
+          <input
+            id="history-tag-input"
+            type="text"
+            class="checklist-history-input__control"
+            [(ngModel)]="filters.tag"
+            name="tag"
+            placeholder="Digite qualquer tag"
+            autocomplete="off"
+          />
+          @if (filters.tag) {
+            <button
+              class="btn btn-link text-muted p-2"
+              (click)="filters.tag = ''"
+              type="button"
+              aria-label="Limpar tag"
+            >
+              <i class="pi pi-times"></i>
+            </button>
+          }
+        </div>
+      </div>
+      <div class="checklist-history-filters__actions">
+        <button type="submit" class="btn btn-success" [disabled]="loading">
+          <i class="pi pi-search me-2"></i>Consultar
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="clearFilters()"
+          [disabled]="loading"
+        >
+          Limpar
+        </button>
+      </div>
+    </form>
+
+    @if (error) {
+      <div class="alert alert-danger mb-0" role="alert">{{ error }}</div>
+    } @else if (loading) {
+      <div class="checklist-history-state">
+        Carregando checklists realizados...
+      </div>
+    } @else if (checklists.length === 0) {
+      <div class="checklist-history-state">
+        Nenhum checklist realizado foi encontrado para os filtros informados.
+      </div>
+    } @else {
+      <app-table-dynamic
+        [data]="checklists"
+        [tableModel]="tableModel"
+        [exportable]="true"
+        [scrollable]="true"
+        scrollHeight="flex"
+      >
+      </app-table-dynamic>
+      <div class="checklist-history-paginator">
+        <p-paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="paginatorFirst"
+          [rows]="rows"
+          [totalRecords]="total"
+          [rowsPerPageOptions]="[10, 20, 50]"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="{first} - {last} de {totalRecords}"
+        >
+        </p-paginator>
+      </div>
+    }
+  </section>
+</div>

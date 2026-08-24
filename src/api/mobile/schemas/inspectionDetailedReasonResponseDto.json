@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "EventID": { "type": "number", "nullable": true },
+    "NoteAnswerGroupID": { "type": "number", "nullable": true },
+    "Answer": { "type": "string", "nullable": true },
+    "ServerTimestamp": {
+      "format": "date-time",
+      "type": "string",
+      "nullable": true
+    },
+    "ResourceCode": { "type": "string", "nullable": true },
+    "ResourceName": { "type": "string", "nullable": true },
+    "CostCenter": { "type": "string", "nullable": true },
+    "OperatorID": { "type": "number", "nullable": true },
+    "OperatorCode": { "type": "string", "nullable": true },
+    "OperatorName": { "type": "string", "nullable": true },
+    "ProductionID": { "type": "number", "nullable": true },
+    "OrderNum": { "type": "string", "nullable": true },
+    "Operation": { "type": "string", "nullable": true },
+    "Sequence": { "type": "number", "nullable": true },
+    "PartCode": { "type": "string", "nullable": true },
+    "PartName": { "type": "string", "nullable": true },
+    "Detalhamento": { "type": "string", "nullable": true },
+    "NSerie": { "type": "string", "nullable": true },
+    "Pedido": { "type": "string", "nullable": true },
+    "DataEntrega": { "type": "string", "nullable": true },
+    "Operador": { "type": "string", "nullable": true },
+    "Book": { "type": "string", "nullable": true },
+    "NewMissedFound": { "type": "string", "nullable": true }
+  },
+  "x-readme-ref-name": "InspectionDetailedReasonResponseDto"
+}

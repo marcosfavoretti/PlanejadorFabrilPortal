@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string",
+      "description": "ID público do pack (8 caracteres novos; 6 legados)"
+    },
+    "author": { "type": "string", "description": "Autor do pack" },
+    "severTime": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data do servidor"
+    },
+    "images": {
+      "description": "Lista de imagens no pack",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string", "description": "Caminho da imagem" },
+          "name": { "type": "string", "description": "Nome do arquivo" },
+          "x64": { "type": "string", "description": "Imagem em base64" }
+        },
+        "required": ["path", "name"],
+        "x-readme-ref-name": "ImageRes"
+      }
+    }
+  },
+  "required": ["_id", "author", "severTime", "images"],
+  "x-readme-ref-name": "ImagemPackRes"
+}

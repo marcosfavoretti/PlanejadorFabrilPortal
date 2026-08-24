@@ -58,6 +58,10 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
 
   constructor(private cacheService: CacheService, private primengconfirmation: ConfirmationService) { }
 
+  get showDevMarkAllButton(): boolean {
+    return typeof window !== 'undefined' && window.location.hostname === 'dev.ethos.ind.br';
+  }
+
   private getItemIdentity(item: ResEstruturaItemTreeDTO | undefined): string {
     const data = item as any;
     const partcode = data?.partcode?.trim()?.toUpperCase?.() || '';
@@ -121,6 +125,20 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
         this.onUnsavedChanges.emit([]);
       },
     })
+  }
+
+  /** Disponível somente em dev.ethos.ind.br para facilitar a validação do fluxo. */
+  public markAllForTest(): void {
+    if (!this.showDevMarkAllButton || !this.itens) return;
+
+    // A tabela mantém uma cópia processada dos itens; trocar a referência força a
+    // atualização visual de todos os checkboxes, inclusive em páginas paginadas.
+    this.itens = this.itens.map(item => {
+      const markedItem = { ...item } as any;
+      this.target_columns.forEach(column => markedItem[column] = true);
+      return markedItem;
+    });
+    this.checkUnsavedChanges();
   }
 
   public applyFilterGlobal($event: any, stringVal: any) {

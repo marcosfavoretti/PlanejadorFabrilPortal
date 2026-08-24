@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "required": ["_id", "featureColumn", "status", "media"],
+  "properties": {
+    "_id": { "type": "string" },
+    "code": { "type": "string" },
+    "appName": { "type": "string" },
+    "pn": { "type": "string" },
+    "serialNumber": { "type": "string" },
+    "productionId": { "type": "string" },
+    "codItem": { "type": "string" },
+    "gate": { "type": "string" },
+    "featureColumn": {
+      "type": "string",
+      "enum": ["MONTAGEM", "QUALIDADE", "INSPECAO"]
+    },
+    "status": { "type": "string", "enum": ["UPLOADED", "FAILED"] },
+    "attempts": { "type": "number" },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "physicalName"],
+        "properties": {
+          "path": { "type": "string" },
+          "physicalName": { "type": "string" },
+          "originalName": { "type": "string" },
+          "type": { "type": "string", "enum": ["IMAGE", "VIDEO"] },
+          "mimeType": { "type": "string" }
+        },
+        "x-readme-ref-name": "MediaAssetResponse"
+      }
+    }
+  },
+  "x-readme-ref-name": "ProductionHistoryRecordResponse"
+}

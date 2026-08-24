@@ -1,0 +1,12 @@
+.submission-order-input {
+  display: flex;
+  min-height: 2.5rem;
+  overflow: hidden;
+  border: 1px solid #ced4da;
+  border-radius: .375rem;
+}
+
+.submission-order-input:focus-within {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 .25rem rgb(13 110 253 / 15%);
+}

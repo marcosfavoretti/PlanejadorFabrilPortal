@@ -8,7 +8,6 @@ export interface RuntimeAppConfig {
   pbWsPath: string;
   homeExternalUrl: string;
   debugEnabled: boolean;
-  enableRoutePermissionMock: boolean;
   enableDevAuthToken: boolean;
   allowedResourceOrigins: string[];
 }
@@ -140,7 +139,6 @@ export function getRuntimeAppConfig(): RuntimeAppConfig {
     pbWsPath: normalizePath(rawConfig?.pbWsPath, DEFAULT_PB_WS_PATH),
     homeExternalUrl,
     debugEnabled: normalizeBoolean(rawConfig?.debugEnabled, isLocalRuntimeHost()),
-    enableRoutePermissionMock: normalizeBoolean(rawConfig?.enableRoutePermissionMock, false),
     enableDevAuthToken: normalizeBoolean(rawConfig?.enableDevAuthToken, isLocalRuntimeHost()),
     allowedResourceOrigins: normalizeAllowedOrigins(rawConfig?.allowedResourceOrigins, [
       DEFAULT_ALLOWED_RESOURCE_ORIGINS[0],

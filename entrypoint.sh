@@ -35,7 +35,6 @@ PB_WS_ORIGIN=${APP_PB_WS_ORIGIN:-}
 PB_WS_PATH=${APP_PB_WS_PATH:-/ws/pb}
 HOME_EXTERNAL_URL=${APP_HOME_EXTERNAL_URL:-https://www.ethos.ind.br/}
 DEBUG_ENABLED=${APP_DEBUG_ENABLED:-false}
-ENABLE_ROUTE_PERMISSION_MOCK=${APP_ENABLE_ROUTE_PERMISSION_MOCK:-false}
 ENABLE_DEV_AUTH_TOKEN=${APP_ENABLE_DEV_AUTH_TOKEN:-false}
 ALLOWED_RESOURCE_ORIGINS=$(normalize_csv_to_js_array "${APP_ALLOWED_RESOURCE_ORIGINS:-https://app.powerbi.com,https://www.ethos.ind.br}")
 
@@ -47,7 +46,6 @@ window.__APP_CONFIG__ = {
   pbWsPath: '$(quote_js_string "$PB_WS_PATH")',
   homeExternalUrl: '$(quote_js_string "$HOME_EXTERNAL_URL")',
   debugEnabled: $DEBUG_ENABLED,
-  enableRoutePermissionMock: $ENABLE_ROUTE_PERMISSION_MOCK,
   enableDevAuthToken: $ENABLE_DEV_AUTH_TOKEN,
   allowedResourceOrigins: [${ALLOWED_RESOURCE_ORIGINS}]
 };

@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "eventId": {
+      "type": "number",
+      "description": "ID do evento que abriu a ordem"
+    },
+    "productionId": {
+      "type": "number",
+      "description": "ID da produção aberta"
+    },
+    "orderNum": { "type": "string", "description": "Número da ordem aberta" },
+    "prodrun": { "type": "object", "description": "Rodada da ordem aberta" },
+    "serialNumber": {
+      "type": "string",
+      "description": "Número de série utilizado na abertura"
+    },
+    "openedAt": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data e hora de abertura da ordem"
+    },
+    "operator": {
+      "type": "object",
+      "description": "Nome do operador que abriu a ordem, obtido pelo Resource"
+    },
+    "machine": { "type": "object", "description": "Nome da máquina" }
+  },
+  "required": [
+    "eventId",
+    "productionId",
+    "orderNum",
+    "serialNumber",
+    "openedAt"
+  ],
+  "x-readme-ref-name": "PdiOrderOpeningRes"
+}

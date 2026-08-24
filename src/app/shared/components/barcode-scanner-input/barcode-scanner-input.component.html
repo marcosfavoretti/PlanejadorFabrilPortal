@@ -1,0 +1,10 @@
+<input [id]="inputId" type="text" class="w-100 search-input ps-2" [placeholder]="placeholder"
+  [ngModel]="value" (ngModelChange)="update($event)" (keydown.enter)="completeKeyboardScan($event)" [name]="name">
+<button class="btn btn-link text-success p-2" (click)="openScanner()" type="button" aria-label="Ler código com a câmera">
+  <i class="pi pi-camera"></i>
+</button>
+@if (value) {
+<button class="btn btn-link text-muted p-2" (click)="clear()" type="button" aria-label="Limpar código">
+  <i class="pi pi-times"></i>
+</button>
+}

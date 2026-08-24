@@ -17,6 +17,15 @@
       </div>
 
       <div class="d-flex justify-content-end gap-2 checklist-action-panel__actions">
+        @if (showDevMarkAllButton) {
+          <button type="button"
+                  (click)="markAllForTest()"
+                  class="btn btn-outline-warning btn-sm px-3 d-flex align-items-center justify-content-center shadow-sm"
+                  title="Recurso disponível apenas para testes no ambiente de desenvolvimento">
+            <i class="pi pi-check-double me-2"></i>
+            Marcar todos (teste)
+          </button>
+        }
         <button type="button"
                 (click)="resetCheckList($event)"
                 class="btn btn-outline-secondary btn-sm px-3 d-flex align-items-center justify-content-center shadow-sm">

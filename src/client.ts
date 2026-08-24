@@ -5,7 +5,11 @@ import { readDevAuthToken } from '@/app/core/auth/utils/auth-token';
 import { rewriteUrlToRuntimeGateway } from '@/app/shared/config/runtime-app-config';
 import { TwoFactorRequiredPayload } from '@/app/core/auth/two-factor/two-factor.types';
 
-export type RequestConfig<TData = any> = AxiosRequestConfig<TData>;
+// Generated multipart clients serialize the typed request object into a
+// FormData body before passing it to Axios.
+export type RequestConfig<TData = any> = Omit<AxiosRequestConfig<TData>, 'data'> & {
+  data?: TData | FormData;
+};
 export type ResponseErrorConfig<TError = any> = AxiosError<TError>;
 
 export type Client<TData = any, TError = any, TVariables = any> = {

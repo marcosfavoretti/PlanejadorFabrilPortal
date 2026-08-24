@@ -1,0 +1,80 @@
+<app-page-layout>
+  <main class="mobile-page p-2 p-md-3">
+    <header class="mobile-page__header">
+      <div><span class="mobile-page__eyebrow">CONFERÊNCIA DE ETIQUETAS</span>
+        <h1>Etiquetas PDI</h1>
+        <p>Acompanhe as etiquetas utilizadas e as que ainda estão disponíveis.</p>
+      </div>
+      <div class="mobile-page__total"><strong>{{ totalRecords() }}</strong><span>{{ statusLabel().toLowerCase()
+          }}</span></div>
+    </header>
+    <section class="mobile-page__filters">
+      <div class="mobile-page__status-switch"><button type="button"
+          [class.mobile-page__status-button--active]="status() === 'na'" (click)="setStatus('na')">N/A</button><button
+          type="button" [class.mobile-page__status-button--active]="status() === 'unused'"
+          (click)="setStatus('unused')">Não utilizadas</button><button type="button"
+          [class.mobile-page__status-button--active]="status() === 'used'"
+          (click)="setStatus('used')">Utilizadas</button></div>
+      <form [formGroup]="searchForm" class="mobile-page__search"><input type="search" formControlName="search"
+          placeholder="Buscar por OP ou número de série">@if (searchForm.controls.search.value) { <button type="button"
+          (click)="clearSearch()">×</button> }</form><button type="button" class="btn btn-outline-success"
+        (click)="refresh()">Atualizar</button>
+    </section>
+    <section class="mobile-page__table-card">@if (stickersResource.isLoading()) { <p-skeleton width="100%"
+        height="18rem"></p-skeleton> } @else if (errorMessage()) { <div class="mobile-page__state">
+        <p>{{ errorMessage() }}</p><button class="btn btn-outline-success" (click)="refresh()">Tentar novamente</button>
+      </div> } @else if (!stickers().length) { <div class="mobile-page__state">Nenhuma etiqueta {{
+        statusLabel().toLowerCase() }} foi encontrada.</div> } @else { <app-table-dynamic [data]="tableStickers()"
+        [tableModel]="tableSchema" [exportable]="false" [scrollable]="true"
+        scrollHeight="calc(100vh - 410px)"></app-table-dynamic><p-paginator (onPageChange)="onPageChange($event)"
+        [first]="paginatorFirst()" [rows]="rows()" [totalRecords]="totalRecords()" [rowsPerPageOptions]="[10,20,50,100]"
+        dropdownAppendTo="body"></p-paginator> }</section>
+  </main>
+
+  <p-dialog [visible]="orderOpeningVisible()" (visibleChange)="orderOpeningVisible.set($event)" [modal]="true"
+    [draggable]="false" [resizable]="false" [style]="{ width: 'min(560px, 94vw)' }"
+    header="Detalhes de uso da etiqueta">
+    @if (orderOpeningLoading()) {
+    <p-skeleton width="100%" height="12rem"></p-skeleton>
+    } @else if (orderOpeningError()) {
+    <div class="mobile-page__dialog-state">{{ orderOpeningError() }}</div>
+    } @else {
+    @if (orderOpening(); as opening) {
+    <dl class="mobile-page__detail-list">
+      <div>
+        <dt>OP</dt>
+        <dd>{{ opening.orderNum }}</dd>
+      </div>
+      <div>
+        <dt>Número de série</dt>
+        <dd>{{ opening.serialNumber }}</dd>
+      </div>
+      <div>
+        <dt>Aberta em</dt>
+        <dd>{{ opening.openedAt | date:'dd/MM/yyyy HH:mm' }}</dd>
+      </div>
+      <div>
+        <dt>Produção</dt>
+        <dd>{{ opening.productionId }}</dd>
+      </div>
+      <div>
+        <dt>Evento</dt>
+        <dd>{{ opening.eventId }}</dd>
+      </div>
+      <div>
+        <dt>Rodada</dt>
+        <dd>{{ formatDetailValue(opening.prodrun) }}</dd>
+      </div>
+      <div>
+        <dt>Operador</dt>
+        <dd>{{ formatDetailValue(opening.operator) }}</dd>
+      </div>
+      <div>
+        <dt>Máquina</dt>
+        <dd>{{ formatDetailValue(opening.machine) }}</dd>
+      </div>
+    </dl>
+    }
+    }
+  </p-dialog>
+</app-page-layout>

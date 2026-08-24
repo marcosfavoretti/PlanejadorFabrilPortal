@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "path": { "type": "string", "description": "Caminho da imagem" },
+    "name": { "type": "string", "description": "Nome do arquivo" },
+    "x64": { "type": "string", "description": "Imagem em base64" }
+  },
+  "required": ["path", "name"],
+  "x-readme-ref-name": "ImageRes"
+}

@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "_id": { "type": "string" },
+    "productionId": { "type": "string" },
+    "serialNumber": { "type": "string" },
+    "codItem": { "type": "string" },
+    "gate": { "type": "string" },
+    "reportType": { "type": "string" },
+    "status": { "type": "string" },
+    "attempts": { "type": "number" },
+    "media": { "type": "array" },
+    "perguntaParaQualidadeID": { "type": "string" }
+  },
+  "required": [
+    "_id",
+    "codItem",
+    "gate",
+    "reportType",
+    "status",
+    "attempts",
+    "media"
+  ],
+  "x-readme-ref-name": "ReportQualidadeRes"
+}

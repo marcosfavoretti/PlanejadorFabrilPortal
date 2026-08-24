@@ -1,0 +1,7 @@
+.barcode-popup__instruction { color: #64748b; margin-bottom: 1rem; }
+.barcode-popup__device { display: grid; gap: .35rem; margin-bottom: .75rem; color: #475569; font-size: .875rem; }
+.barcode-popup__camera { position: relative; overflow: hidden; min-height: 260px; border-radius: .65rem; background: #111; }
+.barcode-popup__camera video { display: block; width: 100%; min-height: 260px; object-fit: cover; }
+.barcode-popup__guide { position: absolute; top: 30%; left: 8%; width: 84%; height: 40%; border: 2px solid #75d69a; border-radius: .25rem; box-shadow: 0 0 0 9999px rgb(0 0 0 / 28%); pointer-events: none; }
+.barcode-popup__loading { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; background: rgb(0 0 0 / 45%); }
+.barcode-popup__actions { display: flex; justify-content: space-between; gap: .75rem; margin-top: 1rem; }

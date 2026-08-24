@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificador único da impressora",
+      "format": "uuid"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome da impressora",
+      "example": "Impressora Sala 1"
+    },
+    "macAddress": {
+      "type": "string",
+      "description": "Endereço MAC da impressora",
+      "example": "00:1A:79:XX:XX:XX"
+    },
+    "dataCriacao": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data de criação do registro"
+    }
+  },
+  "required": ["id", "nome", "macAddress", "dataCriacao"],
+  "x-readme-ref-name": "ImpressoraBluetoothResponseDto"
+}

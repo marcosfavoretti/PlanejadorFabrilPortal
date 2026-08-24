@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "orderNum": { "type": "object", "nullable": true },
+    "codigoItem": { "type": "string" },
+    "tag": { "type": "string" },
+    "quantidadePlanejada": { "type": "object", "nullable": true },
+    "totalSeparado": { "type": "number" },
+    "restante": { "type": "object", "nullable": true },
+    "excedente": { "type": "object", "nullable": true },
+    "concluido": { "type": "object", "nullable": true }
+  },
+  "required": ["codigoItem", "tag", "totalSeparado"],
+  "x-readme-ref-name": "ProgressoChecklistResDTO"
+}

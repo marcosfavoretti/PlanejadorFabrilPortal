@@ -1,0 +1,76 @@
+{
+  "type": "object",
+  "properties": {
+    "productionId": {
+      "type": "number",
+      "description": "ID interno da produção."
+    },
+    "orderNum": {
+      "type": "string",
+      "description": "Número da ordem de produção."
+    },
+    "partCode": { "type": "string", "description": "Código da peça." },
+    "partName": {
+      "type": "string",
+      "description": "Descrição original do nome da peça."
+    },
+    "itemCliente": {
+      "type": "string",
+      "description": "Item do cliente extraído do PartName."
+    },
+    "revision": {
+      "type": "string",
+      "description": "Revisão extraída do PartName."
+    },
+    "description": {
+      "type": "string",
+      "description": "Descrição extraída do PartName."
+    },
+    "planQty": { "type": "number", "description": "Quantidade planejada." },
+    "plannedEndTimestamp": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data planejada para conclusão."
+    },
+    "pedido": { "type": "string", "description": "Número do pedido." },
+    "prefixo": { "type": "string", "description": "Prefixo da ordem." },
+    "itemClienteData": {
+      "type": "string",
+      "description": "Item do cliente informado na ordem."
+    },
+    "tipagemStatus": {
+      "type": "string",
+      "description": "Status de tipagem da ordem."
+    },
+    "cliente": { "type": "string", "description": "Cliente da ordem." },
+    "pedidoCliente": { "type": "string", "description": "Pedido do cliente." },
+    "productionData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "typeDataId": {
+            "type": "number",
+            "description": "Código do tipo de dado da ordem."
+          },
+          "value": {
+            "type": "string",
+            "description": "Valor associado ao tipo de dado."
+          }
+        },
+        "required": ["typeDataId", "value"],
+        "x-readme-ref-name": "ScannerOrderDataResDto"
+      }
+    }
+  },
+  "required": [
+    "productionId",
+    "orderNum",
+    "partCode",
+    "partName",
+    "planQty",
+    "plannedEndTimestamp",
+    "productionData"
+  ],
+  "x-readme-ref-name": "ScannerOrderResDto"
+}

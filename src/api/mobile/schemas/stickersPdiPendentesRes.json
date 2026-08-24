@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "data": { "type": "string", "description": "DataMatrix da etiqueta" },
+    "id": { "type": "number", "description": "ID da etiqueta" },
+    "serverTime": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data de criação no servidor"
+    },
+    "serialNumber": {
+      "type": "string",
+      "description": "Número de série extraído"
+    },
+    "orderNum": {
+      "type": "string",
+      "description": "Número da ordem de produção"
+    },
+    "productionId": {
+      "type": "number",
+      "description": "ID da produção relacionada à etiqueta"
+    },
+    "partCode": { "type": "string", "description": "Código da peça da ordem" },
+    "partName": { "type": "string", "description": "Nome da peça da ordem" },
+    "planQty": {
+      "type": "number",
+      "description": "Quantidade planejada da ordem"
+    },
+    "plannedEndTimestamp": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data planejada para conclusão da ordem"
+    },
+    "usedToOpenOrder": {
+      "type": "boolean",
+      "description": "Indica se a etiqueta já foi utilizada para abrir uma ordem."
+    }
+  },
+  "required": [
+    "data",
+    "id",
+    "serverTime",
+    "serialNumber",
+    "orderNum",
+    "usedToOpenOrder"
+  ],
+  "x-readme-ref-name": "StickersPdiPendentesRes"
+}

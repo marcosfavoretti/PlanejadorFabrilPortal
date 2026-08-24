@@ -13,9 +13,10 @@ export interface tableColumns {
     toTotalize?: boolean;
     isButton?: boolean;
     button?: {
-        label: string,
+        label: string | ((row: any) => string),
         icon: string
         command: (row: any, el: any) => void
+        disabled?: (row: any) => boolean
     },
     filterActive?: boolean
 }

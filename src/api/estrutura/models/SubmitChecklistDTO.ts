@@ -5,9 +5,13 @@
 
 export type SubmitChecklistDTO = {
   /**
-   * @type string
+   * @type string | undefined
    */
-  COD_ITEM_FINAL: string;
+  COD_ITEM_FINAL?: string;
+  /**
+   * @type string | undefined
+   */
+  ORDER_NUM?: string;
   /**
    * @type string
    */

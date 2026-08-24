@@ -12,9 +12,12 @@ export { checkListControllerGetChecklist } from './checkListControllerGetCheckli
 export { checkListControllerGetChecklistAvaiable } from './checkListControllerGetChecklistAvaiable';
 export { checkListControllerGetChecklistTags } from './checkListControllerGetChecklistTags';
 export { checkListControllerInsertItemCheckList } from './checkListControllerInsertItemCheckList';
+export { checkListControllerListarChecklistsRealizados } from './checkListControllerListarChecklistsRealizados';
+export { checkListControllerObterProgresso } from './checkListControllerObterProgresso';
 export { checkListControllerSubmitChecklist } from './checkListControllerSubmitChecklist';
 export { estruturaControllerAnaliseEstruturaMethod } from './estruturaControllerAnaliseEstruturaMethod';
 export { estruturaControllerAnaliseEstruturaResumidaMethod } from './estruturaControllerAnaliseEstruturaResumidaMethod';
+export { estruturaControllerConsultaCodigosServicalMethod } from './estruturaControllerConsultaCodigosServicalMethod';
 export { estruturaControllerDetalharItens } from './estruturaControllerDetalharItens';
 export { estruturaControllerEstrturaAsListMethod } from './estruturaControllerEstrturaAsListMethod';
 export { estruturaControllerEstrturaAsTreeMethod } from './estruturaControllerEstrturaAsTreeMethod';
@@ -25,5 +28,6 @@ export { estruturaControllerRemoveInNeo4J } from './estruturaControllerRemoveInN
 export { estruturaExportControllerExportToNeo4J } from './estruturaExportControllerExportToNeo4J';
 export { estruturaImagemControllerGetImagemDaEstruturaMethod } from './estruturaImagemControllerGetImagemDaEstruturaMethod';
 export { estruturaInternalControllerConsultarRoteiro } from './estruturaInternalControllerConsultarRoteiro';
+export { estruturaInternalControllerGetEstruturasDependentes } from './estruturaInternalControllerGetEstruturasDependentes';
 export { estruturaInternalControllerGetItemDeControle } from './estruturaInternalControllerGetItemDeControle';
 export { estruturaRoteiroControllerConsultarRoteiroMethod } from './estruturaRoteiroControllerConsultarRoteiroMethod';

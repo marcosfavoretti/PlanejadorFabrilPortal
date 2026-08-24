@@ -18,6 +18,13 @@ export const ESTRUTURA_ROUTES: Routes = [
             (m) => m.CheckListPageComponent,
           ),
       },
+      {
+        path: 'historico',
+        loadComponent: () =>
+          import('@/app/features/estrutura/pages/check-list-history-page/check-list-history-page.component').then(
+            (m) => m.CheckListHistoryPageComponent,
+          ),
+      },
     ],
   },
   {

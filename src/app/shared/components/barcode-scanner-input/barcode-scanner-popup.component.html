@@ -1,0 +1,32 @@
+<div class="barcode-popup">
+  <p class="barcode-popup__instruction">Mantenha a etiqueta na horizontal e preencha a área destacada com todo o código.</p>
+  @if (videoDevices.length > 1) {
+    <label class="barcode-popup__device">
+      Câmera
+      <select class="form-select form-select-sm" [value]="selectedDeviceId" (change)="changeCamera($any($event.target).value)">
+        @for (device of videoDevices; track device.deviceId; let index = $index) {
+          <option [value]="device.deviceId">{{ device.label || 'Câmera ' + (index + 1) }}</option>
+        }
+      </select>
+    </label>
+  }
+  <div class="barcode-popup__camera">
+    <video #barcodeVideo autoplay muted playsinline></video>
+    <div class="barcode-popup__guide" aria-hidden="true"></div>
+    @if (loading) {
+      <span class="barcode-popup__loading"><i class="pi pi-spin pi-spinner"></i> Abrindo câmera…</span>
+    }
+  </div>
+  @if (error) {
+    <p class="text-danger small mt-3 mb-0">{{ error }}</p>
+  }
+  <div class="barcode-popup__actions">
+    @if (torchAvailable) {
+      <button type="button" class="btn btn-outline-success" (click)="toggleTorch()">
+        <i class="pi" [class.pi-sun]="!torchEnabled" [class.pi-circle-fill]="torchEnabled"></i>
+        {{ torchEnabled ? 'Desligar luz' : 'Ligar luz' }}
+      </button>
+    }
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">Cancelar</button>
+  </div>
+</div>

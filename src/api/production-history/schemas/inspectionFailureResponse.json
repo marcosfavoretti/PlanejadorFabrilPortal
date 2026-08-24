@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "ResourceName": { "type": "string" },
+    "OperatorName": { "type": "string" },
+    "PartCode": { "type": "string" },
+    "NSerie": { "type": "string" },
+    "Detalhamento": { "type": "string" },
+    "ServerTimestamp": { "type": "string" },
+    "OrderNum": { "type": "string" },
+    "Operation": { "type": "string" },
+    "Sequence": { "type": "string" },
+    "Book": { "type": "string" }
+  },
+  "x-readme-ref-name": "InspectionFailureResponse"
+}

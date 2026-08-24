@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "typeDataId": {
+      "type": "number",
+      "description": "Código do tipo de dado da ordem."
+    },
+    "value": {
+      "type": "string",
+      "description": "Valor associado ao tipo de dado."
+    }
+  },
+  "required": ["typeDataId", "value"],
+  "x-readme-ref-name": "ScannerOrderDataResDto"
+}

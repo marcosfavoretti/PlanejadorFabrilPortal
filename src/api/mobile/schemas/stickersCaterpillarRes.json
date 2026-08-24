@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "number", "description": "ID da etiqueta" },
+    "prodType": { "type": "string", "description": "Tipo de produto" },
+    "pn": { "type": "string", "description": "Part number Caterpillar" },
+    "dv": { "type": "string", "description": "Dígito verificador" },
+    "rev": { "type": "string", "description": "Revisão técnica" },
+    "ethosCod": { "type": "string", "description": "Código Ethos" },
+    "assemblyLine": { "type": "string", "description": "Linha de montagem" },
+    "yyddd": { "type": "string", "description": "Ano e dia juliano (YYDDD)" },
+    "serial": { "type": "string", "description": "Serial da etiqueta" },
+    "serialNumber": {
+      "type": "string",
+      "description": "Serial number Ethos vinculado à etiqueta"
+    },
+    "productionId": {
+      "type": "object",
+      "description": "ID da ordem de produção utilizada"
+    },
+    "orderNum": {
+      "type": "object",
+      "description": "Número da ordem de produção utilizada"
+    },
+    "datamatrix": { "type": "string", "description": "DataMatrix completa" },
+    "serverTime": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data de criação no servidor"
+    }
+  },
+  "required": [
+    "id",
+    "prodType",
+    "pn",
+    "dv",
+    "rev",
+    "ethosCod",
+    "assemblyLine",
+    "yyddd",
+    "serial",
+    "serialNumber",
+    "datamatrix",
+    "serverTime"
+  ],
+  "x-readme-ref-name": "StickersCaterpillarRes"
+}

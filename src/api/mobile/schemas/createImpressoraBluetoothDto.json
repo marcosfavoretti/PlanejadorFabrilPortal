@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome da impressora",
+      "example": "Impressora Sala 1"
+    },
+    "macAddress": {
+      "type": "string",
+      "description": "Endereço MAC da impressora",
+      "example": "00:1A:79:XX:XX:XX"
+    }
+  },
+  "required": ["nome", "macAddress"],
+  "x-readme-ref-name": "CreateImpressoraBluetoothDto"
+}

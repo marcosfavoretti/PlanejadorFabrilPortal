@@ -94,6 +94,18 @@ export type {
   CheckListControllerInsertItemCheckListMutationResponse,
 } from './CheckListControllerInsertItemCheckList';
 export type {
+  CheckListControllerListarChecklistsRealizadosError,
+  CheckListControllerListarChecklistsRealizadosQuery,
+  CheckListControllerListarChecklistsRealizadosQueryParams,
+  CheckListControllerListarChecklistsRealizadosQueryResponse,
+} from './CheckListControllerListarChecklistsRealizados';
+export type {
+  CheckListControllerObterProgressoError,
+  CheckListControllerObterProgressoQuery,
+  CheckListControllerObterProgressoQueryParams,
+  CheckListControllerObterProgressoQueryResponse,
+} from './CheckListControllerObterProgresso';
+export type {
   CheckListControllerSubmitChecklist201,
   CheckListControllerSubmitChecklistMutation,
   CheckListControllerSubmitChecklistMutationRequest,
@@ -104,6 +116,7 @@ export type { CheckListItemResStatusDto } from './CheckListItemResStatusDto';
 export type { CheckListResDto } from './CheckListResDto';
 export type { CheckListStatusResDto } from './CheckListStatusResDto';
 export type { CheckListTagsResDto } from './CheckListTagsResDto';
+export type { ChecklistRealizadoResDTO } from './ChecklistRealizadoResDTO';
 export type { ConsultaPorPartcodeReqDTO } from './ConsultaPorPartcodeReqDTO';
 export type { CreateChatConversationReqDto } from './CreateChatConversationReqDto';
 export type { EnviarMensagemStreamReqDto } from './EnviarMensagemStreamReqDto';
@@ -119,6 +132,12 @@ export type {
   EstruturaControllerAnaliseEstruturaResumidaMethodQueryParams,
   EstruturaControllerAnaliseEstruturaResumidaMethodQueryResponse,
 } from './EstruturaControllerAnaliseEstruturaResumidaMethod';
+export type {
+  EstruturaControllerConsultaCodigosServicalMethod200,
+  EstruturaControllerConsultaCodigosServicalMethodQuery,
+  EstruturaControllerConsultaCodigosServicalMethodQueryParams,
+  EstruturaControllerConsultaCodigosServicalMethodQueryResponse,
+} from './EstruturaControllerConsultaCodigosServicalMethod';
 export type {
   EstruturaControllerDetalharItens200,
   EstruturaControllerDetalharItensQuery,
@@ -179,6 +198,12 @@ export type {
   EstruturaInternalControllerConsultarRoteiroQueryResponse,
 } from './EstruturaInternalControllerConsultarRoteiro';
 export type {
+  EstruturaInternalControllerGetEstruturasDependentes200,
+  EstruturaInternalControllerGetEstruturasDependentesQuery,
+  EstruturaInternalControllerGetEstruturasDependentesQueryParams,
+  EstruturaInternalControllerGetEstruturasDependentesQueryResponse,
+} from './EstruturaInternalControllerGetEstruturasDependentes';
+export type {
   EstruturaInternalControllerGetItemDeControleError,
   EstruturaInternalControllerGetItemDeControleQuery,
   EstruturaInternalControllerGetItemDeControleQueryParams,
@@ -195,6 +220,8 @@ export type { InsertItemChecklistDTO } from './InsertItemChecklistDTO';
 export type { ItemMetricas } from './ItemMetricas';
 export type { MetricasDTO } from './MetricasDTO';
 export type { PaginatedChatConversationSummaryDtoDto } from './PaginatedChatConversationSummaryDtoDto';
+export type { PaginatedChecklistRealizadoResDTODto } from './PaginatedChecklistRealizadoResDTODto';
+export type { ProgressoChecklistResDTO } from './ProgressoChecklistResDTO';
 export type { RemoveItemChecklistDTO } from './RemoveItemChecklistDTO';
 export type { ResEstruturaDependentesDTO } from './ResEstruturaDependentesDTO';
 export type { ResEstruturaDetalhesDTO } from './ResEstruturaDetalhesDTO';
