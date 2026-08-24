@@ -13,6 +13,8 @@
 npm-debug.log
 yarn-error.log
 .kubb
+!src/api/mobile/.kubb/
+!src/api/mobile/.kubb/config.ts
 # IDEs and editors
 .idea/
 # Ignorar pastas de estado da IA (onde ficam logs e histórico de chat)
