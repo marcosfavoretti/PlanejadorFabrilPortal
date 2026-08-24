@@ -134,9 +134,9 @@
                        (change)="onNewCheckEvent(item, key.field, $any($event.target).checked)">
               </div>
             } @else if(key?.isButton){
-              <button (click)="onButtonClick(item, key.field, $event, key.button.command)"
+              <button (click)="onButtonClick(item, key.field, $event, key.button.command)" [disabled]="key.button.disabled?.(item)"
                 class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 px-3 shadow-none border-0">
-                <span>{{key.button.label}}</span>
+                <span>{{getButtonLabel(item, key.button.label)}}</span>
                 <i [class]="key.button.icon || ''"></i>
               </button>
             } @else if (key?.isTag) {

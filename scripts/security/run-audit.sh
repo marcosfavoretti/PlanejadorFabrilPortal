@@ -23,6 +23,18 @@ const vulnerabilities = Object.values(report.vulnerabilities ?? {});
 // a larger framework/toolchain migration that breaks the application today.
 // Keep this list narrow and remove entries as the migration work lands.
 const temporarilyAccepted = new Set([
+  // Angular 19 is pinned by the current application/toolchain. npm only
+  // offers fixes for these advisories through the Angular 21 major upgrade.
+  '@angular/cli',
+  '@angular/compiler',
+  '@angular/compiler-cli',
+  '@angular/localize',
+  '@ngtools/webpack',
+  'image-size',
+  'less',
+  'pacote',
+  'postcss',
+  'sigstore',
   '@angular-devkit/build-angular',
   '@angular/animations',
   '@angular/build',

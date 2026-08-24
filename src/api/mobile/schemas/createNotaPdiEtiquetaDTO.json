@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "serialNumber": { "type": "string" },
+    "orderNum": { "type": "string" }
+  },
+  "required": ["serialNumber", "orderNum"],
+  "x-readme-ref-name": "CreateNotaPdiEtiquetaDTO"
+}

@@ -10,6 +10,7 @@ import {
     checkListControllerGetChecklistAvaiable,
     checkListControllerDeleteItemInCheckList,
     checkListControllerInsertItemCheckList,
+    checkListControllerObterProgresso,
     checkListControllerSubmitChecklist,
     chatbotEstruturaControllerGetHistory,
     chatbotEstruturaControllerListConversations,
@@ -24,8 +25,13 @@ import {
     estruturaControllerEstrturaAsTreeMethod,
     estruturaExportControllerExportToNeo4J,
     checkListControllerGetChecklistTags,
+    checkListControllerListarChecklistsRealizados,
 } from "@/api/estrutura";
-import type { ChatbotEstruturaControllerListConversationsQueryParams } from "@/api/estrutura";
+import type {
+    ChatbotEstruturaControllerListConversationsQueryParams,
+    CheckListControllerListarChecklistsRealizadosQueryParams,
+    PaginatedChecklistRealizadoResDTODto,
+} from "@/api/estrutura";
 import type {
     ChatConversationForkDto,
     ChatConversationShareDto,
@@ -36,6 +42,7 @@ import type {
     ResEstruturaItemTreeDTO,
 } from "@/api/estrutura";
 import type { SubmitChecklistDTO } from "@/api/estrutura";
+import { scannerControllerGetOrder } from "@/api/mobile";
 
 interface AssignItemPayload {
     itens: Array<{ partcode: string; pa: string }>;
@@ -387,10 +394,43 @@ export class EstruturaApiService {
         );
     }
 
+    getChecklistProgress(params: { tag: string; codigoItem?: string; orderNum?: string }) {
+        return from(checkListControllerObterProgresso({
+            tag: params.tag.trim(),
+            codigoItem: params.codigoItem?.trim().toUpperCase() || undefined,
+            orderNum: params.orderNum?.trim() || undefined,
+        }));
+    }
+
+    getChecklistOrder(orderNum: string) {
+        return from(scannerControllerGetOrder(orderNum.trim()));
+    }
+
     getChecklistTags(partcode: string): Observable<any> {
         const trimmedPartcode = partcode.trim().toUpperCase();
         return from(
             checkListControllerGetChecklistTags({ partcode: trimmedPartcode })
+        );
+    }
+
+    listCompletedChecklists(
+        params: CheckListControllerListarChecklistsRealizadosQueryParams,
+    ): Observable<PaginatedChecklistRealizadoResDTODto> {
+        return from(
+            checkListControllerListarChecklistsRealizados({
+                ...params,
+                codigoItem: params.codigoItem?.trim().toUpperCase() || undefined,
+                orderNum: params.orderNum?.trim() || undefined,
+                tag: params.tag?.trim().toLowerCase() || undefined,
+            })
+        ).pipe(
+            map((response: any) => ({
+                data: Array.isArray(response?.data) ? response.data : [],
+                total: Number(response?.total ?? 0),
+                page: Number(response?.page ?? params.page ?? 0),
+                limit: Number(response?.limit ?? params.limit ?? 10),
+                totalPages: Number(response?.totalPages ?? 0),
+            }))
         );
     }
 

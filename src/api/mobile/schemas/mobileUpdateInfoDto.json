@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "version": { "type": "string", "example": "4.2" },
+    "versionCode": { "type": "number", "example": 42 },
+    "apkUrl": {
+      "type": "string",
+      "example": "http://apolo:8080/apk/app-release-4.2.apk"
+    },
+    "mandatory": { "type": "boolean", "example": true },
+    "changelog": {
+      "example": [
+        "Correção na impressão Bluetooth",
+        "Melhoria na leitura do QR Code"
+      ],
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["version", "versionCode", "apkUrl", "mandatory", "changelog"],
+  "x-readme-ref-name": "MobileUpdateInfoDto"
+}

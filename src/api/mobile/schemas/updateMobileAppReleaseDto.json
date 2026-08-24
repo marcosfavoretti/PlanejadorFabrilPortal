@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "example": "4.2.0",
+      "description": "Versão semântica exibida no aplicativo."
+    },
+    "versionCode": {
+      "type": "number",
+      "example": 42,
+      "description": "Código numérico usado para comparar atualizações."
+    },
+    "apkUrl": {
+      "type": "string",
+      "example": "https://downloads.exemplo.com/app-release-4.2.0.apk"
+    },
+    "mandatory": { "type": "boolean", "example": true, "default": false },
+    "changelog": {
+      "example": ["Correção de falha no login"],
+      "default": [],
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "active": { "type": "boolean", "example": true, "default": true }
+  },
+  "x-readme-ref-name": "UpdateMobileAppReleaseDto"
+}

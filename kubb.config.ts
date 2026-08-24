@@ -2,11 +2,52 @@ import { pluginOas } from '@kubb/plugin-oas'
 import { pluginClient } from '@kubb/plugin-client'
 import { pluginTs } from '@kubb/plugin-ts'
 import { defineConfig, type UserConfig } from '@kubb/core'
-import { config } from "dotenv"
-import axios from "axios"
-config();
+import { config as loadDotenv } from 'dotenv'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+/**
+ * `npm run generate --production` does not forward the flag to the command;
+ * npm exposes it as npm_config_production instead. Kubb itself can receive
+ * the flag when the command is invoked as `npm run generate -- --production`.
+ */
+const isProductionGeneration =
+    process.argv.includes('--production') || process.env.npm_config_production === 'true';
+
+const envFiles = isProductionGeneration
+    ? ['.env.production', '.env.prod', '.env']
+    : ['.env'];
+
+for (const envFile of envFiles) {
+    const envPath = resolve(process.cwd(), envFile);
+    if (existsSync(envPath)) {
+        loadDotenv({ path: envPath });
+    }
+}
+
+const configuredApiHost = process.env.KUBB_API_HOST?.trim();
+
+function resolveApiUrl(value: string): string {
+    if (!configuredApiHost) {
+        return value;
+    }
+
+    const url = new URL(value);
+    const targetHost = new URL(
+        configuredApiHost.includes('://') ? configuredApiHost : `https://${configuredApiHost}`,
+    );
+    url.protocol = targetHost.protocol;
+    url.host = targetHost.host;
+    return url.toString();
+}
+
+function resolveApiBaseUrl(value: string): string {
+    return new URL(resolveApiUrl(value)).origin;
+}
 
 const {
+    API_URL_MOBILE,
+    API_SWAGGER_MOBILE,
     API_URL_PLANEJADOR,
     API_SWAGGER_PLANEJADOR,
     API_URL_AUTH,
@@ -43,7 +84,7 @@ const createApiConfig = ({ name, swaggerPath, outputPath, baseUrl }: ApiConfigPa
     return {
         name,
         root: '.',
-        input: { path: swaggerPath },
+        input: { path: resolveApiUrl(swaggerPath) },
         output: {
             path: outputPath,
             extension: {
@@ -63,7 +104,7 @@ const createApiConfig = ({ name, swaggerPath, outputPath, baseUrl }: ApiConfigPa
                 output: { path: 'client' },
                 client: 'axios',
                 importPath: '@/client',
-                baseURL: baseUrl,
+                baseURL: resolveApiBaseUrl(baseUrl),
                 dataReturnType: 'data',
             }),
         ],
@@ -136,5 +177,11 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_ESTRUTURA,
         outputPath: './src/api/estrutura',
         baseUrl: API_URL_ESTRUTURA
+    }),
+    createApiConfig({
+        name: 'mobile-api',
+        swaggerPath: API_SWAGGER_MOBILE,
+        outputPath: './src/api/mobile',
+        baseUrl: API_URL_MOBILE
     }),
 ]);

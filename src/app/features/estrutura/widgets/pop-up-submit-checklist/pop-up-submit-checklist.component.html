@@ -1,9 +1,28 @@
 <p-card>
-  <form #forms="ngForm" (ngSubmit)="validForms(forms)">
+  <p-confirmPopup></p-confirmPopup>
+  <form #forms="ngForm" (ngSubmit)="validForms(forms, $event)">
     <div class="d-flex flex-column gap-3">
-      <label for="name">insira seu nome:</label>
-      <input type="text" name="name" id="name" ngModel required>
-      <button type="submit" class="btn btn-success align-self-end">feito</button>
+      <div>
+        <label class="form-label" for="name">Separador</label>
+        <input class="form-control" type="text" name="name" id="name" [(ngModel)]="name" required autocomplete="name" autofocus>
+      </div>
+      @if (allowOrderInput) {
+      <div>
+        <label class="form-label" for="submission-order">Ordem de produção <span class="text-muted fw-normal">(opcional)</span></label>
+        <div class="submission-order-input">
+          <app-barcode-scanner-input inputId="submission-order" name="submissionOrder" placeholder="Informe ou leia a ordem"
+            readerType="all" [value]="orderNum" (valueChange)="orderNum = $event">
+          </app-barcode-scanner-input>
+        </div>
+        <small class="text-muted d-block mt-2">Sem ordem, o checklist poderá ser enviado, mas não poderá ser filtrado por ordem.</small>
+      </div>
+      } @else {
+      <small class="text-muted">Ordem {{ linkedOrderNum }} já definida na abertura do checklist.</small>
+      }
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancelar</button>
+        <button type="submit" class="btn btn-success" [disabled]="!name.trim()">Enviar checklist</button>
+      </div>
     </div>
   </form>
 </p-card>

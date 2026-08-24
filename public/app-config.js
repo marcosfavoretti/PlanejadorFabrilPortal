@@ -5,7 +5,6 @@ window.__APP_CONFIG__ = Object.assign(
     pbWsPath: '/ws/pb',
     homeExternalUrl: 'https://www.ethos.ind.br/',
     debugEnabled: false,
-    enableRoutePermissionMock: false,
     enableDevAuthToken: false,
     allowedResourceOrigins: ['https://app.powerbi.com', 'https://www.ethos.ind.br'],
   },

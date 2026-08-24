@@ -46,17 +46,35 @@ To update the generated client, run locally:
 npm run generate
 ```
 
+For a production-style generation, Kubb loads `.env.production` (or the
+existing `.env.prod`) first and falls back to `.env` for values that are not
+defined there:
+
+```bash
+npm run generate --production
+```
+
+To generate every client with the development host, set the host explicitly
+in `.env.production` (or in the shell):
+
+```dotenv
+KUBB_API_HOST=https://dev.ethos.ind.br
+```
+
+`KUBB_API_HOST` changes only the host embedded in the generated clients; the
+Swagger URLs remain controlled by their respective `API_SWAGGER_*` variables.
+
 Operational rules:
 
 - CI does not call Swagger or regenerate `src/api`.
-- Production and CI only accept generated code pointing to `https://app.ethos.ind.br`.
+- Production and CI only accept committed generated code pointing to `https://app.ethos.ind.br`.
 - Before committing changes in `src/api`, validate the committed client with:
 
 ```bash
 npm run check:api-client
 ```
 
-The generator still depends on the Swagger environment variables configured for local use in `kubb.config.ts`, but the generated client host is always normalized to production.
+The generator depends on the Swagger environment variables configured for local use in `kubb.config.ts`. A development host can be selected explicitly with `KUBB_API_HOST`; this is intended for local validation and should not be committed to `src/api`.
 
 ## Running unit tests
 

@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "required": ["path", "physicalName"],
+  "properties": {
+    "path": { "type": "string" },
+    "physicalName": { "type": "string" },
+    "originalName": { "type": "string" },
+    "type": { "type": "string", "enum": ["IMAGE", "VIDEO"] },
+    "mimeType": { "type": "string" }
+  },
+  "x-readme-ref-name": "MediaAssetResponse"
+}

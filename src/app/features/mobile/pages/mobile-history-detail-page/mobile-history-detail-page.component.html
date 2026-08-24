@@ -1,0 +1,37 @@
+<app-page-layout>
+  <main class="detail-page">
+    <button type="button" class="back-link" (click)="backToHistory()">
+      <i class="pi pi-arrow-left"></i> Voltar ao histórico
+    </button>
+
+    <header class="detail-page__header">
+      <span class="eyebrow">Apontamento</span>
+      <h1>Ficha detalhada</h1>
+      <p>Informações do evento e fotos do book em uma única página.</p>
+    </header>
+
+    <section class="detail-section">
+      <h2>Informações do apontamento</h2>
+      @if (entries().length) {
+        <dl>
+          @for (entry of entries(); track entry[0]) {
+            <dt>{{ labelFor(entry[0]) }}</dt>
+            <dd>{{ entry[1] }}</dd>
+          }
+        </dl>
+      } @else {
+        <p class="state-message">
+          Os dados resumidos ficam disponíveis ao abrir a ficha pelo histórico.
+        </p>
+      }
+    </section>
+
+    @if (bookResource.isLoading()) {
+      <p class="state-message">Carregando fotos e registros…</p>
+    } @else if (bookHtml()) {
+      <section class="book-content" [innerHTML]="bookHtml()"></section>
+    } @else {
+      <p class="state-message">Nenhuma foto ou registro disponível.</p>
+    }
+  </main>
+</app-page-layout>

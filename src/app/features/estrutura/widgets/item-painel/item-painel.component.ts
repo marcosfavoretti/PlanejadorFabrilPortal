@@ -153,22 +153,129 @@ export class ItemPainelComponent implements OnInit {
   }
 
   submitChecklistLookup(payload: ChecklistLookupPayload) {
+    const normalizedTag = this.normalizeTag(payload.tag);
+    const orderNum = payload.orderNum?.trim();
     const normalizedPartcode = payload.partcode?.trim().toUpperCase();
+
+    if (orderNum) {
+      if (normalizedPartcode) {
+        this.applyChecklistLookup(normalizedPartcode, normalizedTag, orderNum);
+        return;
+      }
+
+      this.requestingData = true;
+      this.errorMessage = undefined;
+      this.itemrelationservice.getChecklistOrder(orderNum).subscribe({
+        next: (order: any) => {
+          const partcode = order?.partCode?.trim().toUpperCase();
+          if (!partcode) {
+            this.requestingData = false;
+            this.errorMessage = 'A ordem não possui um produto final válido.';
+            return;
+          }
+          this.applyChecklistLookup(partcode, normalizedTag, orderNum);
+        },
+        error: () => {
+          this.requestingData = false;
+          this.errorMessage = 'Ordem de produção não encontrada.';
+          this.dialog.open(PopUpResponseComponent, {
+            data: { msg: this.errorMessage, stt: 'error' }
+          });
+        }
+      });
+      return;
+    }
 
     if (!normalizedPartcode || normalizedPartcode.length < 5) {
       return;
     }
 
-    const normalizedTag = this.normalizeTag(payload.tag);
+    this.applyChecklistLookup(normalizedPartcode, normalizedTag);
+  }
 
+  public searchChecklistOrder(orderNum: string): void {
+    const normalizedOrderNum = orderNum.trim();
+    if (!normalizedOrderNum) return;
+
+    // A ordem lida/digitada substitui imediatamente o contexto anterior.
+    const orderRequestVersion = ++this.checklistRequestVersion;
+    this.selectedOrderNum = normalizedOrderNum;
+    this._givenPartcode = undefined;
+    this.selectedTag = '';
+    this.selectedTagInput = '';
+    this.availableTags = [];
+    this.targetItemDisplay = undefined;
+    this.targetItemOriginal = undefined;
+    this.targetItemDisplayTreeNode = undefined;
+    this.targetItemDisplayList = undefined;
+    this.hasFiltersApply = false;
+    this.contextService.clearPartcode();
+    this.contextService.clearTag();
+    this.updateQueryParams();
+    this.requestingData = true;
+    this.errorMessage = undefined;
+    this.itemrelationservice.getChecklistOrder(normalizedOrderNum).subscribe({
+      next: (order: any) => {
+        if (orderRequestVersion !== this.checklistRequestVersion) return;
+        const partcode = order?.partCode?.trim().toUpperCase();
+        if (!partcode) {
+          this.requestingData = false;
+          this.errorMessage = 'A ordem não possui um produto final válido.';
+          return;
+        }
+
+        this.selectedOrderNum = order?.orderNum?.trim() || normalizedOrderNum;
+        this._givenPartcode = partcode;
+        this.selectedTag = '';
+        this.selectedTagInput = '';
+        this.availableTags = [];
+        this.contextService.setPartcode(partcode);
+        this.contextService.clearTag();
+        this.updateQueryParams();
+        this.requestItem();
+      },
+      error: () => {
+        if (orderRequestVersion !== this.checklistRequestVersion) return;
+        this.requestingData = false;
+        this.errorMessage = 'Ordem de produção não encontrada.';
+        this.dialog.open(PopUpResponseComponent, {
+          data: { msg: this.errorMessage, stt: 'error' }
+        });
+      },
+    });
+  }
+
+  public updateChecklistOrderParam(orderNum: string): void {
+    const normalizedOrderNum = orderNum.trim();
+    this.selectedOrderNum = normalizedOrderNum || undefined;
+    this.updateQueryParams();
+  }
+
+  public searchChecklistPartcode(partcode: string): void {
+    const normalizedPartcode = partcode.trim().toUpperCase();
+    if (normalizedPartcode.length < 5) return;
+
+    this.selectedOrderNum = undefined;
+    this.selectedTag = '';
+    this.selectedTagInput = '';
+    this.availableTags = [];
     this._givenPartcode = normalizedPartcode;
     this.contextService.setPartcode(normalizedPartcode);
+    this.contextService.clearTag();
+    this.updateQueryParams();
+    this.requestItem();
+  }
 
-    this.selectedTag = normalizedTag;
-    this.selectedTagInput = normalizedTag;
+  private applyChecklistLookup(partcode: string, tag: string, orderNum?: string): void {
+    this.selectedOrderNum = orderNum;
+    this._givenPartcode = partcode;
+    this.contextService.setPartcode(partcode);
 
-    if (normalizedTag) {
-      this.contextService.setTag(normalizedTag);
+    this.selectedTag = tag;
+    this.selectedTagInput = tag;
+
+    if (tag) {
+      this.contextService.setTag(tag);
     } else {
       this.contextService.clearTag();
     }
@@ -186,6 +293,11 @@ export class ItemPainelComponent implements OnInit {
   @Input() stickyChecklistHeader: boolean = false
   
   private _givenPartcode?: string
+  private selectedOrderNum?: string
+  private checklistRequestVersion = 0
+  get linkedOrderNum(): string | undefined {
+    return this.selectedOrderNum;
+  }
   @Input() set givenPartcode(value: string | undefined) {
     const normalized = value?.trim().toUpperCase();
     if (normalized && normalized !== this._givenPartcode) {
@@ -203,7 +315,7 @@ export class ItemPainelComponent implements OnInit {
     return this._givenPartcode;
   }
 
-  @Output('onSubmitResponse') onsubmitresponse: EventEmitter<{ itempai: string, event: CheckBoxResponseEvent[] }> = new EventEmitter<{ itempai: string, event: CheckBoxResponseEvent[] }>();
+  @Output('onSubmitResponse') onsubmitresponse: EventEmitter<{ itempai: string, orderNum?: string, event: CheckBoxResponseEvent[] }> = new EventEmitter<{ itempai: string, orderNum?: string, event: CheckBoxResponseEvent[] }>();
   requestingData: boolean = false
   errorMessage?: string
   targetItemDisplay?: ResEstruturaItemTreeDTO
@@ -214,6 +326,7 @@ export class ItemPainelComponent implements OnInit {
 
   ngOnInit(): void {
     const partcode = this.route.snapshot.queryParamMap.get('partcode');
+    const orderNum = this.route.snapshot.queryParamMap.get('order');
     const tag = this.route.snapshot.queryParamMap.get('tag');
 
     if (tag) {
@@ -222,7 +335,10 @@ export class ItemPainelComponent implements OnInit {
        this.contextService.setTag(tag);
     }
     
-    if (partcode) {
+    if (orderNum) {
+       this.selectedOrderNum = orderNum.trim();
+       this.submitChecklistLookup({ orderNum, tag: tag || undefined });
+    } else if (partcode) {
        this.givenPartcode = partcode;
        this.contextService.setPartcode(partcode);
     }
@@ -233,6 +349,7 @@ export class ItemPainelComponent implements OnInit {
       relativeTo: this.route,
       queryParams: {
         partcode: this._givenPartcode || null,
+        order: this.selectedOrderNum || null,
         tag: this.selectedTag || null
       },
       queryParamsHandling: 'merge',
@@ -254,6 +371,7 @@ export class ItemPainelComponent implements OnInit {
     if (this.modo === 'cadastro') {
       this.onsubmitresponse.emit({
         itempai: (this.targetItemOriginal! as any).partcode,
+        orderNum: this.selectedOrderNum,
         event: event
       })
     }
@@ -261,6 +379,7 @@ export class ItemPainelComponent implements OnInit {
       if (event.length === this.targetItemDisplayList!.length) {
         this.onsubmitresponse.emit({
           itempai: (this.targetItemOriginal! as any).partcode,
+          orderNum: this.selectedOrderNum,
           event: event
         })
       }
@@ -287,6 +406,7 @@ export class ItemPainelComponent implements OnInit {
 
   public requestItem() {
     if (!this.givenPartcode) return
+    const requestVersion = ++this.checklistRequestVersion;
     this.contextService.setPartcode(this.givenPartcode);
     this.requestingData = true
     this.errorMessage = undefined
@@ -301,6 +421,7 @@ export class ItemPainelComponent implements OnInit {
         catchError(() => of({ tags: [] }))
       )
       .subscribe(res => {
+        if (requestVersion !== this.checklistRequestVersion) return;
         const tags: string[] = Array.isArray(res?.tags) ? res.tags : [];
         this.availableTags = this.normalizeTagOptions(tags);
 
@@ -326,6 +447,7 @@ export class ItemPainelComponent implements OnInit {
       .pipe(
         tap(
           (data) => {
+            if (requestVersion !== this.checklistRequestVersion) return;
             this.targetItemDisplay = data
             this.targetItemOriginal = data
             this.targetItemDisplayTreeNode = parseToTreeNode(data, (p) => this.imageService.pictureRenderLink({ partcode: p }))
@@ -346,6 +468,9 @@ export class ItemPainelComponent implements OnInit {
           }
         ),
         catchError((error) => {
+          if (requestVersion !== this.checklistRequestVersion) {
+            return of(undefined);
+          }
           console.log(error)
           this.requestingData = false;
           this.errorMessage = this.extractErrorMessage(error)
@@ -364,6 +489,8 @@ export class ItemPainelComponent implements OnInit {
   }
 
   public onClearSearch() {
+    this.checklistRequestVersion++;
+    this.selectedOrderNum = undefined;
     this.givenPartcode = undefined;
     this.selectedTag = '';
     this.selectedTagInput = '';

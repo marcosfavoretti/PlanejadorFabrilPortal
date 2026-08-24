@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "_id": { "type": "string" },
+    "reportType": { "type": "string", "enum": ["QUALITY", "IMAGE_PACK"] },
+    "appName": { "type": "string" },
+    "appVersion": { "type": "string" },
+    "userId": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "status": { "type": "string" },
+    "attempts": { "type": "number" },
+    "technicalError": { "type": "string" },
+    "media": { "type": "array", "items": { "type": "object" } },
+    "properties": {
+      "type": "object",
+      "additionalProperties": true,
+      "example": {
+        "productionId": "123456",
+        "gate": "G1",
+        "qualquerCampoDoApp": "valor"
+      }
+    },
+    "createdAt": { "format": "date-time", "type": "string" },
+    "updatedAt": { "format": "date-time", "type": "string" },
+    "uploadedAt": { "format": "date-time", "type": "string" }
+  },
+  "required": [
+    "_id",
+    "reportType",
+    "appName",
+    "status",
+    "attempts",
+    "media",
+    "properties",
+    "createdAt",
+    "updatedAt"
+  ],
+  "x-readme-ref-name": "ReportFotosRes"
+}

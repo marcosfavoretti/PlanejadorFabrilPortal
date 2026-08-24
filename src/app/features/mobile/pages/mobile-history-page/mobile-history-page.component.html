@@ -1,0 +1,340 @@
+<app-page-layout>
+  <main class="history-page">
+    <header class="history-page__hero">
+      <span class="eyebrow">Rastreabilidade</span>
+      <h1>Histórico de produção</h1>
+      <p>
+        Localize fotos, registros e eventos pela etiqueta PDI ou pelo part code
+        e número de série.
+      </p>
+    </header>
+
+    <form
+      [formGroup]="lookupForm"
+      (ngSubmit)="submitLookup()"
+      class="lookup-card"
+    >
+      <div class="lookup-card__heading">
+        <i class="pi pi-search"></i>
+        <div>
+          <h2>Consultar produto</h2>
+          <p>
+            Use a etiqueta PDI ou, como alternativa, informe o part code e o
+            número de série.
+          </p>
+        </div>
+      </div>
+      <div class="lookup-card__input">
+        <input
+          id="pdi-label"
+          formControlName="label"
+          autocomplete="off"
+          placeholder="Etiqueta PDI"
+          aria-label="Etiqueta PDI"
+        />
+      </div>
+      <p class="text-center text-muted my-3 fw-semibold">OU</p>
+      <div class="lookup-card__input">
+        <input
+          id="part-code"
+          formControlName="partCode"
+          autocomplete="off"
+          placeholder="Part code"
+          aria-label="Part code"
+        /><input
+          id="serial-number"
+          formControlName="serialNumber"
+          autocomplete="off"
+          placeholder="Número de série"
+          aria-label="Número de série"
+        /><button class="btn btn-success" [disabled]="lookupLoading()">
+          <i class="pi pi-search" [class.pi-spin]="lookupLoading()"></i
+          >{{ lookupLoading() ? "Consultando" : "Consultar" }}
+        </button>
+      </div>
+      @if (lookupError()) {
+        <p class="error-message">
+          <i class="pi pi-exclamation-circle"></i>{{ lookupError() }}
+        </p>
+      }
+      @if (product(); as context) {
+        <div class="product-summary">
+          <div>
+            <span>Part number: </span><strong>{{ context.partCode }}</strong>
+          </div>
+          <div>
+            <span>Número de série: </span
+            ><strong>{{ context.serialNumber }}</strong>
+          </div>
+        </div>
+      }
+    </form>
+
+    @if (product()) {
+      <section class="overview-grid">
+        <section class="content-card albums-card">
+          <div class="content-card__heading">
+            <div>
+              <h2>Álbuns disponíveis</h2>
+            </div>
+            <i class="pi pi-images"></i>
+          </div>
+          @if (albumsResource.isLoading()) {
+            <p class="state-message">
+              <i class="pi pi-spin pi-spinner"></i> Carregando álbuns…
+            </p>
+          } @else if (albumsResource.value()?.length) {
+            <div class="album-grid">
+              @for (album of albumsResource.value(); track album.nome) {
+                <button
+                  type="button"
+                  class="album-card"
+                  [class.album-card--selected]="selectedAlbum() === album.nome"
+                  (click)="selectAlbum(album.nome)"
+                >
+                  <span class="album-card__icon"
+                    ><i class="pi pi-folder"></i></span
+                  ><span class="album-card__content"
+                    ><strong>{{ album.nome }}</strong
+                    ><small
+                      >{{ album.quantidadeFotos }}
+                      {{
+                        album.quantidadeFotos === 1 ? "registro" : "registros"
+                      }}</small
+                    ></span
+                  ><i
+                    class="pi"
+                    [class.pi-check-circle]="selectedAlbum() === album.nome"
+                    [class.pi-angle-right]="selectedAlbum() !== album.nome"
+                  ></i>
+                </button>
+              }
+            </div>
+          } @else {
+            <p class="state-message">
+              <i class="pi pi-inbox"></i>Nenhum álbum disponível para este
+              produto.
+            </p>
+          }
+
+          @if (selectedAlbum()) {
+            <section class="history-card">
+              <div class="history-card__header">
+                <div>
+                  <h2>{{ selectedAlbum() }}</h2>
+                  <p>Navegue pelos registros deste álbum.</p>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary history-card__close"
+                  (click)="closeAlbum()"
+                >
+                  <i class="pi pi-times"></i> Fechar álbum
+                </button>
+              </div>
+              @if (historyResource.isLoading()) {
+                <p class="state-message history-card__state">
+                  <i class="pi pi-spin pi-spinner"></i> Carregando histórico…
+                </p>
+              } @else if (!historyRows().length) {
+                <p class="state-message history-card__state">
+                  <i class="pi pi-inbox"></i>Nenhuma mídia ou falha encontrada
+                  com estes filtros.
+                </p>
+              } @else {
+                <div class="gallery-grid">
+                  @for (row of historyRows(); track row.id) {
+                    <article
+                      class="gallery-item"
+                      [class.gallery-item--failure]="!row.media"
+                    >
+                      @if (row.media) {
+                        <button
+                          type="button"
+                          class="gallery-item__preview"
+                          (click)="openMedia(row)"
+                          [attr.aria-label]="
+                            'Abrir ' + (row.media.originalName || 'mídia')
+                          "
+                        >
+                          @if (isVideo(row)) {
+                            <video
+                              muted
+                              preload="metadata"
+                              [src]="mediaUrl(row)"
+                            ></video
+                            ><span class="gallery-item__play"
+                              ><i class="pi pi-play"></i
+                            ></span>
+                          } @else {
+                            <img
+                              [src]="mediaUrl(row)"
+                              [alt]="
+                                row.media.originalName || 'Mídia do histórico'
+                              "
+                              (error)="onMediaError($event)"
+                            /><span class="thumbnail-fallback"
+                              ><i class="pi pi-image"></i
+                            ></span>
+                          }
+                          <span class="gallery-item__open"
+                            ><i class="pi pi-expand"></i> Visualizar</span
+                          >
+                        </button>
+                      } @else {
+                        <div class="failure-icon">
+                          <i class="pi pi-exclamation-triangle"></i>
+                        </div>
+                      }
+                      <div class="gallery-item__content">
+                        <strong>{{
+                          row.record.codItem || "Sem código de item"
+                        }}</strong
+                        ><span>{{
+                          row.record.gate || "Gate não informado"
+                        }}</span
+                        ><small>{{
+                          row.media?.originalName ||
+                            row.record.featureColumn + " · " + row.record.status
+                        }}</small>
+                      </div>
+                      @if (row.record.status === "FAILED") {
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-sm"
+                          (click)="
+                            openRecordDetail(row.record.code || row.record._id)
+                          "
+                        >
+                          Ver falha
+                        </button>
+                      }
+                    </article>
+                  }
+                </div>
+                <p-paginator
+                  (onPageChange)="onPageChange($event)"
+                  [first]="page() * limit()"
+                  [rows]="limit()"
+                  [totalRecords]="totalRecords()"
+                  [rowsPerPageOptions]="[10, 20, 50]"
+                ></p-paginator>
+              }
+            </section>
+          }
+        </section>
+
+        <section class="content-card inspections-card">
+          <div class="content-card__heading">
+            <div>
+              <span class="eyebrow">Produção</span>
+              <h2>Eventos</h2>
+            </div>
+            <span class="count-badge">{{ inspections().length }}</span>
+          </div>
+          @if (inspectionsResource.isLoading()) {
+            <p class="state-message">
+              <i class="pi pi-spin pi-spinner"></i> Carregando eventos…
+            </p>
+          } @else if (inspectionError()) {
+            <p class="error-message">
+              <i class="pi pi-exclamation-circle"></i>{{ inspectionError() }}
+            </p>
+          } @else if (inspections().length) {
+            <app-table-dynamic
+              [data]="inspections()"
+              [tableModel]="inspectionTableSchema"
+              [exportable]="false"
+              [scrollable]="true"
+              scrollHeight="22rem"
+            ></app-table-dynamic>
+          } @else {
+            <p class="state-message">
+              <i class="pi pi-inbox"></i>Nenhum evento encontrado.
+            </p>
+          }
+        </section>
+      </section>
+    }
+  </main>
+</app-page-layout>
+
+@if (selectedMedia(); as row) {
+  <div
+    class="detail-overlay media-viewer-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visualizador de mídia"
+    (click)="closeMedia()"
+  >
+    <section class="media-viewer" (click)="$event.stopPropagation()">
+      <header class="media-viewer__header">
+        <div>
+          <strong>{{ row.media?.originalName || "Mídia do álbum" }}</strong
+          ><small
+            >{{
+              row.record.codItem ||
+                "Sem código de
+          item"
+            }}
+            · {{ row.record.gate || "Gate não informado" }}</small
+          >
+        </div>
+        <button
+          type="button"
+          class="detail-modal__close"
+          (click)="closeMedia()"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+      </header>
+      <div
+        class="media-viewer__stage"
+        (pointerdown)="startMediaDrag($event)"
+        (pointermove)="dragMedia($event)"
+        (pointerup)="stopMediaDrag()"
+        (pointercancel)="stopMediaDrag()"
+      >
+        @if (isVideo(row)) {
+          <video controls autoplay [src]="mediaUrl(row)"></video>
+        } @else {
+          <img
+            [src]="mediaUrl(row)"
+            [alt]="row.media?.originalName || 'Mídia do álbum'"
+            [style.transform]="mediaTransform()"
+            draggable="false"
+          />
+        }
+      </div>
+      @if (!isVideo(row)) {
+        <footer class="media-viewer__controls">
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="zoomMedia(-0.25)"
+            aria-label="Diminuir zoom"
+          >
+            <i class="pi pi-minus"></i></button
+          ><span>{{ mediaZoom() * 100 | number: "1.0-0" }}%</span
+          ><button
+            type="button"
+            class="btn btn-light"
+            (click)="zoomMedia(0.25)"
+            aria-label="Aumentar zoom"
+          >
+            <i class="pi pi-plus"></i></button
+          ><button type="button" class="btn btn-light" (click)="rotateMedia()">
+            <i class="pi pi-replay"></i> Girar</button
+          ><button
+            type="button"
+            class="btn btn-light"
+            (click)="resetMediaView()"
+          >
+            Redefinir
+          </button>
+        </footer>
+      }
+    </section>
+  </div>
+}

@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "required": ["id", "orderNum", "productionId", "partCode", "serialNumber"],
+  "properties": {
+    "id": { "type": "number" },
+    "orderNum": { "type": "string" },
+    "productionId": { "type": "number" },
+    "partCode": { "type": "string" },
+    "partName": { "type": "string" },
+    "serialNumber": { "type": "string" },
+    "serverTime": { "type": "string" }
+  },
+  "x-readme-ref-name": "ProductContextResponse"
+}

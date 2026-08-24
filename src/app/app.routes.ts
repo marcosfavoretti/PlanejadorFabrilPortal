@@ -72,5 +72,9 @@ export const routes: Routes = [
         path: 'cabinometro',
         loadComponent: () => import('./features/cabinometro/pages/cabinometro-page/cabinometro-page.component').then(m => m.CabinometroPageComponent)
     },
+    {
+        path: 'qualidade',
+        loadChildren: () => import('./features/mobile/routes').then((m) => m.MOBILE_ROUTES),
+    },
     ...AUTH_ROUTES,
 ];

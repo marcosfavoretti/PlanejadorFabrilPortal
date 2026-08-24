@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome do app/contexto do álbum.",
+      "example": "ethos-mobile-report-fotos"
+    },
+    "quantidadeFotos": {
+      "type": "number",
+      "description": "Quantidade total de fotos e vídeos no álbum.",
+      "example": 12
+    }
+  },
+  "required": ["nome", "quantidadeFotos"],
+  "x-readme-ref-name": "ReportFotosAlbumResDto"
+}

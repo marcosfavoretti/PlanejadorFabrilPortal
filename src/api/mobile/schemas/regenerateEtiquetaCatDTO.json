@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": { "etiquetaId": { "type": "number" } },
+  "required": ["etiquetaId"],
+  "x-readme-ref-name": "RegenerateEtiquetaCatDTO"
+}

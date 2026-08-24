@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "number", "example": 1 },
+    "codigoItem": { "type": "string", "example": "20-000-00220" },
+    "orderNum": { "type": "object", "example": "12345678", "nullable": true },
+    "tag": { "type": "string", "example": "montagem" },
+    "separador": { "type": "string", "example": "JOAO" },
+    "dataRealizacao": {
+      "format": "date-time",
+      "type": "string",
+      "example": "2026-08-18T14:30:00.000Z"
+    }
+  },
+  "required": ["id", "codigoItem", "tag", "separador", "dataRealizacao"],
+  "x-readme-ref-name": "ChecklistRealizadoResDTO"
+}

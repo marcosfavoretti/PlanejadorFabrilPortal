@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["nome", "quantidadeFotos"],
+  "properties": {
+    "nome": { "type": "string" },
+    "quantidadeFotos": { "type": "number" }
+  },
+  "x-readme-ref-name": "PhotoAlbumResponse"
+}
