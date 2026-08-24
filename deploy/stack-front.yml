@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   ethosfront:
-    # IMAGE_TAG deve ser definido pelo pipeline para evitar fallback silencioso.
+    # IMAGE_TAG deve ser definido pelo pipeline para evitar fallback silencioso no deploy.
     image: ghcr.io/marcosfavoretti/planejadorfabrilportal:${IMAGE_TAG}
 
     ports:
