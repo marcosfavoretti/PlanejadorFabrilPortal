@@ -76,5 +76,9 @@ export const routes: Routes = [
         path: 'qualidade',
         loadChildren: () => import('./features/mobile/routes').then((m) => m.MOBILE_ROUTES),
     },
+    {
+        path: 'prod-laser',
+        loadChildren: () => import('./features/prod-laser/routes').then((m) => m.PROD_LASER_ROUTES),
+    },
     ...AUTH_ROUTES,
 ];

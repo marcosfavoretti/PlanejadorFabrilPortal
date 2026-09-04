@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "numPrograma": {
+      "type": "string",
+      "description": "Número do programa de produção."
+    }
+  },
+  "required": ["numPrograma"],
+  "x-readme-ref-name": "ProgramaProducaoDto"
+}

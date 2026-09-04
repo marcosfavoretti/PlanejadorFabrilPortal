@@ -1,0 +1,67 @@
+.laser-criticados-page {
+  min-height: 100%;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  color: #5f7468;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: .55rem;
+  height: .55rem;
+  border-radius: 50%;
+  background: #e39b22;
+}
+
+.criticados-panel {
+  overflow: hidden;
+  border: 1px solid #dce8e1;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 10px 24px rgb(27 71 48 / 6%);
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem 1.35rem .75rem;
+}
+
+.panel-heading h2 {
+  margin: 0;
+  color: #203b2d;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.panel-heading h2 span {
+  margin-left: .35rem;
+  color: #537466;
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.panel-heading p {
+  margin: .25rem 0 0;
+  color: #708178;
+  font-size: .85rem;
+}
+
+.table-state {
+  display: grid;
+  min-height: 18rem;
+  place-content: center;
+  gap: .7rem;
+  color: #5f7468;
+}
+
+.table-state.is-error {
+  color: #b34b42;
+}

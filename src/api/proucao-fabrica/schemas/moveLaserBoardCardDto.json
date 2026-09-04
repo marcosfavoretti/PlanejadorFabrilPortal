@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "targetListId": { "type": "string", "example": "machine:laser-01" },
+    "expectedListId": { "type": "string", "example": "available" },
+    "priority": {
+      "type": "number",
+      "description": "Posição baseada em zero dentro da máquina."
+    }
+  },
+  "required": ["targetListId", "expectedListId"],
+  "x-readme-ref-name": "MoveLaserBoardCardDto"
+}

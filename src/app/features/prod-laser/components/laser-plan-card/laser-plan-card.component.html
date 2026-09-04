@@ -1,0 +1,90 @@
+<article class="plan-card" [class]="accent()" cdkDrag [cdkDragData]="plan()"
+  [cdkDragDisabled]="!draggable() || (!plan().movable && !(plan().isInProduction && plan().listId === 'available')) || plan().isMoving"
+  [class.is-locked]="!draggable() || (!plan().movable && !(plan().isInProduction && plan().listId === 'available'))"
+  [class.is-moving]="plan().isMoving" [class.sse-updated]="plan().sseUpdated" (dblclick)="detailsRequested.emit(plan())">
+  <div class="drag-preview" *cdkDragPreview>
+    <span class="plan-code">Programa {{ plan().numPrograma }}</span>
+    <strong>{{ plan().codItemCompon ?? plan().numPrograma }}</strong>
+  </div>
+
+  <div class="plan-card-header bg-dark-green">
+    <div class="plan-card-heading">
+      <div class="plan-header-info">
+        <div class="plan-identifier">
+          <button type="button" class="plan-copy-button" [attr.aria-label]="'Copiar número do programa ' + plan().numPrograma"
+            [title]="copiedValue() === plan().numPrograma ? 'Número copiado' : 'Copiar número do programa'"
+            (pointerdown)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()"
+            (click)="copyValue($event, plan().numPrograma)">
+            <i class="pi" [class.pi-copy]="copiedValue() !== plan().numPrograma" [class.pi-check]="copiedValue() === plan().numPrograma"></i>
+          </button>
+          <i class="pi pi-file"></i>
+          <span>Programa</span>
+          <strong>{{ plan().numPrograma }}</strong>
+        </div>
+        @if (getTaskId(); as taskId) {
+        <div class="plan-identifier">
+          <button type="button" class="plan-copy-button" [attr.aria-label]="'Copiar Task ID ' + taskId"
+            [title]="copiedValue() === taskId ? 'Task ID copiado' : 'Copiar Task ID'"
+            (pointerdown)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()"
+            (click)="copyValue($event, taskId)">
+            <i class="pi" [class.pi-copy]="copiedValue() !== taskId" [class.pi-check]="copiedValue() === taskId"></i>
+          </button>
+          <i class="pi pi-sitemap"></i>
+          <span>Task</span>
+          <strong>{{ taskId }}</strong>
+        </div>
+        }
+      </div>
+      <div class="plan-card-actions">
+        <p-tag class="plan-processor-tag" [value]="plan().postProcessor ?? 'Não identificado'"
+          [severity]="getPostProcessorSeverity()" [rounded]="true" />
+        @if (plan().isMoving) {
+        <i class="pi pi-spin pi-spinner" aria-label="Atualizando plano"></i>
+        } @else if (!draggable() || (!plan().movable && !(plan().isInProduction && plan().listId === 'available'))) {
+        <i class="pi pi-lock" aria-label="Plano bloqueado"></i>
+        } @else {
+        <i class="pi pi-arrows-alt drag-hint" aria-label="Arraste para mover"></i>
+        }
+      </div>
+    </div>
+    @if (plan().codItemCompon && plan().codItemCompon !== plan().numPrograma) {
+      <h3>{{ plan().codItemCompon }}</h3>
+    }
+    @if (!plan().finished) {
+      <p-badge class="plan-production-badge"
+        [value]="plan().isInProduction ? 'Em produção' : 'Fora de produção'"
+        [severity]="plan().isInProduction ? 'success' : 'danger'" />
+    }
+  </div>
+
+  <dl class="plan-details">
+    <div>
+      <dt>Lista</dt>
+      <dd>{{ plan().listId }}</dd>
+    </div>
+    <div>
+      <dt>Prioridade</dt>
+      <dd>{{ plan().priority ?? '—' }}</dd>
+    </div>
+    <div>
+      <dt>Status</dt>
+      <dd>{{ plan().statusRegistro || '—' }}@if (plan().machineId) { · {{ plan().machineId }} }</dd>
+    </div>
+    <div class="plan-detail-status">
+      <dt>Situação</dt>
+      <dd>{{ plan().finished ? 'Finalizado' : plan().hasStartedProduction ? 'Em produção' : 'Aguardando' }}</dd>
+    </div>
+    @if (plan().datImport) {
+    <div class="plan-detail-imported-at">
+      <dt>Importado em</dt>
+      <dd>{{ plan().datImport | date: 'dd/MM/yyyy HH:mm' }}</dd>
+    </div>
+    }
+  </dl>
+
+  <footer class="plan-card-footer">
+    <span><i class="pi pi-tag"></i>{{ plan().movable || (plan().isInProduction && plan().listId === 'available') ? 'Pode ser movido' : 'Movimento bloqueado' }}</span>
+    <span class="status-dot" [class.done]="plan().finished" [class.pending]="plan().hasStartedProduction"
+      [class.available]="!plan().finished && !plan().hasStartedProduction"></span>
+  </footer>
+</article>

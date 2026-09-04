@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "item": { "type": "string", "example": "ITEM-001" },
+    "quantity": { "type": "number", "example": 4 }
+  },
+  "required": ["item", "quantity"],
+  "x-readme-ref-name": "GerarPreviewNestingPartDto"
+}

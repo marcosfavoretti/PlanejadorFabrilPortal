@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "properties": {
+    "numPrograma": { "type": "string" },
+    "statusRegistro": { "type": "string" },
+    "codEmpresa": { "type": "object", "nullable": true },
+    "chapa": {
+      "type": "string",
+      "description": "Código da chapa (COD_ITEM_COMPON)."
+    },
+    "codItem": {
+      "type": "object",
+      "description": "Código do item (COD_ITEM), com fallback na tabela ORDENS.",
+      "nullable": true
+    },
+    "ordem": {
+      "type": "object",
+      "description": "Ordem de produção (ORDERNUM).",
+      "nullable": true
+    },
+    "codOperac": { "type": "object", "nullable": true },
+    "tempoCorteProg": { "type": "number" },
+    "pesUnit": { "type": "number" },
+    "qtdProduzida": { "type": "number" },
+    "tempoUnit": { "type": "number" },
+    "qtdBoas": { "type": "number" },
+    "qtdApontada": { "type": "number" },
+    "qtdRefugo": { "type": "number" },
+    "codDefeito": { "type": "object", "nullable": true },
+    "pesSucata": { "type": "number" },
+    "flag": { "type": "object", "nullable": true },
+    "idRegistro": { "type": "number" },
+    "operador": { "type": "object", "nullable": true },
+    "metroLinear": { "type": "number" },
+    "datImport": {
+      "format": "date-time",
+      "type": "string",
+      "example": "2026-08-25T00:00:00.000Z"
+    }
+  },
+  "required": [
+    "numPrograma",
+    "statusRegistro",
+    "codEmpresa",
+    "chapa",
+    "codItem",
+    "ordem",
+    "codOperac",
+    "tempoCorteProg",
+    "pesUnit",
+    "qtdProduzida",
+    "tempoUnit",
+    "qtdBoas",
+    "qtdApontada",
+    "qtdRefugo",
+    "codDefeito",
+    "pesSucata",
+    "flag",
+    "idRegistro",
+    "operador",
+    "metroLinear",
+    "datImport"
+  ],
+  "x-readme-ref-name": "ProgramaLaserDetalheDto"
+}

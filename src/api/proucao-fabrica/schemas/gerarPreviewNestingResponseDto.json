@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "svg": {
+      "type": "string",
+      "description": "SVG da chapa com a legenda visual."
+    },
+    "table": { "type": "number", "example": 1 },
+    "tables": { "type": "number", "example": 2 },
+    "parts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": { "type": "string", "example": "ITEM-001" },
+          "quantity": { "type": "number", "example": 4 }
+        },
+        "required": ["item", "quantity"],
+        "x-readme-ref-name": "GerarPreviewNestingPartDto"
+      }
+    },
+    "legend": {
+      "description": "Legenda por item, cor usada no SVG e quantidade na chapa.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": { "type": "string", "example": "ITEM-001" },
+          "color": { "type": "string", "example": "hsl(0 72% 34%)" },
+          "quantity": { "type": "number", "example": 4 }
+        },
+        "required": ["item", "color", "quantity"],
+        "x-readme-ref-name": "GerarPreviewNestingLegendDto"
+      }
+    }
+  },
+  "required": ["svg", "table", "tables", "parts", "legend"],
+  "x-readme-ref-name": "GerarPreviewNestingResponseDto"
+}
