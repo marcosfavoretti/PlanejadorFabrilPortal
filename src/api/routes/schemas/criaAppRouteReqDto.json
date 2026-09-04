@@ -27,6 +27,8 @@
           "CATERPILLAR_USER",
           "ALMOX",
           "LIDER_LASER",
+          "PROGRAMADOR_LASER",
+          "PRODUCAO_LASER",
           "LIDER_SOLDA",
           "LIDER_MONTAGEM",
           "LIDER_QUALIDADE",

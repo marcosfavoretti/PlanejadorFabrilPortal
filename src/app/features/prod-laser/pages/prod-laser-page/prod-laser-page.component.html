@@ -1,0 +1,179 @@
+<app-page-layout>
+  <p-confirmPopup></p-confirmPopup>
+  <main class="laser-page p-3 p-lg-4">
+    <header class="page-heading d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <div class="eyebrow"><span class="live-dot"></span> Produção em tempo real</div>
+        <h1 class="display-6 fw-bold mb-1">Prod. Laser</h1>
+        <p class="text-secondary mb-0">Acompanhe o desempenho das máquinas e a fila de corte.</p>
+      </div>
+      <button class="btn btn-outline-success rounded-pill px-3" type="button" (click)="refresh()">
+        <i class="pi pi-refresh me-2"></i>Atualizar
+        <small class="ms-2 text-secondary">{{ lastUpdated() }}</small>
+      </button>
+    </header>
+
+    <section class="plans-board" aria-labelledby="plans-title">
+      <div class="board-toolbar">
+        <div class="board-title-block">
+          <span class="board-kicker">Quadro de produção</span>
+          <div class="board-heading">
+            <div>
+              <h2 id="plans-title">Fluxo de planos de corte</h2>
+              @if (isLaserReadOnly()) {
+              <p>Modo conferência: acompanhe as listas em tempo real.</p>
+              } @else {
+              <p>Arraste os cartões entre as listas para organizar a produção.</p>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="board-actions">
+          @if (isLaserReadOnly()) {
+          <div class="laser-preference" role="group" aria-label="Filtrar lista de laser">
+            <span class="laser-preference-label">Exibir:</span>
+            <button type="button" [attr.aria-pressed]="laserPreference() === 'ALL'" [class.active]="laserPreference() === 'ALL'" (click)="setLaserPreference('ALL')">Todos</button>
+            <button type="button" [attr.aria-pressed]="laserPreference() === 'BYSTRONIC'" [class.active]="laserPreference() === 'BYSTRONIC'" (click)="setLaserPreference('BYSTRONIC')">Bystronic</button>
+            <button type="button" [attr.aria-pressed]="laserPreference() === 'LVD'" [class.active]="laserPreference() === 'LVD'" (click)="setLaserPreference('LVD')">LVD</button>
+          </div>
+          }
+          <label class="board-filter">
+            <i class="pi pi-search" aria-hidden="true"></i>
+            <input #globalFilterInput type="search" placeholder="Programa, chapa ou Task ID"
+              aria-label="Filtrar por programa, chapa ou Task ID em todas as listas" [value]="globalFilter()"
+              (input)="updateGlobalFilter(globalFilterInput.value)" />
+          </label>
+        </div>
+      </div>
+      @if (availablePlansLoading()) {
+      <div class="board-state"><i class="pi pi-spin pi-spinner"></i> Carregando planos disponíveis...</div>
+      } @else if (availablePlansError()) {
+      <div class="board-state board-state-error"><i class="pi pi-exclamation-circle"></i> {{ availablePlansError() }}
+      </div>
+      }
+      <div class="columns-grid">
+        @for (column of visiblePlanColumns(); track column.id) {
+        <app-laser-plan-column [id]="column.id" [title]="column.title" [description]="column.description"
+          [kind]="column.kind" [plans]="column.plans" [total]="column.pagination.total"
+            [readOnly]="isLaserReadOnly()"
+            [draggable]="!isLaserReadOnly() && column.kind !== 'finished' && !isBulkMoving(column.id)"
+            [dropEnabled]="!isLaserReadOnly() && column.kind !== 'finished' && !isBulkMoving(column.id)"
+          [hasMore]="column.pagination.hasMore" [loadingMore]="isListLoading(column.id)"
+          [bulkMoving]="isBulkMoving(column.id)" [accent]="column.accent" [connectedTo]="connectedPlanColumns()"
+          [targetLists]="machineTargetLists()"
+          (planDropped)="onPlanDropped($event)" (loadMore)="loadMore(column)"
+          (moveAllToAvailable)="moveAllToAvailable(column, $event)"
+          (prioritizeTask)="prioritizeTask(column, $event.taskId, $event.event)"
+          (moveTasksToList)="moveAvailableTasks(column, $event.targetListId, $event.taskIds, $event.event, $event.clearForm)"
+          (planDetailsRequested)="openPlanDetails($event)" />
+        }
+      </div>
+    </section>
+
+    <p-dialog [visible]="selectedPlan() !== null" (visibleChange)="closePlanDetails($event)" [modal]="true"
+      [draggable]="false" [resizable]="false" [style]="{ width: 'min(760px, 94vw)' }"
+      [contentStyle]="{ 'max-height': '70vh', overflow: 'auto' }" styleClass="laser-plan-details-dialog">
+      <ng-template pTemplate="header">
+        <div class="plan-dialog-title">
+          <i class="pi pi-box"></i>
+          <div>
+            <h2>Programa {{ selectedPlan()?.numPrograma }} · {{ getSelectedPlanListTitle() }}</h2>
+            @if (selectedPlan(); as popupPlan) {
+              @if (getTaskId(popupPlan); as taskId) { <small>Task {{ taskId }}</small> }
+            }
+            @if (programDetails().length) { <small>Chapa {{ programDetails()[0].chapa }}</small> }
+          </div>
+        </div>
+      </ng-template>
+      @if (selectedPlan(); as plan) {
+      <section class="nesting-preview-section">
+        <header>
+          <strong>Preview do nesting</strong>
+          <span>Mesa de corte</span>
+        </header>
+        @if (nestingPreviewLoading()) {
+        <div class="plan-details-state"><i class="pi pi-spin pi-spinner"></i> Gerando preview do nesting...</div>
+        } @else if (nestingPreviewError()) {
+        <div class="plan-details-state is-error"><i class="pi pi-exclamation-circle"></i> {{ nestingPreviewError() }}</div>
+        } @else {
+        @if (nestingPreview(); as preview) {
+        <div class="nesting-preview-interactive">
+        <p-image [src]="preview" alt="Preview do nesting do programa" [preview]="true" appendTo="body"
+          styleClass="nesting-preview-wrapper" imageClass="nesting-preview"></p-image>
+        @if (nestingPreviewSvg(); as previewSvg) {
+        <div class="nesting-preview-hit-map" aria-label="Selecionar peça no preview"
+          (click)="onNestingPreviewClick($event)" [innerHTML]="previewSvg"></div>
+        }
+        </div>
+        } @else {
+        @if (nestingPreviewSvg(); as previewSvg) {
+        <div class="nesting-preview-inline" role="img" aria-label="Preview interativo do nesting do programa"
+          (click)="onNestingPreviewClick($event)" [innerHTML]="previewSvg"></div>
+        }
+        }
+        }
+      </section>
+      @if (programDetailsLoading()) {
+      <div class="plan-details-state"><i class="pi pi-spin pi-spinner"></i> Carregando dados do Logix...</div>
+      } @else if (programDetailsError()) {
+      <div class="plan-details-state is-error"><i class="pi pi-exclamation-circle"></i> {{ programDetailsError() }}
+      </div>
+      } @else {
+      <div class="program-detail-list">
+        @for (detail of programDetails(); track $index) {
+        <section class="program-detail-item" [id]="getDetailAnchorId(getDetailItemCode(detail))"
+          [class.is-selected-detail]="selectedDetailItem() === getDetailItemCode(detail)"
+          [style.--legend-color]="getLegendaColor(detail) || '#dcebe1'">
+          @if (getLegendaColor(detail); as legenda) {
+          <div class="program-detail-legend"><span class="program-detail-legend-swatch" [style.background-color]="legenda"></span><span>Legenda do nesting</span></div>
+          }
+          <div class="program-detail-layout">
+            <div class="program-detail-info">
+              <dl class="plan-dialog-details">
+                <div>
+                  <dt>Código do item</dt>
+                  <dd>{{ formatDetailValue(detail.codItem) }}</dd>
+                </div>
+                <div>
+                  <dt>Ordem de produção</dt>
+                  <dd>{{ formatDetailValue(detail.ordem) }}</dd>
+                </div>
+                <div>
+                  <dt>Tempo de corte</dt>
+                  <dd>{{ detail.tempoCorteProg }} min</dd>
+                </div>
+                <div>
+                  <dt>Peso unitário</dt>
+                  <dd>{{ detail.pesUnit }} kg</dd>
+                </div>
+                <div>
+                  <dt>Qtd. produzida</dt>
+                  <dd>{{ formatDetailValue(detail.qtdProduzida) }}</dd>
+                </div>
+                <div>
+                  <dt>Peso de sucata</dt>
+                  <dd>{{ detail.pesSucata }} kg</dd>
+                </div>
+                <div>
+                  <dt>Metro linear</dt>
+                  <dd>{{ detail.metroLinear }} m</dd>
+                </div>
+              </dl>
+            </div>
+            @if (getDetailItemCode(detail); as itemCode) {
+            <div class="program-item-preview-panel">
+              <p-image [src]="getItemImage(itemCode)" [alt]="'Preview do item ' + itemCode" [preview]="true"
+                appendTo="body" styleClass="program-item-preview-wrapper" imageClass="program-item-preview"></p-image>
+            </div>
+            }
+          </div>
+        </section>
+        } @empty {
+        <div class="plan-details-state">Nenhum detalhe encontrado para este programa.</div>
+        }
+      </div>
+      }
+      }
+    </p-dialog>
+  </main>
+</app-page-layout>

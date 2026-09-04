@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "item": { "type": "string", "example": "ITEM-001" },
+    "color": { "type": "string", "example": "hsl(0 72% 34%)" },
+    "quantity": { "type": "number", "example": 4 }
+  },
+  "required": ["item", "color", "quantity"],
+  "x-readme-ref-name": "GerarPreviewNestingLegendDto"
+}

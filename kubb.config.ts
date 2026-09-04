@@ -46,6 +46,8 @@ function resolveApiBaseUrl(value: string): string {
 }
 
 const {
+    API_URL_PROD_FABRICA,
+    API_SWAGGER_PROD_FABRICA,
     API_URL_MOBILE,
     API_SWAGGER_MOBILE,
     API_URL_PLANEJADOR,
@@ -183,5 +185,11 @@ export default defineConfig(() => [
         swaggerPath: API_SWAGGER_MOBILE,
         outputPath: './src/api/mobile',
         baseUrl: API_URL_MOBILE
+    }),
+    createApiConfig({
+        name: 'producao-fabrica',
+        swaggerPath: API_SWAGGER_PROD_FABRICA,
+        outputPath: './src/api/proucao-fabrica',
+        baseUrl: API_URL_PROD_FABRICA
     }),
 ]);

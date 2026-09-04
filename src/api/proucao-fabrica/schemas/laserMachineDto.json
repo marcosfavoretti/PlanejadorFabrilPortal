@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "example": "machine:laser-01" },
+    "name": { "type": "string", "example": "Laser 01" }
+  },
+  "required": ["id", "name"],
+  "x-readme-ref-name": "LaserMachineDto"
+}

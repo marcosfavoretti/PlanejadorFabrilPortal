@@ -1,0 +1,75 @@
+<section class="plan-column" [class]="accent()">
+  <header class="column-heading">
+    <div><h3>{{ title() }}</h3><p>{{ description() }}</p></div>
+    <div class="column-heading-actions">
+      <span class="plan-count" [attr.aria-label]="plans().length + ' de ' + total() + ' programas carregados'">
+        {{ plans().length }}/{{ total() }}
+      </span>
+      @if (!readOnly() && (kind() === 'machine' || kind() === 'available')) {
+        <details class="column-actions">
+          <summary aria-label="Abrir ações da lista" title="Ações da lista"><i class="pi pi-bars"></i><span>Ações da lista</span></summary>
+          <div class="column-actions-menu">
+            <span class="column-actions-label">Ações em massa</span>
+            @if (kind() === 'machine') {
+            <button type="button" [disabled]="bulkMoving() || total() === 0" (click)="moveAllToAvailable.emit($event)">
+              @if (bulkMoving()) { <i class="pi pi-spin pi-spinner"></i> Movendo programas... } @else { <i class="pi pi-replay"></i><span>Mover para disponíveis</span><small>Todos os cartões liberados</small> }
+            </button>
+            <details class="action-item">
+              <summary class="action-trigger"><i class="pi pi-angle-double-up"></i><span>Priorizar task no topo</span><i class="pi pi-chevron-down action-chevron"></i></summary>
+              <form class="task-bulk-form action-panel" (submit)="submitTaskPriority($event)">
+                <span class="task-action-help">Informe uma task para levá-la ao topo da prioridade.</span>
+                <label class="task-target-label" [for]="'priority-task-' + id()">Task</label>
+                <input class="task-target-select" [id]="'priority-task-' + id()" type="text"
+                  placeholder="Ex.: T.82584.WS" autocomplete="off" [disabled]="bulkMoving()"
+                  [value]="priorityTaskDraft()" (input)="priorityTaskDraft.set($any($event.target).value)" />
+                <button type="submit" [disabled]="bulkMoving() || !priorityTaskDraft().trim()">
+                  @if (bulkMoving()) { <i class="pi pi-spin pi-spinner"></i> Priorizando task... } @else { <i class="pi pi-check"></i><span>Confirmar prioridade</span> }
+                </button>
+              </form>
+            </details>
+            } @else {
+            <span class="task-action-help">Informe uma task para enviar todos os seus cartões móveis.</span>
+            <details class="action-item">
+              <summary class="action-trigger"><i class="pi pi-sitemap"></i><span>Enviar task para máquina</span><i class="pi pi-chevron-down action-chevron"></i></summary>
+              <form class="task-bulk-form action-panel" (submit)="submitTaskMove($event)">
+              <label class="task-target-label" [for]="'task-filter-' + id()">Task</label>
+              <div class="task-multi-select">
+                @for (task of selectedTaskIds(); track task) {
+                  <span class="task-chip">{{ task }} <button type="button" aria-label="Remover task" (click)="removeTask(task)">×</button></span>
+                }
+                <input #taskFilter class="task-target-select" [id]="'task-filter-' + id()" type="text"
+                [placeholder]="selectedTaskIds().length ? 'Adicionar outra task e pressionar Enter' : 'Ex.: T.82584.WS'"
+                autocomplete="off" [disabled]="bulkMoving()" [value]="taskDraft()"
+                (input)="taskDraft.set(taskFilter.value)"
+                (keydown.enter)="addTask(taskFilter.value, $event)" />
+              </div>
+              <label class="task-target-label" [for]="'task-target-' + id()">Lista de destino</label>
+              <select #taskTarget class="task-target-select" [id]="'task-target-' + id()" [disabled]="bulkMoving()"
+                [value]="selectedTargetListId()" (change)="selectedTargetListId.set(taskTarget.value)">
+                <option value="">Selecione uma máquina</option>
+                @for (target of targetLists(); track target.id) { <option [value]="target.id">{{ target.title }}</option> }
+              </select>
+              <button type="submit" [disabled]="bulkMoving() || !selectedTargetListId() || (!selectedTaskIds().length && !taskDraft().trim())">
+                @if (bulkMoving()) { <i class="pi pi-spin pi-spinner"></i> Enviando task... } @else { <i class="pi pi-sitemap"></i><span>Subir task para a máquina</span><small>Finalizados permanecem intactos</small> }
+              </button>
+              </form>
+            </details>
+            }
+          </div>
+        </details>
+      }
+    </div>
+  </header>
+  <div class="drop-zone" cdkDropList [id]="id()" [cdkDropListData]="plans()" [cdkDropListConnectedTo]="connectedTo()" [cdkDropListDisabled]="!dropEnabled()" [cdkDropListEnterPredicate]="canEnter" (cdkDropListDropped)="planDropped.emit($event)">
+    @for (plan of plans(); track plan.numPrograma) {
+      <app-laser-plan-card [plan]="plan" [accent]="accent()" [draggable]="draggable()" (detailsRequested)="planDetailsRequested.emit($event)" />
+    } @empty {
+      <div class="empty-state"><i class="pi pi-inbox"></i><span>Nenhum plano nesta lista</span></div>
+    }
+  </div>
+  @if (hasMore()) {
+    <div #loadMoreTrigger class="load-more-trigger" aria-live="polite">
+      @if (loadingMore()) { <i class="pi pi-spin pi-spinner"></i><span>Carregando mais planos...</span> }
+    </div>
+  }
+</section>

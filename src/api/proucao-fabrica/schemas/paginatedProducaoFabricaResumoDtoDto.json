@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ProducaoFabricaResumoDto.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "numPrograma": { "type": "string" },
+          "codItemCompon": { "type": "string" },
+          "pesoTotal": { "type": "number" },
+          "tempoCorteProg": { "type": "number" },
+          "mmLinear": { "type": "number" }
+        },
+        "required": [
+          "numPrograma",
+          "codItemCompon",
+          "pesoTotal",
+          "tempoCorteProg",
+          "mmLinear"
+        ],
+        "x-readme-ref-name": "ProducaoFabricaResumoDto"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedProducaoFabricaResumoDtoDto"
+}

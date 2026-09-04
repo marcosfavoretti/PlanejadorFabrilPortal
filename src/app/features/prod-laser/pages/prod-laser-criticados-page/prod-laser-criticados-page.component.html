@@ -1,0 +1,32 @@
+<app-page-layout>
+  <main class="laser-criticados-page p-3 p-lg-4">
+    <header class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <div class="eyebrow"><span class="status-dot"></span> Produção laser</div>
+        <h1 class="display-6 fw-bold mb-1">Programas criticados</h1>
+        <p class="text-secondary mb-0">Registros que precisam de acompanhamento antes de entrar no fluxo de produção.</p>
+      </div>
+      <button class="btn btn-outline-success rounded-pill px-3" type="button" (click)="loadCriticados()" [disabled]="loading()">
+        <i class="pi" [class.pi-refresh]="!loading()" [class.pi-spin]="loading()" [class.pi-spinner]="loading()"></i>
+        <span class="ms-2">Atualizar</span>
+      </button>
+    </header>
+
+    <section class="criticados-panel" aria-label="Tabela de programas criticados">
+      <div class="panel-heading">
+        <div>
+          <h2>Registros criticados <span>{{ total() }}</span></h2>
+          <p>Use os filtros das colunas para localizar um programa ou item.</p>
+        </div>
+      </div>
+
+      @if (loading()) {
+        <div class="table-state"><i class="pi pi-spin pi-spinner"></i> Carregando programas criticados...</div>
+      } @else if (error()) {
+        <div class="table-state is-error"><i class="pi pi-exclamation-circle"></i> {{ error() }}</div>
+      } @else {
+        <app-table-dynamic [data]="plans()" [tableModel]="tableModel" [scrollable]="true" scrollHeight="calc(100vh - 290px)" />
+      }
+    </section>
+  </main>
+</app-page-layout>

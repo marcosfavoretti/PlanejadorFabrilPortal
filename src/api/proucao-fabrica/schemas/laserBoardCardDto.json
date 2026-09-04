@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "properties": {
+    "numPrograma": {
+      "type": "string",
+      "description": "Número do programa de produção."
+    },
+    "statusRegistro": {
+      "type": "string",
+      "description": "Status do registro no Logix."
+    },
+    "datImport": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data de importação do programa no Logix.",
+      "example": "2026-08-25T00:00:00.000Z"
+    },
+    "taskId": {
+      "type": "object",
+      "description": "Identificador da task persistida no SigmaNEST.",
+      "example": "t.82701.ws",
+      "nullable": true
+    },
+    "postProcessor": {
+      "type": "string",
+      "enum": ["BYSTRONIC", "LVD"],
+      "nullable": true,
+      "description": "Pós-processador utilizado pelo programa no SigmaNEST."
+    },
+    "machineId": {
+      "type": "string",
+      "description": "Identificador da máquina de laser."
+    },
+    "listId": {
+      "type": "string",
+      "description": "Identificador da lista onde o card está atualmente.",
+      "example": "machine:laser-01"
+    },
+    "finished": {
+      "type": "boolean",
+      "description": "Indica se o programa foi finalizado."
+    },
+    "hasStartedProduction": {
+      "type": "boolean",
+      "description": "Indica se existe FirstBeginEventID para a operação de laser no Syneco."
+    },
+    "isInProduction": {
+      "type": "boolean",
+      "description": "Indica se a produção foi iniciada e ainda não foi finalizada no Logix."
+    },
+    "movable": {
+      "type": "boolean",
+      "description": "Indica se o card pode ser alocado ou desalocado."
+    },
+    "priority": {
+      "type": "number",
+      "description": "Prioridade do card dentro da máquina."
+    }
+  },
+  "required": [
+    "numPrograma",
+    "statusRegistro",
+    "datImport",
+    "taskId",
+    "postProcessor",
+    "listId",
+    "finished",
+    "hasStartedProduction",
+    "isInProduction",
+    "movable"
+  ],
+  "x-readme-ref-name": "LaserBoardCardDto"
+}

@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "numPrograma": { "type": "string" },
+    "codItemCompon": { "type": "string" },
+    "pesoTotal": { "type": "number" },
+    "tempoCorteProg": { "type": "number" },
+    "mmLinear": { "type": "number" }
+  },
+  "required": [
+    "numPrograma",
+    "codItemCompon",
+    "pesoTotal",
+    "tempoCorteProg",
+    "mmLinear"
+  ],
+  "x-readme-ref-name": "ProducaoFabricaResumoDto"
+}

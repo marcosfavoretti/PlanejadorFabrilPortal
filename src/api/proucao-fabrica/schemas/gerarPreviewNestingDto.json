@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "task": {
+      "type": "string",
+      "example": "82701",
+      "description": "Número ou nome da task SigmaNEST."
+    },
+    "program": {
+      "type": "string",
+      "example": "739121",
+      "description": "Número do programa (ProgramName) cadastrado no SNDBase."
+    }
+  },
+  "x-readme-ref-name": "GerarPreviewNestingDto"
+}
