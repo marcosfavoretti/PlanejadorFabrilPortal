@@ -71,6 +71,8 @@ export type {
 export type { CompleteTotpEnrollmentDto } from './CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './CreateUserDto';
 export type { DisableTwoFactorDto } from './DisableTwoFactorDto';
+export type { NotificarUsuariosPorCargoEmailDTO } from './NotificarUsuariosPorCargoEmailDTO';
+export type { ResLiderCentroCustoDTO } from './ResLiderCentroCustoDTO';
 export type { RotateRecoveryCodesDto } from './RotateRecoveryCodesDto';
 export type { SendTwoFactorEmailCodeDto } from './SendTwoFactorEmailCodeDto';
 export type { SetUserCargoDTO } from './SetUserCargoDTO';
@@ -138,8 +140,15 @@ export type {
   TwoFactorSelfServiceControllerStartEnrollmentMutationRequest,
   TwoFactorSelfServiceControllerStartEnrollmentMutationResponse,
 } from './TwoFactorSelfServiceControllerStartEnrollment';
+export type {
+  UserNotificationInternalControllerNotificarCargoPorEmail202,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutation,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutationResponse,
+} from './UserNotificationInternalControllerNotificarCargoPorEmail';
 export type { UserResponseDTO } from './UserResponseDTO';
 export type { VerifyTwoFactorDto } from './VerifyTwoFactorDto';
+export { NotificarUsuariosPorCargoEmailDTOCargoEnum } from './NotificarUsuariosPorCargoEmailDTO';
 export { SetUserCargoDTOCargoEnum } from './SetUserCargoDTO';
 export { TwoFactorGuardPolicyDtoMethodsEnum } from './TwoFactorGuardPolicyDto';
 export { VerifyTwoFactorDtoMethodEnum } from './VerifyTwoFactorDto';

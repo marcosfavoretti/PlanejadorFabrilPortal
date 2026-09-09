@@ -1,4 +1,4 @@
-import { UserResponseDTO } from '@/api/auth';
+import { ResLiderCentroCustoDTO, UserResponseDTO } from '@/api/auth';
 import { UserService } from '@/app/core/auth/services/user.service';
 import { RoutePermissionStoreService } from '@/app/core/route-permission/stores/route-permission-store.service';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
@@ -12,6 +12,7 @@ type UserPopupViewModel = {
   name: string;
   email: string;
   cargosLista: string[];
+  centrosCusto: ResLiderCentroCustoDTO[];
 };
 
 @Component({
@@ -76,7 +77,8 @@ export class UserDetailComponent implements OnInit {
     return {
       name: resolvedName,
       email: resolvedEmail || 'E-mail não disponível',
-      cargosLista: Array.isArray(user.cargosLista) ? user.cargosLista : []
+      cargosLista: Array.isArray(user.cargosLista) ? user.cargosLista : [],
+      centrosCusto: Array.isArray(user.centrosCusto) ? user.centrosCusto : []
     };
   }
 }

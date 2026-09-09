@@ -1,5 +1,5 @@
-import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
-import { CommonModule, AsyncPipe } from '@angular/common';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, of } from 'rxjs';
 import { switchMap, tap, catchError } from 'rxjs/operators';
@@ -16,13 +16,23 @@ import { HorasIrregularesParetoChartComponent } from '@/app/features/ponto/widge
 // Services & Models
 import { RelogioPontoAPIService } from '@/app/features/ponto/services/RelogioPontoAPI.service';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
+import { FolhaHoraExtraAPIService } from '@/app/features/ponto/services/FolhaHoraExtraAPI.service';
+import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { TableModel, tableColumns } from '@/app/shared/components/table-dynamic/table.model';
 import {
   ResCentroDeCustoDTO,
   ResHorasIrregularesDTO,
-  ResRegistroPontoTurnoPontoDTO
+  ResRegistroPontoTurnoPontoDTO,
+  ResTurnoDTO,
 } from '@/api/relogio';
 import { ActivatedRoute } from '@angular/router';
+
+const CARGOS_COM_SELECAO_LIVRE_CC = new Set([
+  'ADMIN',
+  'RH',
+  'GERENTE',
+  'DIRETOR',
+]);
 
 @Component({
   selector: 'app-relogio-pont-page',
@@ -30,7 +40,7 @@ import { ActivatedRoute } from '@angular/router';
   imports: [
     TableDynamicComponent, SkeletonModule, ReactiveFormsModule,
     CommonModule, FormsModule,
-    PaginatorModule, HorasIrregularesParetoChartComponent, DropdownModule, MultiSelectModule // Added MultiSelectModule
+    PaginatorModule, HorasIrregularesParetoChartComponent, DropdownModule, MultiSelectModule
   ],
   templateUrl: './relogio-pont-page.component.html',
   styleUrl: './relogio-pont-page.component.css'
@@ -39,7 +49,18 @@ export class RelogioPontPageComponent implements OnInit {
   private api = inject(RelogioPontoAPIService);
   private fb = inject(FormBuilder);
   private funcionariosAPIService = inject(FuncionariosAPIService);
+  private folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
+  private userStore = inject(UserstoreService);
   private routerAcive = inject(ActivatedRoute);
+
+  constructor() {
+    // O usuário pode ser carregado depois da criação da página. Mantém os
+    // controles sincronizados quando os cargos ficam disponíveis no store.
+    effect(() => {
+      this.centroCustoSelectorDisabled();
+      this.syncCentroCustoControlState();
+    });
+  }
 
   // --- States (Signals) ---
 
@@ -52,6 +73,10 @@ export class RelogioPontPageComponent implements OnInit {
   fetching = { table: false, pareto: false };
   centroDeCusto: ResCentroDeCustoDTO[] = [];
   totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage));
+  protected readonly centroCustoSelectorDisabled = computed(() => {
+    const possuiPreFiltroDeRota = (this.preFilterSetor()?.length ?? 0) > 0;
+    return possuiPreFiltroDeRota || !this.podeSelecionarQualquerCentroCusto();
+  });
 
   // --- Form & Search Gatilho ---
   filterForm = this.fb.group({
@@ -62,13 +87,13 @@ export class RelogioPontPageComponent implements OnInit {
   });
 
   private getFilterParams() {
-    const filter = { ...this.filterForm.value } as any;
+    const filter = { ...this.filterForm.getRawValue() } as any;
     let ccidsToUse: string[] | undefined;
 
     if (this.preFilterSetor() && this.preFilterSetor()!.length > 0) {
       ccidsToUse = this.preFilterSetor()!;
     } else if (filter.ccid && filter.ccid.length > 0) {
-      ccidsToUse = filter.ccid.map((cc: ResCentroDeCustoDTO) => cc.ccid);
+      ccidsToUse = filter.ccid.map((cc: ResCentroDeCustoDTO) => String(cc.ccid));
     }
     return {
       ...filter,
@@ -89,7 +114,10 @@ export class RelogioPontPageComponent implements OnInit {
     columns: [],
     ghostControll: [
       {
-        color: '#eb5c5c95', desc: 'marcações ímpares', field: 'status', ifValueEqual: "INCOMPLETO"
+        color: '#eb5c5c95',
+        desc: 'marcações ímpares',
+        field: 'status',
+        ifValueEqual: 'FALHA'
       },
       {
         color: '#f2d38895',
@@ -103,27 +131,84 @@ export class RelogioPontPageComponent implements OnInit {
 
   ngOnInit(): void {
     const ccsParam = this.routeParams['ccs'];
+    this.syncCentroCustoControlState();
 
     // 1. Iniciamos carregando os Centros de Custo
     this.laodCentroDeCusto().subscribe({
       next: (res) => {
         // 2. Configuramos os filtros iniciais baseados nos Centros de Custo carregados
         if (ccsParam) {
-          const lista = ccsParam.split(',');
-          this.preFilterSetor.set(lista);
-          const targets = this.centroDeCusto.filter(cc => lista.includes(cc.ccid.toString()));
-          this.filterForm.patchValue({ ccid: targets });
+          this.applyRoutePreFilter(ccsParam);
+          this.setupDataStreams();
+          this.search();
         } else {
-          this.preFilterSetor.set([]);
+          this.applyLoggedUserCentroCustoPreSelection(() => {
+            this.setupDataStreams();
+            this.search();
+          });
         }
-
-        // 3. Agora que os dados base existem, ativamos os "Ouvintes" (Streams)
-        this.setupDataStreams();
-
-        // 4. Disparamos a busca inicial
-        this.search();
       },
       error: (err) => console.error("Erro ao carregar centros de custo", err)
+    });
+  }
+
+  private applyRoutePreFilter(ccsParam: string): void {
+    const lista = ccsParam
+      .split(',')
+      .map(cc => cc.trim())
+      .filter(Boolean);
+
+    this.preFilterSetor.set(lista);
+    const targets = this.centroDeCusto.filter(cc => lista.includes(cc.ccid.toString()));
+    this.filterForm.patchValue({ ccid: targets });
+    this.syncCentroCustoControlState();
+  }
+
+  private applyLoggedUserCentroCustoPreSelection(afterLoad: () => void): void {
+    this.preFilterSetor.set([]);
+
+    const usuarioId = this.userStore.item()?.id;
+    if (!usuarioId) {
+      this.centroDeCusto = [];
+      this.filterForm.patchValue({ ccid: [] });
+      this.syncCentroCustoControlState();
+      afterLoad();
+      return;
+    }
+
+    this.folhaHoraExtraService.getLiderCentroCusto(usuarioId).subscribe({
+      next: vinculos => {
+        const linkedCodes = new Set(vinculos.map(vinculo => vinculo.centroCustoCodigo));
+        const targets = this.centroDeCusto.filter(cc => linkedCodes.has(cc.ccid));
+        const missingTargets = vinculos
+          .filter(vinculo => !this.centroDeCusto.some(cc => cc.ccid === vinculo.centroCustoCodigo))
+          .map(vinculo => ({
+            ccid: vinculo.centroCustoCodigo,
+            setor: vinculo.centroCustoDescricao || String(vinculo.centroCustoCodigo),
+          }));
+
+        if (missingTargets.length) {
+          this.centroDeCusto = [...this.centroDeCusto, ...missingTargets];
+        }
+
+        const centrosVinculados = [...targets, ...missingTargets];
+        if (!this.podeSelecionarQualquerCentroCusto()) {
+          this.centroDeCusto = centrosVinculados;
+        }
+
+        this.filterForm.patchValue({ ccid: centrosVinculados });
+        this.syncCentroCustoControlState();
+        afterLoad();
+      },
+      error: err => {
+        console.error('Erro ao carregar centros de custo vinculados ao usuario', err);
+        if (!this.podeSelecionarQualquerCentroCusto()) {
+          this.centroDeCusto = [];
+          this.filterForm.patchValue({ ccid: [] });
+        }
+        this.syncCentroCustoControlState();
+        afterLoad();
+      },
     });
   }
 
@@ -213,8 +298,9 @@ export class RelogioPontPageComponent implements OnInit {
       { alias: 'Matrícula', field: 'matricula' },
       { alias: 'Setor', field: 'setor' },
       { alias: 'Nome', field: 'nome' },
+      { alias: 'Período do turno', field: 'turnoBase' },
       { alias: 'Data', field: 'turnoDia', isDate: true },
-      { alias: 'Horas Trab.', field: "horasTrabalhadas" }
+      { alias: 'Horas Trab.', field: "horasTrabalhadas" },
     ];
 
     for (let i = 1; i <= maxRegistros; i++) {
@@ -225,15 +311,20 @@ export class RelogioPontPageComponent implements OnInit {
     this.tableModel.columns = newColumns;
 
     const mappedData = data.map(item => {
+      const turnoBase = (item as ResRegistroPontoTurnoPontoDTO & {
+        turnoBase?: ResTurnoDTO;
+      }).turnoBase;
+
       const newItem: any = {
         matricula: item.matricula,
         nome: item.nome,
+        turnoBase: turnoBase?.periodo?.replace('~', ' - ') ?? '-',
         horasIrregular: item.horasIrregulares,
         setor: item.setor,
         horasTrabalhadas: item.qtdHoras,
         turnoDia: item.turnoDia,
-        // Status lógico: OK se par ou se for hoje (ainda em aberto)
-        status: (item.registros.length % 2 === 0) || isSameDay(new Date(item.turnoDia), new Date()) ? 'OK' : 'INCOMPLETO'
+        // Preserva o status da API; somente marcação ímpar encerrada vira falha.
+        status: this.getStatus(item)
       };
 
       if (item.registros) {
@@ -249,5 +340,35 @@ export class RelogioPontPageComponent implements OnInit {
     });
 
     this.tableData.set(mappedData);
+  }
+
+  private getStatus(item: ResRegistroPontoTurnoPontoDTO): string {
+    const registrosImpares = (item.registros?.length ?? 0) % 2 !== 0;
+    const turnoEhHoje = item.turnoDia ? isSameDay(new Date(item.turnoDia), new Date()) : false;
+    const statusApi = (item as ResRegistroPontoTurnoPontoDTO & { status?: string }).status;
+
+    if (turnoEhHoje) {
+      return 'OK';
+    }
+
+    if (registrosImpares) {
+      return 'FALHA';
+    }
+
+    return statusApi ?? (item.horasIrregulares > 0 ? 'ALERTA' : 'OK');
+  }
+
+  private podeSelecionarQualquerCentroCusto(): boolean {
+    const cargos = this.userStore.item()?.cargosLista ?? [];
+    return cargos.some(cargo =>
+      CARGOS_COM_SELECAO_LIVRE_CC.has(String(cargo).trim().toUpperCase())
+    );
+  }
+
+  private syncCentroCustoControlState(): void {
+    // O p-multiSelect pode preservar seu estado desabilitado após um HMR.
+    // A restrição dos cargos é aplicada visualmente no template, preservando o
+    // valor dos CCs vinculados no formulário e evitando o controle travado.
+    this.filterForm.controls.ccid.enable({ emitEvent: false });
   }
 }

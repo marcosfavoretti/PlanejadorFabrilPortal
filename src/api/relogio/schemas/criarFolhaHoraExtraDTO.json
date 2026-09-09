@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "dataContexto": { "type": "string" },
+    "setor": { "type": "string" },
+    "centroCustoCodigo": { "type": "number" },
+    "funcionarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "matricula": { "type": "string" },
+          "nome": { "type": "string" },
+          "transporte": {
+            "type": "string",
+            "enum": ["UBER", "TAXI", "FRETADO", "N/A"],
+            "default": "N/A"
+          },
+          "inicioHE": { "type": "string", "example": "17:00" },
+          "fimHE": { "type": "string", "example": "19:00" },
+          "refeicao": {
+            "type": "string",
+            "enum": ["MARMITEX", "LANCHE", "N/A"],
+            "default": "N/A"
+          },
+          "justificativa": { "type": "string" }
+        },
+        "required": ["matricula", "nome", "inicioHE", "fimHE", "justificativa"],
+        "x-readme-ref-name": "ItemFuncionarioHEDTO"
+      }
+    },
+    "observacao": { "type": "string" }
+  },
+  "required": ["dataContexto", "setor", "centroCustoCodigo", "funcionarios"],
+  "x-readme-ref-name": "CriarFolhaHoraExtraDTO"
+}

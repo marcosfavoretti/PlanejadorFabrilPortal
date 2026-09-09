@@ -41,3 +41,36 @@ html {
   background-position: center;
   background-blend-mode: soft-light;
 }
+
+@media print {
+  body.printing-folha-he global-header,
+  body.printing-refeicoes global-header,
+  body.printing-folha-he app-side-bar,
+  body.printing-refeicoes app-side-bar,
+  body.printing-folha-he .p-sidebar,
+  body.printing-refeicoes .p-sidebar,
+  body.printing-folha-he .p-splitter > .p-splitterpanel:first-child,
+  body.printing-refeicoes .p-splitter > .p-splitterpanel:first-child,
+  body.printing-folha-he .p-splitter-gutter,
+  body.printing-refeicoes .p-splitter-gutter {
+    display: none !important;
+  }
+
+  body.printing-folha-he .page-layout,
+  body.printing-refeicoes .page-layout,
+  body.printing-folha-he .page-content-wrapper,
+  body.printing-refeicoes .page-content-wrapper,
+  body.printing-folha-he .scrollable-content,
+  body.printing-refeicoes .scrollable-content {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.printing-folha-he .p-splitter,
+  body.printing-refeicoes .p-splitter,
+  body.printing-folha-he .p-splitter > .p-splitterpanel:not(:first-child),
+  body.printing-refeicoes .p-splitter > .p-splitterpanel:not(:first-child) {
+    display: block !important;
+    width: 100% !important;
+  }
+}

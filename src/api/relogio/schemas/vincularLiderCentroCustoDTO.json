@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "usuarioId": { "type": "string" },
+    "usuarioNome": { "type": "string" },
+    "centroCustoCodigo": {
+      "allOf": [
+        {
+          "type": "number",
+          "enum": [
+            8888, 9100, 9111, 9112, 9113, 9114, 9115, 9116, 9120, 9130, 9131,
+            9151, 9152, 9153, 9154, 9155, 9156, 9215, 9216, 9217, 9228, 9229,
+            9230, 9231, 9226, 9227
+          ],
+          "x-readme-ref-name": "CentroCustoLider"
+        }
+      ]
+    }
+  },
+  "required": ["usuarioId", "usuarioNome", "centroCustoCodigo"],
+  "x-readme-ref-name": "VincularLiderCentroCustoDTO"
+}

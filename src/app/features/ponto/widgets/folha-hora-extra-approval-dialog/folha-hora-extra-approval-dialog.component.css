@@ -1,0 +1,38 @@
+.approval-dialog,
+.reject-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.approval-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.approval-summary div,
+.reject-form {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.approval-summary span {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+
+.reject-form label {
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}

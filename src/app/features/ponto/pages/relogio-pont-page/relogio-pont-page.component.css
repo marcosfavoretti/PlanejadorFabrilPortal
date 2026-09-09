@@ -17,78 +17,181 @@
     margin-left: auto;
 }
 
-::ng-deep .input-group-sm .input-group-text {
-    height: calc(1.8125rem + 2px); /* Match p-dropdown height */
-    display: flex;
-    align-items: center;
+.ponto-toolbox {
+    border-radius: 0.75rem;
 }
 
-/* Adjust p-dropdown to match form-control-sm within input-group-sm */
-::ng-deep .input-group-sm .p-dropdown {
-    height: calc(1.8125rem + 2px); /* Bootstrap's input-group-sm height + border */
-    padding: 0.25rem 0.5rem; /* Matches form-control-sm padding */
-    font-size: .875rem; /* Matches form-control-sm font-size */
-    display: flex; /* Allow inner elements to use flexbox for alignment */
-    align-items: center; /* Vertically align items */
-    width: 100%; /* Ensure it takes full width of its parent */
+.ponto-toolbox .card-body {
+    padding: 1rem 1.25rem;
 }
 
-::ng-deep .input-group-sm .p-dropdown .p-dropdown-label {
-    padding: 0; /* Reset padding as it's handled by parent p-dropdown */
-    flex-grow: 1; /* Allow label to take available space */
+.ponto-toolbox-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(16rem, 1.4fr)
+        minmax(13rem, 1fr)
+        minmax(11rem, 0.8fr)
+        minmax(11rem, 0.8fr)
+        minmax(8rem, 0.55fr);
+    gap: 0.85rem;
+    align-items: end;
+}
+
+.ponto-filter-field {
     display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.ponto-filter-field > label {
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1rem;
+    margin: 0;
+}
+
+.ponto-control,
+.ponto-filter-submit {
+    height: 2.75rem;
+    min-height: 2.75rem;
+    width: 100%;
+}
+
+.ponto-control.input-group {
+    flex-wrap: nowrap;
+}
+
+.ponto-control .input-group-text {
     align-items: center;
+    background: var(--bs-tertiary-bg, #f8f9fa);
+    border-color: #d9dee3;
+    border-radius: 0.5rem 0 0 0.5rem;
+    color: #6c757d;
+    display: flex;
+    justify-content: center;
+    padding-inline: 0.8rem;
+}
+
+.ponto-control > .form-control {
+    border-color: #d9dee3;
+    border-left: 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: none;
+    font-size: 0.875rem;
+    height: 100%;
+    min-width: 0;
+    padding: 0.55rem 0.75rem 0.55rem 0;
+}
+
+.ponto-control:focus-within .input-group-text,
+.ponto-control > .form-control:focus {
+    border-color: var(--bs-success, #198754);
+}
+
+.ponto-control:focus-within {
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.12);
+}
+
+.ponto-filter-actions {
+    display: flex;
+    align-items: flex-end;
+}
+
+.ponto-filter-submit {
+    align-items: center;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    font-size: 0.875rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    justify-content: center;
+    padding-inline: 1rem;
+}
+
+:host ::ng-deep .centro-custo-selector--locked {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control {
+    align-items: center;
+    border-color: #d9dee3;
+    border-radius: 0.5rem;
+    box-shadow: none;
+    display: flex;
+    font-size: 0.875rem;
+}
+
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control:not(.p-disabled).p-focus {
+    border-color: var(--bs-success, #198754);
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.12);
+}
+
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control .p-multiselect-label-container {
+    min-width: 0;
+    overflow: hidden;
+}
+
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control .p-multiselect-label {
+    align-items: center;
+    display: flex;
+    gap: 0.25rem;
+    height: 2.65rem;
+    overflow: hidden;
+    padding: 0.55rem 0.75rem;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control .p-multiselect-chip {
+    flex: 0 1 auto;
+    max-width: 10rem;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Ensure the input-group-text is aligned with the p-dropdown */
-::ng-deep .input-group-sm .p-dropdown .p-dropdown-trigger {
-    width: 2.5rem; /* Standard trigger width for sm */
-    height: 100%; /* Make trigger fill height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:host ::ng-deep .ponto-toolbox .p-multiselect.ponto-control .p-multiselect-trigger {
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
 }
 
-/* Fix for border when using border-start-0 ps-0 with input-group */
-::ng-deep .input-group .p-dropdown.border-start-0 {
-    border-left: none; /* Remove border when border-start-0 is applied */
-}
-::ng-deep .input-group .p-dropdown.border-start-0 .p-dropdown-trigger {
-    border-left: none; /* Ensure trigger also has no left border if it's the start of an input-group */
+@media (max-width: 1199px) {
+    .ponto-toolbox-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ponto-filter-field--centro,
+    .ponto-filter-actions {
+        grid-column: 1 / -1;
+    }
+
+    .ponto-filter-submit {
+        margin-left: auto;
+        max-width: 12rem;
+    }
+
 }
 
-/* Further adjustments to match the general form-control appearance */
-::ng-deep .p-dropdown {
-    border: 1px solid #ced4da; /* Default Bootstrap border color */
-    border-radius: .25rem; /* Default Bootstrap border-radius */
-}
-::ng-deep .p-dropdown:not(.p-disabled).p-focus {
-    box-shadow: 0 0 0 .25rem rgba(13,110,253,.25); /* Bootstrap focus style */
-    border-color: #86b7fe; /* Bootstrap focus border color */
-}
+@media (max-width: 575px) {
+    .ponto-toolbox .card-body {
+        padding: 1rem;
+    }
 
-::ng-deep .input-group-sm .p-dropdown.form-control.border-start-0.ps-0 {
-  padding-left: 0 !important; /* Ensure no left padding if ps-0 is used */
-}
+    .ponto-toolbox-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-::ng-deep .input-group-sm .p-dropdown.form-control.ps-0 .p-dropdown-label {
-    padding-left: 0 !important;
-}
+    .ponto-filter-field--centro,
+    .ponto-filter-actions {
+        grid-column: auto;
+    }
 
-/* Custom class for visually disabling p-multiSelect */
-.disabled-multiselect {
-    pointer-events: none; /* Prevents all click, state, and cursor options */
-    opacity: 0.6; /* Visual feedback for disabled state */
-    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
-}
+    .ponto-filter-submit {
+        max-width: none;
+    }
 
-/* Specific styling for PrimeNG multiselect when disabled-multiselect class is applied */
-::ng-deep .p-multiselect.disabled-multiselect .p-multiselect-trigger {
-    cursor: not-allowed;
-}
-
-::ng-deep .p-multiselect.disabled-multiselect .p-multiselect-label {
-    cursor: not-allowed;
 }

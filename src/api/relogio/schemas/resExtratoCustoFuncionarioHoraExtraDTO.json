@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string", "example": "001" },
+    "nome": { "type": "string", "example": "Funcionario Um" },
+    "salarioHora": { "type": "number", "example": 10 },
+    "multiplicadorCompensacao": { "type": "number", "example": 1.5 },
+    "adicionalNoturno": { "type": "number", "example": 0.35 },
+    "horasDiurnas": { "type": "number", "example": 2.5 },
+    "horasNoturnas": { "type": "number", "example": 1 },
+    "valorHoraDiurnaComEncargo": { "type": "number", "example": 15 },
+    "valorHoraNoturnaComEncargo": { "type": "number", "example": 20.25 },
+    "valorHorasDiurnas": { "type": "number", "example": 37.5 },
+    "valorHorasNoturnas": { "type": "number", "example": 20.25 },
+    "refeicao": { "type": "number", "example": 0 },
+    "transporte": { "type": "number", "example": 0 },
+    "total": { "type": "number", "example": 35.25 },
+    "linhas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "componente": { "type": "string", "example": "Hora extra diurna" },
+          "baseCalculo": {
+            "type": "string",
+            "example": "salarioHora * compensacao(1.5)"
+          },
+          "quantidade": { "type": "number", "example": 2.5 },
+          "valorUnitario": { "type": "number", "example": 15 },
+          "subtotal": { "type": "number", "example": 37.5 }
+        },
+        "required": [
+          "componente",
+          "baseCalculo",
+          "quantidade",
+          "valorUnitario",
+          "subtotal"
+        ],
+        "x-readme-ref-name": "ResExtratoCustoHoraExtraLinhaDTO"
+      }
+    }
+  },
+  "required": [
+    "matricula",
+    "nome",
+    "salarioHora",
+    "multiplicadorCompensacao",
+    "adicionalNoturno",
+    "horasDiurnas",
+    "horasNoturnas",
+    "valorHoraDiurnaComEncargo",
+    "valorHoraNoturnaComEncargo",
+    "valorHorasDiurnas",
+    "valorHorasNoturnas",
+    "refeicao",
+    "transporte",
+    "total",
+    "linhas"
+  ],
+  "x-readme-ref-name": "ResExtratoCustoFuncionarioHoraExtraDTO"
+}

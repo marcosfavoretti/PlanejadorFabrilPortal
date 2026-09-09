@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "cargo": {
+      "type": "string",
+      "enum": [
+        "ADMIN",
+        "ESTRUTURA",
+        "PCP",
+        "USER",
+        "MOBILE_USER",
+        "CATERPILLAR_USER",
+        "ALMOX",
+        "LIDER_LASER",
+        "PROGRAMADOR_LASER",
+        "PRODUCAO_LASER",
+        "LIDER_SOLDA",
+        "LIDER_MONTAGEM",
+        "LIDER_QUALIDADE",
+        "LIDER_PROCESSOS",
+        "LIDER",
+        "GERENTE",
+        "DIRETOR",
+        "RH",
+        "LIDER_PCP",
+        "SUPORTE",
+        "ADMIN_POWERBI",
+        "ADMIN_POWERBI_VIEW"
+      ]
+    },
+    "subject": { "type": "string" },
+    "text": { "type": "string" },
+    "html": { "type": "string" }
+  },
+  "required": ["cargo", "subject"],
+  "x-readme-ref-name": "NotificarUsuariosPorCargoEmailDTO"
+}

@@ -1,0 +1,231 @@
+<div class="folha-hora-extra-form-container fade-in">
+  <!-- Dynamic Theme Header -->
+  <div class="header-banner bg-dark-green">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">{{ isEditMode ? 'Editar Folha de Horas Extras' : 'Nova Folha de Horas Extras' }}</h1>
+        <p class="page-subtitle">Configure o centro de custo, funcionários, horários e justificativas.</p>
+      </div>
+      <div class="header-banner-actions">
+        <p-button type="button" label="Cancelar" icon="pi pi-times" severity="secondary"
+          styleClass="p-button-outlined banner-btn-cancel" (click)="onCancel()"></p-button>
+        <p-button type="button" [label]="isEditMode ? 'Salvar' : 'Criar'" icon="pi pi-check" [loading]="saving"
+          [disabled]="folhaForm.invalid || folhaForm.disabled" severity="success" styleClass="banner-btn-save"
+          (click)="onSubmit()"></p-button>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <form [formGroup]="folhaForm" (ngSubmit)="onSubmit()" class="form-wrapper">
+    <!-- SECTION 1: Dados da folha -->
+    <div class="form-card">
+      <div class="section-header">
+        <div class="section-icon icon-primary">
+          <i class="pi pi-file-edit"></i>
+        </div>
+        <div class="section-info">
+          <h3>Dados Gerais</h3>
+          <span>Defina o contexto geral da folha.</span>
+        </div>
+      </div>
+
+      <div class="sheet-grid">
+        <div class="field">
+          <label for="dataContexto"><i class="pi pi-calendar icon-label"></i>Data de referência</label>
+          <p-datepicker inputId="dataContexto" formControlName="dataContexto" dateFormat="dd/mm/yy"
+            [showIcon]="true"></p-datepicker>
+        </div>
+
+        <div class="field cc-field">
+          <label for="centroCustoCodigo"><i class="pi pi-building icon-label"></i>Centro de custo</label>
+          <p-select inputId="centroCustoCodigo" [options]="centrosCusto" formControlName="centroCustoCodigo"
+            optionLabel="setor" optionValue="ccid" placeholder="Selecione um centro" [loading]="loadingCentrosCusto"
+            (onChange)="onCentroCustoChange($event.value)">
+            <ng-template let-centro pTemplate="item">
+              <strong>{{ centro.ccid }}</strong> <span class="cc-name">- {{ centro.setor }}</span>
+            </ng-template>
+            <ng-template let-centro pTemplate="selectedItem">
+              <strong>{{ centro?.ccid }}</strong> <span class="cc-name">- {{ centro?.setor }}</span>
+            </ng-template>
+          </p-select>
+        </div>
+
+        <div class="field">
+          <label for="setor"><i class="pi pi-tags icon-label"></i>Setor</label>
+          <input id="setor" pInputText formControlName="setor" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 2: Funcionarios -->
+    <div class="form-card">
+      <div class="section-header-split">
+        <div class="section-header">
+          <div class="section-icon icon-success">
+            <i class="pi pi-users"></i>
+          </div>
+          <div class="section-info">
+            <h3>Funcionários</h3>
+            <span>Adicione os colaboradores vinculados a esta folha.</span>
+          </div>
+        </div>
+        <p-button type="button" label="Adicionar Funcionário" icon="pi pi-user-plus" [outlined]="true"
+          severity="success" (click)="addFuncionario()" [disabled]="folhaForm.disabled"></p-button>
+      </div>
+
+      <div formArrayName="funcionarios" class="employee-table">
+        <div class="employee-table-header">
+          <span>Colaborador</span>
+          <span>Horário HE</span>
+          <span>Benefícios Extras</span>
+          <span>Justificativa da HE</span>
+          <span class="text-center">Ações</span>
+        </div>
+
+        @for (funcionarioGroup of funcionarios.controls; track $index; let i = $index) {
+        <div class="employee-table-row fade-in-up" [formGroupName]="i">
+          <div class="employee-person">
+            <label [for]="'nome-' + i">Nome / Busca</label>
+            <p-autocomplete [inputId]="'nome-' + i" formControlName="nome" [suggestions]="funcionarioSuggestions"
+              optionLabel="nome" placeholder="Ex: João da Silva" [forceSelection]="false" [dropdown]="true"
+              [showClear]="true" appendTo="body" (completeMethod)="searchFuncionariosByNome(i, $event)"
+              (onSelect)="selectFuncionario(i, $event)" (onClear)="clearFuncionario(i)">
+              <ng-template let-funcionario pTemplate="item">
+                <div class="autocomplete-item">
+                  <div class="autocomplete-item-title">
+                    <strong>{{ funcionario.nome }}</strong>
+                    @if (funcionario.temporario) {
+                    <span class="temporario-flag" pTooltip="Funcionário temporário">
+                      <i class="pi pi-flag"></i>
+                      Temporário
+                    </span>
+                    }
+                  </div>
+                  <span><i class="pi pi-id-card icon-label"></i>{{ funcionario.matricula }} | <i
+                      class="pi pi-briefcase icon-label"></i>{{ funcionario.setor }}</span>
+                </div>
+              </ng-template>
+              <ng-template let-funcionario pTemplate="selectedItem">
+                <div class="autocomplete-item selected-autocomplete-item">
+                  <div class="autocomplete-item-title">
+                    <strong>{{ funcionario?.nome }}</strong>
+                    @if (funcionario?.temporario) {
+                    <span class="temporario-flag" pTooltip="Funcionário temporário">
+                      <i class="pi pi-flag"></i>
+                      Temporário
+                    </span>
+                    }
+                  </div>
+                  <span><i class="pi pi-id-card icon-label"></i>{{ funcionario?.matricula }} | <i
+                      class="pi pi-briefcase icon-label"></i>{{ funcionario?.setor }}</span>
+                </div>
+              </ng-template>
+            </p-autocomplete>
+
+            <div class="matricula-line">
+              <label [for]="'matricula-' + i">Matrícula</label>
+              <div class="input-with-button">
+                <input [id]="'matricula-' + i" pInputText formControlName="matricula" placeholder="12345"
+                  [readonly]="funcionarioGroup.get('matriculaBloqueada')?.value" />
+                <p-button type="button" icon="pi pi-search" severity="secondary"
+                  (click)="buscarFuncionario(i)"></p-button>
+              </div>
+            </div>
+
+            @if (funcionarioGroup.get('matricula')?.hasError('duplicated')) {
+            <small class="error-text"><i class="pi pi-exclamation-circle icon-label"></i>Funcionário já
+              adicionado.</small>
+            }
+
+            @if (funcionarioGroup.get('turnoDescricao')?.value) {
+              <div class="employee-shift">
+                <i class="pi pi-clock icon-label"></i>
+                <span>{{ funcionarioGroup.get('turnoDescricao')?.value }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="employee-time">
+            <div class="time-inputs">
+              <div class="field">
+                <label [for]="'inicioHE-' + i">Início</label>
+                <input [id]="'inicioHE-' + i" pInputText type="time" formControlName="inicioHE" class="text-center" />
+              </div>
+              <div class="field">
+                <label [for]="'fimHE-' + i">Fim</label>
+                <input [id]="'fimHE-' + i" pInputText type="time" formControlName="fimHE" class="text-center" />
+              </div>
+            </div>
+            <div class="total-pill">
+              <span><i class="pi pi-stopwatch icon-label"></i>Total</span>
+              <strong>{{ totalHE(funcionarioGroup) }}</strong>
+            </div>
+          </div>
+
+          <div class="employee-benefits">
+            @if (shouldUseFretado(funcionarioGroup)) {
+            <span class="check-item">
+              <p-checkbox [inputId]="'precisaUber-' + i" formControlName="precisaUber" [binary]="true"></p-checkbox>
+              <label [for]="'precisaUber-' + i"><i class="pi pi-car icon-label"></i>Fretado obrigatorio</label>
+            </span>
+            } @else {
+            <span class="check-item">
+              <p-checkbox [inputId]="'precisaUber-' + i" formControlName="precisaUber" [binary]="true"></p-checkbox>
+              <label [for]="'precisaUber-' + i"><i class="pi pi-car icon-label"></i>{{ transporteLabel(funcionarioGroup)
+                }}</label>
+            </span>
+            }
+            <span class="check-item">
+              <p-checkbox [inputId]="'marmitex-' + i" formControlName="marmitex" [binary]="true"></p-checkbox>
+              <label [for]="'marmitex-' + i"><i class="pi pi-box icon-label"></i>Marmitex</label>
+            </span>
+            <span class="check-item">
+              <p-checkbox [inputId]="'lanche-' + i" formControlName="lanche" [binary]="true"></p-checkbox>
+              <label [for]="'lanche-' + i"><i class="pi pi-apple icon-label"></i>Lanche</label>
+            </span>
+          </div>
+
+          <div class="employee-justification">
+            <label [for]="'justificativa-' + i" class="hide-mobile">&nbsp;</label>
+            <textarea [id]="'justificativa-' + i" pTextarea rows="4" formControlName="justificativa"
+              placeholder="Descreva o motivo desta hora extra..."></textarea>
+          </div>
+
+          <div class="employee-actions">
+            <p-button type="button" icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" size="large"
+              pTooltip="Remover" (click)="removeFuncionario(i)"
+              [disabled]="funcionarios.length === 1 || folhaForm.disabled"></p-button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-header">
+        <div class="section-icon icon-primary">
+          <i class="pi pi-comment"></i>
+        </div>
+        <div class="section-info">
+          <h3>Observação</h3>
+          <span>Inclua informações gerais da folha, se necessário.</span>
+        </div>
+      </div>
+
+      <div class="field observation-field">
+        <label for="observacao">Observação final (opcional)</label>
+        <textarea id="observacao" pTextarea rows="4" formControlName="observacao"
+          placeholder="Detalhes adicionais da solicitação..."></textarea>
+      </div>
+    </div>
+
+    <!-- BOTTOM ACTIONS -->
+    <div class="form-actions-bottom">
+      <p-button type="button" label="Cancelar" icon="pi pi-times" severity="secondary" [text]="true" size="large"
+        (click)="onCancel()"></p-button>
+    </div>
+  </form>
+</div>

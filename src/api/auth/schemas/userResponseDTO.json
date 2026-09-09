@@ -5,8 +5,31 @@
     "name": { "type": "string" },
     "email": { "type": "string" },
     "avatar": { "type": "string" },
-    "cargosLista": { "type": "array", "items": { "type": "string" } }
+    "cargosLista": { "type": "array", "items": { "type": "string" } },
+    "centrosCusto": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "usuarioId": { "type": "string" },
+          "usuarioNome": { "type": "string" },
+          "centroCustoCodigo": { "type": "number" },
+          "centroCustoDescricao": { "type": "string" },
+          "ativo": { "type": "boolean" }
+        },
+        "required": [
+          "id",
+          "usuarioId",
+          "usuarioNome",
+          "centroCustoCodigo",
+          "centroCustoDescricao",
+          "ativo"
+        ],
+        "x-readme-ref-name": "ResLiderCentroCustoDTO"
+      }
+    }
   },
-  "required": ["id", "name", "email", "avatar", "cargosLista"],
+  "required": ["id", "name", "email", "avatar", "cargosLista", "centrosCusto"],
   "x-readme-ref-name": "UserResponseDTO"
 }

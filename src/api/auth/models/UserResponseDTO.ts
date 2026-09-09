@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ResLiderCentroCustoDTO } from './ResLiderCentroCustoDTO';
+
 export type UserResponseDTO = {
   /**
    * @type string
@@ -24,4 +26,8 @@ export type UserResponseDTO = {
    * @type array
    */
   cargosLista: string[];
+  /**
+   * @type array
+   */
+  centrosCusto: ResLiderCentroCustoDTO[];
 };

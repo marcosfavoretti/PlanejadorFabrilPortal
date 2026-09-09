@@ -1,0 +1,106 @@
+<div class="folha-he-link-widget">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <div class="folha-he-link-widget__intro">
+    <i class="pi pi-users"></i>
+    <div>
+      <strong>Defina os centros de custo de cada líder</strong>
+      <span>Selecione um usuário e vincule vários centros de custo em uma única operação.</span>
+    </div>
+  </div>
+
+  <form class="folha-he-link-widget__form" [formGroup]="vinculoForm" (ngSubmit)="vincularCentroCusto()">
+    <div class="folha-he-link-widget__field">
+      <label for="folha-he-lider">Usuário líder</label>
+      <p-select
+        inputId="folha-he-lider"
+        formControlName="usuarioId"
+        [options]="userOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true"
+        filterBy="label"
+        [loading]="usersLoading()"
+        placeholder="Selecione um usuario"
+        appendTo="body"
+        (onChange)="onUserChange($event.value)"
+      ></p-select>
+      <small>Pesquise pelo nome ou e-mail do usuário.</small>
+    </div>
+
+    <div class="folha-he-link-widget__field">
+      <label for="folha-he-centro-custo">Centros de custo</label>
+      <p-multiSelect
+        inputId="folha-he-centro-custo"
+        formControlName="centrosCustoCodigos"
+        [options]="centrosCustoDisponiveis()"
+        optionLabel="setor"
+        optionValue="ccid"
+        [filter]="true"
+        filterBy="setor,ccid"
+        [loading]="centrosLoading()"
+        placeholder="Selecione um ou mais centros"
+        display="chip"
+        [maxSelectedLabels]="3"
+        selectedItemsLabel="{0} centros selecionados"
+        [showClear]="true"
+        appendTo="body"
+      >
+        <ng-template let-centro pTemplate="item">
+          {{ centro.ccid }} - {{ centro.setor }}
+        </ng-template>
+      </p-multiSelect>
+      <small>Os centros já vinculados são selecionados automaticamente.</small>
+    </div>
+
+    <div class="folha-he-link-widget__actions">
+      <button type="submit" pButton label="Vincular centros" icon="pi pi-link" [loading]="saving()"
+        [disabled]="vinculoForm.invalid"></button>
+    </div>
+  </form>
+
+  <div class="folha-he-link-widget__table-title">
+    <div>
+      <strong>Centros vinculados</strong>
+      <span>Os vínculos são carregados automaticamente ao selecionar o usuário.</span>
+    </div>
+    <span class="folha-he-link-widget__count">{{ vinculos().length }} ativo(s)</span>
+  </div>
+
+  <p-table [value]="vinculos()" [loading]="vinculosLoading()" responsiveLayout="scroll" styleClass="p-datatable-sm">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Líder</th>
+        <th>Centro de custo</th>
+        <th class="folha-he-link-widget__action-column">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-vinculo>
+      <tr>
+        <td>
+          <strong>{{ vinculo.usuarioNome }}</strong>
+          <small>{{ vinculo.usuarioId }}</small>
+        </td>
+        <td>
+          <strong>{{ vinculo.centroCustoCodigo }}</strong>
+          <small>{{ vinculo.centroCustoDescricao || 'Descrição não informada' }}</small>
+        </td>
+        <td class="folha-he-link-widget__action-column">
+          <button type="button" pButton label="Remover" icon="pi pi-unlink" severity="danger" text
+            (click)="desativarVinculo(vinculo)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3" class="folha-he-link-widget__empty">
+          {{ vinculoForm.controls.usuarioId.value
+            ? 'Nenhum centro de custo vinculado a este usuário.'
+            : 'Selecione um usuário para consultar seus centros de custo.' }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

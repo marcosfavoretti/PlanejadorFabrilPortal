@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "usuarioId": { "type": "string", "example": "user-uuid" },
+    "usuarioNome": { "type": "string", "example": "Gerente Industrial" },
+    "cargo": { "type": "string", "example": "GERENTE" },
+    "acao": {
+      "type": "string",
+      "enum": ["APROVADO", "REJEITADO"],
+      "example": "APROVADO"
+    },
+    "motivo": {
+      "type": "string",
+      "example": "Ajustar justificativa do funcionario 002"
+    },
+    "dataHora": {
+      "format": "date-time",
+      "type": "string",
+      "example": "2026-07-09T17:37:08.065Z"
+    }
+  },
+  "required": ["usuarioId", "usuarioNome", "cargo", "acao", "dataHora"],
+  "x-readme-ref-name": "ResAssinaturaAprovacaoDTO"
+}

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "usuarioId": { "type": "string" },
+    "usuarioNome": { "type": "string" },
+    "centroCustoCodigo": { "type": "number" },
+    "centroCustoDescricao": { "type": "string" },
+    "ativo": { "type": "boolean" }
+  },
+  "required": [
+    "id",
+    "usuarioId",
+    "usuarioNome",
+    "centroCustoCodigo",
+    "centroCustoDescricao",
+    "ativo"
+  ],
+  "x-readme-ref-name": "ResLiderCentroCustoDTO"
+}

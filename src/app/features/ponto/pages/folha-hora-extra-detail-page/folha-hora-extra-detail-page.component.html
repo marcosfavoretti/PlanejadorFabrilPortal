@@ -1,0 +1,229 @@
+<div class="folha-hora-extra-detail-container">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  @if (folha; as item) {
+  <p-card [header]="'Folha HE - ' + (item.dataContexto | date: 'dd/MM/yyyy' : 'UTC')">
+    <div class="detail-header">
+      <div>
+        <span class="muted">Status atual</span>
+        <p-tag [value]="statusLabel[item.status]" [severity]="getStatusSeverity(item.status)"></p-tag>
+      </div>
+      <div class="detail-actions">
+        <p-button label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+          (click)="goBackToList()"></p-button>
+        <p-button label="Imprimir" icon="pi pi-print" severity="secondary" [outlined]="true"
+          (click)="printFolha()"></p-button>
+        <p-button label="Editar" icon="pi pi-pencil" [outlined]="true" [disabled]="!canEdit()"
+          (click)="editFolha()"></p-button>
+        @if (canSubmit()) {
+        <p-button label="Submeter" icon="pi pi-send" (click)="submitFolha()"></p-button>
+        }
+        @if (canApprove()) {
+        <p-button label="Aprovar/Rejeitar" icon="pi pi-check-circle" severity="success"
+          (click)="openApprovalDialog()"></p-button>
+        }
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div><span>Setor</span><strong>{{ item.setor }}</strong></div>
+      <div><span>Centro de custo</span><strong>{{ item.centroCustoCodigo }} - {{ item.centroCustoDescricao }}</strong>
+      </div>
+      <div><span>Percentual</span><strong>{{ item.percentualCusto }}%</strong></div>
+      <div><span>Autor</span><strong>{{ item.autorNome }}</strong></div>
+      <div><span>Criado em</span><strong>{{ item.criadoEm | date: 'dd/MM/yyyy HH:mm' }}</strong></div>
+      <div><span>Atualizado em</span><strong>{{ item.atualizadoEm | date: 'dd/MM/yyyy HH:mm' }}</strong></div>
+    </div>
+
+    <p-panel header="Funcionarios" styleClass="detail-panel">
+      <p-table [value]="item.funcionarios" responsiveLayout="scroll" styleClass="p-datatable-sm folha-funcionarios-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Matricula</th>
+            <th>Nome</th>
+            <th>Inicio</th>
+            <th>Fim</th>
+            <th>Total</th>
+            <th>Transporte</th>
+            <th>Refeicao</th>
+            <th>Justificativa</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-funcionario>
+          <tr>
+            <td>{{ funcionario.matricula }}</td>
+            <td>{{ funcionario.nome }}</td>
+            <td>{{ funcionario.inicioHE }}</td>
+            <td>{{ funcionario.fimHE }}</td>
+            <td>{{ totalHE(funcionario) }}</td>
+            <td>{{ transporteLabel(funcionario) }}</td>
+            <td>{{ refeicaoLabel(funcionario) }}</td>
+            <td>{{ justificativa(funcionario, item) }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8" class="empty-cell">Nenhum funcionario informado.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+
+    @if (item.extratoCusto; as extrato) {
+    <div class="cost-total-summary">
+      <div>
+        <span>Total geral da folha</span>
+        <strong>{{ formatCurrency(extrato.totalGeral) }}</strong>
+      </div>
+      <p-button [label]="showCostDetails ? 'Ocultar detalhamento' : 'Exibir detalhamento'"
+        [icon]="showCostDetails ? 'pi pi-eye-slash' : 'pi pi-eye'" severity="secondary" [outlined]="true"
+        (click)="toggleCostDetails()"></p-button>
+    </div>
+    @if (showCostDetails) {
+    <p-panel header="Extrato de custos" styleClass="detail-panel">
+      <div class="cost-summary">
+        <div>
+          <span>Funcionarios</span>
+          <strong>{{ extrato.quantidadeFuncionarios }}</strong>
+        </div>
+        <div>
+          <span>Horas diurnas</span>
+          <strong>{{ formatNumber(extrato.totalHorasDiurnas) }}h</strong>
+        </div>
+        <div>
+          <span>Horas noturnas</span>
+          <strong>{{ formatNumber(extrato.totalHorasNoturnas) }}h</strong>
+        </div>
+        <div>
+          <span>Total HE</span>
+          <strong>{{ formatNumber(extrato.totalHorasExtras) }}h</strong>
+        </div>
+        <div>
+          <span>Valor diurno</span>
+          <strong>{{ formatCurrency(extrato.totalHorasDiurnasValor) }}</strong>
+        </div>
+        <div>
+          <span>Valor noturno</span>
+          <strong>{{ formatCurrency(extrato.totalHorasNoturnasValor) }}</strong>
+        </div>
+        <div>
+          <span>Refeicao</span>
+          <strong>{{ formatCurrency(extrato.totalRefeicao) }}</strong>
+        </div>
+        <div>
+          <span>Transporte</span>
+          <strong>{{ formatCurrency(extrato.totalTransporte) }}</strong>
+        </div>
+        <div class="cost-summary-total">
+          <span>Total geral</span>
+          <strong>{{ formatCurrency(extrato.totalGeral) }}</strong>
+        </div>
+      </div>
+
+      <div class="cost-rules">
+        <span>Compensacao: {{ formatNumber(extrato.multiplicadorCompensacao) }}x</span>
+        <span>Adicional noturno: {{ formatNumber(extrato.adicionalNoturno * 100) }}%</span>
+      </div>
+
+      <p-table [value]="extratoFuncionarios()" responsiveLayout="scroll" styleClass="p-datatable-sm cost-table folha-custos-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Funcionario</th>
+            <th>Salario hora</th>
+            <th>Horas diurnas</th>
+            <th>Horas noturnas</th>
+            <th>Refeicao</th>
+            <th>Transporte</th>
+            <th>Total</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-funcionario>
+          <tr>
+            <td>
+              <strong>{{ funcionario.nome }}</strong>
+              <span class="muted-line">{{ funcionario.matricula }}</span>
+            </td>
+            <td>{{ formatCurrency(funcionario.salarioHora) }}</td>
+            <td>{{ formatNumber(funcionario.horasDiurnas) }}h<br><span class="muted-line">{{
+                formatCurrency(funcionario.valorHorasDiurnas) }}</span></td>
+            <td>{{ formatNumber(funcionario.horasNoturnas) }}h<br><span class="muted-line">{{
+                formatCurrency(funcionario.valorHorasNoturnas) }}</span></td>
+            <td>{{ formatCurrency(funcionario.refeicao) }}</td>
+            <td>{{ formatCurrency(funcionario.transporte) }}</td>
+            <td><strong>{{ formatCurrency(funcionario.total) }}</strong></td>
+          </tr>
+          @if (funcionario.linhas?.length) {
+          <tr class="cost-lines-row">
+            <td colspan="7">
+              <table class="cost-lines-table">
+                <thead>
+                  <tr>
+                    <th>Componente</th>
+                    <th>Base</th>
+                    <th>Quantidade</th>
+                    <th>Valor unitario</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (linha of funcionario.linhas; track linha.componente + linha.baseCalculo) {
+                  <tr>
+                    <td>{{ linha.componente }}</td>
+                    <td>{{ linha.baseCalculo }}</td>
+                    <td>{{ formatNumber(linha.quantidade) }}</td>
+                    <td>{{ formatCurrency(linha.valorUnitario) }}</td>
+                    <td>{{ formatCurrency(linha.subtotal) }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          }
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="empty-cell">Nenhum extrato de custo calculado.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+    }
+    }
+
+    @if (item.observacao) {
+    <p-panel header="Observacao" styleClass="detail-panel">
+      <p>{{ item.observacao }}</p>
+    </p-panel>
+    }
+
+    <p-panel header="Historico de aprovacao" styleClass="detail-panel">
+      <p-table [value]="item.historico" responsiveLayout="scroll" styleClass="p-datatable-sm folha-historico-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Acao</th>
+            <th>Usuario</th>
+            <th>Cargo</th>
+            <th>Motivo</th>
+            <th>Data</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-historico>
+          <tr>
+            <td>{{ historico.acao }}</td>
+            <td>{{ historico.usuarioNome }}</td>
+            <td>{{ historico.cargo }}</td>
+            <td>{{ historico.motivo || '-' }}</td>
+            <td>{{ historico.dataHora | date: 'dd/MM/yyyy HH:mm' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="empty-cell">Nenhum historico registrado.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+  </p-card>
+  }
+</div>

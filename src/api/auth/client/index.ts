@@ -19,3 +19,4 @@ export { twoFactorSelfServiceControllerGetStatus } from './twoFactorSelfServiceC
 export { twoFactorSelfServiceControllerRotateRecoveryCodes } from './twoFactorSelfServiceControllerRotateRecoveryCodes';
 export { twoFactorSelfServiceControllerSetServiceAccountBypass } from './twoFactorSelfServiceControllerSetServiceAccountBypass';
 export { twoFactorSelfServiceControllerStartEnrollment } from './twoFactorSelfServiceControllerStartEnrollment';
+export { userNotificationInternalControllerNotificarCargoPorEmail } from './userNotificationInternalControllerNotificarCargoPorEmail';

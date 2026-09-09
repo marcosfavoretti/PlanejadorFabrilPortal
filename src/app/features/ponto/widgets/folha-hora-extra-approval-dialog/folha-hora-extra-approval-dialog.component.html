@@ -1,0 +1,38 @@
+<div class="approval-dialog">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  @if (folha) {
+    <div class="approval-summary">
+      <div>
+        <span>Setor</span>
+        <strong>{{ folha.setor }}</strong>
+      </div>
+      <div>
+        <span>Centro de custo</span>
+        <strong>{{ folha.centroCustoCodigo }}</strong>
+      </div>
+      <div>
+        <span>Status</span>
+        <p-tag [value]="statusLabel[folha.status]"></p-tag>
+      </div>
+      <div>
+        <span>Funcionarios</span>
+        <strong>{{ folha.totalFuncionarios }}</strong>
+      </div>
+    </div>
+  }
+
+  <form [formGroup]="rejectionForm" class="reject-form">
+    <label for="motivo">Motivo da rejeicao</label>
+    <textarea id="motivo" pTextarea rows="4" formControlName="motivo"></textarea>
+    @if (rejectionForm.controls.motivo.invalid && rejectionForm.controls.motivo.touched) {
+      <small class="p-error">Motivo obrigatorio.</small>
+    }
+  </form>
+
+  <div class="dialog-actions">
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [text]="true" (click)="cancel()"></p-button>
+    <p-button label="Rejeitar" icon="pi pi-ban" severity="danger" [outlined]="true" [loading]="loading" (click)="reject()"></p-button>
+    <p-button label="Aprovar" icon="pi pi-check" severity="success" [loading]="loading" (click)="approve()"></p-button>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+{
+  "type": "object",
+  "properties": {
+    "resumoRecursos": {
+      "type": "object",
+      "properties": {
+        "totalTransportes": {
+          "type": "object",
+          "example": { "UBER": 5, "TAXI": 2, "FRETADO": 1, "N/A": 10 }
+        },
+        "totalRefeicoes": {
+          "type": "object",
+          "example": { "MARMITEX": 10, "LANCHE": 15, "N/A": 3 }
+        }
+      },
+      "required": ["totalTransportes", "totalRefeicoes"],
+      "x-readme-ref-name": "RelatorioRecursosResumoDTO"
+    },
+    "detalhamentoPorSetor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "setor": { "type": "string", "example": "LASER" },
+          "justificativa": {
+            "type": "string",
+            "example": "Finalizacao de lote urgente"
+          },
+          "dataContexto": { "format": "date-time", "type": "string" },
+          "totalPessoas": { "type": "number", "example": 5 },
+          "funcionarios": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "matricula": { "type": "string", "example": "001" },
+                "nome": { "type": "string", "example": "Funcionario Um" },
+                "transporte": {
+                  "type": "string",
+                  "enum": ["UBER", "TAXI", "FRETADO", "N/A"],
+                  "example": "UBER"
+                },
+                "inicioHE": { "type": "string", "example": "17:00" },
+                "fimHE": { "type": "string", "example": "19:30" },
+                "refeicao": {
+                  "type": "string",
+                  "enum": ["MARMITEX", "LANCHE", "N/A"],
+                  "example": "MARMITEX"
+                },
+                "justificativa": {
+                  "type": "string",
+                  "example": "Finalizacao de lote urgente"
+                }
+              },
+              "required": [
+                "matricula",
+                "nome",
+                "transporte",
+                "inicioHE",
+                "fimHE",
+                "refeicao",
+                "justificativa"
+              ],
+              "x-readme-ref-name": "ResItemFuncionarioHEDTO"
+            }
+          }
+        },
+        "required": [
+          "setor",
+          "justificativa",
+          "dataContexto",
+          "totalPessoas",
+          "funcionarios"
+        ],
+        "x-readme-ref-name": "RelatorioSetorDTO"
+      }
+    }
+  },
+  "required": ["resumoRecursos", "detalhamentoPorSetor"],
+  "x-readme-ref-name": "ResRelatorioHoraExtraDTO"
+}

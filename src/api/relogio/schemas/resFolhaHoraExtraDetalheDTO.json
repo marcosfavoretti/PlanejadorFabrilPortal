@@ -1,0 +1,210 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "dataContexto": { "format": "date-time", "type": "string" },
+    "setor": { "type": "string" },
+    "centroCustoCodigo": { "type": "number" },
+    "centroCustoDescricao": { "type": "string" },
+    "percentualCusto": { "type": "number", "enum": [50, 100] },
+    "status": {
+      "type": "string",
+      "enum": [
+        "RASCUNHO",
+        "AGUARDANDO_GERENCIA",
+        "AGUARDANDO_DIRETORIA",
+        "APROVADO",
+        "REJEITADO_GERENCIA",
+        "REJEITADO_DIRETORIA"
+      ]
+    },
+    "totalFuncionarios": { "type": "number" },
+    "autorNome": { "type": "string" },
+    "criadoEm": { "format": "date-time", "type": "string" },
+    "atualizadoEm": { "format": "date-time", "type": "string" },
+    "funcionarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "matricula": { "type": "string", "example": "001" },
+          "nome": { "type": "string", "example": "Funcionario Um" },
+          "transporte": {
+            "type": "string",
+            "enum": ["UBER", "TAXI", "FRETADO", "N/A"],
+            "example": "UBER"
+          },
+          "inicioHE": { "type": "string", "example": "17:00" },
+          "fimHE": { "type": "string", "example": "19:30" },
+          "refeicao": {
+            "type": "string",
+            "enum": ["MARMITEX", "LANCHE", "N/A"],
+            "example": "MARMITEX"
+          },
+          "justificativa": {
+            "type": "string",
+            "example": "Finalizacao de lote urgente"
+          }
+        },
+        "required": [
+          "matricula",
+          "nome",
+          "transporte",
+          "inicioHE",
+          "fimHE",
+          "refeicao",
+          "justificativa"
+        ],
+        "x-readme-ref-name": "ResItemFuncionarioHEDTO"
+      }
+    },
+    "observacao": { "type": "string" },
+    "historico": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "usuarioId": { "type": "string", "example": "user-uuid" },
+          "usuarioNome": { "type": "string", "example": "Gerente Industrial" },
+          "cargo": { "type": "string", "example": "GERENTE" },
+          "acao": {
+            "type": "string",
+            "enum": ["APROVADO", "REJEITADO"],
+            "example": "APROVADO"
+          },
+          "motivo": {
+            "type": "string",
+            "example": "Ajustar justificativa do funcionario 002"
+          },
+          "dataHora": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2026-07-09T17:37:08.065Z"
+          }
+        },
+        "required": ["usuarioId", "usuarioNome", "cargo", "acao", "dataHora"],
+        "x-readme-ref-name": "ResAssinaturaAprovacaoDTO"
+      }
+    },
+    "autorId": { "type": "string" },
+    "extratoCusto": {
+      "type": "object",
+      "properties": {
+        "folhaId": { "type": "string", "example": "6651f3f0f0f0f0f0f0f0f0f0" },
+        "funcionarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "matricula": { "type": "string", "example": "001" },
+              "nome": { "type": "string", "example": "Funcionario Um" },
+              "salarioHora": { "type": "number", "example": 10 },
+              "multiplicadorCompensacao": { "type": "number", "example": 1.5 },
+              "adicionalNoturno": { "type": "number", "example": 0.35 },
+              "horasDiurnas": { "type": "number", "example": 2.5 },
+              "horasNoturnas": { "type": "number", "example": 1 },
+              "valorHoraDiurnaComEncargo": { "type": "number", "example": 15 },
+              "valorHoraNoturnaComEncargo": {
+                "type": "number",
+                "example": 20.25
+              },
+              "valorHorasDiurnas": { "type": "number", "example": 37.5 },
+              "valorHorasNoturnas": { "type": "number", "example": 20.25 },
+              "refeicao": { "type": "number", "example": 0 },
+              "transporte": { "type": "number", "example": 0 },
+              "total": { "type": "number", "example": 35.25 },
+              "linhas": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "componente": {
+                      "type": "string",
+                      "example": "Hora extra diurna"
+                    },
+                    "baseCalculo": {
+                      "type": "string",
+                      "example": "salarioHora * compensacao(1.5)"
+                    },
+                    "quantidade": { "type": "number", "example": 2.5 },
+                    "valorUnitario": { "type": "number", "example": 15 },
+                    "subtotal": { "type": "number", "example": 37.5 }
+                  },
+                  "required": [
+                    "componente",
+                    "baseCalculo",
+                    "quantidade",
+                    "valorUnitario",
+                    "subtotal"
+                  ],
+                  "x-readme-ref-name": "ResExtratoCustoHoraExtraLinhaDTO"
+                }
+              }
+            },
+            "required": [
+              "matricula",
+              "nome",
+              "salarioHora",
+              "multiplicadorCompensacao",
+              "adicionalNoturno",
+              "horasDiurnas",
+              "horasNoturnas",
+              "valorHoraDiurnaComEncargo",
+              "valorHoraNoturnaComEncargo",
+              "valorHorasDiurnas",
+              "valorHorasNoturnas",
+              "refeicao",
+              "transporte",
+              "total",
+              "linhas"
+            ],
+            "x-readme-ref-name": "ResExtratoCustoFuncionarioHoraExtraDTO"
+          }
+        },
+        "quantidadeFuncionarios": { "type": "number", "example": 2 },
+        "multiplicadorCompensacao": { "type": "number", "example": 1.5 },
+        "adicionalNoturno": { "type": "number", "example": 0.35 },
+        "totalRefeicao": { "type": "number", "example": 0 },
+        "totalTransporte": { "type": "number", "example": 0 },
+        "totalHorasDiurnas": { "type": "number", "example": 2.5 },
+        "totalHorasNoturnas": { "type": "number", "example": 3 },
+        "totalHorasExtras": { "type": "number", "example": 5.5 },
+        "totalHorasDiurnasValor": { "type": "number", "example": 37.5 },
+        "totalHorasNoturnasValor": { "type": "number", "example": 0 },
+        "totalGeral": { "type": "number", "example": 37.5 }
+      },
+      "required": [
+        "funcionarios",
+        "quantidadeFuncionarios",
+        "multiplicadorCompensacao",
+        "adicionalNoturno",
+        "totalRefeicao",
+        "totalTransporte",
+        "totalHorasDiurnas",
+        "totalHorasNoturnas",
+        "totalHorasExtras",
+        "totalHorasDiurnasValor",
+        "totalHorasNoturnasValor",
+        "totalGeral"
+      ],
+      "x-readme-ref-name": "ResExtratoCustoHoraExtraDTO"
+    }
+  },
+  "required": [
+    "id",
+    "dataContexto",
+    "setor",
+    "centroCustoCodigo",
+    "centroCustoDescricao",
+    "percentualCusto",
+    "status",
+    "totalFuncionarios",
+    "autorNome",
+    "criadoEm",
+    "atualizadoEm",
+    "funcionarios",
+    "historico",
+    "autorId"
+  ],
+  "x-readme-ref-name": "ResFolhaHoraExtraDetalheDTO"
+}

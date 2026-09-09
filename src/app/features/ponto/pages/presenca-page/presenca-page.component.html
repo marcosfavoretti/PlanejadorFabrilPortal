@@ -1,0 +1,50 @@
+<div class="d-flex flex-column h-100 p-2 gap-2">
+  @if (filterContextReady()) {
+    <div class="card border-0 shadow-sm grow presenca-card">
+      <div class="card-header bg-white border-0 pt-3 pb-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="text-success h5 m-0 fw-bold"><i class="pi pi-users me-2"></i>Presença</h2>
+          <span class="badge bg-light text-secondary border">Total: {{ presencaTotalItems() }}</span>
+        </div>
+      </div>
+      <div class="card-body p-0 d-flex flex-column">
+        <form class="ponto-toolbox-form p-3" [formGroup]="presencaFilterForm" (ngSubmit)="applyPresencaFilters()">
+          <div class="ponto-toolbox-grid">
+            <div class="ponto-filter-field">
+              <label for="presenca-status">Situação</label>
+              <p-select inputId="presenca-status" formControlName="status" [options]="presencaStatusOptions"
+                optionLabel="label" optionValue="value" placeholder="Todas as situações" [showClear]="true"
+                appendTo="body" styleClass="ponto-control"></p-select>
+            </div>
+            <div class="ponto-filter-field">
+              <label for="presenca-nome">Nome</label>
+              <input id="presenca-nome" type="text" class="form-control ponto-control" formControlName="nome" placeholder="Parte do nome">
+            </div>
+            <div class="ponto-filter-field">
+              <label for="presenca-matricula">Matrícula</label>
+              <input id="presenca-matricula" type="text" class="form-control ponto-control" formControlName="matricula" placeholder="Matrícula exata">
+            </div>
+            <div class="ponto-filter-field ponto-filter-field--centro">
+              <label for="presenca-centro-custo">Centro de custo</label>
+              <p-select inputId="presenca-centro-custo" formControlName="centroCustoCodigo" [options]="centroDeCusto"
+                optionLabel="setor" optionValue="ccid" [filter]="true" filterBy="setor,ccid"
+                placeholder="Centros selecionados acima" [showClear]="true" appendTo="body" styleClass="ponto-control"
+                [class.centro-custo-selector--locked]="centroCustoSelectorDisabled()" [attr.aria-disabled]="centroCustoSelectorDisabled()">
+                <ng-template let-centro pTemplate="item">{{ centro.ccid }} - {{ centro.setor }}</ng-template>
+                <ng-template let-centro pTemplate="selectedItem">{{ centro?.ccid }} - {{ centro?.setor }}</ng-template>
+              </p-select>
+            </div>
+            <div class="ponto-filter-actions presenca-filter-actions">
+              <button type="button" class="btn btn-outline-secondary ponto-filter-submit" (click)="clearPresencaFilters()"><i class="pi pi-filter-slash"></i>Limpar</button>
+              <button type="submit" class="btn btn-success ponto-filter-submit"><i class="pi pi-search"></i>Aplicar</button>
+            </div>
+          </div>
+        </form>
+        <app-table-dynamic [tableModel]="presencaTableModel" [data]="presencas()" [exportable]="false" [lazy]="true"
+          [loading]="fetching" [first]="presencaFirst" [rows]="presencaPageSize" [totalRecords]="presencaTotalItems()"
+          [rowsPerPageOptions]="[10, 20, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+          (lazyLoad)="onPresencaLazyLoad($event)"></app-table-dynamic>
+      </div>
+    </div>
+  }
+</div>

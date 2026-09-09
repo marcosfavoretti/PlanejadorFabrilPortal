@@ -2,19 +2,27 @@
   @if (tableModel.title) {
     <div class="mb-3 px-1">
       <h3 class="fw-bold text-dark-green mb-0">{{tableModel.title}}</h3>
+      @if (tableModel.subtitle) {
+        <span class="small text-muted">{{ tableModel.subtitle }}</span>
+      }
     </div>
   }
 
   <p-table #dt2 [globalFilterFields]="getAllColumns()" [value]="data"
     [groupRowsBy]="tableModel.totalize ? 'atr_group' : undefined" [dataKey]="tableDataKey"
     [expandedRowKeys]="expandedRowKeys"
-    [paginator]="tableModel.paginator? true: false" [rows]="10" [columns]="tableModel.columns"
-    [rowsPerPageOptions]="30 < (data ? data.length : 0) ? [10, 20, 30, data ? data.length : 0 ]: [10,20,30]"
+    [paginator]="tableModel.paginator ? true : false"
+    [lazy]="lazy" [loading]="loading" [first]="first" [rows]="rows"
+    [totalRecords]="totalRecords ?? data.length"
+    [columns]="tableModel.columns"
+    [rowsPerPageOptions]="getRowsPerPageOptions()"
+    [paginatorDropdownAppendTo]="paginatorDropdownAppendTo"
     [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined"
     class="custom-table" sortMode="single"
     [sortField]="tableSortField" [sortOrder]="tableSortOrder"
     [scrollable]="scrollable" [scrollHeight]="scrollHeight" (onFilter)="onTableFilter($event)"
     [responsiveLayout]="responsiveLayout" [breakpoint]="breakpoint"
+    (onLazyLoad)="lazyLoad.emit($event)"
     (onRowExpand)="handleRowExpand($event)" (onRowCollapse)="handleRowCollapse($event)">
 
     <ng-template #caption>
@@ -49,10 +57,11 @@
           <th style="width: 3rem"></th>
         }
         @for (key of columns ; track $index) {
-          <th pSortableColumn="{{ key.field }}" class="text-center text-uppercase smallest fw-bold tracking-wider py-3">
+          <th [pSortableColumn]="key.sortable === false || key.isButton || key.isActions ? undefined : key.field"
+              class="text-center text-uppercase smallest fw-bold tracking-wider py-3">
             <div class="d-flex align-items-center justify-content-center gap-2">
-              @if (!key.isButton) {
-                @if (key.isDate) {
+              @if (!key.isButton && !key.isActions) {
+                @if (key.filterable !== false && key.isDate) {
                   <p-columnFilter [field]="key.field" type="date" display="menu" appendTo="body">
                     <ng-template pTemplate="filtericon">
                       <i class="pi" [ngClass]="key.filterActive ? 'pi-filter-fill text-success' : 'pi-filter'"></i>
@@ -61,14 +70,16 @@
                       <p-date-picker dateFormat="dd/mm/yy" (onSelect)="onDateSelect($event, filter)"></p-date-picker>
                     </ng-template>
                   </p-columnFilter>
-                } @else {
+                } @else if (key.filterable !== false) {
                   <p-columnFilter [field]="key.field" [type]="key.isCheckBox ? 'boolean' : 'text'" display="menu" appendTo="body">
                     <ng-template pTemplate="filtericon">
                       <i class="pi" [ngClass]="key.filterActive ? 'pi-filter-fill text-success' : 'pi-filter'"></i>
                     </ng-template>
                   </p-columnFilter>
                 }
-                <p-sortIcon [field]="key.field"></p-sortIcon>
+                @if (key.sortable !== false) {
+                  <p-sortIcon [field]="key.field"></p-sortIcon>
+                }
               }
               <span>{{ key.alias || key.field }}</span>
             </div>
@@ -100,7 +111,7 @@
     }
 
     <ng-template pTemplate="body" let-item let-columns="columns" let-expanded="expanded" #body>
-      <tr [ngStyle]="checkHighLight(item)" class="hover-row">
+      <tr [ngStyle]="checkHighLight(item)">
         @if (tableModel.expandable) {
           <td class="text-center py-2 border-bottom border-light">
             <button type="button" pButton pRipple [pRowToggler]="item"
@@ -139,11 +150,32 @@
                 <span>{{getButtonLabel(item, key.button.label)}}</span>
                 <i [class]="key.button.icon || ''"></i>
               </button>
+            } @else if (key?.isActions) {
+              <div class="d-flex justify-content-center align-items-center gap-1">
+                @for (action of key.actions || []; track $index) {
+                  @if (!action.visible || action.visible(item)) {
+                    <p-button
+                      [label]="action.label"
+                      [icon]="action.icon"
+                      [severity]="action.severity || 'secondary'"
+                      [text]="action.text ?? true"
+                      [rounded]="action.rounded ?? true"
+                      [outlined]="action.outlined ?? false"
+                      [disabled]="action.disabled ? action.disabled(item) : false"
+                      [pTooltip]="action.tooltip || ''"
+                      tooltipPosition="top"
+                      (onClick)="onActionClick(item, $event, action.command)"
+                    ></p-button>
+                  }
+                }
+              </div>
             } @else if (key?.isTag) {
               <p-tag [severity]="key.tagSeverityFn ? key.tagSeverityFn(getNestedValue(item, key.field)) : 'info'"
                 [rounded]="true"
                 class="shadow-none smallest fw-bold"
-                [value]="getNestedValue(item, key.field) || '---'"></p-tag>
+                [value]="key.tagLabelFn
+                  ? key.tagLabelFn(getNestedValue(item, key.field), item)
+                  : (getNestedValue(item, key.field) || '---')"></p-tag>
             } @else if (key?.isCodeBlock) {
               <pre class="table-code-block" [class.table-code-block--empty]="!getNestedValue(item, key.field)">{{ getNestedValue(item, key.field) || '---' }}</pre>
             } @else if (key?.isInputText) {
@@ -158,9 +190,9 @@
               <span class="fw-medium text-dark">{{ getNestedValue(item, key.field) | number: '1.0-5' }}</span>
             } @else {
               @if (key.isDate) {
-                <span class="small text-muted">{{ getNestedValue(item, key.field) ? (getNestedValue(item, key.field) | date : 'dd/MM/yyyy HH:mm') : ''}}</span>
+                <span class="small text-muted">{{ getNestedValue(item, key.field) ? (getNestedValue(item, key.field) | date : (key.dateFormat || 'dd/MM/yyyy HH:mm') : key.dateTimezone) : ''}}</span>
               } @else {
-                <span class="small fw-medium">{{getNestedValue(item, key.field)}}</span>
+                <span class="small fw-medium">{{ getDisplayValue(item, key) }}</span>
               }
             }
           </td>

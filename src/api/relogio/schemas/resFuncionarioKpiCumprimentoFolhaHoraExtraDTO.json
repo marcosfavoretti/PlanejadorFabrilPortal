@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string" },
+    "nome": { "type": "string" },
+    "inicioHEPrevisto": { "type": "string" },
+    "fimHEPrevisto": { "type": "string" },
+    "totalHEPrevisto": { "type": "string" },
+    "primeiraBatida": { "format": "date-time", "type": "string" },
+    "ultimaBatida": { "format": "date-time", "type": "string" },
+    "horasTrabalhadasNoTurno": { "type": "number" },
+    "minutosAtrasoInicioHE": { "type": "number" },
+    "minutosSaidaAntesFimHE": { "type": "number" },
+    "cumpriuHorarioHE": { "type": "boolean" },
+    "registros": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "marcacao": { "type": "string" },
+          "dataStr": { "type": "string" },
+          "data": { "format": "date-time", "type": "string" }
+        },
+        "required": ["id", "marcacao", "dataStr", "data"],
+        "x-readme-ref-name": "ResTipoMarcacaoDTO"
+      }
+    }
+  },
+  "required": [
+    "matricula",
+    "nome",
+    "inicioHEPrevisto",
+    "fimHEPrevisto",
+    "totalHEPrevisto",
+    "horasTrabalhadasNoTurno",
+    "minutosAtrasoInicioHE",
+    "minutosSaidaAntesFimHE",
+    "cumpriuHorarioHE",
+    "registros"
+  ],
+  "x-readme-ref-name": "ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO"
+}

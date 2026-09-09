@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string", "example": "001" },
+    "nome": { "type": "string", "example": "Funcionario Um" },
+    "transporte": {
+      "type": "string",
+      "enum": ["UBER", "TAXI", "FRETADO", "N/A"],
+      "example": "UBER"
+    },
+    "inicioHE": { "type": "string", "example": "17:00" },
+    "fimHE": { "type": "string", "example": "19:30" },
+    "refeicao": {
+      "type": "string",
+      "enum": ["MARMITEX", "LANCHE", "N/A"],
+      "example": "MARMITEX"
+    },
+    "justificativa": {
+      "type": "string",
+      "example": "Finalizacao de lote urgente"
+    }
+  },
+  "required": [
+    "matricula",
+    "nome",
+    "transporte",
+    "inicioHE",
+    "fimHE",
+    "refeicao",
+    "justificativa"
+  ],
+  "x-readme-ref-name": "ResItemFuncionarioHEDTO"
+}

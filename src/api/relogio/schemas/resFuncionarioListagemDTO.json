@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string" },
+    "nome": { "type": "string" },
+    "setor": { "type": "string" },
+    "turnoBase": {
+      "type": "string",
+      "description": "Código do turno base cadastrado para o funcionário",
+      "example": "001"
+    },
+    "temporario": {
+      "type": "boolean",
+      "description": "Indica se o funcionario veio da planilha de temporarios",
+      "example": false
+    }
+  },
+  "required": ["matricula", "nome", "setor", "turnoBase", "temporario"],
+  "x-readme-ref-name": "ResFuncionarioListagemDTO"
+}

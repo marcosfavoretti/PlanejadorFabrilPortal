@@ -20,6 +20,20 @@
     }
   </div>
 
+  @if (user.centrosCusto.length) {
+  <div class="mb-3">
+    <p class="text-muted small fw-bold text-uppercase mb-2">Centros de custo vinculados</p>
+    <div class="d-flex flex-column gap-1">
+      @for (centroCusto of user.centrosCusto; track centroCusto.id) {
+      <div class="user-popup-card__cost-center">
+        <span class="user-popup-card__cost-center-code">{{ centroCusto.centroCustoCodigo }}</span>
+        <span>{{ centroCusto.centroCustoDescricao }}</span>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
   <div class="d-flex justify-content-end gap-2">
     <button (click)="logout()" class="btn btn-danger rounded-pill d-flex align-items-center gap-2 px-3">
       <i class="pi pi-sign-out"></i>
