@@ -9,7 +9,9 @@
     <form
       class="checklist-filter-form"
       (ngSubmit)="
-        showChecklistTagField ? submitChecklistLookup() : requestSearch()
+        showOrderLookup || showChecklistTagField
+          ? submitChecklistLookup()
+          : requestSearch()
       "
     >
       <div class="checklist-field">
@@ -59,6 +61,18 @@
           </div>
         }
       </div>
+
+      @if (showOrderLookup && !showChecklistTagField) {
+        <div class="checklist-actions">
+          <button
+            type="submit"
+            class="btn btn-success checklist-toolbar-btn checklist-toolbar-btn--primary"
+            [disabled]="!canSubmitChecklistLookup"
+          >
+            <span>Consultar</span>
+          </button>
+        </div>
+      }
 
       @if (showChecklistTagField) {
         <div class="checklist-field checklist-field--tag">
@@ -161,7 +175,7 @@
             class="btn btn-success checklist-toolbar-btn checklist-toolbar-btn--primary"
             [disabled]="!canSubmitChecklistLookup"
           >
-            <span>Consultar checklist</span>
+            <span>Consultar</span>
           </button>
         </div>
       }
