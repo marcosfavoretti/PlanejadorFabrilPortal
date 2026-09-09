@@ -625,8 +625,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       ? this.approvalStatusFilter.value ?? this.getApprovalStatusesForUser()
       : this.getOperationalStatusesForUser(this.statusFilter.value);
     const filters = {
-      dataInicio: range?.[0] ? this.formatDate(range[0]) : undefined,
-      dataFim: range?.[1] ? this.formatDate(range[1]) : undefined,
+      dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
+      dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
       centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
       status: statusFilter,
       page: Math.floor(this.first / this.pageSize),
@@ -653,8 +653,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     const range = this.dataRangeFilter.value;
 
     this.folhaHoraExtraService.getHistorico({
-      dataInicio: range?.[0] ? this.formatDate(range[0]) : undefined,
-      dataFim: range?.[1] ? this.formatDate(range[1]) : undefined,
+      dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
+      dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
       centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
       status: 'APROVADO',
       page: Math.floor(this.historicoFirst / this.historicoPageSize),
@@ -715,10 +715,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       next: centros => this.centrosCusto = centros,
       error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
     });
-  }
-
-  private formatDate(date: Date): string {
-    return date.toISOString().slice(0, 10);
   }
 
   private formatLocalDate(date: Date): string {
