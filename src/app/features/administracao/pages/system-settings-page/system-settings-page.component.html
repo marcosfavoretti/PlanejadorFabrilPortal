@@ -7,7 +7,7 @@
       <h1>Cadastros, parâmetros e configurações administrativas</h1>
       <p>
         Central única para gerenciar rotas do app, convites com cargos, mudança de cargo
-        e monitoramento dos logs de erro da aplicação.
+        líderes por centro de custo e monitoramento dos logs de erro da aplicação.
       </p>
     </div>
 
@@ -225,6 +225,11 @@
             </div>
           </form>
         </div>
+      </app-admin-section-card>
+
+      <app-admin-section-card id="folha-he-lider-centro-custo" title="Líderes por centro de custo"
+        description="Adicione usuários como líderes de um ou mais centros de custo para criação e acompanhamento das folhas de hora extra.">
+        <app-folha-he-lider-centro-custo-widget />
       </app-admin-section-card>
 
       <app-admin-section-card id="users-overview" title="Usuários do sistema"

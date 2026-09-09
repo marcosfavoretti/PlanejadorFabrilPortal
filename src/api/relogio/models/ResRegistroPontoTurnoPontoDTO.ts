@@ -4,6 +4,13 @@
  */
 
 import type { ResTipoMarcacaoDTO } from './ResTipoMarcacaoDTO';
+import type { ResTurnoDTO } from './ResTurnoDTO';
+
+export enum ResRegistroPontoTurnoPontoDTOStatusEnum {
+  OK = 'OK',
+  ALERTA = 'ALERTA',
+  FALHA = 'FALHA',
+}
 
 export type ResRegistroPontoTurnoPontoDTO = {
   /**
@@ -18,6 +25,11 @@ export type ResRegistroPontoTurnoPontoDTO = {
    * @type string
    */
   nome: string;
+  /**
+   * @description Jornada-base aplicável ao dia da marcação, obtida da SPJ010 pelo código RA_TNOTRAB.
+   * @type object
+   */
+  turnoBase: ResTurnoDTO | null;
   /**
    * @type string, date-time
    */
@@ -38,4 +50,9 @@ export type ResRegistroPontoTurnoPontoDTO = {
    * @type number
    */
   horasIrregulares: number;
+  /**
+   * @description FALHA para marcações inválidas; ALERTA para excesso de horas; OK nos demais casos.
+   * @type string
+   */
+  status: ResRegistroPontoTurnoPontoDTOStatusEnum;
 };

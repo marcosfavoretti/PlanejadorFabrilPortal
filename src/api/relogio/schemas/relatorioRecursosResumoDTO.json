@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "totalTransportes": {
+      "type": "object",
+      "example": { "UBER": 5, "TAXI": 2, "FRETADO": 1, "N/A": 10 }
+    },
+    "totalRefeicoes": {
+      "type": "object",
+      "example": { "MARMITEX": 10, "LANCHE": 15, "N/A": 3 }
+    }
+  },
+  "required": ["totalTransportes", "totalRefeicoes"],
+  "x-readme-ref-name": "RelatorioRecursosResumoDTO"
+}

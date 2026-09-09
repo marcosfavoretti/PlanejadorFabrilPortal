@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, signal } from '@angular/core';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ImageModule } from 'primeng/image';
@@ -10,6 +10,7 @@ import { InputNumberModule } from 'primeng/inputnumber'
 import { Subject } from 'rxjs';
 import { DatePicker } from 'primeng/datepicker'
 import { TagModule } from 'primeng/tag'
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -25,7 +26,8 @@ import { TagModule } from 'primeng/tag'
     FormsModule,
     ImageModule,
     DatePicker,
-    TagModule
+    TagModule,
+    TooltipModule
   ]
 })
 export class TableDynamicComponent implements OnChanges, OnInit {
@@ -55,6 +57,14 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() scrollHeight: string = 'auto';
   @Input() responsiveLayout: 'scroll' | 'stack' = 'scroll';
   @Input() breakpoint: string = '960px';
+  @Input() lazy: boolean = false;
+  @Input() loading: boolean = false;
+  @Input() first: number = 0;
+  @Input() rows: number = 10;
+  @Input() totalRecords?: number;
+  @Input() rowsPerPageOptions?: number[];
+  @Input() paginatorDropdownAppendTo: any = 'body';
+  @Output() lazyLoad = new EventEmitter<TableLazyLoadEvent>();
   
   failedImages = signal(new Set<string>());
   
@@ -147,6 +157,24 @@ export class TableDynamicComponent implements OnChanges, OnInit {
     return typeof label === 'function' ? label(row) : label;
   }
 
+  onActionClick(row: any, event: Event, command: (row: any, event: Event) => void): void {
+    command(row, event);
+  }
+
+  getRowsPerPageOptions(): number[] {
+    if (this.rowsPerPageOptions?.length) {
+      return this.rowsPerPageOptions;
+    }
+
+    const dataLength = this.data?.length ?? 0;
+    return dataLength > 30 ? [10, 20, 30, dataLength] : [10, 20, 30];
+  }
+
+  getDisplayValue(row: any, column: tableColumns): string | number | null | undefined {
+    const value = this.getNestedValue(row, column.field);
+    return column.valueFormatter ? column.valueFormatter(value, row) : value;
+  }
+
   public applyFilterGlobal($event: any, stringVal: any) {
     this.dt2!.filterGlobal(($event.target as HTMLInputElement).value.trim(), stringVal.trim());
   }
@@ -226,14 +254,14 @@ export class TableDynamicComponent implements OnChanges, OnInit {
       const value = this.getNestedValue(data, controll.field);
       
       if (controll.ifValueEqual !== undefined && String(controll.ifValueEqual) === String(value)) {
-        return { 'background-color': controll.color };
+        return { '--table-row-highlight': controll.color };
       }
       
       if (controll.ifValueGreater && controll.ifValueGreater(data)) {
-        return { 'background-color': controll.color };
+        return { '--table-row-highlight': controll.color };
       }
       if (controll.ifRowFunction && controll.ifRowFunction(data)) {
-        return { 'background-color': controll.color };
+        return { '--table-row-highlight': controll.color };
       }
     }
     return undefined;

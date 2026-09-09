@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ResFolhaHoraExtraDTO.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dataContexto": { "format": "date-time", "type": "string" },
+          "setor": { "type": "string" },
+          "centroCustoCodigo": { "type": "number" },
+          "centroCustoDescricao": { "type": "string" },
+          "percentualCusto": { "type": "number", "enum": [50, 100] },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RASCUNHO",
+              "AGUARDANDO_GERENCIA",
+              "AGUARDANDO_DIRETORIA",
+              "APROVADO",
+              "REJEITADO_GERENCIA",
+              "REJEITADO_DIRETORIA"
+            ]
+          },
+          "totalFuncionarios": { "type": "number" },
+          "autorNome": { "type": "string" },
+          "criadoEm": { "format": "date-time", "type": "string" },
+          "atualizadoEm": { "format": "date-time", "type": "string" }
+        },
+        "required": [
+          "id",
+          "dataContexto",
+          "setor",
+          "centroCustoCodigo",
+          "centroCustoDescricao",
+          "percentualCusto",
+          "status",
+          "totalFuncionarios",
+          "autorNome",
+          "criadoEm",
+          "atualizadoEm"
+        ],
+        "x-readme-ref-name": "ResFolhaHoraExtraDTO"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedResFolhaHoraExtraDTODto"
+}

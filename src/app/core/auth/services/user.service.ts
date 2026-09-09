@@ -126,7 +126,8 @@ export class UserService {
         avatar: String(avatar ?? 'None'),
         cargosLista: Array.isArray(cargosLista)
           ? cargosLista.map(cargo => String(cargo))
-          : []
+          : [],
+        centrosCusto: []
       };
     } catch {
       clearAuthToken();

@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ResPresencaFuncionarioDTO.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "matricula": { "type": "string" },
+          "nome": { "type": "string" },
+          "setor": { "type": "string" },
+          "turnoBase": { "type": "string", "example": "001" },
+          "entradaTurnoBase": {
+            "type": "object",
+            "nullable": true,
+            "example": "08:00",
+            "description": "Primeiro horário de entrada previsto no turno do dia."
+          },
+          "saidaTurnoBase": {
+            "type": "object",
+            "nullable": true,
+            "example": "17:00",
+            "description": "Último horário de saída previsto no turno do dia."
+          },
+          "presente": {
+            "type": "boolean",
+            "description": "Indica se a última marcação válida do dia é uma entrada."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PRESENTE", "NAO_PRESENTE", "FORA_DO_TURNO", "FERIAS"],
+            "description": "Situação atual calculada a partir da última batida e do turno do dia."
+          },
+          "ferias": {
+            "type": "boolean",
+            "description": "Indica se o funcionário está de férias (RA_SITFOLH = F)."
+          }
+        },
+        "required": [
+          "matricula",
+          "nome",
+          "setor",
+          "turnoBase",
+          "entradaTurnoBase",
+          "saidaTurnoBase",
+          "presente",
+          "status",
+          "ferias"
+        ],
+        "x-readme-ref-name": "ResPresencaFuncionarioDTO"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedResPresencaFuncionarioDTODto"
+}

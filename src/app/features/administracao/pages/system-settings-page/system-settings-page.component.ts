@@ -37,6 +37,7 @@ import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 import { AdminSectionCardComponent } from '../../shared/admin-section-card/admin-section-card.component';
 import { RouteConfigFormComponent } from '../../components/route-config-form/route-config-form.component';
 import { AuditLogApiService, AuditLogListItem } from '../../services/audit-log-api.service';
+import { FolhaHeLiderCentroCustoWidgetComponent } from '../../components/folha-he-lider-centro-custo-widget/folha-he-lider-centro-custo-widget.component';
 // import { MobilePrinterApiService } from '../../services/mobile-printer-api.service';
 
 type RouteFormSubmitValue = {
@@ -71,6 +72,7 @@ type RouteFormSubmitValue = {
     TableDynamicComponent,
     AdminSectionCardComponent,
     RouteConfigFormComponent,
+    FolhaHeLiderCentroCustoWidgetComponent,
   ],
   providers: [MessageService],
   templateUrl: './system-settings-page.component.html',
@@ -78,7 +80,7 @@ type RouteFormSubmitValue = {
 })
 export class SystemSettingsPageComponent implements AfterViewInit {
   private static readonly AUDIT_SEARCH_DEBOUNCE_MS = 700;
-  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'users-overview', 'create-user', 'audit-logs'] as const;
+  private readonly sectionIds = ['route-config', 'invites', 'role-management', 'folha-he-lider-centro-custo', 'users-overview', 'create-user', 'audit-logs'] as const;
   private sectionObserver?: IntersectionObserver;
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
@@ -153,6 +155,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
     { id: 'route-config', label: 'Configuração de Rotas' },
     { id: 'invites', label: 'Convites' },
     { id: 'role-management', label: 'Gestão de Cargos' },
+    { id: 'folha-he-lider-centro-custo', label: 'Líderes por CC' },
     { id: 'users-overview', label: 'Usuários do Sistema' },
     { id: 'create-user', label: 'Criar Usuário' },
     { id: 'audit-logs', label: 'Logs de Erro' },
@@ -630,6 +633,7 @@ export class SystemSettingsPageComponent implements AfterViewInit {
       .map((user) => ({
         ...user,
         cargosLista: Array.isArray(user.cargosLista) ? user.cargosLista.map(cargo => String(cargo)) : [],
+        centrosCusto: Array.isArray(user.centrosCusto) ? user.centrosCusto : [],
       }))
       .sort((left, right) => left.name.localeCompare(right.name, 'pt-BR'));
   }

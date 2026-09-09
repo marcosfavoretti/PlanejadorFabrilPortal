@@ -17,32 +17,19 @@
         <div class="col-10">
             <app-pedidos-planejados-tabela />
         </div>
-        <div class="col-2">
-            <div class="row g-2 h-100 m-0 p-0 row-gap-1 p-0 m-0">
-                <div class="col-6 col-md-12 m-0 p-0">
-                    <div class="h-100">
-                        <app-contador-divida />
-                    </div>
-                </div>
-                <div class="col-6 col-md-12 m-0 p-0">
-                    <div class="h-100">
-                        <app-contador-atraso />
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
     }
     @placeholder {
-        <span>...carregando conteudo</span>
+    <span>...carregando conteudo</span>
     }
     @defer (on viewport) {
-        <div class="d-flex card p-3">
-            <app-tabela-planejamento id="planejamentos" name="planejamentos"></app-tabela-planejamento>
-        </div>
+    <div class="d-flex card p-3">
+        <app-tabela-planejamento id="planejamentos" name="planejamentos"></app-tabela-planejamento>
+    </div>
     }
     @placeholder {
-        <span>carregando conteudo</span>
+    <span>carregando conteudo</span>
     }
     <div class="card p-3">
         <app-pedidos-tabela></app-pedidos-tabela>

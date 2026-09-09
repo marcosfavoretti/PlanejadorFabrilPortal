@@ -2,29 +2,60 @@
   <a class="navbar-brand d-flex align-items-center me-4" href="#">
     <img src="ethos35.png" width="100" alt="logo da firma" class="me-2">
   </a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks"
-    aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+
+  <div class="global-header__mobile-actions d-lg-none ms-auto d-flex align-items-center gap-2">
+    <button type="button" class="btn p-0 border-0" (click)="op.toggle($event)" aria-label="Abrir detalhes do usuário">
+      <app-user-profile-avatar [selfProfile]="true"></app-user-profile-avatar>
+    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks"
+      aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarLinks">
     <ul class="navbar-nav">
-      @for (item of navigationRoutes(); track $index) {
+      @for (item of untaggedNavigationRoutes(); track item._id) {
       <li class="nav-item">
         <a routerLinkActive="active" [routerLink]="breakRoute(item.route)" class="nav-link fs-6 fs-md-5 fs-lg-4">
           {{ item.name }}
         </a>
       </li>
       }
+
+      @for (group of taggedNavigationRoutes(); track group.tag) {
+      <li class="nav-item dropdown global-header__tag-dropdown">
+        <button class="nav-link fs-6 fs-md-5 fs-lg-4 dropdown-toggle global-header__tag-trigger" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <span>{{ formatTag(group.tag) }}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end global-header__tag-menu">
+          @for (item of group.routes; track item._id) {
+          <li>
+            <a routerLinkActive="active" [routerLink]="breakRoute(item.route)" class="dropdown-item global-header__tag-item">
+              <i class="pi pi-arrow-up-right" aria-hidden="true"></i>
+              <span>
+                <span class="global-header__tag-item-name">{{ item.name }}</span>
+                @if (item.desc) {
+                <small class="global-header__tag-item-description">{{ item.desc }}</small>
+                }
+              </span>
+            </a>
+          </li>
+          }
+        </ul>
+      </li>
+      }
     </ul>
 
-    <div class="d-flex align-items-center ms-3">
-      <button class="btn btn-group" (click)="op.toggle($event)">
+    <div class="d-none d-lg-flex align-items-center ms-3">
+      <button type="button" class="btn btn-group" (click)="op.toggle($event)" aria-label="Abrir detalhes do usuário">
         <app-user-profile-avatar [selfProfile]="true"></app-user-profile-avatar>
       </button>
-      <p-popover #op>
-        <app-user-detail (onClose)="op.hide()"></app-user-detail>
-      </p-popover>
     </div>
   </div>
+
+  <p-popover #op appendTo="body" styleClass="global-header__user-popover">
+    <app-user-detail (onClose)="op.hide()"></app-user-detail>
+  </p-popover>
 </nav>

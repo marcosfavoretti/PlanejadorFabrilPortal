@@ -1,1 +1,78 @@
+.global-header__tag-trigger {
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
 
+.global-header__tag-trigger:hover,
+.global-header__tag-trigger:focus,
+.global-header__tag-trigger.show {
+  color: inherit;
+  background: transparent;
+}
+
+.global-header__tag-menu {
+  min-width: 17rem;
+  max-width: calc(100vw - 1rem);
+  padding: 0.45rem;
+  border: 1px solid rgba(25, 135, 84, 0.16);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.75rem 1.75rem rgba(18, 77, 47, 0.16);
+}
+
+.global-header__tag-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 0.5rem;
+  white-space: normal;
+}
+
+.global-header__tag-item > .pi {
+  margin-top: 0.2rem;
+  color: #198754;
+  font-size: 0.8rem;
+}
+
+.global-header__tag-item-name,
+.global-header__tag-item-description {
+  display: block;
+}
+
+.global-header__tag-item-name {
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.global-header__tag-item-description {
+  margin-top: 0.1rem;
+  color: #6b7280;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.global-header__tag-item:hover,
+.global-header__tag-item:focus,
+.global-header__tag-item.active {
+  background: rgba(25, 135, 84, 0.1);
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    flex-basis: 100%;
+  }
+
+  :host ::ng-deep .global-header__user-popover {
+    max-width: calc(100vw - 1rem);
+  }
+
+  .global-header__tag-trigger {
+    width: 100%;
+  }
+
+  .global-header__tag-menu {
+    min-width: 100%;
+  }
+}

@@ -1,0 +1,416 @@
+<div class="folha-hora-extra-list-container fade-in" [class.printing-refeicoes]="printingRefeicoes">
+  <!-- Dynamic Theme Header -->
+  <div class="header-banner bg-dark-green mb-4">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Gestão de Horas Extras</h1>
+        <p class="page-subtitle">
+          {{ canAuditHistorico() ? 'Acompanhe o fluxo de HE e audite o cumprimento das folhas aprovadas' : 'Acompanhe, gerencie e aprove as solicitações de horas extras da equipe' }}
+        </p>
+      </div>
+      <div class="header-icon-container">
+        <i class="pi pi-clock header-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  @if (!hasVisibleSections()) {
+    <div class="card-container no-access-card">
+      <i class="pi pi-lock"></i>
+      <div>
+        <h2>Nenhuma seção disponível</h2>
+        <p>Seu cargo não possui permissão para consultar folhas de hora extra.</p>
+      </div>
+    </div>
+  }
+
+  @if (canViewRefeicoes()) {
+    <div class="card-container">
+    <div class="filters-panel refeicoes-filters-panel">
+      <div class="filters-section-title">
+        <div>
+          <h2><i class="pi pi-filter mr-2"></i>Filtros de refeições</h2>
+          <span>O padrão consulta hoje e folhas aguardando a diretoria.</span>
+        </div>
+      </div>
+
+      <div class="filters-grid refeicoes-filters-grid">
+        <div class="field">
+          <label for="refeicoesDataRangeFilter">
+            <i class="pi pi-calendar mr-2"></i>Período
+          </label>
+          <p-datepicker
+            inputId="refeicoesDataRangeFilter"
+            selectionMode="range"
+            [formControl]="refeicoesDataRangeFilter"
+            dateFormat="dd/mm/yy"
+            placeholder="Início - Fim"
+            [showIcon]="true"
+            [showClear]="true"
+            styleClass="w-full"
+          ></p-datepicker>
+        </div>
+
+        <div class="field">
+          <label for="refeicoesCentroCustoFilter">
+            <i class="pi pi-building mr-2"></i>Centro de Custo
+          </label>
+          <p-select
+            inputId="refeicoesCentroCustoFilter"
+            [formControl]="refeicoesCentroCustoFilter"
+            [options]="centrosCusto"
+            optionLabel="setor"
+            optionValue="ccid"
+            placeholder="Todos os centros"
+            [showClear]="true"
+            styleClass="w-full"
+          >
+            <ng-template pTemplate="item" let-centro>
+              {{ centro.ccid }} - {{ centro.setor }}
+            </ng-template>
+            <ng-template pTemplate="selectedItem" let-centro>
+              {{ centro?.ccid }} - {{ centro?.setor }}
+            </ng-template>
+          </p-select>
+        </div>
+
+        <div class="field">
+          <label for="refeicoesMatriculaFilter">
+            <i class="pi pi-id-card mr-2"></i>Matrícula
+          </label>
+          <input
+            pInputText
+            id="refeicoesMatriculaFilter"
+            [formControl]="refeicoesMatriculaFilter"
+            placeholder="Informe a matrícula"
+            (keyup.enter)="applyRefeicoesFilters()"
+          />
+        </div>
+
+        <div class="field">
+          <label for="refeicoesNomeFilter">
+            <i class="pi pi-user mr-2"></i>Nome
+          </label>
+          <input
+            pInputText
+            id="refeicoesNomeFilter"
+            [formControl]="refeicoesNomeFilter"
+            placeholder="Informe o nome"
+            (keyup.enter)="applyRefeicoesFilters()"
+          />
+        </div>
+
+        <div class="field">
+          <label for="refeicoesTipoFilter">
+            <i class="pi pi-shopping-bag mr-2"></i>Refeição
+          </label>
+          <p-select
+            inputId="refeicoesTipoFilter"
+            [formControl]="refeicoesTipoFilter"
+            [options]="refeicaoOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Todas, exceto N/A"
+            [showClear]="true"
+            styleClass="w-full"
+          ></p-select>
+        </div>
+
+        <div class="field refeicoes-status-field">
+          <label for="refeicoesStatusFilter">
+            <i class="pi pi-list-check mr-2"></i>Status
+          </label>
+          <p-multiSelect
+            inputId="refeicoesStatusFilter"
+            [formControl]="refeicoesStatusFilter"
+            [options]="refeicoesStatusOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione os status"
+            display="chip"
+            [showClear]="true"
+            styleClass="w-full"
+          ></p-multiSelect>
+        </div>
+
+        <div class="filter-actions refeicoes-filter-actions">
+          <p-button
+            label="Imprimir tabela"
+            icon="pi pi-print"
+            severity="secondary"
+            [outlined]="true"
+            [disabled]="!refeicoesHoje.length"
+            (click)="printRefeicoes()"
+          ></p-button>
+          <p-button
+            label="Restaurar padrão"
+            icon="pi pi-refresh"
+            severity="secondary"
+            [outlined]="true"
+            (click)="restoreRefeicoesDefaultFilters()"
+          ></p-button>
+          <p-button
+            label="Aplicar"
+            icon="pi pi-search"
+            severity="success"
+            (click)="applyRefeicoesFilters()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-panel table-dynamic-panel">
+      <app-table-dynamic
+        [data]="refeicoesHoje"
+        [tableModel]="refeicoesTableModel"
+        [exportable]="false"
+        [loading]="refeicoesLoading"
+        [lazy]="true"
+        [first]="refeicoesFirst"
+        [rows]="refeicoesPageSize"
+        [totalRecords]="refeicoesTotalRecords"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        paginatorDropdownAppendTo="body"
+        responsiveLayout="scroll"
+        (lazyLoad)="onRefeicoesLazyLoad($event)"
+      ></app-table-dynamic>
+    </div>
+    </div>
+
+    <section class="print-refeicoes-content" aria-hidden="true">
+      <table>
+        <thead>
+          <tr>
+            <th>Funcionário</th>
+            <th>Matrícula</th>
+            <th>Refeição</th>
+            <th>Horário HE</th>
+            <th>CC</th>
+            <th>Status</th>
+            <th>Justificativa</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (refeicao of refeicoesHoje; track refeicao.folhaId + refeicao.matricula) {
+            <tr>
+              <td>{{ refeicao.nome }}</td>
+              <td>{{ refeicao.matricula }}</td>
+              <td>{{ refeicao.refeicao }}</td>
+              <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
+              <td>{{ refeicao.centroCustoCodigo }}</td>
+              <td>{{ getStatusLabel(refeicao.status) }}</td>
+              <td>{{ refeicao.justificativa }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (canViewFolhas()) {
+    <div class="card-container">
+    <div class="filters-panel">
+      <div class="filters-grid">
+        <div class="field">
+          <label for="dataRangeFilter"><i class="pi pi-calendar mr-2"></i>Período</label>
+          <p-datepicker
+            inputId="dataRangeFilter"
+            selectionMode="range"
+            [formControl]="dataRangeFilter"
+            dateFormat="dd/mm/yy"
+            placeholder="Início - Fim"
+            [showIcon]="true"
+            (onSelect)="applyFilters()"
+            styleClass="w-full"
+          ></p-datepicker>
+        </div>
+
+        <div class="field">
+          <label for="centroCustoFilter"><i class="pi pi-building mr-2"></i>Centro de Custo</label>
+          <p-select
+            inputId="centroCustoFilter"
+            [options]="centrosCusto"
+            [formControl]="centroCustoFilter"
+            optionLabel="setor"
+            optionValue="ccid"
+            placeholder="Todos os Centros"
+            [showClear]="true"
+            (onChange)="applyFilters()"
+            styleClass="w-full"
+          >
+            <ng-template let-centro pTemplate="item">
+              {{ centro.ccid }} - {{ centro.setor }}
+            </ng-template>
+            <ng-template let-centro pTemplate="selectedItem">
+              {{ centro?.ccid }} - {{ centro?.setor }}
+            </ng-template>
+          </p-select>
+        </div>
+
+        @if (!usesHistoricoDashboard()) {
+        <div class="field">
+          <label for="statusFilter"><i class="pi pi-flag mr-2"></i>Status</label>
+          <p-select
+            inputId="statusFilter"
+            [options]="statusOptions"
+            [formControl]="statusFilter"
+            placeholder="Todos os Status"
+            [showClear]="true"
+            (onChange)="applyFilters()"
+            styleClass="w-full"
+          ></p-select>
+        </div>
+        }
+
+        <div class="filter-actions">
+          @if (isAdmin()) {
+            @for (queue of approvalQueueOptions; track queue.status) {
+              <p-button [label]="queue.label" icon="pi pi-list-check" severity="secondary" [outlined]="approvalStatusFilter.value !== queue.status" (click)="applyApprovalQueue(queue.status)"></p-button>
+            }
+          }
+          <p-button label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true" (click)="clearFilters()"></p-button>
+          @if (canCreateFolha()) {
+            <p-button label="Nova Folha" icon="pi pi-plus" class="btn-nova-folha" severity="success" (click)="createFolha()"></p-button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="table-panel table-dynamic-panel">
+      <app-table-dynamic
+        [data]="folhas"
+        [tableModel]="folhasTableModel"
+        [exportable]="false"
+        [loading]="loading"
+        [lazy]="true"
+        [first]="first"
+        [rows]="pageSize"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        paginatorDropdownAppendTo="body"
+        responsiveLayout="scroll"
+        (lazyLoad)="onLazyLoad($event)"
+      ></app-table-dynamic>
+    </div>
+    </div>
+  }
+
+  @if (canAuditHistorico()) {
+    <div class="card-container">
+      <div class="table-panel table-dynamic-panel">
+        <app-table-dynamic
+          [data]="historicoFolhas"
+          [tableModel]="historicoTableModel"
+          [exportable]="false"
+          [loading]="historicoLoading"
+          [lazy]="true"
+          [first]="historicoFirst"
+          [rows]="historicoPageSize"
+          [totalRecords]="historicoTotalRecords"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          paginatorDropdownAppendTo="body"
+          responsiveLayout="scroll"
+          (lazyLoad)="onHistoricoLazyLoad($event)"
+        ></app-table-dynamic>
+      </div>
+    </div>
+  }
+
+  <p-dialog
+    [(visible)]="kpiDialogVisible"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: 'min(1120px, 96vw)' }"
+    [breakpoints]="{ '960px': '96vw' }"
+    (onHide)="closeKpi()"
+  >
+    <ng-template pTemplate="header">
+      <div class="dialog-title">
+        <span>KPI de Cumprimento de HE</span>
+        @if (selectedFolha) {
+          <small>{{ selectedFolha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} - {{ selectedFolha.centroCustoCodigo }} {{ selectedFolha.centroCustoDescricao }}</small>
+        }
+      </div>
+    </ng-template>
+
+    @if (kpiLoading) {
+      <div class="kpi-loading">
+        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+      </div>
+    } @else if (selectedKpi) {
+      <div class="kpi-summary-grid">
+        <div class="kpi-summary-item">
+          <span>Total</span>
+          <strong>{{ selectedKpi.totalFuncionarios }}</strong>
+        </div>
+        <div class="kpi-summary-item success">
+          <span>Cumpriram</span>
+          <strong>{{ selectedKpi.totalCumpriram }}</strong>
+        </div>
+        <div class="kpi-summary-item danger">
+          <span>Nao cumpriram</span>
+          <strong>{{ selectedKpi.totalNaoCumpriram }}</strong>
+        </div>
+        <div class="kpi-summary-item">
+          <span>Cumprimento</span>
+          <strong>{{ selectedKpi.percentualCumprimento | number: '1.0-1' }}%</strong>
+        </div>
+      </div>
+
+      <div class="kpi-progress">
+        <p-progressbar [value]="selectedKpi.percentualCumprimento" [showValue]="false"></p-progressbar>
+      </div>
+
+      <p-table
+        [value]="selectedKpi.funcionarios"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm p-datatable-striped custom-table kpi-table"
+      >
+        <ng-template pTemplate="caption">
+          <div class="table-caption compact">
+            <div>
+              <h2>Cumprimento por funcionario</h2>
+              <span>Comparativo entre HE prevista e marcacoes registradas no ponto</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Matricula</th>
+            <th>Funcionario</th>
+            <th>HE Prevista</th>
+            <th>Primeira Batida</th>
+            <th>Ultima Batida</th>
+            <th>Horas</th>
+            <th>Atraso</th>
+            <th>Saida Antecipada</th>
+            <th>Status</th>
+            <th>Marcacoes</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-funcionario>
+          <tr>
+            <td class="font-semibold">{{ funcionario.matricula }}</td>
+            <td>{{ funcionario.nome }}</td>
+            <td>{{ funcionario.inicioHEPrevisto }} - {{ funcionario.fimHEPrevisto }} <span class="text-color-secondary">({{ funcionario.totalHEPrevisto }})</span></td>
+            <td>{{ funcionario.primeiraBatida ? (funcionario.primeiraBatida | date: 'HH:mm') : '-' }}</td>
+            <td>{{ funcionario.ultimaBatida ? (funcionario.ultimaBatida | date: 'HH:mm') : '-' }}</td>
+            <td>{{ funcionario.horasTrabalhadasNoTurno | number: '1.1-2' }}</td>
+            <td>{{ formatMinutes(funcionario.minutosAtrasoInicioHE) }}</td>
+            <td>{{ formatMinutes(funcionario.minutosSaidaAntesFimHE) }}</td>
+            <td>
+              <p-tag [value]="getCumprimentoLabel(funcionario)" [severity]="getCumprimentoSeverity(funcionario)" [rounded]="true"></p-tag>
+            </td>
+            <td class="text-sm text-color-secondary marcacoes-cell" [pTooltip]="formatMarcacoes(funcionario)">
+              {{ formatMarcacoes(funcionario) }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  </p-dialog>
+</div>

@@ -1,0 +1,126 @@
+.folha-he-link-widget {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.folha-he-link-widget__intro {
+  align-items: center;
+  background: color-mix(in srgb, var(--primary-color, #198754) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #198754) 20%, transparent);
+  border-radius: 0.75rem;
+  display: flex;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.folha-he-link-widget__intro > i {
+  color: var(--primary-color, #198754);
+  font-size: 1.4rem;
+}
+
+.folha-he-link-widget__intro > div,
+.folha-he-link-widget__table-title > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.folha-he-link-widget__intro span,
+.folha-he-link-widget__table-title span,
+.folha-he-link-widget__field small {
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.82rem;
+}
+
+.folha-he-link-widget__form {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.25fr) auto;
+  gap: 1rem;
+  align-items: end;
+  background: var(--surface-ground, #f8fafc);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.folha-he-link-widget__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.folha-he-link-widget__field label {
+  font-weight: 700;
+}
+
+.folha-he-link-widget__field small {
+  min-height: 1rem;
+}
+
+.folha-he-link-widget__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.folha-he-link-widget__table-title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.folha-he-link-widget__count {
+  background: var(--surface-ground, #f8fafc);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 999px;
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+}
+
+.folha-he-link-widget__action-column {
+  text-align: right;
+  width: 9rem;
+}
+
+td small {
+  display: block;
+  color: var(--text-color-secondary);
+  margin-top: 0.15rem;
+}
+
+:host ::ng-deep .p-select,
+:host ::ng-deep .p-multiselect {
+  width: 100%;
+}
+
+.folha-he-link-widget__empty {
+  color: var(--text-color-secondary, #64748b);
+  padding: 2rem !important;
+  text-align: center;
+}
+
+@media (max-width: 1180px) {
+  .folha-he-link-widget__form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .folha-he-link-widget__actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .folha-he-link-widget__form {
+    grid-template-columns: 1fr;
+  }
+
+  .folha-he-link-widget__actions {
+    grid-column: auto;
+  }
+
+  .folha-he-link-widget__actions > button {
+    width: 100%;
+  }
+}

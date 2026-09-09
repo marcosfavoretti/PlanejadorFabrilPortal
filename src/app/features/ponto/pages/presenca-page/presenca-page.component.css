@@ -1,0 +1,30 @@
+:host { display: block; height: 100%; }
+
+.presenca-card .card-body { padding: 0 1.25rem 1rem; }
+
+.ponto-toolbox-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .85rem; align-items: end; }
+.ponto-filter-field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+.ponto-filter-field > label { color: var(--bs-secondary-color, #6c757d); font-size: .78rem; font-weight: 700; line-height: 1rem; margin: 0; }
+.ponto-control, .ponto-filter-submit { height: 2.75rem; min-height: 2.75rem; width: 100%; }
+.ponto-filter-actions { display: flex; align-items: flex-end; gap: .6rem; }
+.ponto-filter-submit { align-items: center; border-radius: .5rem; display: inline-flex; font-size: .875rem; font-weight: 700; gap: .5rem; justify-content: center; padding-inline: 1rem; }
+.ponto-filter-field > .form-control { border-color: #d9dee3; border-radius: .5rem; box-shadow: none; font-size: .875rem; padding: .55rem .75rem; }
+.ponto-filter-field > .form-control:focus { border-color: var(--bs-success, #198754); box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .12); }
+:host ::ng-deep .p-select.ponto-control { align-items: center; border-color: #d9dee3; border-radius: .5rem; box-shadow: none; display: flex; font-size: .875rem; width: 100%; }
+:host ::ng-deep .p-select.ponto-control:not(.p-disabled).p-focus { border-color: var(--bs-success, #198754); box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .12); }
+:host ::ng-deep .centro-custo-selector--locked { pointer-events: none; opacity: .7; }
+
+@media (max-width: 1199px) {
+  .ponto-toolbox-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ponto-filter-field--centro, .ponto-filter-actions { grid-column: 1 / -1; }
+  .ponto-filter-submit { margin-left: auto; max-width: 12rem; }
+}
+
+@media (max-width: 575px) {
+  .presenca-card .card-body { padding-inline: 1rem; }
+  .ponto-toolbox-grid { grid-template-columns: minmax(0, 1fr); }
+  .ponto-filter-field--centro, .ponto-filter-actions { grid-column: auto; }
+  .ponto-filter-submit { max-width: none; }
+  .ponto-filter-actions { flex-direction: column; }
+  .ponto-filter-actions > button { width: 100%; }
+}

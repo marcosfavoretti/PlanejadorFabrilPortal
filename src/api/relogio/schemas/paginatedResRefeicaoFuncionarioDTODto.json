@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "total": { "type": "number" },
+    "page": { "type": "number" },
+    "limit": { "type": "number" },
+    "totalPages": { "type": "number" },
+    "data": {
+      "description": "Lista de itens paginados do tipo ResRefeicaoFuncionarioDTO.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "folhaId": { "type": "string", "example": "6651f3f0f0f0f0f0f0f0f0" },
+          "dataContexto": { "format": "date-time", "type": "string" },
+          "centroCustoCodigo": { "type": "number", "example": 1234 },
+          "centroCustoDescricao": { "type": "string", "example": "PRODUCAO" },
+          "setor": { "type": "string", "example": "SOLDA" },
+          "matricula": { "type": "string", "example": "000832" },
+          "nome": { "type": "string", "example": "MARIA DA SILVA" },
+          "refeicao": {
+            "type": "string",
+            "enum": ["MARMITEX", "LANCHE", "N/A"],
+            "example": "MARMITEX"
+          },
+          "inicioHE": { "type": "string", "example": "18:00" },
+          "fimHE": { "type": "string", "example": "22:00" },
+          "justificativa": {
+            "type": "string",
+            "example": "Finalizacao de pedido urgente"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RASCUNHO",
+              "AGUARDANDO_GERENCIA",
+              "AGUARDANDO_DIRETORIA",
+              "APROVADO",
+              "REJEITADO_GERENCIA",
+              "REJEITADO_DIRETORIA"
+            ],
+            "example": "APROVADO"
+          },
+          "autorNome": { "type": "string", "example": "GESTOR RESPONSAVEL" },
+          "observacao": { "type": "string" }
+        },
+        "required": [
+          "folhaId",
+          "dataContexto",
+          "centroCustoCodigo",
+          "centroCustoDescricao",
+          "setor",
+          "matricula",
+          "nome",
+          "refeicao",
+          "inicioHE",
+          "fimHE",
+          "justificativa",
+          "status",
+          "autorNome"
+        ],
+        "x-readme-ref-name": "ResRefeicaoFuncionarioDTO"
+      }
+    }
+  },
+  "required": ["total", "page", "limit", "totalPages", "data"],
+  "x-readme-ref-name": "PaginatedResRefeicaoFuncionarioDTODto"
+}

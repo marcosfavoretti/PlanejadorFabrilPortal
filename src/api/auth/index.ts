@@ -71,6 +71,8 @@ export type {
 export type { CompleteTotpEnrollmentDto } from './models/CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './models/CreateUserDto';
 export type { DisableTwoFactorDto } from './models/DisableTwoFactorDto';
+export type { NotificarUsuariosPorCargoEmailDTO } from './models/NotificarUsuariosPorCargoEmailDTO';
+export type { ResLiderCentroCustoDTO } from './models/ResLiderCentroCustoDTO';
 export type { RotateRecoveryCodesDto } from './models/RotateRecoveryCodesDto';
 export type { SendTwoFactorEmailCodeDto } from './models/SendTwoFactorEmailCodeDto';
 export type { SetUserCargoDTO } from './models/SetUserCargoDTO';
@@ -138,6 +140,12 @@ export type {
   TwoFactorSelfServiceControllerStartEnrollmentMutationRequest,
   TwoFactorSelfServiceControllerStartEnrollmentMutationResponse,
 } from './models/TwoFactorSelfServiceControllerStartEnrollment';
+export type {
+  UserNotificationInternalControllerNotificarCargoPorEmail202,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutation,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
+  UserNotificationInternalControllerNotificarCargoPorEmailMutationResponse,
+} from './models/UserNotificationInternalControllerNotificarCargoPorEmail';
 export type { UserResponseDTO } from './models/UserResponseDTO';
 export type { VerifyTwoFactorDto } from './models/VerifyTwoFactorDto';
 export { authControllerCheckToken } from './client/authControllerCheckToken';
@@ -161,6 +169,8 @@ export { twoFactorSelfServiceControllerGetStatus } from './client/twoFactorSelfS
 export { twoFactorSelfServiceControllerRotateRecoveryCodes } from './client/twoFactorSelfServiceControllerRotateRecoveryCodes';
 export { twoFactorSelfServiceControllerSetServiceAccountBypass } from './client/twoFactorSelfServiceControllerSetServiceAccountBypass';
 export { twoFactorSelfServiceControllerStartEnrollment } from './client/twoFactorSelfServiceControllerStartEnrollment';
+export { userNotificationInternalControllerNotificarCargoPorEmail } from './client/userNotificationInternalControllerNotificarCargoPorEmail';
+export { NotificarUsuariosPorCargoEmailDTOCargoEnum } from './models/NotificarUsuariosPorCargoEmailDTO';
 export { SetUserCargoDTOCargoEnum } from './models/SetUserCargoDTO';
 export { TwoFactorGuardPolicyDtoMethodsEnum } from './models/TwoFactorGuardPolicyDto';
 export { VerifyTwoFactorDtoMethodEnum } from './models/VerifyTwoFactorDto';

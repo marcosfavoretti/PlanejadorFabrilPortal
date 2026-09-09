@@ -39,8 +39,12 @@
           "LIDER_MONTAGEM",
           "LIDER_QUALIDADE",
           "LIDER_PROCESSOS",
+          "LIDER",
+          "GERENTE",
           "DIRETOR",
+          "RH",
           "LIDER_PCP",
+          "SUPORTE",
           "ADMIN_POWERBI",
           "ADMIN_POWERBI_VIEW"
         ]

@@ -4,13 +4,22 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { RoutePermissionApiService } from '../services/route-permission-api.service';
 
+/**
+ * Extensão do contrato gerado para campos opcionais retornados pela API de
+ * rotas. Mantida fora do cliente Kubb para não ser sobrescrita na geração.
+ */
+export type NavigationRoute = ResAppRouteAppDTO & {
+  tag?: string | null;
+  centrosCusto?: number[];
+};
+
 @Injectable({
   providedIn: 'root'
 })
-export class RoutePermissionStoreService extends SignalStore<ResAppRouteAppDTO[]> {
+export class RoutePermissionStoreService extends SignalStore<NavigationRoute[]> {
   private readonly routePermissonApiService = inject(RoutePermissionApiService);
 
-  override refresh(): Observable<ResAppRouteAppDTO[]> {
+  override refresh(): Observable<NavigationRoute[]> {
     return this.routePermissonApiService.getRotaByUser().pipe(
       tap(routes => {
         this.set(this.normalizeRoutes(routes));
@@ -18,15 +27,17 @@ export class RoutePermissionStoreService extends SignalStore<ResAppRouteAppDTO[]
     );
   }
 
-  private normalizeRoutes(routes: unknown): ResAppRouteAppDTO[] {
+  private normalizeRoutes(routes: unknown): NavigationRoute[] {
     if (!Array.isArray(routes)) {
       return [];
     }
 
-    return routes.map(route => ({
+    return routes.map((route): NavigationRoute => ({
       ...route,
       cargos: Array.isArray(route.cargos) ? route.cargos : [],
       subRoutes: Array.isArray(route.subRoutes) ? route.subRoutes : [],
+      tag: typeof route.tag === 'string' && route.tag.trim() ? route.tag.trim() : null,
+      centrosCusto: Array.isArray(route.centrosCusto) ? route.centrosCusto : [],
     }));
   }
 }

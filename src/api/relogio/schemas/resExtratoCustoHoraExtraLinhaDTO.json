@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "componente": { "type": "string", "example": "Hora extra diurna" },
+    "baseCalculo": {
+      "type": "string",
+      "example": "salarioHora * compensacao(1.5)"
+    },
+    "quantidade": { "type": "number", "example": 2.5 },
+    "valorUnitario": { "type": "number", "example": 15 },
+    "subtotal": { "type": "number", "example": 37.5 }
+  },
+  "required": [
+    "componente",
+    "baseCalculo",
+    "quantidade",
+    "valorUnitario",
+    "subtotal"
+  ],
+  "x-readme-ref-name": "ResExtratoCustoHoraExtraLinhaDTO"
+}

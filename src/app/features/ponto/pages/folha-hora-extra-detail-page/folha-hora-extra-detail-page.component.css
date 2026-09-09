@@ -1,0 +1,274 @@
+.folha-hora-extra-detail-container {
+  padding: 1rem;
+}
+
+.detail-header {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detail-grid div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.detail-grid span,
+.muted {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+
+.detail-panel {
+  display: block;
+  margin-top: 1rem;
+}
+
+.cost-total-summary {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, var(--surface-border));
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--surface-ground));
+}
+
+.cost-total-summary div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.cost-total-summary span {
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+}
+
+.cost-total-summary strong {
+  color: var(--primary-color);
+  font-size: 1.35rem;
+}
+
+.empty-cell {
+  text-align: center;
+  color: var(--text-color-secondary);
+}
+
+.cost-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cost-summary div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.5rem;
+  background: var(--surface-ground);
+}
+
+.cost-summary span,
+.muted-line {
+  color: var(--text-color-secondary);
+  font-size: 0.82rem;
+}
+
+.cost-summary strong {
+  font-size: 1rem;
+}
+
+.cost-summary-total {
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--surface-ground)) !important;
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--surface-border)) !important;
+}
+
+.cost-summary-total strong {
+  color: var(--primary-color);
+  font-size: 1.15rem;
+}
+
+.cost-rules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.cost-rules span {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  color: var(--text-color-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.muted-line {
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.cost-lines-row td {
+  background: var(--surface-ground);
+  padding: 0.75rem 1rem !important;
+}
+
+.cost-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.cost-lines-table th,
+.cost-lines-table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+  text-align: left;
+}
+
+.cost-lines-table th {
+  color: var(--text-color-secondary);
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .detail-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cost-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-actions {
+    justify-content: flex-start;
+  }
+
+  .cost-total-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  .detail-actions,
+  app-p-messages,
+  .p-messages {
+    display: none !important;
+  }
+
+  :host {
+    color: #000;
+  }
+
+  .folha-hora-extra-detail-container {
+    padding: 0;
+  }
+
+  .detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  ::ng-deep .p-card {
+    box-shadow: none;
+    border: 0;
+  }
+
+  ::ng-deep .p-panel,
+  ::ng-deep .p-card-body,
+  ::ng-deep .p-card-content,
+  ::ng-deep .p-panel-content {
+    padding-inline: 0 !important;
+  }
+
+  ::ng-deep .p-datatable-wrapper {
+    overflow: visible !important;
+  }
+
+  ::ng-deep .p-datatable-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+    font-size: 0.68rem;
+  }
+
+  ::ng-deep .p-datatable-thead {
+    display: table-header-group;
+  }
+
+  ::ng-deep .p-datatable-thead > tr > th,
+  ::ng-deep .p-datatable-tbody > tr > td {
+    padding: 0.25rem !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+
+  ::ng-deep .p-datatable-tbody > tr,
+  .cost-lines-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(1),
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(3),
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(4),
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(5) {
+    width: 8%;
+  }
+
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(2) {
+    width: 18%;
+  }
+
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(6),
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(7) {
+    width: 11%;
+  }
+
+  ::ng-deep .folha-funcionarios-table .p-datatable-table th:nth-child(8) {
+    width: 28%;
+  }
+
+  .cost-lines-table {
+    font-size: 0.65rem;
+    table-layout: fixed;
+  }
+
+  .cost-lines-table th,
+  .cost-lines-table td {
+    padding: 0.2rem;
+    overflow-wrap: anywhere;
+  }
+}

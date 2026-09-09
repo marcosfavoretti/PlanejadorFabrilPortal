@@ -1,62 +1,81 @@
 <!-- <app-page-layout> -->
     <div class="d-flex flex-column h-100 p-2 gap-2">
 
-        <div class="card border-0 shadow-sm flex-shrink-0">
-            <div class="card-body py-3">
-                <form [formGroup]="filterForm" (ngSubmit)="search()">
-                    <div class="row g-2 align-items-end">
-                        <div class="col-12 col-md-4 col-xl-3">
-                            <label for="Centro de custo" class="form-label text-secondary fw-bold small mb-1">Centro de
-                                custo</label>
-                            <div class="input-group input-group-sm">
-
-                                <p-multiSelect [options]="centroDeCusto" optionLabel="setor"
-                                    inputId="ccid" [styleClass]="'form-control border-start-0 ps-0'"
-                                    formControlName="ccid" placeholder="centro de custo" [showClear]="true"
-                                    [maxSelectedLabels]="3" selectedItemsLabel="{0} Centros Selecionados"
-                                    display="chip" [class.disabled-multiselect]="preFilterSetor() && preFilterSetor()!.length > 0">
-                                    <ng-template let-item pTemplate="item">
-                                        {{ item.setor }} - {{ item.ccid }}
-                                    </ng-template>
-                                </p-multiSelect>
-                                <!-- <input> -->
-                            </div>
+        <div class="card border-0 shadow-sm flex-shrink-0 ponto-toolbox">
+            <div class="card-body">
+                <form [formGroup]="filterForm" (ngSubmit)="search()" class="ponto-toolbox-form">
+                    <div class="ponto-toolbox-grid">
+                        <div class="ponto-filter-field ponto-filter-field--centro">
+                            <label for="ccid">Centro de custo</label>
+                            <p-multiSelect
+                                [options]="centroDeCusto"
+                                optionLabel="setor"
+                                inputId="ccid"
+                                styleClass="ponto-control"
+                                [class.centro-custo-selector--locked]="centroCustoSelectorDisabled()"
+                                [attr.aria-disabled]="centroCustoSelectorDisabled()"
+                                formControlName="ccid"
+                                placeholder="Selecione os centros"
+                                [showClear]="true"
+                                [maxSelectedLabels]="2"
+                                selectedItemsLabel="{0} centros selecionados"
+                                display="chip"
+                                appendTo="body"
+                            >
+                                <ng-template let-item pTemplate="item">
+                                    {{ item.setor }} - {{ item.ccid }}
+                                </ng-template>
+                            </p-multiSelect>
                         </div>
-                        <div class="col-12 col-md-4 col-xl-3">
-                            <label for="indetificador"
-                                class="form-label text-secondary fw-bold small mb-1">Identificador</label>
-                            <div class="input-group input-group-sm"> <span
-                                    class="input-group-text bg-light border-end-0 text-muted">
+
+                        <div class="ponto-filter-field">
+                            <label for="indetificador">Identificador</label>
+                            <div class="input-group ponto-control">
+                                <span class="input-group-text">
                                     <i class="pi pi-user"></i>
                                 </span>
-                                <input type="text" id="indetificador" class="form-control border-start-0 ps-0"
-                                    placeholder="Ex: 000238" formControlName="indetificador">
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 col-xl-2">
-                            <label for="dataInicial" class="form-label text-secondary fw-bold small mb-1">Início</label>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light border-end-0 text-muted">
-                                    <i class="pi pi-calendar"></i>
-                                </span>
-                                <input type="date" id="dataInicial" class="form-control border-start-0 ps-0"
-                                    formControlName="dataInicio">
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 col-xl-2">
-                            <label for="dataFinal" class="form-label text-secondary fw-bold small mb-1">Fim</label>
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light border-end-0 text-muted">
-                                    <i class="pi pi-calendar-plus"></i>
-                                </span>
-                                <input type="date" id="dataFinal" class="form-control border-start-0 ps-0"
-                                    formControlName="dataFim">
+                                <input
+                                    type="text"
+                                    id="indetificador"
+                                    class="form-control"
+                                    placeholder="Matrícula ou nome"
+                                    formControlName="indetificador"
+                                >
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-2 col-xl-2 d-grid">
-                            <button type="submit"
-                                class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                        <div class="ponto-filter-field">
+                            <label for="dataInicial">Data inicial</label>
+                            <div class="input-group ponto-control">
+                                <span class="input-group-text">
+                                    <i class="pi pi-calendar"></i>
+                                </span>
+                                <input
+                                    type="date"
+                                    id="dataInicial"
+                                    class="form-control"
+                                    formControlName="dataInicio"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="ponto-filter-field">
+                            <label for="dataFinal">Data final</label>
+                            <div class="input-group ponto-control">
+                                <span class="input-group-text">
+                                    <i class="pi pi-calendar-plus"></i>
+                                </span>
+                                <input
+                                    type="date"
+                                    id="dataFinal"
+                                    class="form-control"
+                                    formControlName="dataFim"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="ponto-filter-actions">
+                            <button type="submit" class="btn btn-success ponto-filter-submit">
                                 <i class="pi pi-search"></i>
                                 <span>Filtrar</span>
                             </button>
@@ -102,5 +121,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 <!-- </app-page-layout> -->

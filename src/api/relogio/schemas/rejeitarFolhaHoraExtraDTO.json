@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "folhaId": { "type": "string" },
+    "motivo": { "type": "string" }
+  },
+  "required": ["folhaId", "motivo"],
+  "x-readme-ref-name": "RejeitarFolhaHoraExtraDTO"
+}

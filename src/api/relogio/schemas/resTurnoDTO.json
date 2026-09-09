@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "codigoTurno": { "type": "string" },
+    "semana": { "type": "string" },
+    "diaSemana": { "type": "string" },
+    "tipoDia": { "type": "string" },
+    "entrada1": { "type": "string" },
+    "saida1": { "type": "string" },
+    "entrada2": { "type": "string" },
+    "saida2": { "type": "string" },
+    "totalHorasDia": { "type": "number" },
+    "possuiIntervalo": { "type": "string" },
+    "horasIntervalo": { "type": "number" },
+    "tipoHoraExtra": { "type": "string" },
+    "periodo": { "type": "string" }
+  },
+  "required": [
+    "codigoTurno",
+    "semana",
+    "diaSemana",
+    "tipoDia",
+    "entrada1",
+    "saida1",
+    "entrada2",
+    "saida2",
+    "totalHorasDia",
+    "possuiIntervalo",
+    "horasIntervalo",
+    "tipoHoraExtra",
+    "periodo"
+  ],
+  "x-readme-ref-name": "ResTurnoDTO"
+}

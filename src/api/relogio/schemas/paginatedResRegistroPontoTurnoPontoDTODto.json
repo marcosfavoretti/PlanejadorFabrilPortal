@@ -14,6 +14,47 @@
           "matricula": { "type": "string" },
           "setor": { "type": "string" },
           "nome": { "type": "string" },
+          "turnoBase": {
+            "nullable": true,
+            "description": "Jornada-base aplicável ao dia da marcação, obtida da SPJ010 pelo código RA_TNOTRAB.",
+            "type": "object",
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "codigoTurno": { "type": "string" },
+                  "semana": { "type": "string" },
+                  "diaSemana": { "type": "string" },
+                  "tipoDia": { "type": "string" },
+                  "entrada1": { "type": "string" },
+                  "saida1": { "type": "string" },
+                  "entrada2": { "type": "string" },
+                  "saida2": { "type": "string" },
+                  "totalHorasDia": { "type": "number" },
+                  "possuiIntervalo": { "type": "string" },
+                  "horasIntervalo": { "type": "number" },
+                  "tipoHoraExtra": { "type": "string" },
+                  "periodo": { "type": "string" }
+                },
+                "required": [
+                  "codigoTurno",
+                  "semana",
+                  "diaSemana",
+                  "tipoDia",
+                  "entrada1",
+                  "saida1",
+                  "entrada2",
+                  "saida2",
+                  "totalHorasDia",
+                  "possuiIntervalo",
+                  "horasIntervalo",
+                  "tipoHoraExtra",
+                  "periodo"
+                ],
+                "x-readme-ref-name": "ResTurnoDTO"
+              }
+            ]
+          },
           "turnoDia": { "format": "date-time", "type": "string" },
           "turnoDiaStr": { "type": "string" },
           "registros": {
@@ -31,17 +72,24 @@
             }
           },
           "qtdHoras": { "type": "number" },
-          "horasIrregulares": { "type": "number" }
+          "horasIrregulares": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["OK", "ALERTA", "FALHA"],
+            "description": "FALHA para marcações inválidas; ALERTA para excesso de horas; OK nos demais casos."
+          }
         },
         "required": [
           "matricula",
           "setor",
           "nome",
+          "turnoBase",
           "turnoDia",
           "turnoDiaStr",
           "registros",
           "qtdHoras",
-          "horasIrregulares"
+          "horasIrregulares",
+          "status"
         ],
         "x-readme-ref-name": "ResRegistroPontoTurnoPontoDTO"
       }
