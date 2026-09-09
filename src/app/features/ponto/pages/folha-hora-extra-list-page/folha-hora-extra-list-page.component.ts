@@ -724,14 +724,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  /**
-   * O endpoint de refeições normaliza a data recebida no fuso UTC e aplica o
-   * resultado ao próximo dia operacional. Enviamos o dia anterior para que o
-   * filtro exibido para o RH corresponda exatamente à data da folha.
-   */
   private formatRefeicoesDate(date: Date): string {
-    const previousDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
-    return this.formatLocalDate(previousDay);
+    return this.formatLocalDate(date);
   }
 
   private isEditableStatus(status: FolhaHoraExtraStatus): boolean {
