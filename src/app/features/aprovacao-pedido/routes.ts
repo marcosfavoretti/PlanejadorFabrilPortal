@@ -18,7 +18,7 @@ export const APROVACAO_PEDIDO_ROUTES: Routes = [
         data: {
           roles: [
             SetUserCargoDTOCargoEnum.ADMIN,
-            SetUserCargoDTOCargoEnum.PCP,
+            SetUserCargoDTOCargoEnum.DIRETOR,
           ],
         },
       },
