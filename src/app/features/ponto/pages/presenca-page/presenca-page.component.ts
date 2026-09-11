@@ -11,15 +11,19 @@ import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import { FolhaHoraExtraAPIService } from '@/app/features/ponto/services/FolhaHoraExtraAPI.service';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
-import { ActivatedRoute } from '@angular/router';
 import {
   FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum,
   ResCentroDeCustoDTO,
   ResPresencaFuncionarioDTO,
   ResPresencaFuncionarioDTOStatusEnum,
 } from '@/api/relogio';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 
-const CARGOS_COM_SELECAO_LIVRE_CC = new Set(['ADMIN', 'RH', 'GERENTE', 'DIRETOR']);
+const CARGOS_COM_SELECAO_LIVRE_CC = new Set<string>([
+  SetUserCargoDTOCargoEnum.ADMIN,
+  SetUserCargoDTOCargoEnum.RH,
+  SetUserCargoDTOCargoEnum.DIRETOR,
+]);
 
 @Component({
   selector: 'app-presenca-page',
@@ -33,15 +37,11 @@ export class PresencaPageComponent implements OnInit {
   private readonly funcionariosAPIService = inject(FuncionariosAPIService);
   private readonly folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
   private readonly userStore = inject(UserstoreService);
-  private readonly activatedRoute = inject(ActivatedRoute);
 
   protected readonly presencas = signal<ResPresencaFuncionarioDTO[]>([]);
   protected readonly presencaTotalItems = signal(0);
   protected readonly filterContextReady = signal(false);
-  protected readonly centroCustoSelectorDisabled = computed(() => {
-    const preFilter = this.preFilterSetor();
-    return (preFilter?.length ?? 0) > 0 || !this.podeSelecionarQualquerCentroCusto();
-  });
+  protected readonly centroCustoSelectorDisabled = computed(() => !this.podeSelecionarQualquerCentroCusto());
 
   protected readonly presencaFilterForm = this.fb.group({
     status: this.fb.control<FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum | null>(
@@ -57,6 +57,7 @@ export class PresencaPageComponent implements OnInit {
     { label: 'Não presente', value: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum.NAO_PRESENTE },
     { label: 'Fora do turno', value: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum.FORA_DO_TURNO },
     { label: 'Férias', value: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum.FERIAS },
+    { label: 'Afastado', value: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum.AFASTADO },
   ];
 
   protected readonly presencaTableModel: TableModel = {
@@ -88,7 +89,6 @@ export class PresencaPageComponent implements OnInit {
   protected presencaFirst = 0;
   protected presencaPageSize = 10;
   protected fetching = false;
-  private readonly preFilterSetor = signal<string[] | undefined>(undefined);
   private centroCustoCodigosVinculados: number[] = [];
 
   constructor() {
@@ -102,17 +102,10 @@ export class PresencaPageComponent implements OnInit {
     this.syncCentroCustoControlState();
     this.laodCentroDeCusto().subscribe({
       next: () => {
-        const ccsParam = this.activatedRoute.snapshot.params['ccs'];
-        if (ccsParam) {
-          this.applyRoutePreFilter(ccsParam);
+        this.applyLoggedUserCentroCustoScope(() => {
           this.filterContextReady.set(true);
           this.loadPresencas();
-        } else {
-          this.applyLoggedUserCentroCustoPreSelection(() => {
-            this.filterContextReady.set(true);
-            this.loadPresencas();
-          });
-        }
+        });
       },
       error: err => console.error('Erro ao carregar centros de custo', err),
     });
@@ -137,16 +130,15 @@ export class PresencaPageComponent implements OnInit {
     this.applyPresencaFilters();
   }
 
-  private applyRoutePreFilter(ccsParam: string): void {
-    const lista = ccsParam.split(',').map(cc => cc.trim()).filter(Boolean);
-    this.preFilterSetor.set(lista);
-    const targets = this.centroDeCusto.filter(cc => lista.includes(cc.ccid.toString()));
-    this.presencaFilterForm.patchValue({ centroCustoCodigo: targets[0]?.ccid ?? null });
-    this.syncCentroCustoControlState();
-  }
+  private applyLoggedUserCentroCustoScope(afterLoad: () => void): void {
+    if (this.podeSelecionarQualquerCentroCusto()) {
+      this.centroCustoCodigosVinculados = [];
+      this.presencaFilterForm.patchValue({ centroCustoCodigo: null });
+      this.syncCentroCustoControlState();
+      afterLoad();
+      return;
+    }
 
-  private applyLoggedUserCentroCustoPreSelection(afterLoad: () => void): void {
-    this.preFilterSetor.set([]);
     const usuarioId = this.userStore.item()?.id;
     if (!usuarioId) { afterLoad(); return; }
 
@@ -155,8 +147,9 @@ export class PresencaPageComponent implements OnInit {
         const linkedCodes = new Set(vinculos.map(vinculo => vinculo.centroCustoCodigo));
         const targets = this.centroDeCusto.filter(cc => linkedCodes.has(cc.ccid));
         this.centroCustoCodigosVinculados = [...linkedCodes];
-        if (!this.podeSelecionarQualquerCentroCusto()) this.centroDeCusto = targets;
-        this.presencaFilterForm.patchValue({ centroCustoCodigo: targets[0]?.ccid ?? null });
+        this.centroDeCusto = targets;
+        this.presencaFilterForm.patchValue({ centroCustoCodigo: null });
+        this.syncCentroCustoControlState();
         afterLoad();
       },
       error: err => { console.error('Erro ao carregar centros vinculados', err); afterLoad(); },
@@ -165,13 +158,16 @@ export class PresencaPageComponent implements OnInit {
 
   private loadPresencas(): void {
     const filter = this.presencaFilterForm.getRawValue();
-    const centroCustoCodigo = filter.centroCustoCodigo
-      ? String(filter.centroCustoCodigo)
-      : this.preFilterSetor()?.length
-        ? this.preFilterSetor()!.join(',')
-        : this.centroCustoCodigosVinculados.length
-          ? this.centroCustoCodigosVinculados.join(',')
-          : undefined;
+    const podeSelecionarQualquerCC = this.podeSelecionarQualquerCentroCusto();
+    if (!podeSelecionarQualquerCC && !this.centroCustoCodigosVinculados.length) {
+      this.presencas.set([]);
+      this.presencaTotalItems.set(0);
+      return;
+    }
+
+    const centroCustoCodigo = podeSelecionarQualquerCC
+      ? filter.centroCustoCodigo ? String(filter.centroCustoCodigo) : undefined
+      : this.centroCustoCodigosVinculados.join(',');
     this.fetching = true;
     this.funcionariosAPIService.getPresencaFuncionarios({
       page: Math.floor(this.presencaFirst / this.presencaPageSize),
@@ -196,11 +192,17 @@ export class PresencaPageComponent implements OnInit {
   }
 
   private syncCentroCustoControlState(): void {
-    this.presencaFilterForm.controls.centroCustoCodigo.enable({ emitEvent: false });
+    const control = this.presencaFilterForm.controls.centroCustoCodigo;
+    if (this.podeSelecionarQualquerCentroCusto()) {
+      control.enable({ emitEvent: false });
+      return;
+    }
+
+    control.disable({ emitEvent: false });
   }
 
   private getPresencaStatusLabel(status: ResPresencaFuncionarioDTOStatusEnum): string {
-    const labels: Record<string, string> = { PRESENTE: 'Presente', NAO_PRESENTE: 'Não presente', FORA_DO_TURNO: 'Fora do turno', FERIAS: 'Férias' };
+    const labels: Record<string, string> = { PRESENTE: 'Presente', NAO_PRESENTE: 'Não presente', FORA_DO_TURNO: 'Fora do turno', FERIAS: 'Férias', AFASTADO: 'Afastado' };
     return labels[status] ?? 'Não informado';
   }
 

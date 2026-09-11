@@ -6,7 +6,6 @@ import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { ResExtratoCustoFuncionarioHoraExtraDTO } from '@/api/relogio';
 import {
-  FOLHA_HE_STATUS_LABEL,
   FolhaHoraExtraAPIService,
   FolhaHoraExtraDetalhe,
   FolhaHoraExtraStatus,
@@ -45,7 +44,6 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   private readonly userStore = inject(UserstoreService);
   private readonly dialogService = inject(DialogService);
 
-  protected readonly statusLabel = FOLHA_HE_STATUS_LABEL;
   protected folha: FolhaHoraExtraDetalhe | null = null;
   protected loading = false;
   protected messages: ToastMessageOptions[] = [];
@@ -84,7 +82,7 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
     this.folhaHoraExtraService.submitFolha(this.folha.id).subscribe({
       next: folha => {
         this.folha = folha;
-        this.messages = [{ severity: 'success', summary: 'Sucesso', detail: 'Folha submetida para gerencia.' }];
+        this.messages = [{ severity: 'success', summary: 'Sucesso', detail: 'Folha submetida para coordenação.' }];
       },
       error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
     });
@@ -111,10 +109,10 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
 
   protected canEdit(): boolean {
     const roles = this.userStore.item()?.cargosLista ?? [];
-    const canEdit = roles.includes('SUPORTE')
+    const canEdit = roles.includes(SetUserCargoDTOCargoEnum.SUPORTE)
       || LIDERES_ROLES.some(role => roles.includes(role));
     return !!this.folha
-      && ['RASCUNHO', 'REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(this.folha.status)
+      && ['RASCUNHO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(this.folha.status)
       && canEdit;
   }
 
@@ -123,9 +121,9 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   }
 
   protected canSubmit(): boolean {
-    return !this.userStore.item()?.cargosLista?.includes('SUPORTE')
+    return !this.userStore.item()?.cargosLista?.includes(SetUserCargoDTOCargoEnum.SUPORTE)
       && !!this.folha
-      && ['RASCUNHO', 'REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(this.folha.status);
+      && ['RASCUNHO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(this.folha.status);
   }
 
   protected canApprove(): boolean {
@@ -135,13 +133,13 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
 
     const roles = this.userStore.item()?.cargosLista ?? [];
     if (roles.includes(SetUserCargoDTOCargoEnum.ADMIN)) {
-      return ['AGUARDANDO_GERENCIA', 'AGUARDANDO_DIRETORIA'].includes(this.folha.status);
+      return ['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA'].includes(this.folha.status);
     }
 
-    return (
-      (roles.includes('GERENTE') && this.folha.status === 'AGUARDANDO_GERENCIA') ||
-      (roles.includes(SetUserCargoDTOCargoEnum.DIRETOR) && this.folha.status === 'AGUARDANDO_DIRETORIA')
-    );
+    return (roles.includes(SetUserCargoDTOCargoEnum.COORDENADOR)
+      && this.folha.status === 'AGUARDANDO_COORDENACAO')
+      || (roles.includes(SetUserCargoDTOCargoEnum.DIRETOR)
+        && this.folha.status === 'AGUARDANDO_DIRETORIA');
   }
 
   protected transporteLabel(funcionario: FolhaHoraExtraDetalhe['funcionarios'][number]): string {
@@ -195,10 +193,10 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   protected getStatusSeverity(status: FolhaHoraExtraStatus): 'secondary' | 'info' | 'warn' | 'success' | 'danger' {
     switch (status) {
       case 'RASCUNHO': return 'secondary';
-      case 'AGUARDANDO_GERENCIA': return 'info';
+      case 'AGUARDANDO_COORDENACAO': return 'info';
       case 'AGUARDANDO_DIRETORIA': return 'warn';
       case 'APROVADO': return 'success';
-      case 'REJEITADO_GERENCIA':
+      case 'REJEITADO_COORDENACAO':
       case 'REJEITADO_DIRETORIA':
         return 'danger';
     }

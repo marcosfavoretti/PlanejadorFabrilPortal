@@ -6,7 +6,7 @@
     <div class="detail-header">
       <div>
         <span class="muted">Status atual</span>
-        <p-tag [value]="statusLabel[item.status]" [severity]="getStatusSeverity(item.status)"></p-tag>
+        <p-tag [value]="item.status" [severity]="getStatusSeverity(item.status)"></p-tag>
       </div>
       <div class="detail-actions">
         <p-button label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"

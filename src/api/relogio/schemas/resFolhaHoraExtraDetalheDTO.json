@@ -11,10 +11,10 @@
       "type": "string",
       "enum": [
         "RASCUNHO",
-        "AGUARDANDO_GERENCIA",
+        "AGUARDANDO_COORDENACAO",
         "AGUARDANDO_DIRETORIA",
         "APROVADO",
-        "REJEITADO_GERENCIA",
+        "REJEITADO_COORDENACAO",
         "REJEITADO_DIRETORIA"
       ]
     },
@@ -65,8 +65,11 @@
         "type": "object",
         "properties": {
           "usuarioId": { "type": "string", "example": "user-uuid" },
-          "usuarioNome": { "type": "string", "example": "Gerente Industrial" },
-          "cargo": { "type": "string", "example": "GERENTE" },
+          "usuarioNome": {
+            "type": "string",
+            "example": "Coordenador Industrial"
+          },
+          "cargo": { "type": "string", "example": "COORDENADOR" },
           "acao": {
             "type": "string",
             "enum": ["APROVADO", "REJEITADO"],

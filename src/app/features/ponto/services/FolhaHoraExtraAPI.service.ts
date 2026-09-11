@@ -32,10 +32,10 @@ import { from, Observable } from 'rxjs';
 
 export type FolhaHoraExtraStatus =
   | 'RASCUNHO'
-  | 'AGUARDANDO_GERENCIA'
+  | 'AGUARDANDO_COORDENACAO'
   | 'AGUARDANDO_DIRETORIA'
   | 'APROVADO'
-  | 'REJEITADO_GERENCIA'
+  | 'REJEITADO_COORDENACAO'
   | 'REJEITADO_DIRETORIA';
 
 export type FolhaHoraExtraTurno = 'NORMAL' | 'NOTURNO';
@@ -155,15 +155,6 @@ export interface FolhaHoraExtraRefeicaoListResponse {
 }
 
 export type LiderCentroCustoVinculo = ResLiderCentroCustoDTO;
-
-export const FOLHA_HE_STATUS_LABEL: Record<FolhaHoraExtraStatus, string> = {
-  RASCUNHO: 'Rascunho',
-  AGUARDANDO_GERENCIA: 'Aguardando gerencia',
-  AGUARDANDO_DIRETORIA: 'Aguardando diretoria',
-  APROVADO: 'Aprovado',
-  REJEITADO_GERENCIA: 'Rejeitado pela gerencia',
-  REJEITADO_DIRETORIA: 'Rejeitado pela diretoria',
-};
 
 @Injectable({ providedIn: 'root' })
 export class FolhaHoraExtraAPIService {

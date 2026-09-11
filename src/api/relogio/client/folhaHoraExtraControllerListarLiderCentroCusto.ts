@@ -23,8 +23,8 @@ function getFolhaHoraExtraControllerListarLiderCentroCustoUrl(
 }
 
 /**
- * @description Retorna os vinculos ativos de um usuario lider com centros de custo. Use para auditar ou montar telas administrativas de permissao por CC.
- * @summary Lista centros de custo vinculados a um lider
+ * @description Retorna os vinculos ativos de lider, suporte ou coordenador com centros de custo. Use para auditar ou montar telas administrativas de permissao por CC.
+ * @summary Lista centros de custo vinculados a lider, suporte ou coordenador
  * {@link /api/ponto/folha-he/lider-centro-custo/:usuarioId}
  */
 export async function folhaHoraExtraControllerListarLiderCentroCusto(

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  FOLHA_HE_STATUS_LABEL,
   FolhaHoraExtraAPIService,
   FolhaHoraExtraResumo,
   mapFolhaHoraExtraError,
@@ -34,7 +33,6 @@ export class FolhaHoraExtraApprovalDialogComponent implements OnInit {
   private readonly ref = inject(DynamicDialogRef);
   private readonly config = inject(DynamicDialogConfig);
 
-  protected readonly statusLabel = FOLHA_HE_STATUS_LABEL;
   protected folha!: FolhaHoraExtraResumo;
   protected loading = false;
   protected messages: ToastMessageOptions[] = [];

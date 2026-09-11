@@ -8,7 +8,6 @@ import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
-  FOLHA_HE_STATUS_LABEL,
   FolhaHoraExtraAPIService,
   FolhaHoraExtraListResponse,
   FolhaHoraExtraRefeicaoResumo,
@@ -39,9 +38,9 @@ import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 
 const FOLHA_HE_STATUS_OPERACIONAL: FolhaHoraExtraStatus[] = [
   'RASCUNHO',
-  'AGUARDANDO_GERENCIA',
+  'AGUARDANDO_COORDENACAO',
   'AGUARDANDO_DIRETORIA',
-  'REJEITADO_GERENCIA',
+  'REJEITADO_COORDENACAO',
   'REJEITADO_DIRETORIA',
 ];
 
@@ -88,9 +87,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly dialogService = inject(DialogService);
 
-  protected readonly statusLabel = FOLHA_HE_STATUS_LABEL;
   protected readonly statusOptions = FOLHA_HE_STATUS_OPERACIONAL
-    .map(status => ({ label: FOLHA_HE_STATUS_LABEL[status], value: status }));
+    .map(status => ({ label: status, value: status }));
 
   protected readonly dataRangeFilter = new FormControl<Date[] | null>(null);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
@@ -103,14 +101,14 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected readonly refeicoesTipoFilter = new FormControl<'MARMITEX' | 'LANCHE' | 'N/A' | null>(null);
   protected readonly refeicoesStatusFilter = new FormControl<
     FolhaHoraExtraStatus[] | null
-  >(['AGUARDANDO_GERENCIA', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
+  >(['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
   protected readonly refeicaoOptions = [
     { label: 'Marmitex', value: 'MARMITEX' as const },
     { label: 'Lanche', value: 'LANCHE' as const },
     { label: 'Sem refeição', value: 'N/A' as const },
   ];
   protected readonly refeicoesStatusOptions = FOLHA_HE_STATUS_TODOS
-    .map(status => ({ label: FOLHA_HE_STATUS_LABEL[status], value: status }));
+    .map(status => ({ label: status, value: status }));
   protected pageSize = 10;
   protected first = 0;
   protected totalRecords = 0;
@@ -121,7 +119,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected refeicoesFirst = 0;
   protected refeicoesTotalRecords = 0;
   protected readonly approvalQueueOptions = [
-    { label: 'Fila gerencia', status: 'AGUARDANDO_GERENCIA' as FolhaHoraExtraStatus },
+    { label: 'Fila coordenação', status: 'AGUARDANDO_COORDENACAO' as FolhaHoraExtraStatus },
     { label: 'Fila diretoria', status: 'AGUARDANDO_DIRETORIA' as FolhaHoraExtraStatus },
   ];
 
@@ -154,6 +152,10 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         isTag: true,
         filterable: false,
         sortable: false,
+        tagLabelFn: (value, row) => this.getRefeicaoLabel(
+          value as FolhaHoraExtraRefeicaoResumo['refeicao'],
+          row as FolhaHoraExtraRefeicaoResumo,
+        ),
         tagSeverityFn: value => this.getRefeicaoSeverity(value as FolhaHoraExtraRefeicaoResumo['refeicao']),
       },
       {
@@ -175,7 +177,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         isTag: true,
         filterable: false,
         sortable: false,
-        tagLabelFn: value => this.getStatusLabel(value as FolhaHoraExtraStatus),
         tagSeverityFn: value => this.getStatusSeverity(value as FolhaHoraExtraStatus),
       },
       { alias: 'Justificativa', field: 'justificativa', filterable: false, sortable: false },
@@ -198,24 +199,28 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       {
         field: 'status',
         desc: 'Pendente',
-        ifRowFunction: row => ['AGUARDANDO_GERENCIA', 'AGUARDANDO_DIRETORIA'].includes(row.status),
+        ifRowFunction: row => ['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA'].includes(row.status),
         color: '#fef3c7',
       },
       { field: 'status', desc: 'Rascunho', ifValueEqual: 'RASCUNHO', color: '#f1f5f9' },
       {
         field: 'status',
         desc: 'Rejeitada',
-        ifRowFunction: row => ['REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(row.status),
+        ifRowFunction: row => ['REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(row.status),
         color: '#fee2e2',
       },
     ],
   };
 
   protected readonly folhasTableModel: TableModel = {
-    title: this.usesHistoricoDashboard() ? 'Folhas aguardando aprovação' : 'Folhas de HE em andamento',
-    subtitle: this.usesHistoricoDashboard()
-      ? 'Fila operacional separada do histórico e do KPI'
-      : 'Folhas criadas, editáveis ou em fluxo de aprovação',
+    title: this.hasCombinedLeaderCoordinatorRoles()
+      ? 'Folhas de HE: operação e aprovação'
+      : this.usesHistoricoDashboard() ? 'Folhas aguardando aprovação' : 'Folhas de HE em andamento',
+    subtitle: this.hasCombinedLeaderCoordinatorRoles()
+      ? 'Rascunhos, folhas rejeitadas e fila de aprovação da coordenação do centro de custo'
+      : this.usesHistoricoDashboard()
+        ? 'Fila operacional separada do histórico e do KPI'
+        : 'Folhas criadas, editáveis ou em fluxo de aprovação',
     paginator: true,
     totalize: false,
     dataKey: 'id',
@@ -285,7 +290,9 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected canCreateFolha(): boolean {
-    return this.isAdmin() || this.hasLeaderRole() || this.userRoles().includes('SUPORTE');
+    return this.isAdmin()
+      || this.hasLeaderRole()
+      || this.userRoles().includes(SetUserCargoDTOCargoEnum.SUPORTE);
   }
 
   protected onLazyLoad(event: TableLazyLoadEvent): void {
@@ -317,7 +324,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.refeicoesMatriculaFilter.setValue('');
     this.refeicoesNomeFilter.setValue('');
     this.refeicoesTipoFilter.setValue(null);
-    this.refeicoesStatusFilter.setValue(['AGUARDANDO_GERENCIA', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
+    this.refeicoesStatusFilter.setValue(['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
     this.applyRefeicoesFilters();
   }
 
@@ -347,7 +354,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected submitFolha(folha: FolhaHoraExtraResumo): void {
     this.folhaHoraExtraService.submitFolha(folha.id).subscribe({
       next: () => {
-        this.messages = [{ severity: 'success', summary: 'Sucesso', detail: 'Folha submetida para gerencia.' }];
+        this.messages = [{ severity: 'success', summary: 'Sucesso', detail: 'Folha submetida para coordenação.' }];
         this.applyFilters();
       },
       error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
@@ -399,26 +406,26 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected canEdit(folha: FolhaHoraExtraResumo): boolean {
     const roles = this.userRoles();
-    const canEdit = this.isAdmin() || this.hasLeaderRole(roles) || roles.includes('SUPORTE');
+    const canEdit = this.isAdmin()
+      || this.hasLeaderRole(roles)
+      || roles.includes(SetUserCargoDTOCargoEnum.SUPORTE);
     return this.isEditableStatus(folha.status)
       && canEdit;
   }
 
   protected canSubmit(folha: FolhaHoraExtraResumo): boolean {
-    return !this.userRoles().includes('SUPORTE')
-      && ['RASCUNHO', 'REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(folha.status);
+    return !this.userRoles().includes(SetUserCargoDTOCargoEnum.SUPORTE)
+      && ['RASCUNHO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(folha.status);
   }
 
   protected canApprove(folha: FolhaHoraExtraResumo): boolean {
     const roles = this.userRoles();
     if (this.isAdmin()) {
-      return ['AGUARDANDO_GERENCIA', 'AGUARDANDO_DIRETORIA'].includes(folha.status);
+      return ['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA'].includes(folha.status);
     }
 
-    return (
-      (this.isManager(roles) && folha.status === 'AGUARDANDO_GERENCIA') ||
-      (roles.includes(SetUserCargoDTOCargoEnum.DIRETOR) && folha.status === 'AGUARDANDO_DIRETORIA')
-    );
+    return (this.hasCoordinatorRole(roles) && folha.status === 'AGUARDANDO_COORDENACAO')
+      || (roles.includes(SetUserCargoDTOCargoEnum.DIRETOR) && folha.status === 'AGUARDANDO_DIRETORIA');
   }
 
   protected canViewKpi(folha: FolhaHoraExtraResumo): boolean {
@@ -427,13 +434,15 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected canViewFolhas(): boolean {
     const roles = this.userRoles();
-    return !roles.includes('RH') && (this.usesHistoricoDashboard()
+    // As permissoes sao cumulativas: RH libera a tabela de refeicoes, mas nao
+    // deve esconder as tabelas concedidas por LIDER/COORDENADOR/DIRETOR.
+    return this.usesHistoricoDashboard()
       || this.hasLeaderRole(roles)
-      || roles.includes('SUPORTE'));
+      || roles.includes(SetUserCargoDTOCargoEnum.SUPORTE);
   }
 
   protected canViewRefeicoes(): boolean {
-    return this.userRoles().includes('RH');
+    return this.userRoles().includes(SetUserCargoDTOCargoEnum.RH);
   }
 
   protected hasVisibleSections(): boolean {
@@ -442,28 +451,27 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected usesHistoricoDashboard(): boolean {
     const roles = this.userRoles();
-    return !roles.includes('RH') && (this.isManager(roles) || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR) || this.isAdmin());
+    return !this.hasCombinedLeaderCoordinatorRoles(roles)
+      && (this.hasCoordinatorRole(roles)
+      || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR)
+      || this.isAdmin());
   }
 
   protected canAuditHistorico(): boolean {
     const roles = this.userRoles();
-    return !roles.includes('RH') && (this.usesHistoricoDashboard() || this.hasLeaderRole(roles));
+    return this.usesHistoricoDashboard() || this.hasLeaderRole(roles);
   }
 
   protected getStatusSeverity(status: FolhaHoraExtraStatus): 'secondary' | 'info' | 'warn' | 'success' | 'danger' {
     switch (status) {
       case 'RASCUNHO': return 'secondary';
-      case 'AGUARDANDO_GERENCIA': return 'info';
+      case 'AGUARDANDO_COORDENACAO': return 'info';
       case 'AGUARDANDO_DIRETORIA': return 'warn';
       case 'APROVADO': return 'success';
-      case 'REJEITADO_GERENCIA':
+      case 'REJEITADO_COORDENACAO':
       case 'REJEITADO_DIRETORIA':
         return 'danger';
     }
-  }
-
-  protected getStatusLabel(status: FolhaHoraExtraStatus): string {
-    return FOLHA_HE_STATUS_LABEL[status];
   }
 
   protected getCumprimentoSeverity(funcionario: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO): 'success' | 'danger' {
@@ -494,6 +502,28 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     if (refeicao === 'MARMITEX') return 'success';
     if (refeicao === 'LANCHE') return 'warn';
     return 'secondary';
+  }
+
+  protected getRefeicaoLabel(
+    refeicao: FolhaHoraExtraRefeicaoResumo['refeicao'],
+    { inicioHE, fimHE }: FolhaHoraExtraRefeicaoResumo,
+  ): string {
+    if (refeicao !== 'MARMITEX') {
+      return refeicao;
+    }
+
+    return this.isWithinDinnerRange(inicioHE) && this.isWithinDinnerRange(fimHE)
+      ? 'MARMITEX (JANTA)'
+      : 'MARMITEX (ALMOÇO)';
+  }
+
+  private isWithinDinnerRange(time: string): boolean {
+    const [hours, minutes] = time.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    const dinnerStart = 15 * 60 + 48;
+    const dinnerEnd = 1 * 60;
+
+    return totalMinutes >= dinnerStart || totalMinutes <= dinnerEnd;
   }
 
   protected isAdmin(): boolean {
@@ -542,7 +572,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         isTag: true,
         filterable: false,
         sortable: false,
-        tagLabelFn: value => this.getStatusLabel(value as FolhaHoraExtraStatus),
         tagSeverityFn: value => this.getStatusSeverity(value as FolhaHoraExtraStatus),
       },
       { alias: 'Funcionários', field: 'totalFuncionarios', isNumber: true, filterable: false, sortable: false },
@@ -595,14 +624,17 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
               {
                 icon: 'pi pi-pencil',
                 tooltip: 'Editar',
-                visible: () => !this.usesHistoricoDashboard(),
+                // Lider e coordenador acumulam permissoes: o lider continua
+                // podendo editar mesmo ao visualizar a fila de coordenacao.
+                visible: () => !this.usesHistoricoDashboard() || this.hasLeaderRole(),
                 disabled: row => !this.canEdit(row as FolhaHoraExtraResumo),
                 command: row => this.editFolha(row as FolhaHoraExtraResumo),
               },
               {
                 icon: 'pi pi-send',
                 tooltip: 'Submeter',
-                visible: () => !this.usesHistoricoDashboard() && !this.userRoles().includes('SUPORTE'),
+                visible: () => (!this.usesHistoricoDashboard() || this.hasLeaderRole())
+                  && !this.userRoles().includes(SetUserCargoDTOCargoEnum.SUPORTE),
                 disabled: row => !this.canSubmit(row as FolhaHoraExtraResumo),
                 command: row => this.submitFolha(row as FolhaHoraExtraResumo),
               },
@@ -621,9 +653,11 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private loadFolhas() {
     this.loading = true;
     const range = this.dataRangeFilter.value;
-    const statusFilter = this.usesHistoricoDashboard()
-      ? this.approvalStatusFilter.value ?? this.getApprovalStatusesForUser()
-      : this.getOperationalStatusesForUser(this.statusFilter.value);
+    const statusFilter = this.hasCombinedLeaderCoordinatorRoles()
+      ? this.getCombinedLeaderCoordinatorStatuses(this.statusFilter.value)
+      : this.usesHistoricoDashboard()
+        ? this.approvalStatusFilter.value ?? this.getApprovalStatusesForUser()
+        : this.getOperationalStatusesForUser(this.statusFilter.value);
     const filters = {
       dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
@@ -729,15 +763,11 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   private isEditableStatus(status: FolhaHoraExtraStatus): boolean {
-    return ['RASCUNHO', 'REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(status);
+    return ['RASCUNHO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(status);
   }
 
   private userRoles(): string[] {
     return this.userStore.item()?.cargosLista ?? [];
-  }
-
-  private isManager(roles: string[]): boolean {
-    return roles.includes('GERENTE');
   }
 
   private hasLeaderRole(roles = this.userRoles()): boolean {
@@ -746,18 +776,39 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       .some(role => roles.includes(role));
   }
 
+  private hasCoordinatorRole(roles = this.userRoles()): boolean {
+    return roles.includes(SetUserCargoDTOCargoEnum.COORDENADOR);
+  }
+
+  private hasCombinedLeaderCoordinatorRoles(roles = this.userRoles()): boolean {
+    return this.hasLeaderRole(roles) && this.hasCoordinatorRole(roles);
+  }
+
   private getApprovalStatusesForUser(): FolhaHoraExtraStatus[] {
     const roles = this.userRoles();
     const statuses: FolhaHoraExtraStatus[] = [];
 
-    if (this.isAdmin() || this.isManager(roles)) {
-      statuses.push('AGUARDANDO_GERENCIA');
+    if (this.isAdmin() || this.hasCoordinatorRole(roles)) {
+      statuses.push('AGUARDANDO_COORDENACAO');
     }
     if (this.isAdmin() || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR)) {
       statuses.push('AGUARDANDO_DIRETORIA');
     }
 
     return statuses;
+  }
+
+  private getCombinedLeaderCoordinatorStatuses(
+    selectedStatus: FolhaHoraExtraStatus | null,
+  ): FolhaHoraExtraStatus[] {
+    if (selectedStatus && FOLHA_HE_STATUS_OPERACIONAL.includes(selectedStatus)) {
+      return [selectedStatus];
+    }
+
+    return [...new Set([
+      ...FOLHA_HE_STATUS_OPERACIONAL,
+      ...this.getApprovalStatusesForUser(),
+    ])];
   }
 
   private getOperationalStatusesForUser(selectedStatus: FolhaHoraExtraStatus | null): FolhaHoraExtraStatus[] {

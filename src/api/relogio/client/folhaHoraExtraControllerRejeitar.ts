@@ -26,7 +26,7 @@ function getFolhaHoraExtraControllerRejeitarUrl(
 }
 
 /**
- * @description Gerente rejeita folhas AGUARDANDO_GERENCIA e diretor rejeita folhas AGUARDANDO_DIRETORIA. ADMIN pode rejeitar qualquer etapa atual do fluxo. O motivo e obrigatorio e fica registrado no historico. A folha rejeitada pode ser editada pelo lider autor para retornar a RASCUNHO.
+ * @description Coordenador rejeita folhas AGUARDANDO_COORDENACAO e diretor rejeita folhas AGUARDANDO_DIRETORIA. ADMIN pode rejeitar qualquer etapa atual do fluxo. O motivo e obrigatorio e fica registrado no historico. A folha rejeitada pode ser editada pelo lider autor para retornar a RASCUNHO.
  * @summary Rejeita a folha na etapa atual
  * {@link /api/ponto/folha-he/:id/rejeitar}
  */

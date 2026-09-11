@@ -29,7 +29,7 @@
               <p-select inputId="presenca-centro-custo" formControlName="centroCustoCodigo" [options]="centroDeCusto"
                 optionLabel="setor" optionValue="ccid" [filter]="true" filterBy="setor,ccid"
                 placeholder="Centros selecionados acima" [showClear]="true" appendTo="body" styleClass="ponto-control"
-                [class.centro-custo-selector--locked]="centroCustoSelectorDisabled()" [attr.aria-disabled]="centroCustoSelectorDisabled()">
+                [disabled]="centroCustoSelectorDisabled()" [class.centro-custo-selector--locked]="centroCustoSelectorDisabled()">
                 <ng-template let-centro pTemplate="item">{{ centro.ccid }} - {{ centro.setor }}</ng-template>
                 <ng-template let-centro pTemplate="selectedItem">{{ centro?.ccid }} - {{ centro?.setor }}</ng-template>
               </p-select>

@@ -25,13 +25,13 @@ import {
   ResRegistroPontoTurnoPontoDTO,
   ResTurnoDTO,
 } from '@/api/relogio';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { ActivatedRoute } from '@angular/router';
 
-const CARGOS_COM_SELECAO_LIVRE_CC = new Set([
-  'ADMIN',
-  'RH',
-  'GERENTE',
-  'DIRETOR',
+const CARGOS_COM_SELECAO_LIVRE_CC = new Set<string>([
+  SetUserCargoDTOCargoEnum.ADMIN,
+  SetUserCargoDTOCargoEnum.RH,
+  SetUserCargoDTOCargoEnum.DIRETOR,
 ]);
 
 @Component({

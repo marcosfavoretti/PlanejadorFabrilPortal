@@ -26,7 +26,7 @@ function getFolhaHoraExtraControllerEditarUrl(
 }
 
 /**
- * @description Permite ao autor operacional editar uma folha em RASCUNHO ou rejeitada. Folhas em aprovacao ou aprovadas ficam imutaveis. Se a folha estava REJEITADO_GERENCIA ou REJEITADO_DIRETORIA, a edicao reabre o status para RASCUNHO.
+ * @description Permite ao autor operacional editar uma folha em RASCUNHO ou rejeitada. Folhas em aprovacao ou aprovadas ficam imutaveis. Se a folha estava REJEITADO_COORDENACAO ou REJEITADO_DIRETORIA, a edicao reabre o status para RASCUNHO.
  * @summary Edita uma folha de hora extra
  * {@link /api/ponto/folha-he/:id}
  */

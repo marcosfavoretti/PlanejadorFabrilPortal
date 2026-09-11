@@ -12,7 +12,7 @@ export const PORTARIA_ROUTES: Routes = [
       ),
     canActivate: [AuthGuard, CargoGuard],
     data: {
-      roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.DIRETOR],
+      roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.PORTARIA],
     },
   },
 ];

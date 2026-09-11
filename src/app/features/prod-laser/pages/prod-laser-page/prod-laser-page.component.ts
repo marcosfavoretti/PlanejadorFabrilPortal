@@ -13,6 +13,7 @@ import { PartcodeImageService } from '@/app/shared/services/partcode-image.servi
 import { LocalStorageService } from '@/app/shared/services/local-storage.service';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { LaserBoardDto, LaserBoardListDto, MoveLaserBoardCardDto, ProgramaLaserDetalheDto } from '@/api/proucao-fabrica';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { LaserPlan, LaserPlanColumn, LaserPlanColumnKind, LaserPlanPagination } from '../../models/laser-plan.model';
 import { LaserPlanColumnComponent } from '../../components/laser-plan-column/laser-plan-column.component';
 import { ProducaoFabricaApiService } from '../../services/producao-fabrica-api.service';
@@ -72,7 +73,7 @@ export class ProdLaserPageComponent implements OnInit, OnDestroy {
     // O acesso público mantém a mesma visão de conferência do cargo PRODUCAO_LASER.
     if (!user) return true;
 
-    return user.cargosLista.some((cargo) => cargo.trim().toUpperCase() === 'PRODUCAO_LASER');
+    return user.cargosLista.includes(SetUserCargoDTOCargoEnum.PRODUCAO_LASER);
   });
   private filterDebounce?: ReturnType<typeof setTimeout>;
   private readonly listRefreshTimers = new Map<string, ReturnType<typeof setTimeout>>();

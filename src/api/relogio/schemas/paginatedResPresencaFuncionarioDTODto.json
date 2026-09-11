@@ -33,7 +33,13 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PRESENTE", "NAO_PRESENTE", "FORA_DO_TURNO", "FERIAS"],
+            "enum": [
+              "PRESENTE",
+              "NAO_PRESENTE",
+              "FORA_DO_TURNO",
+              "FERIAS",
+              "AFASTADO"
+            ],
             "description": "Situação atual calculada a partir da última batida e do turno do dia."
           },
           "ferias": {

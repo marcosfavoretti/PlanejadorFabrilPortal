@@ -21,10 +21,10 @@
             "type": "string",
             "enum": [
               "RASCUNHO",
-              "AGUARDANDO_GERENCIA",
+              "AGUARDANDO_COORDENACAO",
               "AGUARDANDO_DIRETORIA",
               "APROVADO",
-              "REJEITADO_GERENCIA",
+              "REJEITADO_COORDENACAO",
               "REJEITADO_DIRETORIA"
             ]
           },

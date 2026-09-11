@@ -726,6 +726,6 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
 
   private isEditableStatus(status: string | null | undefined): boolean {
     const normalizedStatus = String(status ?? '').trim().toUpperCase();
-    return ['RASCUNHO', 'REJEITADO', 'REJEITADO_GERENCIA', 'REJEITADO_DIRETORIA'].includes(normalizedStatus);
+    return ['RASCUNHO', 'REJEITADO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(normalizedStatus);
   }
 }
