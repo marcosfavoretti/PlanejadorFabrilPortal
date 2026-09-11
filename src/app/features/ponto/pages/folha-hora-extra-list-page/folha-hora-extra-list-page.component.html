@@ -197,10 +197,10 @@
             <tr>
               <td>{{ refeicao.nome }}</td>
               <td>{{ refeicao.matricula }}</td>
-              <td>{{ refeicao.refeicao }}</td>
+              <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>
               <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
               <td>{{ refeicao.centroCustoCodigo }}</td>
-              <td>{{ getStatusLabel(refeicao.status) }}</td>
+              <td>{{ refeicao.status }}</td>
               <td>{{ refeicao.justificativa }}</td>
             </tr>
           }

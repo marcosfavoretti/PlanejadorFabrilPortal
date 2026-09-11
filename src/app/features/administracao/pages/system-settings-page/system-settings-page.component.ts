@@ -97,9 +97,14 @@ export class SystemSettingsPageComponent implements AfterViewInit {
     value,
   }));
 
-  protected readonly userCargoOptions = Object.values(SetUserCargoDTOCargoEnum).map(value => ({
+  // A lista vem do enum gerado pelo Kubb a partir do DTO aceito pelo backend.
+  // Assim, novos cargos passam a aparecer aqui quando o cliente de API é regenerado.
+  protected readonly userCargoOptions: Array<{
+    label: string;
+    value: SetUserCargoDTOCargoEnum;
+  }> = Object.values(SetUserCargoDTOCargoEnum).map(value => ({
     label: value,
-    value: String(value),
+    value,
   }));
   protected readonly auditMethodOptions = [
     { label: 'Todos os métodos', value: null },

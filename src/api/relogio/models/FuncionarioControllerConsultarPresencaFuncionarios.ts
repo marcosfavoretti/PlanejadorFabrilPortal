@@ -11,6 +11,7 @@ export enum FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusE
   NAO_PRESENTE = 'NAO_PRESENTE',
   FORA_DO_TURNO = 'FORA_DO_TURNO',
   FERIAS = 'FERIAS',
+  AFASTADO = 'AFASTADO',
 }
 
 export type FuncionarioControllerConsultarPresencaFuncionariosQueryParams = {
@@ -23,7 +24,7 @@ export type FuncionarioControllerConsultarPresencaFuncionariosQueryParams = {
    */
   limit?: number;
   /**
-   * @description PRESENTE quando a última marcação de hoje é uma entrada; NAO_PRESENTE durante a janela de trabalho sem presença; FORA_DO_TURNO fora dessa janela; FERIAS quando RA_SITFOLH é F. Sem filtro, retorna todos os funcionários ativos.
+   * @description PRESENTE quando a última marcação de hoje é uma entrada; NAO_PRESENTE durante a janela de trabalho sem presença; FORA_DO_TURNO fora dessa janela; FERIAS quando RA_SITFOLH é F; AFASTADO quando RA_SITFOLH é A. Sem filtro, retorna todos os funcionários ativos.
    * @type string | undefined
    */
   status?: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum;

@@ -22,7 +22,7 @@ function getFolhaHoraExtraControllerListarUrl() {
 }
 
 /**
- * @description Usuarios operacionais visualizam folhas dos centros de custo vinculados. Gerentes visualizam folhas AGUARDANDO_GERENCIA. Diretores visualizam folhas AGUARDANDO_DIRETORIA. RH visualiza todas as folhas em modo de consulta. ADMIN visualiza todos os status. Suporta filtros por periodo, centro de custo, status e paginacao.
+ * @description Usuarios operacionais visualizam folhas dos centros de custo vinculados. Coordenadores visualizam folhas AGUARDANDO_COORDENACAO. Diretores visualizam folhas AGUARDANDO_DIRETORIA. RH visualiza todas as folhas em modo de consulta. ADMIN visualiza todos os status. Suporta filtros por periodo, centro de custo, status e paginacao.
  * @summary Lista folhas de hora extra conforme o cargo do usuario
  * {@link /api/ponto/folha-he}
  */

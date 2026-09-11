@@ -2,8 +2,14 @@
 
 set -euo pipefail
 
-target="${1:-all}"
-shift || true
+target="all"
+
+# Flags do Kubb, como --production, podem ser informadas sem escolher uma API.
+# Nesse caso, gera todas as APIs e repassa a flag ao Kubb.
+if [[ "${1:-}" != --* && -n "${1:-}" ]]; then
+  target="$1"
+  shift
+fi
 
 case "${target,,}" in
   all)

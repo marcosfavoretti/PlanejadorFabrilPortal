@@ -25,7 +25,7 @@ function getFolhaHoraExtraControllerAprovarUrl(
 }
 
 /**
- * @description Gerente aprova folhas AGUARDANDO_GERENCIA e envia para AGUARDANDO_DIRETORIA. Diretor aprova folhas AGUARDANDO_DIRETORIA e encerra como APROVADO. ADMIN pode aprovar qualquer etapa atual do fluxo. A assinatura registra usuario, cargo, acao e timestamp no historico.
+ * @description Coordenador aprova folhas AGUARDANDO_COORDENACAO e envia para AGUARDANDO_DIRETORIA. Diretor aprova folhas AGUARDANDO_DIRETORIA e encerra como APROVADO. ADMIN pode aprovar qualquer etapa atual do fluxo. A assinatura registra usuario, cargo, acao e timestamp no historico.
  * @summary Aprova a folha na etapa atual
  * {@link /api/ponto/folha-he/:id/aprovar}
  */

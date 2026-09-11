@@ -14,7 +14,7 @@ export type FolhaHoraExtraControllerSubmeterPathParams = {
 };
 
 /**
- * @description Folha submetida para aprovacao da gerencia.
+ * @description Folha submetida para aprovacao da coordenacao.
  */
 export type FolhaHoraExtraControllerSubmeter200 = ResFolhaHoraExtraDetalheDTO;
 

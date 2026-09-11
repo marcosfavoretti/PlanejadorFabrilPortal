@@ -25,8 +25,8 @@ function getFolhaHoraExtraControllerSubmeterUrl(
 }
 
 /**
- * @description Transiciona a folha de RASCUNHO para AGUARDANDO_GERENCIA. O líder vinculado ao centro de custo e a gestão podem submeter. A folha precisa ter ao menos um funcionário.
- * @summary Submete uma folha para aprovacao da gerencia
+ * @description Transiciona a folha de RASCUNHO para AGUARDANDO_COORDENACAO. O líder vinculado ao centro de custo e a coordenação podem submeter. A folha precisa ter ao menos um funcionário.
+ * @summary Submete uma folha para aprovacao da coordenacao
  * {@link /api/ponto/folha-he/:id/submeter}
  */
 export async function folhaHoraExtraControllerSubmeter(

@@ -8,6 +8,7 @@ export enum ResPresencaFuncionarioDTOStatusEnum {
   NAO_PRESENTE = 'NAO_PRESENTE',
   FORA_DO_TURNO = 'FORA_DO_TURNO',
   FERIAS = 'FERIAS',
+  AFASTADO = 'AFASTADO',
 }
 
 export type ResPresencaFuncionarioDTO = {

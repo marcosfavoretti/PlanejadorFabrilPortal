@@ -22,8 +22,8 @@ function getFolhaHoraExtraControllerVincularLiderCentroCustoUrl() {
 }
 
 /**
- * @description Cria ou reativa o vinculo entre um usuario lider e um centro de custo. Esse cadastro define em quais centros de custo o lider pode criar ou editar folhas de hora extra. Endpoint restrito a ADMIN.
- * @summary Vincula um lider a um centro de custo
+ * @description Cria ou reativa o vinculo de lider, suporte ou coordenador com um centro de custo. Para coordenadores, define o escopo de consulta e aprovacao das folhas HE. Endpoint restrito a ADMIN. Um usuario pode ter varios centros de custo ativos.
+ * @summary Vincula lider, suporte ou coordenador a um centro de custo
  * {@link /api/ponto/folha-he/lider-centro-custo}
  */
 export async function folhaHoraExtraControllerVincularLiderCentroCusto(

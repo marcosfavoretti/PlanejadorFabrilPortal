@@ -1,9 +1,8 @@
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
-import { CargoEnum } from '@/@core/enum/CARGO.enum';
 
 export const LIDERES_ROLES = [
   SetUserCargoDTOCargoEnum.ADMIN,
-  CargoEnum.LIDER,
+  SetUserCargoDTOCargoEnum.LIDER,
 ];
 
 export const ESTRUTURA_ROLES = [
