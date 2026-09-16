@@ -8,6 +8,7 @@ export { authControllerRegister } from './authControllerRegister';
 export { authControllerRegisterWithInvite } from './authControllerRegisterWithInvite';
 export { authControllerValidateInvite } from './authControllerValidateInvite';
 export { authControllerValidateUser } from './authControllerValidateUser';
+export { authorizationControllerGetMine } from './authorizationControllerGetMine';
 export { cargoControllerSetUserCargoMethod } from './cargoControllerSetUserCargoMethod';
 export { twoFactorControllerSendEmailCode } from './twoFactorControllerSendEmailCode';
 export { twoFactorControllerVerifyChallenge } from './twoFactorControllerVerifyChallenge';
@@ -19,4 +20,7 @@ export { twoFactorSelfServiceControllerGetStatus } from './twoFactorSelfServiceC
 export { twoFactorSelfServiceControllerRotateRecoveryCodes } from './twoFactorSelfServiceControllerRotateRecoveryCodes';
 export { twoFactorSelfServiceControllerSetServiceAccountBypass } from './twoFactorSelfServiceControllerSetServiceAccountBypass';
 export { twoFactorSelfServiceControllerStartEnrollment } from './twoFactorSelfServiceControllerStartEnrollment';
+export { userAuthorizationControllerDesativarCentroCusto } from './userAuthorizationControllerDesativarCentroCusto';
+export { userAuthorizationControllerListarCentrosCusto } from './userAuthorizationControllerListarCentrosCusto';
+export { userAuthorizationControllerVincularCentroCusto } from './userAuthorizationControllerVincularCentroCusto';
 export { userNotificationInternalControllerNotificarCargoPorEmail } from './userNotificationInternalControllerNotificarCargoPorEmail';

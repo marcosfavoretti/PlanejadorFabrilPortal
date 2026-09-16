@@ -4,7 +4,7 @@
   </button>
 
   @if (currentUser(); as user) {
-  <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
+    <div class="user-popup-card__identity d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
     <div class="avatar bg-dark-green text-white rounded-circle d-flex align-items-center justify-content-center">
       <i class="pi pi-user text-xl"></i>
     </div>
@@ -14,20 +14,20 @@
     </div>
   </div>
 
-  <div class="mb-3 d-flex flex-wrap gap-2">
+  <div class="user-popup-card__roles mb-3 d-flex flex-wrap gap-2">
     @for (cargo of user.cargosLista; track $index) {
-    <p-tag severity="success" [value]="cargo"></p-tag>
+    <p-tag severity="success" [value]="cargo" styleClass="user-popup-card__role-tag"></p-tag>
     }
   </div>
 
   @if (user.centrosCusto.length) {
   <div class="mb-3">
     <p class="text-muted small fw-bold text-uppercase mb-2">Centros de custo vinculados</p>
-    <div class="d-flex flex-column gap-1">
+    <div class="user-popup-card__cost-centers d-flex flex-column gap-1">
       @for (centroCusto of user.centrosCusto; track centroCusto.id) {
       <div class="user-popup-card__cost-center">
         <span class="user-popup-card__cost-center-code">{{ centroCusto.centroCustoCodigo }}</span>
-        <span>{{ centroCusto.centroCustoDescricao }}</span>
+        <span class="user-popup-card__cost-center-description">{{ centroCusto.centroCustoDescricao }}</span>
       </div>
       }
     </div>

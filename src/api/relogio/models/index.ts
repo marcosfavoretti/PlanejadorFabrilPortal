@@ -1,4 +1,3 @@
-export type { CentroCustoLider } from './CentroCustoLider';
 export type { CriarFolhaHoraExtraDTO } from './CriarFolhaHoraExtraDTO';
 export type { EditarFolhaHoraExtraDTO } from './EditarFolhaHoraExtraDTO';
 export type {
@@ -40,15 +39,6 @@ export type {
   FolhaHoraExtraControllerCriarMutationResponse,
 } from './FolhaHoraExtraControllerCriar';
 export type {
-  FolhaHoraExtraControllerDesativarLiderCentroCusto200,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto401,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto403,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto404,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoMutation,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoMutationResponse,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoPathParams,
-} from './FolhaHoraExtraControllerDesativarLiderCentroCusto';
-export type {
   FolhaHoraExtraControllerDetalhes200,
   FolhaHoraExtraControllerDetalhes400,
   FolhaHoraExtraControllerDetalhes401,
@@ -88,14 +78,6 @@ export type {
   FolhaHoraExtraControllerListarQueryResponse,
 } from './FolhaHoraExtraControllerListar';
 export type {
-  FolhaHoraExtraControllerListarLiderCentroCusto200,
-  FolhaHoraExtraControllerListarLiderCentroCusto401,
-  FolhaHoraExtraControllerListarLiderCentroCusto403,
-  FolhaHoraExtraControllerListarLiderCentroCustoPathParams,
-  FolhaHoraExtraControllerListarLiderCentroCustoQuery,
-  FolhaHoraExtraControllerListarLiderCentroCustoQueryResponse,
-} from './FolhaHoraExtraControllerListarLiderCentroCusto';
-export type {
   FolhaHoraExtraControllerRejeitar200,
   FolhaHoraExtraControllerRejeitar400,
   FolhaHoraExtraControllerRejeitar401,
@@ -125,15 +107,6 @@ export type {
   FolhaHoraExtraControllerSubmeterMutationResponse,
   FolhaHoraExtraControllerSubmeterPathParams,
 } from './FolhaHoraExtraControllerSubmeter';
-export type {
-  FolhaHoraExtraControllerVincularLiderCentroCusto201,
-  FolhaHoraExtraControllerVincularLiderCentroCusto401,
-  FolhaHoraExtraControllerVincularLiderCentroCusto403,
-  FolhaHoraExtraControllerVincularLiderCentroCusto404,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutation,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutationRequest,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutationResponse,
-} from './FolhaHoraExtraControllerVincularLiderCentroCusto';
 export type {
   FuncionarioControllerConsultaFuncionariosError,
   FuncionarioControllerConsultaFuncionariosQuery,
@@ -196,7 +169,6 @@ export type { ResFuncionarioListagemDTO } from './ResFuncionarioListagemDTO';
 export type { ResHorasIrregularesDTO } from './ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './ResKpiCumprimentoFolhaHoraExtraDTO';
-export type { ResLiderCentroCustoDTO } from './ResLiderCentroCustoDTO';
 export type { ResPontoFuncionarioDTO } from './ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './ResPresencaFuncionarioDTO';
 export type { ResRefeicaoFuncionarioDTO } from './ResRefeicaoFuncionarioDTO';
@@ -206,9 +178,7 @@ export type { ResTipoMarcacaoDTO } from './ResTipoMarcacaoDTO';
 export type { ResTurnoDTO } from './ResTurnoDTO';
 export type { ResTurnoFuncionarioDTO } from './ResTurnoFuncionarioDTO';
 export type { ResponsePaginatorDTO } from './ResponsePaginatorDTO';
-export type { VincularLiderCentroCustoDTO } from './VincularLiderCentroCustoDTO';
 export type { _Object } from './_Object';
-export { CentroCustoLiderEnum } from './CentroCustoLider';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsRefeicaoEnum } from './FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsStatusEnum } from './FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerHistoricoQueryParamsStatusEnum } from './FolhaHoraExtraControllerHistorico';

@@ -1,4 +1,3 @@
-export type { CentroCustoLider } from './models/CentroCustoLider';
 export type { CriarFolhaHoraExtraDTO } from './models/CriarFolhaHoraExtraDTO';
 export type { EditarFolhaHoraExtraDTO } from './models/EditarFolhaHoraExtraDTO';
 export type {
@@ -40,15 +39,6 @@ export type {
   FolhaHoraExtraControllerCriarMutationResponse,
 } from './models/FolhaHoraExtraControllerCriar';
 export type {
-  FolhaHoraExtraControllerDesativarLiderCentroCusto200,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto401,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto403,
-  FolhaHoraExtraControllerDesativarLiderCentroCusto404,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoMutation,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoMutationResponse,
-  FolhaHoraExtraControllerDesativarLiderCentroCustoPathParams,
-} from './models/FolhaHoraExtraControllerDesativarLiderCentroCusto';
-export type {
   FolhaHoraExtraControllerDetalhes200,
   FolhaHoraExtraControllerDetalhes400,
   FolhaHoraExtraControllerDetalhes401,
@@ -88,14 +78,6 @@ export type {
   FolhaHoraExtraControllerListarQueryResponse,
 } from './models/FolhaHoraExtraControllerListar';
 export type {
-  FolhaHoraExtraControllerListarLiderCentroCusto200,
-  FolhaHoraExtraControllerListarLiderCentroCusto401,
-  FolhaHoraExtraControllerListarLiderCentroCusto403,
-  FolhaHoraExtraControllerListarLiderCentroCustoPathParams,
-  FolhaHoraExtraControllerListarLiderCentroCustoQuery,
-  FolhaHoraExtraControllerListarLiderCentroCustoQueryResponse,
-} from './models/FolhaHoraExtraControllerListarLiderCentroCusto';
-export type {
   FolhaHoraExtraControllerRejeitar200,
   FolhaHoraExtraControllerRejeitar400,
   FolhaHoraExtraControllerRejeitar401,
@@ -125,15 +107,6 @@ export type {
   FolhaHoraExtraControllerSubmeterMutationResponse,
   FolhaHoraExtraControllerSubmeterPathParams,
 } from './models/FolhaHoraExtraControllerSubmeter';
-export type {
-  FolhaHoraExtraControllerVincularLiderCentroCusto201,
-  FolhaHoraExtraControllerVincularLiderCentroCusto401,
-  FolhaHoraExtraControllerVincularLiderCentroCusto403,
-  FolhaHoraExtraControllerVincularLiderCentroCusto404,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutation,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutationRequest,
-  FolhaHoraExtraControllerVincularLiderCentroCustoMutationResponse,
-} from './models/FolhaHoraExtraControllerVincularLiderCentroCusto';
 export type {
   FuncionarioControllerConsultaFuncionariosError,
   FuncionarioControllerConsultaFuncionariosQuery,
@@ -196,7 +169,6 @@ export type { ResFuncionarioListagemDTO } from './models/ResFuncionarioListagemD
 export type { ResHorasIrregularesDTO } from './models/ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './models/ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './models/ResKpiCumprimentoFolhaHoraExtraDTO';
-export type { ResLiderCentroCustoDTO } from './models/ResLiderCentroCustoDTO';
 export type { ResPontoFuncionarioDTO } from './models/ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './models/ResPresencaFuncionarioDTO';
 export type { ResRefeicaoFuncionarioDTO } from './models/ResRefeicaoFuncionarioDTO';
@@ -206,22 +178,18 @@ export type { ResTipoMarcacaoDTO } from './models/ResTipoMarcacaoDTO';
 export type { ResTurnoDTO } from './models/ResTurnoDTO';
 export type { ResTurnoFuncionarioDTO } from './models/ResTurnoFuncionarioDTO';
 export type { ResponsePaginatorDTO } from './models/ResponsePaginatorDTO';
-export type { VincularLiderCentroCustoDTO } from './models/VincularLiderCentroCustoDTO';
 export type { _Object } from './models/_Object';
 export { folhaHoraExtraControllerAprovar } from './client/folhaHoraExtraControllerAprovar';
 export { folhaHoraExtraControllerConsultarKpiCumprimento } from './client/folhaHoraExtraControllerConsultarKpiCumprimento';
 export { folhaHoraExtraControllerConsultarRefeicoes } from './client/folhaHoraExtraControllerConsultarRefeicoes';
 export { folhaHoraExtraControllerCriar } from './client/folhaHoraExtraControllerCriar';
-export { folhaHoraExtraControllerDesativarLiderCentroCusto } from './client/folhaHoraExtraControllerDesativarLiderCentroCusto';
 export { folhaHoraExtraControllerDetalhes } from './client/folhaHoraExtraControllerDetalhes';
 export { folhaHoraExtraControllerEditar } from './client/folhaHoraExtraControllerEditar';
 export { folhaHoraExtraControllerHistorico } from './client/folhaHoraExtraControllerHistorico';
 export { folhaHoraExtraControllerListar } from './client/folhaHoraExtraControllerListar';
-export { folhaHoraExtraControllerListarLiderCentroCusto } from './client/folhaHoraExtraControllerListarLiderCentroCusto';
 export { folhaHoraExtraControllerRejeitar } from './client/folhaHoraExtraControllerRejeitar';
 export { folhaHoraExtraControllerRelatorioRecursos } from './client/folhaHoraExtraControllerRelatorioRecursos';
 export { folhaHoraExtraControllerSubmeter } from './client/folhaHoraExtraControllerSubmeter';
-export { folhaHoraExtraControllerVincularLiderCentroCusto } from './client/folhaHoraExtraControllerVincularLiderCentroCusto';
 export { funcionarioControllerConsultaFuncionarios } from './client/funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './client/funcionarioControllerConsultaFuncionariosLegado';
 export { funcionarioControllerConsultarCentroDeCustoMethod } from './client/funcionarioControllerConsultarCentroDeCustoMethod';
@@ -229,7 +197,6 @@ export { funcionarioControllerConsultarPresencaFuncionarios } from './client/fun
 export { funcionarioControllerConsultarTurnoFuncionario } from './client/funcionarioControllerConsultarTurnoFuncionario';
 export { pontoControllerConsultaMarcacaoMethod } from './client/pontoControllerConsultaMarcacaoMethod';
 export { pontoKPIControllerConsultarMaisHorasIrregulares } from './client/pontoKPIControllerConsultarMaisHorasIrregulares';
-export { CentroCustoLiderEnum } from './models/CentroCustoLider';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsRefeicaoEnum } from './models/FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsStatusEnum } from './models/FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerHistoricoQueryParamsStatusEnum } from './models/FolhaHoraExtraControllerHistorico';

@@ -10,9 +10,11 @@ export type VincularLiderCentroCustoDTO = {
    * @type string
    */
   usuarioId: string;
-  /**
-   * @type string
-   */
-  usuarioNome: string;
   centroCustoCodigo: CentroCustoLider;
+  /**
+   * @description Mantido temporariamente por compatibilidade e ignorado pelo servidor.
+   * @deprecated
+   * @type string | undefined
+   */
+  usuarioNome?: string;
 };

@@ -2,16 +2,13 @@ export { folhaHoraExtraControllerAprovar } from './folhaHoraExtraControllerAprov
 export { folhaHoraExtraControllerConsultarKpiCumprimento } from './folhaHoraExtraControllerConsultarKpiCumprimento';
 export { folhaHoraExtraControllerConsultarRefeicoes } from './folhaHoraExtraControllerConsultarRefeicoes';
 export { folhaHoraExtraControllerCriar } from './folhaHoraExtraControllerCriar';
-export { folhaHoraExtraControllerDesativarLiderCentroCusto } from './folhaHoraExtraControllerDesativarLiderCentroCusto';
 export { folhaHoraExtraControllerDetalhes } from './folhaHoraExtraControllerDetalhes';
 export { folhaHoraExtraControllerEditar } from './folhaHoraExtraControllerEditar';
 export { folhaHoraExtraControllerHistorico } from './folhaHoraExtraControllerHistorico';
 export { folhaHoraExtraControllerListar } from './folhaHoraExtraControllerListar';
-export { folhaHoraExtraControllerListarLiderCentroCusto } from './folhaHoraExtraControllerListarLiderCentroCusto';
 export { folhaHoraExtraControllerRejeitar } from './folhaHoraExtraControllerRejeitar';
 export { folhaHoraExtraControllerRelatorioRecursos } from './folhaHoraExtraControllerRelatorioRecursos';
 export { folhaHoraExtraControllerSubmeter } from './folhaHoraExtraControllerSubmeter';
-export { folhaHoraExtraControllerVincularLiderCentroCusto } from './folhaHoraExtraControllerVincularLiderCentroCusto';
 export { funcionarioControllerConsultaFuncionarios } from './funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './funcionarioControllerConsultaFuncionariosLegado';
 export { funcionarioControllerConsultarCentroDeCustoMethod } from './funcionarioControllerConsultarCentroDeCustoMethod';

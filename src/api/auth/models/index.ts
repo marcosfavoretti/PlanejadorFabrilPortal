@@ -61,6 +61,12 @@ export type {
   AuthControllerValidateUserQueryResponse,
 } from './AuthControllerValidateUser';
 export type { AuthDto } from './AuthDto';
+export type { AuthorizationContextDTO } from './AuthorizationContextDTO';
+export type {
+  AuthorizationControllerGetMine200,
+  AuthorizationControllerGetMineQuery,
+  AuthorizationControllerGetMineQueryResponse,
+} from './AuthorizationControllerGetMine';
 export type { BeginTotpEnrollmentDto } from './BeginTotpEnrollmentDto';
 export type {
   CargoControllerSetUserCargoMethod200,
@@ -68,6 +74,7 @@ export type {
   CargoControllerSetUserCargoMethodMutationRequest,
   CargoControllerSetUserCargoMethodMutationResponse,
 } from './CargoControllerSetUserCargoMethod';
+export type { CentroCustoLider } from './CentroCustoLider';
 export type { CompleteTotpEnrollmentDto } from './CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './CreateUserDto';
 export type { DisableTwoFactorDto } from './DisableTwoFactorDto';
@@ -141,6 +148,25 @@ export type {
   TwoFactorSelfServiceControllerStartEnrollmentMutationResponse,
 } from './TwoFactorSelfServiceControllerStartEnrollment';
 export type {
+  UserAuthorizationControllerDesativarCentroCusto200,
+  UserAuthorizationControllerDesativarCentroCusto404,
+  UserAuthorizationControllerDesativarCentroCustoMutation,
+  UserAuthorizationControllerDesativarCentroCustoMutationResponse,
+  UserAuthorizationControllerDesativarCentroCustoPathParams,
+} from './UserAuthorizationControllerDesativarCentroCusto';
+export type {
+  UserAuthorizationControllerListarCentrosCusto200,
+  UserAuthorizationControllerListarCentrosCustoPathParams,
+  UserAuthorizationControllerListarCentrosCustoQuery,
+  UserAuthorizationControllerListarCentrosCustoQueryResponse,
+} from './UserAuthorizationControllerListarCentrosCusto';
+export type {
+  UserAuthorizationControllerVincularCentroCusto201,
+  UserAuthorizationControllerVincularCentroCustoMutation,
+  UserAuthorizationControllerVincularCentroCustoMutationRequest,
+  UserAuthorizationControllerVincularCentroCustoMutationResponse,
+} from './UserAuthorizationControllerVincularCentroCusto';
+export type {
   UserNotificationInternalControllerNotificarCargoPorEmail202,
   UserNotificationInternalControllerNotificarCargoPorEmailMutation,
   UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
@@ -148,6 +174,8 @@ export type {
 } from './UserNotificationInternalControllerNotificarCargoPorEmail';
 export type { UserResponseDTO } from './UserResponseDTO';
 export type { VerifyTwoFactorDto } from './VerifyTwoFactorDto';
+export type { VincularLiderCentroCustoDTO } from './VincularLiderCentroCustoDTO';
+export { CentroCustoLiderEnum } from './CentroCustoLider';
 export { NotificarUsuariosPorCargoEmailDTOCargoEnum } from './NotificarUsuariosPorCargoEmailDTO';
 export { SetUserCargoDTOCargoEnum } from './SetUserCargoDTO';
 export { TwoFactorGuardPolicyDtoMethodsEnum } from './TwoFactorGuardPolicyDto';

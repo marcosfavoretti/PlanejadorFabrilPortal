@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "cargos": { "type": "array", "items": { "type": "string" } },
+    "centrosCusto": { "type": "array", "items": { "type": "number" } },
+    "version": { "type": "object", "example": 1 }
+  },
+  "required": ["userId", "cargos", "centrosCusto", "version"],
+  "x-readme-ref-name": "AuthorizationContextDTO"
+}

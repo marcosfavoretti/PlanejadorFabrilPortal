@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
 import { CdkDrag, CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { LaserPlan } from '../../models/laser-plan.model';
 import { LaserPlanCardComponent } from '../laser-plan-card/laser-plan-card.component';
@@ -12,6 +12,9 @@ import { LaserPlanCardComponent } from '../laser-plan-card/laser-plan-card.compo
   styleUrl: './laser-plan-column.component.css',
 })
 export class LaserPlanColumnComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private actionsMenuPlaceholder: Comment | null = null;
+  private actionsMenu: HTMLElement | null = null;
   readonly id = input.required<string>();
   readonly title = input.required<string>();
   readonly description = input.required<string>();
@@ -38,6 +41,7 @@ export class LaserPlanColumnComponent {
   private readonly loadMoreTrigger = viewChild<ElementRef<HTMLElement>>('loadMoreTrigger');
 
   constructor() {
+    this.destroyRef.onDestroy(() => this.restoreActionsMenu());
     effect((onCleanup) => {
       const trigger = this.loadMoreTrigger()?.nativeElement;
       if (!trigger || !this.hasMore() || typeof IntersectionObserver === 'undefined') return;
@@ -51,6 +55,50 @@ export class LaserPlanColumnComponent {
       observer.observe(trigger);
       onCleanup(() => observer.disconnect());
     });
+  }
+
+  protected onActionsToggle(event: Event): void {
+    const details = event.currentTarget as HTMLDetailsElement;
+    if (details.open) {
+      const menu = details.querySelector<HTMLElement>('.column-actions-menu');
+      if (!menu) return;
+      this.actionsMenu = menu;
+      if (!this.actionsMenuPlaceholder && menu.parentNode) {
+        this.actionsMenuPlaceholder = document.createComment('column-actions-menu');
+        menu.parentNode.insertBefore(this.actionsMenuPlaceholder, menu);
+      }
+      const trigger = details.querySelector('summary')?.getBoundingClientRect();
+      if (trigger) {
+        const width = Math.min(235, window.innerWidth - 48);
+        menu.style.position = 'fixed';
+        menu.style.zIndex = '10000';
+        menu.style.width = `${width}px`;
+        menu.style.right = 'auto';
+        menu.style.left = `${Math.max(12, Math.min(trigger.right - width, window.innerWidth - width - 12))}px`;
+        menu.style.top = `${Math.min(trigger.bottom + 7, window.innerHeight - 80)}px`;
+        document.body.appendChild(menu);
+      }
+      return;
+    }
+    this.restoreActionsMenu();
+  }
+
+  private restoreActionsMenu(): void {
+    const placeholder = this.actionsMenuPlaceholder;
+    const menu = this.actionsMenu;
+    if (menu) {
+      if (placeholder?.parentNode) placeholder.parentNode.insertBefore(menu, placeholder);
+      else menu.remove();
+      menu.style.removeProperty('position');
+      menu.style.removeProperty('z-index');
+      menu.style.removeProperty('width');
+      menu.style.removeProperty('left');
+      menu.style.removeProperty('top');
+      menu.style.removeProperty('right');
+    }
+    placeholder?.remove();
+    this.actionsMenuPlaceholder = null;
+    this.actionsMenu = null;
   }
 
   protected readonly canEnter = (drag: CdkDrag<LaserPlan>, _drop: CdkDropList): boolean => {

@@ -6,7 +6,7 @@
         {{ plans().length }}/{{ total() }}
       </span>
       @if (!readOnly() && (kind() === 'machine' || kind() === 'available')) {
-        <details class="column-actions">
+        <details class="column-actions" (toggle)="onActionsToggle($event)">
           <summary aria-label="Abrir ações da lista" title="Ações da lista"><i class="pi pi-bars"></i><span>Ações da lista</span></summary>
           <div class="column-actions-menu">
             <span class="column-actions-label">Ações em massa</span>

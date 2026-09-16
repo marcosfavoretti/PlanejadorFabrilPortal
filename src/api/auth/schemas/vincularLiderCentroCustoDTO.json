@@ -2,7 +2,6 @@
   "type": "object",
   "properties": {
     "usuarioId": { "type": "string" },
-    "usuarioNome": { "type": "string" },
     "centroCustoCodigo": {
       "allOf": [
         {
@@ -17,8 +16,13 @@
           "x-readme-ref-name": "CentroCustoLider"
         }
       ]
+    },
+    "usuarioNome": {
+      "type": "string",
+      "deprecated": true,
+      "description": "Mantido temporariamente por compatibilidade e ignorado pelo servidor."
     }
   },
-  "required": ["usuarioId", "usuarioNome", "centroCustoCodigo"],
+  "required": ["usuarioId", "centroCustoCodigo"],
   "x-readme-ref-name": "VincularLiderCentroCustoDTO"
 }

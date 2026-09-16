@@ -12,21 +12,23 @@ import {
   PaginatedResFolhaHoraExtraDTODto,
   ResExtratoCustoHoraExtraDTO,
   ResKpiCumprimentoFolhaHoraExtraDTO,
-  ResLiderCentroCustoDTO,
-  VincularLiderCentroCustoDTO,
   folhaHoraExtraControllerAprovar,
   folhaHoraExtraControllerConsultarKpiCumprimento,
   folhaHoraExtraControllerCriar,
-  folhaHoraExtraControllerDesativarLiderCentroCusto,
   folhaHoraExtraControllerDetalhes,
   folhaHoraExtraControllerEditar,
   folhaHoraExtraControllerHistorico,
   folhaHoraExtraControllerListar,
-  folhaHoraExtraControllerListarLiderCentroCusto,
   folhaHoraExtraControllerRejeitar,
   folhaHoraExtraControllerSubmeter,
-  folhaHoraExtraControllerVincularLiderCentroCusto,
 } from '@/api/relogio';
+import {
+  ResLiderCentroCustoDTO,
+  VincularLiderCentroCustoDTO,
+  userAuthorizationControllerDesativarCentroCusto,
+  userAuthorizationControllerListarCentrosCusto,
+  userAuthorizationControllerVincularCentroCusto,
+} from '@/api/auth';
 import client from '@/client';
 import { from, Observable } from 'rxjs';
 
@@ -189,18 +191,18 @@ export class FolhaHoraExtraAPIService {
   }
 
   createLiderCentroCusto(dto: VincularLiderCentroCustoDTO): Observable<ResLiderCentroCustoDTO> {
-    return from(folhaHoraExtraControllerVincularLiderCentroCusto(dto));
+    return from(userAuthorizationControllerVincularCentroCusto(dto));
   }
 
   getLiderCentroCusto(usuarioId: string): Observable<ResLiderCentroCustoDTO[]> {
-    return from(folhaHoraExtraControllerListarLiderCentroCusto(usuarioId));
+    return from(userAuthorizationControllerListarCentrosCusto(usuarioId));
   }
 
   deleteLiderCentroCusto(
     usuarioId: string,
     centroCustoCodigo: number,
   ): Observable<ResLiderCentroCustoDTO> {
-    return from(folhaHoraExtraControllerDesativarLiderCentroCusto(usuarioId, centroCustoCodigo));
+    return from(userAuthorizationControllerDesativarCentroCusto(usuarioId, centroCustoCodigo));
   }
 
   getHistorico(filters: FolhaHoraExtraFilters): Observable<PaginatedResFolhaHoraExtraDTODto> {

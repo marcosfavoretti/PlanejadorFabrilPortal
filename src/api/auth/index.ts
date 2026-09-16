@@ -61,6 +61,12 @@ export type {
   AuthControllerValidateUserQueryResponse,
 } from './models/AuthControllerValidateUser';
 export type { AuthDto } from './models/AuthDto';
+export type { AuthorizationContextDTO } from './models/AuthorizationContextDTO';
+export type {
+  AuthorizationControllerGetMine200,
+  AuthorizationControllerGetMineQuery,
+  AuthorizationControllerGetMineQueryResponse,
+} from './models/AuthorizationControllerGetMine';
 export type { BeginTotpEnrollmentDto } from './models/BeginTotpEnrollmentDto';
 export type {
   CargoControllerSetUserCargoMethod200,
@@ -68,6 +74,7 @@ export type {
   CargoControllerSetUserCargoMethodMutationRequest,
   CargoControllerSetUserCargoMethodMutationResponse,
 } from './models/CargoControllerSetUserCargoMethod';
+export type { CentroCustoLider } from './models/CentroCustoLider';
 export type { CompleteTotpEnrollmentDto } from './models/CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './models/CreateUserDto';
 export type { DisableTwoFactorDto } from './models/DisableTwoFactorDto';
@@ -141,6 +148,25 @@ export type {
   TwoFactorSelfServiceControllerStartEnrollmentMutationResponse,
 } from './models/TwoFactorSelfServiceControllerStartEnrollment';
 export type {
+  UserAuthorizationControllerDesativarCentroCusto200,
+  UserAuthorizationControllerDesativarCentroCusto404,
+  UserAuthorizationControllerDesativarCentroCustoMutation,
+  UserAuthorizationControllerDesativarCentroCustoMutationResponse,
+  UserAuthorizationControllerDesativarCentroCustoPathParams,
+} from './models/UserAuthorizationControllerDesativarCentroCusto';
+export type {
+  UserAuthorizationControllerListarCentrosCusto200,
+  UserAuthorizationControllerListarCentrosCustoPathParams,
+  UserAuthorizationControllerListarCentrosCustoQuery,
+  UserAuthorizationControllerListarCentrosCustoQueryResponse,
+} from './models/UserAuthorizationControllerListarCentrosCusto';
+export type {
+  UserAuthorizationControllerVincularCentroCusto201,
+  UserAuthorizationControllerVincularCentroCustoMutation,
+  UserAuthorizationControllerVincularCentroCustoMutationRequest,
+  UserAuthorizationControllerVincularCentroCustoMutationResponse,
+} from './models/UserAuthorizationControllerVincularCentroCusto';
+export type {
   UserNotificationInternalControllerNotificarCargoPorEmail202,
   UserNotificationInternalControllerNotificarCargoPorEmailMutation,
   UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
@@ -148,6 +174,7 @@ export type {
 } from './models/UserNotificationInternalControllerNotificarCargoPorEmail';
 export type { UserResponseDTO } from './models/UserResponseDTO';
 export type { VerifyTwoFactorDto } from './models/VerifyTwoFactorDto';
+export type { VincularLiderCentroCustoDTO } from './models/VincularLiderCentroCustoDTO';
 export { authControllerCheckToken } from './client/authControllerCheckToken';
 export { authControllerDetail } from './client/authControllerDetail';
 export { authControllerGenerateInvite } from './client/authControllerGenerateInvite';
@@ -158,6 +185,7 @@ export { authControllerRegister } from './client/authControllerRegister';
 export { authControllerRegisterWithInvite } from './client/authControllerRegisterWithInvite';
 export { authControllerValidateInvite } from './client/authControllerValidateInvite';
 export { authControllerValidateUser } from './client/authControllerValidateUser';
+export { authorizationControllerGetMine } from './client/authorizationControllerGetMine';
 export { cargoControllerSetUserCargoMethod } from './client/cargoControllerSetUserCargoMethod';
 export { twoFactorControllerSendEmailCode } from './client/twoFactorControllerSendEmailCode';
 export { twoFactorControllerVerifyChallenge } from './client/twoFactorControllerVerifyChallenge';
@@ -169,7 +197,11 @@ export { twoFactorSelfServiceControllerGetStatus } from './client/twoFactorSelfS
 export { twoFactorSelfServiceControllerRotateRecoveryCodes } from './client/twoFactorSelfServiceControllerRotateRecoveryCodes';
 export { twoFactorSelfServiceControllerSetServiceAccountBypass } from './client/twoFactorSelfServiceControllerSetServiceAccountBypass';
 export { twoFactorSelfServiceControllerStartEnrollment } from './client/twoFactorSelfServiceControllerStartEnrollment';
+export { userAuthorizationControllerDesativarCentroCusto } from './client/userAuthorizationControllerDesativarCentroCusto';
+export { userAuthorizationControllerListarCentrosCusto } from './client/userAuthorizationControllerListarCentrosCusto';
+export { userAuthorizationControllerVincularCentroCusto } from './client/userAuthorizationControllerVincularCentroCusto';
 export { userNotificationInternalControllerNotificarCargoPorEmail } from './client/userNotificationInternalControllerNotificarCargoPorEmail';
+export { CentroCustoLiderEnum } from './models/CentroCustoLider';
 export { NotificarUsuariosPorCargoEmailDTOCargoEnum } from './models/NotificarUsuariosPorCargoEmailDTO';
 export { SetUserCargoDTOCargoEnum } from './models/SetUserCargoDTO';
 export { TwoFactorGuardPolicyDtoMethodsEnum } from './models/TwoFactorGuardPolicyDto';
