@@ -326,15 +326,33 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   }
 
   async exportarExcel() {
-    const dados = this.data.map(row => {
-      const resultado: { [k: string]: string } = {};
-      this.tableModel.columns.forEach(col => {
-        resultado[col.field] = this.getNestedValue(row, col.field);
-      });
-      return resultado;
-    });
+    // A exportação deve reproduzir a tabela: aliases como cabeçalho, valores
+    // formatados e sem colunas que só existem para ações da interface.
+    const exportColumns = this.tableModel.columns.filter(
+      column => !column.isActions && !column.isButton,
+    );
+    const dados = this.data.map(row => Object.fromEntries(
+      exportColumns.map(column => [
+        column.alias || column.field,
+        this.getExportValue(row, column),
+      ]),
+    ));
 
     await exportRowsToXlsx(dados, `${this.tableModel.title || 'export'}_${new Date().getTime()}.xlsx`);
+  }
+
+  private getExportValue(row: any, column: tableColumns): unknown {
+    const value = this.getNestedValue(row, column.field);
+
+    if (column.valueFormatter) {
+      return column.valueFormatter(value, row);
+    }
+
+    if (column.isTag && column.tagLabelFn) {
+      return column.tagLabelFn(value, row);
+    }
+
+    return value;
   }
 
   handleRowExpand(event: any) {
