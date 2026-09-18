@@ -41,6 +41,16 @@ export type FolhaHoraExtraControllerListarQueryParams = {
    */
   centroCustoCodigo?: number;
   /**
+   * @description Trecho do nome do funcionário da folha.
+   * @type string | undefined
+   */
+  nomeFuncionario?: string;
+  /**
+   * @description Matrícula exata do funcionário da folha.
+   * @type string | undefined
+   */
+  matriculaFuncionario?: string;
+  /**
    * @description Status da folha. Pode ser enviado uma vez ou repetido para multiplos status.
    * @type array | undefined
    */

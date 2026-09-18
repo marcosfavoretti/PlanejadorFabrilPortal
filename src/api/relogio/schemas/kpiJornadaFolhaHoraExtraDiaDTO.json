@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "data": { "type": "string", "example": "2026-09-18" },
+    "totalProgramados": { "type": "number" },
+    "totalNaoCumpriram": { "type": "number" },
+    "totalExtrapolaram": { "type": "number" },
+    "minutosIrregularesNaoCumprimentoHE": {
+      "type": "number",
+      "description": "Minutos irregulares por entrada após o início ou saída antes do fim da HE."
+    },
+    "minutosIrregularesExtrapolacaoHE": {
+      "type": "number",
+      "description": "Minutos irregulares por saída após o fim da HE."
+    },
+    "minutosExcedentesHE": {
+      "type": "number",
+      "description": "Minutos trabalhados após o fim de HE previsto."
+    }
+  },
+  "required": [
+    "data",
+    "totalProgramados",
+    "totalNaoCumpriram",
+    "totalExtrapolaram",
+    "minutosIrregularesNaoCumprimentoHE",
+    "minutosIrregularesExtrapolacaoHE",
+    "minutosExcedentesHE"
+  ],
+  "x-readme-ref-name": "KpiJornadaFolhaHoraExtraDiaDTO"
+}

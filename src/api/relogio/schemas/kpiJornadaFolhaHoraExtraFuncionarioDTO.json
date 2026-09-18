@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string" },
+    "nome": { "type": "string" },
+    "centrosCusto": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "codigo": { "type": "number", "example": 123 },
+          "descricao": { "type": "string", "example": "Produção" }
+        },
+        "required": ["codigo", "descricao"],
+        "x-readme-ref-name": "KpiJornadaFolhaHoraExtraCentroCustoDTO"
+      }
+    },
+    "ocorrenciasNaoCumprimento": { "type": "number" },
+    "ocorrenciasExtrapolacao": { "type": "number" },
+    "minutosIrregularesNaoCumprimentoHE": { "type": "number" },
+    "minutosIrregularesExtrapolacaoHE": { "type": "number" },
+    "minutosExcedentesHE": { "type": "number" }
+  },
+  "required": [
+    "matricula",
+    "nome",
+    "centrosCusto",
+    "ocorrenciasNaoCumprimento",
+    "ocorrenciasExtrapolacao",
+    "minutosIrregularesNaoCumprimentoHE",
+    "minutosIrregularesExtrapolacaoHE",
+    "minutosExcedentesHE"
+  ],
+  "x-readme-ref-name": "KpiJornadaFolhaHoraExtraFuncionarioDTO"
+}

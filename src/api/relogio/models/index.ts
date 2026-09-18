@@ -11,16 +11,6 @@ export type {
   FolhaHoraExtraControllerAprovarPathParams,
 } from './FolhaHoraExtraControllerAprovar';
 export type {
-  FolhaHoraExtraControllerConsultarKpiCumprimento200,
-  FolhaHoraExtraControllerConsultarKpiCumprimento400,
-  FolhaHoraExtraControllerConsultarKpiCumprimento401,
-  FolhaHoraExtraControllerConsultarKpiCumprimento403,
-  FolhaHoraExtraControllerConsultarKpiCumprimento404,
-  FolhaHoraExtraControllerConsultarKpiCumprimentoPathParams,
-  FolhaHoraExtraControllerConsultarKpiCumprimentoQuery,
-  FolhaHoraExtraControllerConsultarKpiCumprimentoQueryResponse,
-} from './FolhaHoraExtraControllerConsultarKpiCumprimento';
-export type {
   FolhaHoraExtraControllerConsultarRefeicoes200,
   FolhaHoraExtraControllerConsultarRefeicoes401,
   FolhaHoraExtraControllerConsultarRefeicoes403,
@@ -108,6 +98,31 @@ export type {
   FolhaHoraExtraControllerSubmeterPathParams,
 } from './FolhaHoraExtraControllerSubmeter';
 export type {
+  FolhaHoraExtraKpiControllerCumprimento200,
+  FolhaHoraExtraKpiControllerCumprimento400,
+  FolhaHoraExtraKpiControllerCumprimento401,
+  FolhaHoraExtraKpiControllerCumprimento403,
+  FolhaHoraExtraKpiControllerCumprimento404,
+  FolhaHoraExtraKpiControllerCumprimentoPathParams,
+  FolhaHoraExtraKpiControllerCumprimentoQuery,
+  FolhaHoraExtraKpiControllerCumprimentoQueryResponse,
+} from './FolhaHoraExtraKpiControllerCumprimento';
+export type {
+  FolhaHoraExtraKpiControllerCusto200,
+  FolhaHoraExtraKpiControllerCusto401,
+  FolhaHoraExtraKpiControllerCusto403,
+  FolhaHoraExtraKpiControllerCustoQuery,
+  FolhaHoraExtraKpiControllerCustoQueryParams,
+  FolhaHoraExtraKpiControllerCustoQueryResponse,
+} from './FolhaHoraExtraKpiControllerCusto';
+export type {
+  FolhaHoraExtraKpiControllerJornada200,
+  FolhaHoraExtraKpiControllerJornada401,
+  FolhaHoraExtraKpiControllerJornada403,
+  FolhaHoraExtraKpiControllerJornadaQuery,
+  FolhaHoraExtraKpiControllerJornadaQueryResponse,
+} from './FolhaHoraExtraKpiControllerJornada';
+export type {
   FuncionarioControllerConsultaFuncionariosError,
   FuncionarioControllerConsultaFuncionariosQuery,
   FuncionarioControllerConsultaFuncionariosQueryParams,
@@ -137,6 +152,10 @@ export type {
   FuncionarioControllerConsultarTurnoFuncionarioQueryResponse,
 } from './FuncionarioControllerConsultarTurnoFuncionario';
 export type { ItemFuncionarioHEDTO } from './ItemFuncionarioHEDTO';
+export type { KpiCustoFolhaHoraExtraPeriodoDTO } from './KpiCustoFolhaHoraExtraPeriodoDTO';
+export type { KpiJornadaFolhaHoraExtraCentroCustoDTO } from './KpiJornadaFolhaHoraExtraCentroCustoDTO';
+export type { KpiJornadaFolhaHoraExtraDiaDTO } from './KpiJornadaFolhaHoraExtraDiaDTO';
+export type { KpiJornadaFolhaHoraExtraFuncionarioDTO } from './KpiJornadaFolhaHoraExtraFuncionarioDTO';
 export type { PaginatedResFolhaHoraExtraDTODto } from './PaginatedResFolhaHoraExtraDTODto';
 export type { PaginatedResFuncionarioListagemDTODto } from './PaginatedResFuncionarioListagemDTODto';
 export type { PaginatedResPresencaFuncionarioDTODto } from './PaginatedResPresencaFuncionarioDTODto';
@@ -169,6 +188,8 @@ export type { ResFuncionarioListagemDTO } from './ResFuncionarioListagemDTO';
 export type { ResHorasIrregularesDTO } from './ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './ResKpiCumprimentoFolhaHoraExtraDTO';
+export type { ResKpiCustoFolhaHoraExtraDTO } from './ResKpiCustoFolhaHoraExtraDTO';
+export type { ResKpiJornadaFolhaHoraExtraDTO } from './ResKpiJornadaFolhaHoraExtraDTO';
 export type { ResPontoFuncionarioDTO } from './ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './ResPresencaFuncionarioDTO';
 export type { ResRefeicaoFuncionarioDTO } from './ResRefeicaoFuncionarioDTO';
@@ -184,16 +205,22 @@ export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsStatusEnum } from 
 export { FolhaHoraExtraControllerHistoricoQueryParamsStatusEnum } from './FolhaHoraExtraControllerHistorico';
 export { FolhaHoraExtraControllerListarQueryParamsStatusEnum } from './FolhaHoraExtraControllerListar';
 export { FolhaHoraExtraControllerRelatorioRecursosQueryParamsStatusEnum } from './FolhaHoraExtraControllerRelatorioRecursos';
+export { FolhaHoraExtraKpiControllerCustoQueryParamsGranularidadeEnum } from './FolhaHoraExtraKpiControllerCusto';
+export { FolhaHoraExtraKpiControllerCustoQueryParamsViewEnum } from './FolhaHoraExtraKpiControllerCusto';
 export { FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum } from './FuncionarioControllerConsultarPresencaFuncionarios';
 export { ItemFuncionarioHEDTORefeicaoEnum } from './ItemFuncionarioHEDTO';
 export { ItemFuncionarioHEDTOTransporteEnum } from './ItemFuncionarioHEDTO';
 export { ResAssinaturaAprovacaoDTOAcaoEnum } from './ResAssinaturaAprovacaoDTO';
 export { ResFolhaHoraExtraDTOPercentualCustoEnum } from './ResFolhaHoraExtraDTO';
+export { ResFolhaHoraExtraDTOStatusCumprimentoHorarioHEEnum } from './ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDTOStatusEnum } from './ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDetalheDTOPercentualCustoEnum } from './ResFolhaHoraExtraDetalheDTO';
+export { ResFolhaHoraExtraDetalheDTOStatusCumprimentoHorarioHEEnum } from './ResFolhaHoraExtraDetalheDTO';
 export { ResFolhaHoraExtraDetalheDTOStatusEnum } from './ResFolhaHoraExtraDetalheDTO';
+export { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum } from './ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
 export { ResItemFuncionarioHEDTORefeicaoEnum } from './ResItemFuncionarioHEDTO';
 export { ResItemFuncionarioHEDTOTransporteEnum } from './ResItemFuncionarioHEDTO';
+export { ResKpiCustoFolhaHoraExtraDTOViewEnum } from './ResKpiCustoFolhaHoraExtraDTO';
 export { ResPresencaFuncionarioDTOStatusEnum } from './ResPresencaFuncionarioDTO';
 export { ResRefeicaoFuncionarioDTORefeicaoEnum } from './ResRefeicaoFuncionarioDTO';
 export { ResRefeicaoFuncionarioDTOStatusEnum } from './ResRefeicaoFuncionarioDTO';

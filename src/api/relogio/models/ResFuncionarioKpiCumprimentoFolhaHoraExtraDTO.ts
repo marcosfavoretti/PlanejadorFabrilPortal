@@ -5,6 +5,12 @@
 
 import type { ResTipoMarcacaoDTO } from './ResTipoMarcacaoDTO';
 
+export enum ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum {
+  CUMPRIU = 'CUMPRIU',
+  NAO_CUMPRIU = 'NAO_CUMPRIU',
+  EXTRAPOLOU = 'EXTRAPOLOU',
+}
+
 export type ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO = {
   /**
    * @type string
@@ -50,6 +56,11 @@ export type ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO = {
    * @type boolean
    */
   cumpriuHorarioHE: boolean;
+  /**
+   * @description CUMPRIU: saída entre 10 minutos antes e 15 minutos depois do fim previsto; EXTRAPOLOU: saída após essa tolerância.
+   * @type string
+   */
+  statusCumprimentoHE: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum;
   /**
    * @type array
    */

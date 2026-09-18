@@ -9,6 +9,7 @@
     "totalFuncionarios": { "type": "number" },
     "totalCumpriram": { "type": "number" },
     "totalNaoCumpriram": { "type": "number" },
+    "totalExtrapolaram": { "type": "number" },
     "percentualCumprimento": { "type": "number" },
     "funcionarios": {
       "type": "array",
@@ -26,6 +27,11 @@
           "minutosAtrasoInicioHE": { "type": "number" },
           "minutosSaidaAntesFimHE": { "type": "number" },
           "cumpriuHorarioHE": { "type": "boolean" },
+          "statusCumprimentoHE": {
+            "type": "string",
+            "enum": ["CUMPRIU", "NAO_CUMPRIU", "EXTRAPOLOU"],
+            "description": "CUMPRIU: saída entre 10 minutos antes e 15 minutos depois do fim previsto; EXTRAPOLOU: saída após essa tolerância."
+          },
           "registros": {
             "type": "array",
             "items": {
@@ -51,6 +57,7 @@
           "minutosAtrasoInicioHE",
           "minutosSaidaAntesFimHE",
           "cumpriuHorarioHE",
+          "statusCumprimentoHE",
           "registros"
         ],
         "x-readme-ref-name": "ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO"
@@ -66,6 +73,7 @@
     "totalFuncionarios",
     "totalCumpriram",
     "totalNaoCumpriram",
+    "totalExtrapolaram",
     "percentualCumprimento",
     "funcionarios"
   ],

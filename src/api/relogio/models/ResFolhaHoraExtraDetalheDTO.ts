@@ -21,6 +21,12 @@ export enum ResFolhaHoraExtraDetalheDTOStatusEnum {
   REJEITADO_DIRETORIA = 'REJEITADO_DIRETORIA',
 }
 
+export enum ResFolhaHoraExtraDetalheDTOStatusCumprimentoHorarioHEEnum {
+  CUMPRIU = 'CUMPRIU',
+  NAO_CUMPRIU = 'NAO_CUMPRIU',
+  EXTRAPOLOU = 'EXTRAPOLOU',
+}
+
 export type ResFolhaHoraExtraDetalheDTO = {
   /**
    * @type string
@@ -54,6 +60,11 @@ export type ResFolhaHoraExtraDetalheDTO = {
    * @type number
    */
   totalFuncionarios: number;
+  /**
+   * @description Status consolidado do cumprimento de HE da folha.
+   * @type string | undefined
+   */
+  statusCumprimentoHorarioHE?: ResFolhaHoraExtraDetalheDTOStatusCumprimentoHorarioHEEnum;
   /**
    * @type string
    */

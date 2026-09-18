@@ -17,6 +17,11 @@ export type ResHorasIrregularesDTO = {
    */
   setor: string;
   /**
+   * @description Código do centro de custo do funcionário.
+   * @type object
+   */
+  ccid: object | null;
+  /**
    * @type number
    */
   horasIrregulares: number;

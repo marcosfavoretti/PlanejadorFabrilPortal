@@ -4,8 +4,13 @@
     "matricula": { "type": "string" },
     "nome": { "type": "string" },
     "setor": { "type": "string" },
+    "ccid": {
+      "type": "object",
+      "description": "Código do centro de custo do funcionário.",
+      "nullable": true
+    },
     "horasIrregulares": { "type": "number" }
   },
-  "required": ["matricula", "nome", "setor", "horasIrregulares"],
+  "required": ["matricula", "nome", "setor", "ccid", "horasIrregulares"],
   "x-readme-ref-name": "ResHorasIrregularesDTO"
 }

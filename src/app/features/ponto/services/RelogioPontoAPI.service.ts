@@ -1,6 +1,7 @@
 import { PaginatedResRegistroPontoTurnoPontoDTODto, pontoControllerConsultaMarcacaoMethod, PontoControllerConsultaMarcacaoMethodQueryParams, pontoKPIControllerConsultarMaisHorasIrregulares, PontoKPIControllerConsultarMaisHorasIrregularesQueryParams, ResRegistroPontoTurnoPontoDTO } from "@/api/relogio";
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
+import { ResHorasIrregularesDTO } from '@/api/relogio';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,7 @@ export class RelogioPontoAPIService {
         )
     }
 
-    consultarPontosIrregularesKPI(dto: PontoKPIControllerConsultarMaisHorasIrregularesQueryParams): Observable<ResRegistroPontoTurnoPontoDTO[]> {
+    consultarPontosIrregularesKPI(dto: PontoKPIControllerConsultarMaisHorasIrregularesQueryParams): Observable<ResHorasIrregularesDTO[]> {
         {
             return from(
                 pontoKPIControllerConsultarMaisHorasIrregulares(dto)
