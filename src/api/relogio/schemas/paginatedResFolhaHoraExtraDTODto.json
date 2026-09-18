@@ -29,6 +29,11 @@
             ]
           },
           "totalFuncionarios": { "type": "number" },
+          "statusCumprimentoHorarioHE": {
+            "type": "string",
+            "enum": ["CUMPRIU", "NAO_CUMPRIU", "EXTRAPOLOU"],
+            "description": "Status consolidado do cumprimento de HE da folha."
+          },
           "autorNome": { "type": "string" },
           "criadoEm": { "format": "date-time", "type": "string" },
           "atualizadoEm": { "format": "date-time", "type": "string" }

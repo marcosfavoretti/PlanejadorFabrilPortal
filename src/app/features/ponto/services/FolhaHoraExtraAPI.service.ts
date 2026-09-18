@@ -6,14 +6,16 @@ import {
   FolhaHoraExtraControllerHistoricoQueryParamsStatusEnum,
   FolhaHoraExtraControllerListarQueryParams,
   FolhaHoraExtraControllerListarQueryParamsStatusEnum,
+  FolhaHoraExtraKpiControllerCustoQueryParams,
   ItemFuncionarioHEDTO,
   ItemFuncionarioHEDTORefeicaoEnum,
   ItemFuncionarioHEDTOTransporteEnum,
   PaginatedResFolhaHoraExtraDTODto,
   ResExtratoCustoHoraExtraDTO,
+  ResKpiCustoFolhaHoraExtraDTO,
   ResKpiCumprimentoFolhaHoraExtraDTO,
+  ResKpiJornadaFolhaHoraExtraDTO,
   folhaHoraExtraControllerAprovar,
-  folhaHoraExtraControllerConsultarKpiCumprimento,
   folhaHoraExtraControllerCriar,
   folhaHoraExtraControllerDetalhes,
   folhaHoraExtraControllerEditar,
@@ -21,6 +23,9 @@ import {
   folhaHoraExtraControllerListar,
   folhaHoraExtraControllerRejeitar,
   folhaHoraExtraControllerSubmeter,
+  folhaHoraExtraKpiControllerCumprimento,
+  folhaHoraExtraKpiControllerCusto,
+  folhaHoraExtraKpiControllerJornada,
 } from '@/api/relogio';
 import {
   ResLiderCentroCustoDTO,
@@ -65,6 +70,7 @@ export interface FolhaHoraExtraResumo {
   turno: FolhaHoraExtraTurno;
   status: FolhaHoraExtraStatus;
   totalFuncionarios: number;
+  statusCumprimentoHorarioHE?: 'NAO_CUMPRIU' | 'EXTRAPOLOU' | 'CUMPRIU';
   autorNome: string;
   criadoEm: string;
   atualizadoEm: string;
@@ -104,6 +110,8 @@ export interface FolhaHoraExtraFilters {
   dataInicio?: string;
   dataFim?: string;
   centroCustoCodigo?: number;
+  nomeFuncionario?: string;
+  matriculaFuncionario?: string;
   status?: FolhaHoraExtraStatus | FolhaHoraExtraStatus[];
   page?: number;
   limit?: number;
@@ -210,7 +218,19 @@ export class FolhaHoraExtraAPIService {
   }
 
   getKpiCumprimento(id: string): Observable<ResKpiCumprimentoFolhaHoraExtraDTO> {
-    return from(folhaHoraExtraControllerConsultarKpiCumprimento(id));
+    return from(folhaHoraExtraKpiControllerCumprimento(id));
+  }
+
+  getKpiCusto(params?: FolhaHoraExtraKpiControllerCustoQueryParams | {
+    granularidade?: 'dia' | 'mes' | 'ano';
+    dataInicio?: string;
+    dataFim?: string;
+  }): Observable<ResKpiCustoFolhaHoraExtraDTO> {
+    return from(folhaHoraExtraKpiControllerCusto(params as FolhaHoraExtraKpiControllerCustoQueryParams));
+  }
+
+  getKpiJornada(): Observable<ResKpiJornadaFolhaHoraExtraDTO> {
+    return from(folhaHoraExtraKpiControllerJornada());
   }
 
   getRefeicoes(
@@ -219,7 +239,7 @@ export class FolhaHoraExtraAPIService {
     return from(
       client<FolhaHoraExtraRefeicaoListResponse>({
         method: 'GET',
-        url: 'https://dev.ethos.ind.br/api/ponto/folha-he/refeicoes',
+        url: 'https://app.ethos.ind.br/api/ponto/folha-he/refeicoes',
         params: filters,
       }).then(response => response.data),
     );

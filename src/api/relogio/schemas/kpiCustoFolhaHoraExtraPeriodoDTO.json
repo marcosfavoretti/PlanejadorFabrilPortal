@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "string",
+      "example": "2026-09-18",
+      "description": "YYYY-MM para view=ano; YYYY-MM-DD para view=mes ou view=dia."
+    },
+    "custo": {
+      "type": "number",
+      "example": 1248.5,
+      "description": "Custo do dia em reais."
+    },
+    "custoFormatado": { "type": "string", "example": "R$ 1.248,50" },
+    "quantidadeFolhas": { "type": "number", "example": 3 }
+  },
+  "required": ["data", "custo", "custoFormatado", "quantidadeFolhas"],
+  "x-readme-ref-name": "KpiCustoFolhaHoraExtraPeriodoDTO"
+}

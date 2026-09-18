@@ -12,6 +12,11 @@
     "minutosAtrasoInicioHE": { "type": "number" },
     "minutosSaidaAntesFimHE": { "type": "number" },
     "cumpriuHorarioHE": { "type": "boolean" },
+    "statusCumprimentoHE": {
+      "type": "string",
+      "enum": ["CUMPRIU", "NAO_CUMPRIU", "EXTRAPOLOU"],
+      "description": "CUMPRIU: saída entre 10 minutos antes e 15 minutos depois do fim previsto; EXTRAPOLOU: saída após essa tolerância."
+    },
     "registros": {
       "type": "array",
       "items": {
@@ -37,6 +42,7 @@
     "minutosAtrasoInicioHE",
     "minutosSaidaAntesFimHE",
     "cumpriuHorarioHE",
+    "statusCumprimentoHE",
     "registros"
   ],
   "x-readme-ref-name": "ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO"

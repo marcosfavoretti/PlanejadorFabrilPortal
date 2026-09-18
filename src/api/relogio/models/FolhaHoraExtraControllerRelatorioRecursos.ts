@@ -39,6 +39,16 @@ export type FolhaHoraExtraControllerRelatorioRecursosQueryParams = {
    */
   centroCustoCodigo?: number;
   /**
+   * @description Trecho do nome do funcionário incluído na folha, sem distinção entre maiúsculas e minúsculas.
+   * @type string | undefined
+   */
+  nomeFuncionario?: string;
+  /**
+   * @description Matrícula exata do funcionário incluído na folha.
+   * @type string | undefined
+   */
+  matriculaFuncionario?: string;
+  /**
    * @description Status a consolidar. Se omitido, retorna somente folhas APROVADO.
    * @type array | undefined
    */

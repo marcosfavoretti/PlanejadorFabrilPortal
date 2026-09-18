@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "codigo": { "type": "number", "example": 123 },
+    "descricao": { "type": "string", "example": "Produção" }
+  },
+  "required": ["codigo", "descricao"],
+  "x-readme-ref-name": "KpiJornadaFolhaHoraExtraCentroCustoDTO"
+}

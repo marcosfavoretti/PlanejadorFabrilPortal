@@ -16,6 +16,21 @@
 
   <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
 
+  <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)" class="folha-tabs">
+    <p-tablist>
+      @if (canViewRhTab()) {
+        <p-tab value="rh"><i class="pi pi-users me-2"></i>RH</p-tab>
+      }
+      @if (canViewFolhasTab()) {
+        <p-tab value="folhas"><i class="pi pi-clock me-2"></i>Folhas</p-tab>
+      }
+      @if (canViewKpiTab()) {
+        <p-tab value="kpi"><i class="pi pi-chart-bar me-2"></i>KPI</p-tab>
+      }
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="rh">
+
   @if (!hasVisibleSections()) {
     <div class="card-container no-access-card">
       <i class="pi pi-lock"></i>
@@ -27,6 +42,7 @@
   }
 
   @if (canViewRefeicoes()) {
+    <section class="dashboard-section dashboard-section--tables" aria-label="Refeições e equipe">
     <div class="card-container">
     <div class="filters-panel refeicoes-filters-panel">
       <div class="filters-section-title">
@@ -165,7 +181,7 @@
       <app-table-dynamic
         [data]="refeicoesHoje"
         [tableModel]="refeicoesTableModel"
-        [exportable]="false"
+        [exportable]="true"
         [loading]="refeicoesLoading"
         [lazy]="true"
         [first]="refeicoesFirst"
@@ -187,7 +203,7 @@
             <th>Matrícula</th>
             <th>Refeição</th>
             <th>Horário HE</th>
-            <th>CC</th>
+            <th>CC - Setor</th>
             <th>Status</th>
             <th>Justificativa</th>
           </tr>
@@ -199,7 +215,7 @@
               <td>{{ refeicao.matricula }}</td>
               <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>
               <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
-              <td>{{ refeicao.centroCustoCodigo }}</td>
+              <td>{{ refeicao.centroCustoCodigo }} - {{ refeicao.setor }}</td>
               <td>{{ refeicao.status }}</td>
               <td>{{ refeicao.justificativa }}</td>
             </tr>
@@ -207,10 +223,122 @@
         </tbody>
       </table>
     </section>
+
+    <div class="card-container">
+      <div class="filters-panel">
+        <div class="filters-section-title">
+          <div>
+            <h2><i class="pi pi-filter mr-2"></i>Filtros de funcionários aprovados</h2>
+            <span>O período inicia automaticamente no dia atual.</span>
+          </div>
+        </div>
+
+        <div class="filters-grid">
+          <div class="field">
+            <label for="aprovadasDataRangeFilter">
+              <i class="pi pi-calendar mr-2"></i>Período da folha
+            </label>
+            <p-datepicker
+              inputId="aprovadasDataRangeFilter"
+              selectionMode="range"
+              [formControl]="aprovadasDataRangeFilter"
+              dateFormat="dd/mm/yy"
+              placeholder="Início - Fim"
+              [showIcon]="true"
+              [showClear]="true"
+              styleClass="w-full"
+            ></p-datepicker>
+          </div>
+
+          <div class="field">
+            <label for="aprovadasCentroCustoFilter">
+              <i class="pi pi-building mr-2"></i>Centro de custo
+            </label>
+            <p-select
+              inputId="aprovadasCentroCustoFilter"
+              [formControl]="aprovadasCentroCustoFilter"
+              [options]="centrosCusto"
+              optionLabel="setor"
+              optionValue="ccid"
+              placeholder="Todos os centros"
+              [showClear]="true"
+              styleClass="w-full"
+            >
+              <ng-template pTemplate="item" let-centro>
+                {{ centro.ccid }} - {{ centro.setor }}
+              </ng-template>
+              <ng-template pTemplate="selectedItem" let-centro>
+                {{ centro?.ccid }} - {{ centro?.setor }}
+              </ng-template>
+            </p-select>
+          </div>
+
+          <div class="field">
+            <label for="aprovadasMatriculaFilter">
+              <i class="pi pi-id-card mr-2"></i>Matrícula
+            </label>
+            <input
+              pInputText
+              id="aprovadasMatriculaFilter"
+              [formControl]="aprovadasMatriculaFilter"
+              placeholder="Informe a matrícula"
+              (keyup.enter)="applyAprovadasFilters()"
+            />
+          </div>
+
+          <div class="field">
+            <label for="aprovadasNomeFilter">
+              <i class="pi pi-user mr-2"></i>Nome
+            </label>
+            <input
+              pInputText
+              id="aprovadasNomeFilter"
+              [formControl]="aprovadasNomeFilter"
+              placeholder="Informe o nome"
+              (keyup.enter)="applyAprovadasFilters()"
+            />
+          </div>
+
+          <div class="filter-actions">
+            <p-button
+              label="Restaurar padrão"
+              icon="pi pi-refresh"
+              severity="secondary"
+              [outlined]="true"
+              (click)="restoreAprovadasDefaultFilters()"
+            ></p-button>
+            <p-button
+              label="Aplicar"
+              icon="pi pi-search"
+              severity="success"
+              (click)="applyAprovadasFilters()"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-panel table-dynamic-panel">
+        <app-table-dynamic
+          [data]="funcionariosFolhasAprovadas"
+          [tableModel]="funcionariosFolhasAprovadasTableModel"
+          [exportable]="true"
+          [loading]="funcionariosFolhasAprovadasLoading"
+          [rows]="50"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          paginatorDropdownAppendTo="body"
+          responsiveLayout="scroll"
+        ></app-table-dynamic>
+      </div>
+    </div>
+    </section>
   }
 
+      </p-tabpanel>
+      <p-tabpanel value="folhas">
+
   @if (canViewFolhas()) {
-    <div class="card-container">
+    <section class="dashboard-section" aria-label="Folhas e gastos">
+    <div class="card-container folha-workspace">
     <div class="filters-panel">
       <div class="filters-grid">
         <div class="field">
@@ -278,6 +406,7 @@
       </div>
     </div>
 
+    <div class="folha-content-grid folha-content-grid--without-chart">
     <div class="table-panel table-dynamic-panel">
       <app-table-dynamic
         [data]="folhas"
@@ -295,9 +424,12 @@
       ></app-table-dynamic>
     </div>
     </div>
+    </div>
+    </section>
   }
 
   @if (canAuditHistorico()) {
+    <section class="dashboard-section" aria-label="Histórico e auditoria">
     <div class="card-container">
       <div class="table-panel table-dynamic-panel">
         <app-table-dynamic
@@ -312,11 +444,166 @@
           [rowsPerPageOptions]="[10, 25, 50]"
           paginatorDropdownAppendTo="body"
           responsiveLayout="scroll"
+          [rowExpansionTemplate]="historicoExpansion"
+          (onRowExpanded)="onHistoricoExpand($event)"
           (lazyLoad)="onHistoricoLazyLoad($event)"
         ></app-table-dynamic>
+
+        <ng-template #historicoExpansion let-folha>
+          <div class="funcionario-folha-kpi-expansion p-3">
+            @if (historicoKpiLoading.has(folha.id)) {
+              <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
+            } @else if (historicoKpi[folha.id]) {
+              @let kpi = historicoKpi[folha.id]!;
+              <div class="funcionario-folha-kpi-expansion__summary">
+                <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
+                <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
+                <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
+                <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
+                <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+              </div>
+              <app-table-dynamic
+                [data]="kpi.funcionarios"
+                [tableModel]="kpiFuncionariosTableModel"
+                [exportable]="false"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                paginatorDropdownAppendTo="body"
+                responsiveLayout="scroll"
+              ></app-table-dynamic>
+            } @else {
+              <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
+            }
+          </div>
+        </ng-template>
       </div>
     </div>
+    </section>
   }
+
+      </p-tabpanel>
+      <p-tabpanel value="kpi">
+        @if (canViewGastoFolhaPorDia()) {
+          <section class="kpi-charts-grid" aria-label="Indicadores de horas extras">
+            <section class="gasto-folha-chart" aria-labelledby="gasto-folha-chart-title">
+              <div class="gasto-folha-chart__header">
+                <div>
+                  <h2 id="gasto-folha-chart-title"><i class="pi pi-chart-line me-2"></i>Gasto de folhas de HE por {{ getGastoFolhaGranularidadeLabel() }}</h2>
+                  <span>Folhas aprovadas no período retornado, conforme os centros de custo permitidos para o seu cargo.</span>
+                </div>
+                <div class="gasto-folha-chart__granularity">
+                  <label for="gastoFolhaGranularidade">Visualizar por</label>
+                  <p-select
+                    inputId="gastoFolhaGranularidade"
+                    [formControl]="gastoFolhaGranularidade"
+                    [options]="gastoFolhaGranularidadeOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    (onChange)="updateGastoFolhaPorDiaChart()"
+                    styleClass="w-full"
+                  ></p-select>
+                </div>
+              </div>
+              @if (gastoFolhaPorDiaLoading) {
+                <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+              } @else if (gastoFolhaPorDiaChartData) {
+                <div class="gasto-folha-chart__canvas">
+                  <p-chart type="line" [data]="gastoFolhaPorDiaChartData" [options]="gastoFolhaPorDiaChartOptions"></p-chart>
+                </div>
+              } @else {
+                <p class="gasto-folha-chart__empty">Não há folhas aprovadas para o período.</p>
+              }
+            </section>
+
+            <section class="jornada-irregular-chart" aria-labelledby="jornada-irregular-chart-title">
+              <div class="jornada-irregular-chart__header">
+                <div>
+                  <h2 id="jornada-irregular-chart-title"><i class="pi pi-chart-bar me-2"></i>HE irregular por funcionário</h2>
+                  <span>Barras mostram ocorrências; linhas mostram horas, separando não cumprimento e extrapolação.</span>
+                </div>
+                <div class="jornada-irregular-chart__sort">
+                  <label for="jornada-irregular-sort">Ordenar por</label>
+                  <p-select inputId="jornada-irregular-sort" [formControl]="jornadaIrregularSort"
+                    [options]="[
+                      { label: 'Horas irregulares', value: 'horas' },
+                      { label: 'Ocorrências', value: 'ocorrencias' }
+                    ]" optionLabel="label" optionValue="value"
+                    (onChange)="updateJornadaIrregularChart()"></p-select>
+                </div>
+              </div>
+              @if (jornadaIrregularLoading) {
+                <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+              } @else if (jornadaIrregularChartData) {
+                <div class="jornada-irregular-chart__canvas">
+                  <p-chart type="bar" [data]="jornadaIrregularChartData" [options]="jornadaIrregularChartOptions"
+                    (onDataSelect)="onJornadaFuncionarioSelect($event)"></p-chart>
+                </div>
+              } @else {
+                <p class="jornada-irregular-chart__empty">Não há ocorrências de HE irregular no período.</p>
+              }
+            </section>
+
+            @if (funcionarioFolhasSelecionado) {
+              <section class="funcionario-folhas-kpi-table" aria-label="Folhas do funcionário selecionado">
+                <div class="funcionario-folhas-kpi-table__header">
+                  <h2><i class="pi pi-user me-2"></i>Folhas de {{ funcionarioFolhasSelecionado.nome }}</h2>
+                  <span>Matrícula {{ funcionarioFolhasSelecionado.matricula }} · CC {{ funcionarioFolhasSelecionado.centroCusto }}</span>
+                </div>
+                <app-table-dynamic
+                  [data]="funcionarioFolhas"
+                  [tableModel]="funcionarioFolhasTableModel"
+                  [exportable]="false"
+                  [loading]="funcionarioFolhasLoading"
+                  [rows]="50"
+                  [rowsPerPageOptions]="[10, 25, 50]"
+                  paginatorDropdownAppendTo="body"
+                  responsiveLayout="scroll"
+                  [rowExpansionTemplate]="funcionarioFolhasExpansion"
+                  (onRowExpanded)="onFuncionarioFolhaExpand($event)"
+                ></app-table-dynamic>
+
+                <ng-template #funcionarioFolhasExpansion let-folha>
+                  <div class="funcionario-folha-kpi-expansion p-3">
+                    @if (funcionarioFolhasKpiLoading.has(folha.id)) {
+                      <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
+                    } @else if (funcionarioFolhasKpi[folha.id]) {
+                      @let kpi = funcionarioFolhasKpi[folha.id]!;
+                      <div class="funcionario-folha-kpi-expansion__summary">
+                        <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
+                        <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
+                        <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
+                        <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
+                        <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+                      </div>
+                      <app-table-dynamic
+                        [data]="kpi.funcionarios"
+                        [tableModel]="kpiFuncionariosTableModel"
+                        [exportable]="false"
+                        [rows]="10"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                        paginatorDropdownAppendTo="body"
+                        responsiveLayout="scroll"
+                      ></app-table-dynamic>
+                    } @else {
+                      <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
+                    }
+                  </div>
+                </ng-template>
+              </section>
+            } @else {
+              <section class="funcionario-folhas-kpi-table__placeholder" aria-label="Seleção de funcionário">
+                <i class="pi pi-hand-pointer"></i>
+                <div>
+                  <strong>Selecione um funcionário no gráfico</strong>
+                  <span>Clique em uma barra ou em um ponto da linha para carregar as folhas de HE pela matrícula.</span>
+                </div>
+              </section>
+            }
+          </section>
+        }
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 
   <p-dialog
     [(visible)]="kpiDialogVisible"
@@ -354,6 +641,10 @@
           <span>Nao cumpriram</span>
           <strong>{{ selectedKpi.totalNaoCumpriram }}</strong>
         </div>
+        <div class="kpi-summary-item warning">
+          <span>Extrapolaram</span>
+          <strong>{{ selectedKpi.totalExtrapolaram }}</strong>
+        </div>
         <div class="kpi-summary-item">
           <span>Cumprimento</span>
           <strong>{{ selectedKpi.percentualCumprimento | number: '1.0-1' }}%</strong>
@@ -364,53 +655,15 @@
         <p-progressbar [value]="selectedKpi.percentualCumprimento" [showValue]="false"></p-progressbar>
       </div>
 
-      <p-table
-        [value]="selectedKpi.funcionarios"
+      <app-table-dynamic
+        [data]="selectedKpi.funcionarios"
+        [tableModel]="kpiFuncionariosTableModel"
+        [exportable]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        paginatorDropdownAppendTo="body"
         responsiveLayout="scroll"
-        styleClass="p-datatable-sm p-datatable-striped custom-table kpi-table"
-      >
-        <ng-template pTemplate="caption">
-          <div class="table-caption compact">
-            <div>
-              <h2>Cumprimento por funcionario</h2>
-              <span>Comparativo entre HE prevista e marcacoes registradas no ponto</span>
-            </div>
-          </div>
-        </ng-template>
-
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Matricula</th>
-            <th>Funcionario</th>
-            <th>HE Prevista</th>
-            <th>Primeira Batida</th>
-            <th>Ultima Batida</th>
-            <th>Horas</th>
-            <th>Atraso</th>
-            <th>Saida Antecipada</th>
-            <th>Status</th>
-            <th>Marcacoes</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-funcionario>
-          <tr>
-            <td class="font-semibold">{{ funcionario.matricula }}</td>
-            <td>{{ funcionario.nome }}</td>
-            <td>{{ funcionario.inicioHEPrevisto }} - {{ funcionario.fimHEPrevisto }} <span class="text-color-secondary">({{ funcionario.totalHEPrevisto }})</span></td>
-            <td>{{ funcionario.primeiraBatida ? (funcionario.primeiraBatida | date: 'HH:mm') : '-' }}</td>
-            <td>{{ funcionario.ultimaBatida ? (funcionario.ultimaBatida | date: 'HH:mm') : '-' }}</td>
-            <td>{{ funcionario.horasTrabalhadasNoTurno | number: '1.1-2' }}</td>
-            <td>{{ formatMinutes(funcionario.minutosAtrasoInicioHE) }}</td>
-            <td>{{ formatMinutes(funcionario.minutosSaidaAntesFimHE) }}</td>
-            <td>
-              <p-tag [value]="getCumprimentoLabel(funcionario)" [severity]="getCumprimentoSeverity(funcionario)" [rounded]="true"></p-tag>
-            </td>
-            <td class="text-sm text-color-secondary marcacoes-cell" [pTooltip]="formatMarcacoes(funcionario)">
-              {{ formatMarcacoes(funcionario) }}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      ></app-table-dynamic>
     }
   </p-dialog>
 </div>

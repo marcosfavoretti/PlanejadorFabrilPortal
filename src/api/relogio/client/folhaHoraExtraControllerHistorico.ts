@@ -22,7 +22,7 @@ function getFolhaHoraExtraControllerHistoricoUrl() {
 }
 
 /**
- * @description Retorna folhas HE ja submetidas ou encerradas para visao historica. Lideres, suporte e coordenadores veem apenas centros de custo ativos vinculados a eles. Diretores veem o historico completo. Aceita filtros por periodo, centro de custo, status e paginacao.
+ * @description Retorna folhas HE ja submetidas ou encerradas para visao historica, incluindo o status consolidado de cumprimento de HE. Lideres, suporte e coordenadores veem apenas centros de custo ativos vinculados a eles. Diretores veem o historico completo. Aceita filtros por periodo, centro de custo, nome do funcionário, status e paginação.
  * @summary Lista historico de folhas de hora extra para dashboard
  * {@link /api/ponto/folha-he/historico}
  */

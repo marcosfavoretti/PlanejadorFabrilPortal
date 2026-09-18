@@ -40,6 +40,16 @@ export type FolhaHoraExtraControllerHistoricoQueryParams = {
    */
   centroCustoCodigo?: number;
   /**
+   * @description Trecho do nome do funcionário incluído na folha.
+   * @type string | undefined
+   */
+  nomeFuncionario?: string;
+  /**
+   * @description Matrícula exata do funcionário incluído na folha.
+   * @type string | undefined
+   */
+  matriculaFuncionario?: string;
+  /**
    * @description Status da folha. Se omitido, retorna todos os status historicos exceto RASCUNHO.
    * @type array | undefined
    */

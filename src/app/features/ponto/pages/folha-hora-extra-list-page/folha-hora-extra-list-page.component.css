@@ -16,6 +16,43 @@
   max-width: 100%;
 }
 
+.dashboard-section {
+  padding: 1.5rem 0.25rem 0.25rem;
+  border-top: 1px solid var(--surface-border, #e5e7eb);
+}
+
+.folha-tabs {
+  width: 100%;
+}
+
+:host ::ng-deep .folha-tabs .p-tabpanels,
+:host ::ng-deep .folha-tabs .p-tabpanel {
+  padding: 0;
+}
+
+.kpi-charts-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-section--tables {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.folha-content-grid {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(0, 1.4fr);
+  align-items: stretch;
+}
+
+.folha-content-grid--without-chart {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* Header Banner Styling */
 .header-banner {
   border-radius: 1rem;
@@ -182,6 +219,184 @@
   padding: 1.5rem;
 }
 
+.gasto-folha-chart {
+  border-right: 1px solid var(--surface-border, #e5e7eb);
+  padding: 1.5rem;
+}
+
+.gasto-folha-chart__header {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.gasto-folha-chart__granularity {
+  flex: 0 0 8.5rem;
+}
+
+.gasto-folha-chart__granularity label {
+  color: var(--text-color-secondary, #64748b);
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .35rem;
+}
+
+.gasto-folha-chart__header h2 {
+  color: var(--text-color, #334155);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 .25rem;
+}
+
+.gasto-folha-chart__header span,
+.gasto-folha-chart__empty {
+  color: var(--text-color-secondary, #64748b);
+  font-size: .9rem;
+}
+
+.gasto-folha-chart__empty {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.gasto-folha-chart__canvas {
+  height: 20rem;
+  min-height: 20rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .gasto-folha-chart__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .gasto-folha-chart__granularity {
+    flex-basis: auto;
+    width: 100%;
+  }
+}
+
+.jornada-irregular-chart {
+  min-width: 0;
+  padding: 1.5rem;
+}
+
+.jornada-irregular-chart__header {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.jornada-irregular-chart h2 {
+  color: var(--text-color, #334155);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 .25rem;
+}
+
+.jornada-irregular-chart__header span,
+.jornada-irregular-chart__empty {
+  color: var(--text-color-secondary, #64748b);
+  font-size: .9rem;
+}
+
+.jornada-irregular-chart__sort {
+  min-width: 13rem;
+}
+
+.jornada-irregular-chart__sort label {
+  color: var(--text-color-secondary, #64748b);
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .35rem;
+}
+
+.jornada-irregular-chart__canvas {
+  min-width: 0;
+  height: 24rem;
+  min-height: 24rem;
+  width: 100%;
+}
+
+:host ::ng-deep .jornada-irregular-chart__canvas .p-chart,
+:host ::ng-deep .gasto-folha-chart__canvas .p-chart {
+  display: block;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+}
+
+:host ::ng-deep .jornada-irregular-chart__canvas canvas,
+:host ::ng-deep .gasto-folha-chart__canvas canvas {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.jornada-irregular-chart__empty {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.funcionario-folhas-kpi-table {
+  grid-column: 1 / -1;
+  min-width: 0;
+  overflow: hidden;
+  padding-top: .5rem;
+}
+
+.funcionario-folhas-kpi-table__header {
+  margin-bottom: 1rem;
+}
+
+.funcionario-folhas-kpi-table__header h2 {
+  color: var(--text-color, #334155);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 .25rem;
+}
+
+.funcionario-folhas-kpi-table__header span {
+  color: var(--text-color-secondary, #64748b);
+  font-size: .9rem;
+}
+
+.funcionario-folhas-kpi-table__placeholder {
+  align-items: center;
+  background: var(--surface-ground, #f8f9fa);
+  border: 1px dashed var(--surface-border, #cbd5e1);
+  border-radius: .75rem;
+  color: var(--text-color-secondary, #64748b);
+  display: flex;
+  gap: 1rem;
+  grid-column: 1 / -1;
+  justify-content: center;
+  min-height: 8rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.funcionario-folhas-kpi-table__placeholder > i {
+  color: var(--primary-color, #198754);
+  font-size: 1.5rem;
+}
+
+.funcionario-folhas-kpi-table__placeholder div {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.funcionario-folhas-kpi-table__placeholder strong {
+  color: var(--text-color, #334155);
+}
+
 .print-refeicoes-content {
   display: none;
 }
@@ -220,33 +435,6 @@
 ::ng-deep .custom-table .p-datatable-header {
   background: transparent;
   border: none;
-}
-
-.table-caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.25rem 0;
-}
-
-.table-caption h2 {
-  color: var(--text-color, #334155);
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin: 0 0 0.25rem 0;
-}
-
-.table-caption span {
-  color: var(--text-color-secondary, #64748b);
-  font-size: 0.9rem;
-}
-
-.table-caption.compact h2 {
-  font-size: 1rem;
-}
-
-.table-caption.compact span {
-  font-size: 0.85rem;
 }
 
 ::ng-deep .custom-table .p-datatable-thead > tr > th {
@@ -332,7 +520,7 @@
 
 .kpi-summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -368,15 +556,12 @@
   color: #b91c1c;
 }
 
-.kpi-progress {
-  margin-bottom: 1rem;
+.kpi-summary-item.warning strong {
+  color: #b45309;
 }
 
-.marcacoes-cell {
-  max-width: 260px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.kpi-progress {
+  margin-bottom: 1rem;
 }
 
 /* Helpers */
@@ -523,6 +708,17 @@
     align-items: stretch;
   }
 
+  .dashboard-section--tables,
+  .folha-content-grid,
+  .kpi-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gasto-folha-chart {
+    border-bottom: 1px solid var(--surface-border, #e5e7eb);
+    border-right: 0;
+  }
+
   .filter-actions {
     justify-content: stretch;
     flex-direction: column;
@@ -542,11 +738,68 @@
 }
 
 @media (max-width: 560px) {
+  .folha-hora-extra-list-container {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .dashboard-section {
+    padding: 1rem 0 0;
+  }
+
+  .dashboard-section--tables {
+    gap: 1rem;
+  }
+
   .table-dynamic-panel {
     padding: 1rem;
+  }
+
+  .gasto-folha-chart {
+    padding: 1rem;
+  }
+
+  .jornada-irregular-chart {
+    padding: 1rem;
+  }
+
+  .jornada-irregular-chart__canvas {
+    height: 20rem;
+    min-height: 20rem;
+  }
+
+  .funcionario-folhas-kpi-table {
+    overflow-x: auto;
+  }
+
+  .jornada-irregular-chart__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .jornada-irregular-chart__sort {
+    width: 100%;
   }
 
   .kpi-summary-grid {
     grid-template-columns: 1fr;
   }
+}
+.funcionario-folha-kpi-expansion {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.funcionario-folha-kpi-expansion__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+  align-items: center;
+  margin-bottom: .75rem;
+  color: #475569;
+  font-size: .85rem;
+}
+
+.funcionario-folha-kpi-expansion__summary strong {
+  color: #1e293b;
 }

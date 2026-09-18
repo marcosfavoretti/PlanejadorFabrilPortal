@@ -1,5 +1,4 @@
 export { folhaHoraExtraControllerAprovar } from './folhaHoraExtraControllerAprovar';
-export { folhaHoraExtraControllerConsultarKpiCumprimento } from './folhaHoraExtraControllerConsultarKpiCumprimento';
 export { folhaHoraExtraControllerConsultarRefeicoes } from './folhaHoraExtraControllerConsultarRefeicoes';
 export { folhaHoraExtraControllerCriar } from './folhaHoraExtraControllerCriar';
 export { folhaHoraExtraControllerDetalhes } from './folhaHoraExtraControllerDetalhes';
@@ -9,6 +8,9 @@ export { folhaHoraExtraControllerListar } from './folhaHoraExtraControllerListar
 export { folhaHoraExtraControllerRejeitar } from './folhaHoraExtraControllerRejeitar';
 export { folhaHoraExtraControllerRelatorioRecursos } from './folhaHoraExtraControllerRelatorioRecursos';
 export { folhaHoraExtraControllerSubmeter } from './folhaHoraExtraControllerSubmeter';
+export { folhaHoraExtraKpiControllerCumprimento } from './folhaHoraExtraKpiControllerCumprimento';
+export { folhaHoraExtraKpiControllerCusto } from './folhaHoraExtraKpiControllerCusto';
+export { folhaHoraExtraKpiControllerJornada } from './folhaHoraExtraKpiControllerJornada';
 export { funcionarioControllerConsultaFuncionarios } from './funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './funcionarioControllerConsultaFuncionariosLegado';
 export { funcionarioControllerConsultarCentroDeCustoMethod } from './funcionarioControllerConsultarCentroDeCustoMethod';

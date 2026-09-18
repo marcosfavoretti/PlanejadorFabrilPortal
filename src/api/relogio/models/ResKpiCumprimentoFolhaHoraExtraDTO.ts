@@ -41,6 +41,10 @@ export type ResKpiCumprimentoFolhaHoraExtraDTO = {
   /**
    * @type number
    */
+  totalExtrapolaram: number;
+  /**
+   * @type number
+   */
   percentualCumprimento: number;
   /**
    * @type array
