@@ -18,6 +18,7 @@ import { RelogioPontoAPIService } from '@/app/features/ponto/services/RelogioPon
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import { FolhaHoraExtraAPIService } from '@/app/features/ponto/services/FolhaHoraExtraAPI.service';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { TableModel, tableColumns } from '@/app/shared/components/table-dynamic/table.model';
 import {
   ResCentroDeCustoDTO,
@@ -25,10 +26,9 @@ import {
   ResRegistroPontoTurnoPontoDTO,
   ResTurnoDTO,
 } from '@/api/relogio';
-import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { ActivatedRoute } from '@angular/router';
 
-const CARGOS_COM_SELECAO_LIVRE_CC = new Set<string>([
+const CARGOS_COM_TODOS_OS_CENTROS = new Set<string>([
   SetUserCargoDTOCargoEnum.ADMIN,
   SetUserCargoDTOCargoEnum.RH,
   SetUserCargoDTOCargoEnum.DIRETOR,
@@ -72,10 +72,10 @@ export class RelogioPontPageComponent implements OnInit {
   itemsPerPage = 10;
   fetching = { table: false, pareto: false };
   centroDeCusto: ResCentroDeCustoDTO[] = [];
+  private centroCustoCodigosVinculados: number[] = [];
   totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage));
   protected readonly centroCustoSelectorDisabled = computed(() => {
-    const possuiPreFiltroDeRota = (this.preFilterSetor()?.length ?? 0) > 0;
-    return possuiPreFiltroDeRota || !this.podeSelecionarQualquerCentroCusto();
+    return false;
   });
 
   // --- Form & Search Gatilho ---
@@ -83,6 +83,8 @@ export class RelogioPontPageComponent implements OnInit {
     indetificador: [''],
     dataInicio: [''],
     dataFim: [''],
+    horasTrabalhadasMin: [null as number | null],
+    horasTrabalhadasMax: [null as number | null],
     ccid: [[] as ResCentroDeCustoDTO[]]
   });
 
@@ -93,13 +95,20 @@ export class RelogioPontPageComponent implements OnInit {
     if (this.preFilterSetor() && this.preFilterSetor()!.length > 0) {
       ccidsToUse = this.preFilterSetor()!;
     } else if (filter.ccid && filter.ccid.length > 0) {
-      ccidsToUse = filter.ccid.map((cc: ResCentroDeCustoDTO) => String(cc.ccid));
+      ccidsToUse = filter.ccid
+        .map((cc: ResCentroDeCustoDTO) => cc.ccid)
+        .filter((ccid: number) => this.centroCustoCodigosVinculados.includes(ccid))
+        .map(String);
+    } else {
+      ccidsToUse = this.centroCustoCodigosVinculados.map(String);
     }
     return {
       ...filter,
       ccid: (ccidsToUse ?? []).length > 0 ? ccidsToUse : undefined,
       dataInicio: filter.dataInicio || undefined,
       dataFim: filter.dataFim || undefined,
+      horasTrabalhadasMin: filter.horasTrabalhadasMin ?? undefined,
+      horasTrabalhadasMax: filter.horasTrabalhadasMax ?? undefined,
     };
   }
 
@@ -137,8 +146,9 @@ export class RelogioPontPageComponent implements OnInit {
     this.laodCentroDeCusto().subscribe({
       next: (res) => {
         // 2. Configuramos os filtros iniciais baseados nos Centros de Custo carregados
-        if (ccsParam) {
-          this.applyRoutePreFilter(ccsParam);
+        const routeCentroCustoCodes = this.getValidRouteCentroCustoCodes(ccsParam);
+        if (routeCentroCustoCodes.length > 0) {
+          this.applyRoutePreFilter(routeCentroCustoCodes.join(','));
           this.setupDataStreams();
           this.search();
         } else {
@@ -153,10 +163,7 @@ export class RelogioPontPageComponent implements OnInit {
   }
 
   private applyRoutePreFilter(ccsParam: string): void {
-    const lista = ccsParam
-      .split(',')
-      .map(cc => cc.trim())
-      .filter(Boolean);
+    const lista = this.getValidRouteCentroCustoCodes(ccsParam);
 
     this.preFilterSetor.set(lista);
     const targets = this.centroDeCusto.filter(cc => lista.includes(cc.ccid.toString()));
@@ -164,11 +171,29 @@ export class RelogioPontPageComponent implements OnInit {
     this.syncCentroCustoControlState();
   }
 
+  private getValidRouteCentroCustoCodes(ccsParam: unknown): string[] {
+    const values = String(ccsParam ?? '')
+      .split(',')
+      .map(cc => cc.trim())
+      .filter(Boolean);
+
+    return values.filter(value => this.centroDeCusto.some(centro => String(centro.ccid) === value));
+  }
+
   private applyLoggedUserCentroCustoPreSelection(afterLoad: () => void): void {
     this.preFilterSetor.set([]);
 
+    if (this.podeSelecionarTodosOsCentros()) {
+      this.centroCustoCodigosVinculados = this.centroDeCusto.map(centro => centro.ccid);
+      this.filterForm.patchValue({ ccid: [] });
+      this.syncCentroCustoControlState();
+      afterLoad();
+      return;
+    }
+
     const usuarioId = this.userStore.item()?.id;
     if (!usuarioId) {
+      this.centroCustoCodigosVinculados = [];
       this.centroDeCusto = [];
       this.filterForm.patchValue({ ccid: [] });
       this.syncCentroCustoControlState();
@@ -179,33 +204,27 @@ export class RelogioPontPageComponent implements OnInit {
     this.folhaHoraExtraService.getLiderCentroCusto(usuarioId).subscribe({
       next: vinculos => {
         const linkedCodes = new Set(vinculos.map(vinculo => vinculo.centroCustoCodigo));
-        const targets = this.centroDeCusto.filter(cc => linkedCodes.has(cc.ccid));
-        const missingTargets = vinculos
-          .filter(vinculo => !this.centroDeCusto.some(cc => cc.ccid === vinculo.centroCustoCodigo))
+        this.centroCustoCodigosVinculados = [...linkedCodes];
+        const centrosVinculados = this.centroDeCusto.filter(centro => linkedCodes.has(centro.ccid));
+        const centrosNaoListados = vinculos
+          .filter(vinculo => !this.centroDeCusto.some(centro => centro.ccid === vinculo.centroCustoCodigo))
           .map(vinculo => ({
             ccid: vinculo.centroCustoCodigo,
             setor: vinculo.centroCustoDescricao || String(vinculo.centroCustoCodigo),
           }));
 
-        if (missingTargets.length) {
-          this.centroDeCusto = [...this.centroDeCusto, ...missingTargets];
-        }
-
-        const centrosVinculados = [...targets, ...missingTargets];
-        if (!this.podeSelecionarQualquerCentroCusto()) {
-          this.centroDeCusto = centrosVinculados;
-        }
-
-        this.filterForm.patchValue({ ccid: centrosVinculados });
+        this.centroDeCusto = [...centrosVinculados, ...centrosNaoListados];
+        // Nenhum CC começa selecionado: sem filtro, a consulta considera todos
+        // os centros permitidos; ao selecionar um, somente ele é consultado.
+        this.filterForm.patchValue({ ccid: [] });
         this.syncCentroCustoControlState();
         afterLoad();
       },
       error: err => {
         console.error('Erro ao carregar centros de custo vinculados ao usuario', err);
-        if (!this.podeSelecionarQualquerCentroCusto()) {
-          this.centroDeCusto = [];
-          this.filterForm.patchValue({ ccid: [] });
-        }
+        this.centroCustoCodigosVinculados = [];
+        this.centroDeCusto = [];
+        this.filterForm.patchValue({ ccid: [] });
         this.syncCentroCustoControlState();
         afterLoad();
       },
@@ -358,17 +377,16 @@ export class RelogioPontPageComponent implements OnInit {
     return statusApi ?? (item.horasIrregulares > 0 ? 'ALERTA' : 'OK');
   }
 
-  private podeSelecionarQualquerCentroCusto(): boolean {
-    const cargos = this.userStore.item()?.cargosLista ?? [];
-    return cargos.some(cargo =>
-      CARGOS_COM_SELECAO_LIVRE_CC.has(String(cargo).trim().toUpperCase())
-    );
-  }
-
   private syncCentroCustoControlState(): void {
     // O p-multiSelect pode preservar seu estado desabilitado após um HMR.
     // A restrição dos cargos é aplicada visualmente no template, preservando o
     // valor dos CCs vinculados no formulário e evitando o controle travado.
     this.filterForm.controls.ccid.enable({ emitEvent: false });
+  }
+
+  private podeSelecionarTodosOsCentros(): boolean {
+    return (this.userStore.item()?.cargosLista ?? []).some(cargo =>
+      CARGOS_COM_TODOS_OS_CENTROS.has(String(cargo).trim().toUpperCase())
+    );
   }
 }

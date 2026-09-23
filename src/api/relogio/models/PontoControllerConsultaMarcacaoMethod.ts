@@ -32,6 +32,16 @@ export type PontoControllerConsultaMarcacaoMethodQueryParams = {
    * @type string | undefined
    */
   dataFim?: string;
+  /**
+   * @description Quantidade mínima de horas trabalhadas no turno para filtrar o KPI.
+   * @type number | undefined
+   */
+  horasTrabalhadasMin?: number;
+  /**
+   * @description Quantidade máxima de horas trabalhadas no turno para filtrar o KPI.
+   * @type number | undefined
+   */
+  horasTrabalhadasMax?: number;
 };
 
 export type PontoControllerConsultaMarcacaoMethodError =

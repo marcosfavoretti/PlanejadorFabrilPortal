@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
@@ -40,6 +40,7 @@ import { FolhaHoraExtraApprovalDialogComponent } from '../../widgets/folha-hora-
 export class FolhaHoraExtraDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
   private readonly userStore = inject(UserstoreService);
   private readonly dialogService = inject(DialogService);
@@ -203,7 +204,10 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   }
 
   protected goBackToList(): void {
-    this.router.navigate(['/ponto/he']);
+    // A lista deve ser recuperada da pilha para manter a URL/estado dos filtros.
+    // O fluxo de criação/edição continua usando navegação explícita no formulário,
+    // portanto não é removido da pilha por este botão.
+    this.location.back();
   }
 
   private loadFolha(id: string): void {

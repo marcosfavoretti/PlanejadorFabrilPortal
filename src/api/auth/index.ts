@@ -78,6 +78,7 @@ export type { CentroCustoLider } from './models/CentroCustoLider';
 export type { CompleteTotpEnrollmentDto } from './models/CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './models/CreateUserDto';
 export type { DisableTwoFactorDto } from './models/DisableTwoFactorDto';
+export type { NotificarUsuarioEmailDTO } from './models/NotificarUsuarioEmailDTO';
 export type { NotificarUsuariosPorCargoEmailDTO } from './models/NotificarUsuariosPorCargoEmailDTO';
 export type { ResLiderCentroCustoDTO } from './models/ResLiderCentroCustoDTO';
 export type { RotateRecoveryCodesDto } from './models/RotateRecoveryCodesDto';
@@ -172,6 +173,12 @@ export type {
   UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
   UserNotificationInternalControllerNotificarCargoPorEmailMutationResponse,
 } from './models/UserNotificationInternalControllerNotificarCargoPorEmail';
+export type {
+  UserNotificationInternalControllerNotificarUsuarioPorEmail202,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutation,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutationRequest,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutationResponse,
+} from './models/UserNotificationInternalControllerNotificarUsuarioPorEmail';
 export type { UserResponseDTO } from './models/UserResponseDTO';
 export type { VerifyTwoFactorDto } from './models/VerifyTwoFactorDto';
 export type { VincularLiderCentroCustoDTO } from './models/VincularLiderCentroCustoDTO';
@@ -201,6 +208,7 @@ export { userAuthorizationControllerDesativarCentroCusto } from './client/userAu
 export { userAuthorizationControllerListarCentrosCusto } from './client/userAuthorizationControllerListarCentrosCusto';
 export { userAuthorizationControllerVincularCentroCusto } from './client/userAuthorizationControllerVincularCentroCusto';
 export { userNotificationInternalControllerNotificarCargoPorEmail } from './client/userNotificationInternalControllerNotificarCargoPorEmail';
+export { userNotificationInternalControllerNotificarUsuarioPorEmail } from './client/userNotificationInternalControllerNotificarUsuarioPorEmail';
 export { CentroCustoLiderEnum } from './models/CentroCustoLider';
 export { NotificarUsuariosPorCargoEmailDTOCargoEnum } from './models/NotificarUsuariosPorCargoEmailDTO';
 export { SetUserCargoDTOCargoEnum } from './models/SetUserCargoDTO';

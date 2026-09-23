@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
-import { ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
+import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
   FolhaHoraExtraAPIService,
@@ -55,6 +55,7 @@ interface FuncionarioFolhaHEAprovada {
   nome: string;
   matricula: string;
   dataFolha: string;
+  atualizadoEm: string;
   centroCustoCodigo: number;
   centroCustoDescricao: string;
   setor: string;
@@ -63,6 +64,7 @@ interface FuncionarioFolhaHEAprovada {
   refeicao: string;
   transporte: string;
   observacao: string;
+  status: FolhaHoraExtraStatus;
 }
 
 interface FuncionarioJornadaIrregular {
@@ -74,6 +76,55 @@ interface FuncionarioJornadaIrregular {
   minutosIrregularesExtrapolacaoHE: number;
   minutosExcedentesHE: number;
   centroCusto: string;
+}
+
+interface HoraExtraNaoAutorizadaLinha {
+  id: string;
+  matricula: string;
+  nome: string;
+  setor: string;
+  centroCustoCodigo: number | null;
+  centroCusto: string;
+  data: string;
+  evento: string;
+  eventoNome: string;
+  tipoHoraExtra: string;
+  quantidade: number;
+  percentual: string;
+  origem: string;
+}
+
+interface ResumoHoraExtraIrregularFuncionario {
+  matricula: string;
+  nome: string;
+  centroCusto: string;
+  ocorrencias: number;
+  horas: number;
+  percentual: number;
+  percentualAcumulado: number;
+}
+
+interface PessoaPorDiaLinha {
+  id: string;
+  data: string;
+  nome: string;
+  matricula: string;
+  tipo: 'AUTORIZADA' | 'NAO_AUTORIZADA';
+  cumprimento: string;
+  centroCusto: string;
+  horarioHE: string;
+}
+
+interface FolhaHeListNavigationState {
+  activeTab: 'rh' | 'folhas' | 'kpi';
+  dataRange: Date[] | null;
+  centroCusto: number | null;
+  nomeFuncionario: string;
+  matriculaFuncionario: string;
+  status: FolhaHoraExtraStatus | null;
+  approvalStatus: FolhaHoraExtraStatus | null;
+  first: number;
+  pageSize: number;
 }
 
 function createTodayRange(): Date[] {
@@ -106,18 +157,27 @@ function createTodayRange(): Date[] {
   providers: [DialogService],
 })
 export class FolhaHoraExtraListPageComponent implements OnInit {
+  private static lastNavigationState: FolhaHeListNavigationState | null = null;
   private readonly folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
   private readonly userStore = inject(UserstoreService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialogService = inject(DialogService);
+  private readonly zone = inject(NgZone);
+  private readonly document = inject(DOCUMENT);
 
   protected readonly statusOptions = FOLHA_HE_STATUS_OPERACIONAL
     .map(status => ({ label: status, value: status }));
 
   protected readonly dataRangeFilter = new FormControl<Date[] | null>(null);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
+  protected readonly nomeFuncionarioFilter = new FormControl('', { nonNullable: true });
+  protected readonly matriculaFuncionarioFilter = new FormControl('', { nonNullable: true });
+  protected readonly historicoDataRangeFilter = new FormControl<Date[] | null>(null);
+  protected readonly historicoCentroCustoFilter = new FormControl<number | null>(null);
+  protected readonly historicoNomeFuncionarioFilter = new FormControl('', { nonNullable: true });
+  protected readonly historicoMatriculaFuncionarioFilter = new FormControl('', { nonNullable: true });
   protected readonly statusFilter = new FormControl<FolhaHoraExtraStatus | null>(null);
   protected readonly approvalStatusFilter = new FormControl<FolhaHoraExtraStatus | null>(null);
   protected readonly refeicoesDataRangeFilter = new FormControl<Date[] | null>(createTodayRange());
@@ -132,6 +192,12 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected readonly aprovadasCentroCustoFilter = new FormControl<number | null>(null);
   protected readonly aprovadasMatriculaFilter = new FormControl('', { nonNullable: true });
   protected readonly aprovadasNomeFilter = new FormControl('', { nonNullable: true });
+  protected readonly aprovadasStatusFilter = new FormControl<FolhaHoraExtraStatus[] | null>(
+    ['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO'],
+  );
+  protected readonly aprovadasRefeicaoFilter = new FormControl<string[] | null>(null);
+  protected readonly aprovadasTransporteFilter = new FormControl<string[] | null>(null);
+  protected readonly transporteOptions = ['UBER', 'TAXI', 'FRETADO', 'N/A'].map(value => ({ label: value, value }));
   protected readonly refeicaoOptions = [
     { label: 'Marmitex', value: 'MARMITEX' as const },
     { label: 'Lanche', value: 'LANCHE' as const },
@@ -149,6 +215,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected refeicoesFirst = 0;
   protected refeicoesTotalRecords = 0;
   protected readonly approvalQueueOptions = [
+    { label: 'Fila geral', status: null },
     { label: 'Fila coordenação', status: 'AGUARDANDO_COORDENACAO' as FolhaHoraExtraStatus },
     { label: 'Fila diretoria', status: 'AGUARDANDO_DIRETORIA' as FolhaHoraExtraStatus },
   ];
@@ -172,6 +239,22 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private historicoSortOrder: 1 | -1 = 1;
   protected gastoFolhaPorDiaLoading = false;
   protected gastoFolhaPorDiaChartData: Record<string, unknown> | null = null;
+  protected custoPorCentroCustoChartData: Record<string, unknown> | null = null;
+  protected custoKpiResumo: { custo: number; folhas: number; custoMedio: number } | null = null;
+  private custoKpiPeriodos: KpiCustoFolhaHoraExtraPeriodoDTO[] = [];
+  private custoKpiCentrosGeral: KpiCustoFolhaHoraExtraCentroCustoDTO[] = [];
+  private custoKpiCentros: KpiCustoFolhaHoraExtraCentroCustoDTO[] = [];
+  protected custoKpiPeriodoSelecionado: string | null = null;
+  protected custoKpiPeriodoFixado: string | null = null;
+  private custoKpiRankingTotal = 0;
+  protected centroCustoMaiorGasto: KpiCustoFolhaHoraExtraCentroCustoDTO | null = null;
+  protected gastoFolhaHistoricoLoading = false;
+  protected gastoFolhaHistoricoFolhas: FolhaHoraExtraResumo[] = [];
+  protected gastoFolhaHistoricoSelecionado: {
+    centroCustoCodigo: number;
+    centroCustoDescricao: string;
+    periodo: string | null;
+  } | null = null;
   protected readonly gastoFolhaGranularidade = new FormControl<'dia' | 'mes' | 'ano'>('mes', { nonNullable: true });
   protected readonly gastoFolhaGranularidadeOptions = [
     { label: 'Dia', value: 'dia' as const },
@@ -189,25 +272,123 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected readonly historicoKpi: Record<string, ResKpiCumprimentoFolhaHoraExtraDTO | undefined> = {};
   protected readonly historicoKpiLoading = new Set<string>();
   protected jornadaIrregularChartData: Record<string, unknown> | null = null;
+  protected jornadaKpiResumo: { programados: number; naoCumpriram: number; extrapolaram: number } | null = null;
+  protected jornadaKpiPeriodoLabel = 'período analisado';
+  protected pessoasPorDiaChartData: Record<string, unknown> | null = null;
+  private jornadaKpiDias: KpiJornadaFolhaHoraExtraDiaDTO[] = [];
+  private kpisCumprimentoPeriodo: ResKpiCumprimentoFolhaHoraExtraDTO[] = [];
+  private pessoasPorDiaDatas: string[] = [];
+  protected pessoasPorDiaSelecionado: string | null = null;
+  protected pessoasPorDiaSelecionadas: PessoaPorDiaLinha[] = [];
+  protected pessoasPorDiaLoading = false;
+  protected readonly jornadaCentroCustoFilter = new FormControl<number | null>(null);
+  protected jornadaCentroCustoOptions: Array<{ label: string; value: number }> = [];
+  protected jornadaSemCentroCusto = 0;
   protected readonly jornadaIrregularSort = new FormControl<'horas' | 'ocorrencias'>('horas', { nonNullable: true });
+  protected readonly jornadaIrregularHorasMin = new FormControl<number | null>(null);
+  protected readonly jornadaIrregularHorasMax = new FormControl<number | null>(null);
+  protected horasExtrasNaoAutorizadasLoading = false;
+  protected horasExtrasNaoAutorizadas: HoraExtraNaoAutorizadaLinha[] = [];
+  protected horasExtrasNaoAutorizadasChartData: Record<string, unknown> | null = null;
+  protected horasExtrasNaoAutorizadasCentroSelecionado: string | null = null;
+  protected horasExtrasNaoAutorizadasPorFuncionario: ResumoHoraExtraIrregularFuncionario[] = [];
+  private horasExtrasNaoAutorizadasChartItems: Array<{ chave: string; rotulo: string }> = [];
+  protected readonly horasNaoAutorizadasDataRangeFilter = new FormControl<Date[] | null>(null);
+  protected readonly horasNaoAutorizadasCentroCustoFilter = new FormControl<number[] | null>(null);
+  protected readonly horasNaoAutorizadasMatriculasFilter = new FormControl('', { nonNullable: true });
+  protected readonly horasNaoAutorizadasNomeFilter = new FormControl('', { nonNullable: true });
   protected activeTab: 'rh' | 'folhas' | 'kpi' = 'folhas';
+  private restoredNavigationState = false;
+  private kpisLoaded = false;
   protected readonly gastoFolhaPorDiaChartOptions: Record<string, unknown> = {
     maintainAspectRatio: false,
     interaction: { intersect: false, mode: 'index' },
+    events: ['mousemove', 'mouseout'],
+    onHover: (event: { type?: string }, elements: Array<{ index?: number }>) => {
+      this.zone.run(() => {
+        if (event.type === 'mouseout') {
+          this.onGastoFolhaChartHover([]);
+          return;
+        }
+        this.onGastoFolhaChartHover(elements);
+      });
+    },
+    onClick: () => undefined,
     plugins: {
-      legend: { display: false },
+      legend: {
+        display: true,
+        position: 'top',
+        labels: { boxWidth: 14, usePointStyle: true, padding: 18 },
+      },
       tooltip: {
         callbacks: {
-          label: (context: { parsed: { y: number | null } }) =>
-            `Total: ${this.formatCurrency(context.parsed.y ?? 0)}`,
+          label: (context: { dataset: { label?: string }; parsed: { y: number | null } }) =>
+            context.dataset.label === 'Custo aprovado'
+              ? `Custo: ${this.formatCurrency(context.parsed.y ?? 0)}`
+              : `Folhas aprovadas: ${context.parsed.y ?? 0}`,
+          footer: (items: Array<{ dataIndex: number }>) => {
+            const periodo = this.custoKpiPeriodos[items[0]?.dataIndex ?? -1];
+            return periodo
+              ? `${periodo.quantidadeFolhas} folha(s) · média ${this.formatCurrency(periodo.quantidadeFolhas ? periodo.custo / periodo.quantidadeFolhas : 0)}`
+              : '';
+          },
         },
       },
     },
     scales: {
-      y: {
+      x: { ticks: { autoSkip: true, maxTicksLimit: 10, maxRotation: 35, minRotation: 0 } },
+      yCusto: {
+        position: 'left',
         beginAtZero: true,
+        title: { display: true, text: 'Custo (R$)' },
         ticks: {
           callback: (value: string | number) => this.formatCurrency(Number(value)),
+        },
+      },
+      yFolhas: {
+        position: 'right',
+        beginAtZero: true,
+        title: { display: true, text: 'Folhas aprovadas' },
+        ticks: { precision: 0 },
+        grid: { drawOnChartArea: false },
+      },
+    },
+  };
+  protected readonly custoPorCentroCustoChartOptions: Record<string, unknown> = {
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (context: { parsed: { x: number | null } }) =>
+            `Custo aprovado: ${this.formatCurrency(context.parsed.x ?? 0)}`,
+          footer: (items: Array<{ dataIndex: number }>) => {
+            const centro = this.custoKpiCentros[items[0]?.dataIndex ?? -1];
+            if (!centro || !this.custoKpiRankingTotal) return '';
+            const participacao = centro.custo / this.custoKpiRankingTotal * 100;
+            return `${centro.quantidadeFolhas} folha(s) · ${participacao.toFixed(1)}% do custo total`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        title: { display: true, text: 'Custo aprovado (R$)' },
+        ticks: { callback: (value: string | number) => this.formatCurrency(Number(value)) },
+      },
+      y: { ticks: { font: { weight: '600' } } },
+    },
+  };
+  protected readonly horasExtrasNaoAutorizadasChartOptions: Record<string, unknown> = {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { boxWidth: 14, padding: 14 } },
+      tooltip: {
+        callbacks: {
+          label: (context: { label?: string; parsed: number }) =>
+            `${context.label ?? ''}: ${this.formatHours(context.parsed ?? 0)}`,
         },
       },
     },
@@ -261,6 +442,27 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
           minRotation: 25,
           font: { size: 10 },
         },
+      },
+    },
+  };
+  protected readonly pessoasPorDiaChartOptions: Record<string, unknown> = {
+    maintainAspectRatio: false,
+    interaction: { intersect: false, mode: 'index' },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (context: { dataset: { label?: string }; parsed: { y: number | null } }) =>
+            `${context.dataset.label}: ${context.parsed.y ?? 0} pessoa(s)`,
+        },
+      },
+    },
+    scales: {
+      x: { ticks: { autoSkip: true, maxTicksLimit: 12, maxRotation: 35, minRotation: 0 } },
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: 'Pessoas' },
+        ticks: { precision: 0 },
       },
     },
   };
@@ -343,8 +545,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   };
 
   protected readonly funcionariosFolhasAprovadasTableModel: TableModel = {
-    title: 'Funcionários com folha de HE aprovada',
-    subtitle: 'Uma linha por funcionário incluído em uma folha de hora extra aprovada',
+    title: 'Funcionários nas folhas de HE',
+    subtitle: 'Uma linha por funcionário incluído em uma folha de hora extra, independentemente do status',
     paginator: true,
     totalize: false,
     dataKey: 'id',
@@ -362,6 +564,13 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         filterable: false,
       },
       {
+        alias: 'Última atualização da folha',
+        field: 'atualizadoEm',
+        isDate: true,
+        dateFormat: 'dd/MM/yyyy HH:mm',
+        filterable: false,
+      },
+      {
         alias: 'CC - Setor',
         field: 'centroCustoCodigo',
         filterable: false,
@@ -375,9 +584,52 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         filterable: false,
         valueFormatter: (_, row: FuncionarioFolhaHEAprovada) => `${row.inicioHE} - ${row.fimHE}`,
       },
-      { alias: 'Refeição', field: 'refeicao', filterable: false },
+      {
+        alias: 'Refeição',
+        field: 'refeicao',
+        isTag: true,
+        filterable: false,
+        tagLabelFn: (value, row) => this.getRefeicaoLabel(
+          value as FolhaHoraExtraRefeicaoResumo['refeicao'],
+          row as FolhaHoraExtraRefeicaoResumo,
+        ),
+        tagSeverityFn: value => this.getRefeicaoSeverity(value as FolhaHoraExtraRefeicaoResumo['refeicao']),
+      },
       { alias: 'Transporte', field: 'transporte', filterable: false },
+      {
+        alias: 'Status da folha',
+        field: 'status',
+        isTag: true,
+        filterable: false,
+        tagSeverityFn: value => this.getStatusSeverity(value as FolhaHoraExtraStatus),
+      },
       { alias: 'Observações', field: 'observacao', filterable: false },
+    ],
+  };
+
+  protected readonly pessoasPorDiaTableModel: TableModel = {
+    title: 'Pessoas do dia selecionado',
+    subtitle: 'Verde: pessoa com HE autorizada. Vermelho: apontamento sem folha de HE correspondente.',
+    paginator: true,
+    totalize: false,
+    dataKey: 'id',
+    sortField: 'nome',
+    sortOrder: 1,
+    columns: [
+      { alias: 'Pessoa', field: 'nome', filterable: false },
+      { alias: 'Matrícula', field: 'matricula', filterable: false },
+      {
+        alias: 'Situação', field: 'tipo', isTag: true, filterable: false,
+        tagLabelFn: value => value === 'AUTORIZADA' ? 'Autorizada' : 'Não autorizada',
+        tagSeverityFn: value => value === 'AUTORIZADA' ? 'success' : 'danger',
+      },
+      { alias: 'Cumprimento', field: 'cumprimento', filterable: false },
+      { alias: 'Centro de custo', field: 'centroCusto', filterable: false },
+      { alias: 'Horário HE', field: 'horarioHE', filterable: false },
+    ],
+    ghostControll: [
+      { field: 'tipo', desc: 'Autorizada', ifValueEqual: 'AUTORIZADA', color: '#dcfce7' },
+      { field: 'tipo', desc: 'Não autorizada', ifValueEqual: 'NAO_AUTORIZADA', color: '#fee2e2' },
     ],
   };
 
@@ -423,6 +675,25 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         field: 'registros',
         valueFormatter: (_, row: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO) => this.formatMarcacoes(row),
       },
+    ],
+  };
+
+  protected readonly horasExtrasNaoAutorizadasTableModel: TableModel = {
+    title: 'Horas extras não autorizadas',
+    subtitle: 'Horas apontadas no Protheus sem registro correspondente em uma folha de HE',
+    paginator: true,
+    totalize: false,
+    dataKey: 'id',
+    sortField: 'data',
+    sortOrder: -1,
+    columns: [
+      { alias: 'Data', field: 'data', isDate: true, dateFormat: 'dd/MM/yyyy', dateTimezone: 'UTC' },
+      { alias: 'Matrícula', field: 'matricula' },
+      { alias: 'Funcionário', field: 'nome' },
+      { alias: 'CC - Setor', field: 'centroCusto' },
+      { alias: 'Evento', field: 'evento' },
+      { alias: 'Nome do evento', field: 'eventoNome' },
+      { alias: 'Quantidade', field: 'quantidade', valueFormatter: value => this.formatHours(Number(value)) },
     ],
   };
 
@@ -520,6 +791,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private readonly reload$ = new BehaviorSubject<void>(undefined);
 
   ngOnInit(): void {
+    this.restoreNavigationState();
     this.activeTab = this.getInitialTab();
     if (this.hasVisibleSections()) {
       this.loadCentrosCusto();
@@ -535,44 +807,56 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       this.loadHistoricoFolhas();
     }
 
-    if (this.canViewGastoFolhaPorDia()) {
-      this.loadGastoFolhaPorDia();
-      this.loadJornadaIrregular();
-    }
-
     if (this.canViewRefeicoes()) {
       this.loadFuncionariosFolhasAprovadas();
+    }
+
+    if (this.activeTab === 'kpi') {
+      this.loadKpis();
     }
   }
 
   protected applyFilters(): void {
     this.first = 0;
-    this.historicoFirst = 0;
     this.reload$.next();
-    if (this.canAuditHistorico()) {
-      this.loadHistoricoFolhas();
-    }
   }
 
   protected clearFilters(): void {
     this.dataRangeFilter.setValue(null);
     this.centroCustoFilter.setValue(null);
+    this.nomeFuncionarioFilter.setValue('');
+    this.matriculaFuncionarioFilter.setValue('');
     this.statusFilter.setValue(null);
     this.approvalStatusFilter.setValue(null);
     this.applyFilters();
   }
 
-  protected applyApprovalQueue(status: FolhaHoraExtraStatus): void {
-    this.approvalStatusFilter.setValue(this.approvalStatusFilter.value === status ? null : status);
+  protected applyHistoricoFilters(): void {
+    this.historicoFirst = 0;
+    this.loadHistoricoFolhas();
+  }
+
+  protected clearHistoricoFilters(): void {
+    this.historicoDataRangeFilter.setValue(null);
+    this.historicoCentroCustoFilter.setValue(null);
+    this.historicoNomeFuncionarioFilter.setValue('');
+    this.historicoMatriculaFuncionarioFilter.setValue('');
+    this.applyHistoricoFilters();
+  }
+
+  protected applyApprovalQueue(status: FolhaHoraExtraStatus | null): void {
+    this.approvalStatusFilter.setValue(status);
     this.first = 0;
     this.reload$.next();
   }
 
   protected viewFolha(id: string): void {
+    this.saveNavigationState();
     this.router.navigate(['/ponto/he/view', id]);
   }
 
   protected printFolha(id: string): void {
+    this.saveNavigationState();
     this.router.navigate(['/ponto/he/view', id], { queryParams: { imprimir: true } });
   }
 
@@ -613,6 +897,18 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.loadRefeicoesHoje();
   }
 
+  protected applyHorasNaoAutorizadasFilters(): void {
+    this.loadHorasExtrasNaoAutorizadas();
+  }
+
+  protected clearHorasNaoAutorizadasFilters(): void {
+    this.horasNaoAutorizadasDataRangeFilter.setValue(null);
+    this.horasNaoAutorizadasCentroCustoFilter.setValue(null);
+    this.horasNaoAutorizadasMatriculasFilter.setValue('');
+    this.horasNaoAutorizadasNomeFilter.setValue('');
+    this.loadHorasExtrasNaoAutorizadas();
+  }
+
   protected restoreRefeicoesDefaultFilters(): void {
     this.refeicoesDataRangeFilter.setValue(createTodayRange());
     this.refeicoesCentroCustoFilter.setValue(null);
@@ -632,6 +928,9 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.aprovadasCentroCustoFilter.setValue(null);
     this.aprovadasMatriculaFilter.setValue('');
     this.aprovadasNomeFilter.setValue('');
+    this.aprovadasStatusFilter.setValue(['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
+    this.aprovadasRefeicaoFilter.setValue(null);
+    this.aprovadasTransporteFilter.setValue(null);
     this.applyAprovadasFilters();
   }
 
@@ -772,12 +1071,30 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     }
 
     this.activeTab = tab;
+    if (tab === 'kpi') {
+      this.loadKpis();
+    }
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { aba: tab },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
+  }
+
+  protected scrollToKpiSection(sectionId: string): void {
+    this.document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private loadKpis(): void {
+    if (this.kpisLoaded) {
+      return;
+    }
+
+    this.kpisLoaded = true;
+    this.loadGastoFolhaPorDia();
+    this.loadJornadaIrregular();
+    this.loadHorasExtrasNaoAutorizadas();
   }
 
   protected hasVisibleSections(): boolean {
@@ -818,7 +1135,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected getCumprimentoLabel(funcionario: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO): string {
-    return this.getCumprimentoStatusLabel(funcionario.statusCumprimentoHE);
+    return this.getCumprimentoStatusLabel(funcionario.statusCumprimentoHE ?? 'CUMPRIU');
   }
 
   protected getCumprimentoStatusLabel(status: string): string {
@@ -926,6 +1243,13 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         tagSeverityFn: value => this.getStatusSeverity(value as FolhaHoraExtraStatus),
       },
       { alias: 'Funcionários', field: 'totalFuncionarios', isNumber: true, filterable: false, sortable: historico },
+      ...(historico ? [{
+        alias: 'Valor total',
+        field: 'valorTotal',
+        isCurrency: true,
+        filterable: false,
+        sortable: true,
+      }] : []),
       { alias: 'Autor', field: 'autorNome', filterable: false, sortable: historico },
       {
         alias: 'Atualizado em',
@@ -1000,12 +1324,14 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     const statusFilter = this.hasCombinedLeaderCoordinatorRoles()
       ? this.getCombinedLeaderCoordinatorStatuses(this.statusFilter.value)
       : this.usesHistoricoDashboard()
-        ? this.approvalStatusFilter.value ?? this.getApprovalStatusesForUser()
+        ? this.approvalStatusFilter.value ?? this.getGeneralQueueStatuses()
         : this.getOperationalStatusesForUser(this.statusFilter.value);
     const filters = {
       dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
       centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
+      nomeFuncionario: this.nomeFuncionarioFilter.value.trim() || undefined,
+      matriculaFuncionario: this.matriculaFuncionarioFilter.value.trim() || undefined,
       status: statusFilter,
       page: Math.floor(this.first / this.pageSize),
       limit: this.pageSize,
@@ -1028,12 +1354,35 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   private loadHistoricoFolhas(): void {
     this.historicoLoading = true;
-    const range = this.dataRangeFilter.value;
+    const range = this.historicoDataRangeFilter.value;
+    const ontem = new Date();
+    ontem.setHours(0, 0, 0, 0);
+    ontem.setDate(ontem.getDate() - 1);
+    const ontemISO = this.formatLocalDate(ontem);
+    const dataInicio = range?.[0] ? this.formatLocalDate(range[0]) : undefined;
+    const dataFimSelecionada = range?.[1] ?? range?.[0];
+    const dataFimSelecionadaISO = dataFimSelecionada
+      ? this.formatLocalDate(dataFimSelecionada)
+      : undefined;
+
+    // O histórico deve conter somente folhas de dias já encerrados.
+    // Quando o usuário informa um período que avança para hoje/futuro,
+    // limitamos o fim para ontem; se o início já estiver no futuro, não há dados.
+    if (dataInicio && dataInicio > ontemISO) {
+      this.historicoFolhas = [];
+      this.historicoTotalRecords = 0;
+      this.historicoLoading = false;
+      return;
+    }
 
     this.folhaHoraExtraService.getHistorico({
-      dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
-      dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
-      centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
+      dataInicio,
+      dataFim: dataFimSelecionadaISO && dataFimSelecionadaISO < ontemISO
+        ? dataFimSelecionadaISO
+        : ontemISO,
+      centroCustoCodigo: this.historicoCentroCustoFilter.value ?? undefined,
+      nomeFuncionario: this.historicoNomeFuncionarioFilter.value.trim() || undefined,
+      matriculaFuncionario: this.historicoMatriculaFuncionarioFilter.value.trim() || undefined,
       status: 'APROVADO',
       page: Math.floor(this.historicoFirst / this.historicoPageSize),
       limit: this.historicoPageSize,
@@ -1089,10 +1438,108 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     ).subscribe(kpi => {
       if (!kpi) {
         this.gastoFolhaPorDiaChartData = null;
+        this.custoPorCentroCustoChartData = null;
+        this.custoKpiResumo = null;
+        this.custoKpiPeriodoSelecionado = null;
+        this.custoKpiPeriodoFixado = null;
+        this.custoKpiRankingTotal = 0;
+        this.centroCustoMaiorGasto = null;
         return;
       }
+      this.custoKpiPeriodos = kpi.periodos;
       this.gastoFolhaPorDiaChartData = this.createGastoFolhaPorDiaChart(kpi.periodos);
+      const folhas = kpi.quantidadeFolhas;
+      this.custoKpiResumo = { custo: kpi.custoTotal, folhas, custoMedio: folhas ? kpi.custoTotal / folhas : 0 };
+      this.custoKpiCentrosGeral = kpi.centrosCusto;
+      this.applyCustoKpiPeriodo(null);
     });
+  }
+
+  protected onGastoFolhaChartHover(elements: Array<{ index?: number }>): void {
+    if (this.custoKpiPeriodoFixado) {
+      return;
+    }
+
+    const periodoIndex = elements[0]?.index;
+    const periodo = periodoIndex == null ? null : this.custoKpiPeriodos[periodoIndex] ?? null;
+    if ((periodo?.data ?? null) === this.custoKpiPeriodoSelecionado) {
+      return;
+    }
+    this.applyCustoKpiPeriodo(periodo);
+  }
+
+  protected resetCustoKpiPeriodo(): void {
+    this.onGastoFolhaChartHover([]);
+  }
+
+  protected onGastoFolhaChartSelect(event: { element?: { index?: number } }): void {
+    const periodoIndex = event.element?.index;
+    const periodo = periodoIndex == null ? null : this.custoKpiPeriodos[periodoIndex] ?? null;
+    if (!periodo) {
+      return;
+    }
+
+    this.zone.run(() => {
+      this.custoKpiPeriodoFixado = periodo.data;
+      this.applyCustoKpiPeriodo(periodo);
+    });
+  }
+
+  protected clearCustoKpiPeriodo(): void {
+    this.custoKpiPeriodoFixado = null;
+    this.applyCustoKpiPeriodo(null);
+  }
+
+  protected onCustoCentroCustoSelect(event: { element?: { index?: number } }): void {
+    const centroIndex = event.element?.index;
+    const centro = centroIndex == null ? null : this.custoKpiCentros[centroIndex] ?? null;
+    if (!centro) {
+      return;
+    }
+
+    const periodo = this.custoKpiPeriodoFixado ?? this.custoKpiPeriodoSelecionado;
+    const range = periodo ? this.getHistoricoPeriodoRange(periodo) : null;
+    this.gastoFolhaHistoricoSelecionado = {
+      centroCustoCodigo: centro.codigo,
+      centroCustoDescricao: centro.descricao,
+      periodo,
+    };
+    this.gastoFolhaHistoricoLoading = true;
+
+    this.folhaHoraExtraService.getHistorico({
+      dataInicio: range?.dataInicio,
+      dataFim: range?.dataFim,
+      centroCustoCodigo: centro.codigo,
+      status: 'APROVADO',
+      page: 0,
+      limit: 50,
+    }).pipe(
+      map(response => normalizeFolhasResponse(response as unknown as FolhaHoraExtraListResponse)),
+      catchError(err => {
+        this.messages = [{
+          severity: 'error',
+          summary: 'Erro',
+          detail: `Não foi possível carregar o histórico do centro de custo. ${mapFolhaHoraExtraError(err)}`,
+        }];
+        return of([] as FolhaHoraExtraResumo[]);
+      }),
+      finalize(() => this.gastoFolhaHistoricoLoading = false),
+    ).subscribe(folhas => this.gastoFolhaHistoricoFolhas = this.sortHistoricoFolhas(folhas));
+  }
+
+  protected clearGastoFolhaHistorico(): void {
+    this.gastoFolhaHistoricoSelecionado = null;
+    this.gastoFolhaHistoricoFolhas = [];
+  }
+
+  private applyCustoKpiPeriodo(periodo: KpiCustoFolhaHoraExtraPeriodoDTO | null): void {
+    this.custoKpiPeriodoSelecionado = periodo?.data ?? null;
+    this.custoKpiRankingTotal = periodo?.custo ?? this.custoKpiResumo?.custo ?? 0;
+    this.custoKpiCentros = [...(periodo?.centrosCusto ?? this.custoKpiCentrosGeral)]
+      .sort((a, b) => b.custo - a.custo)
+      .slice(0, 8);
+    this.centroCustoMaiorGasto = this.custoKpiCentros[0] ?? null;
+    this.custoPorCentroCustoChartData = this.createCustoPorCentroCustoChart(this.custoKpiCentros);
   }
 
   protected updateGastoFolhaPorDiaChart(): void {
@@ -1108,7 +1555,19 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private loadJornadaIrregular(): void {
     this.jornadaIrregularLoading = true;
     this.folhaHoraExtraService.getKpiJornada().pipe(
-      map(kpi => kpi.funcionariosComMaisOcorrencias.map(funcionario => {
+      map(kpi => {
+        this.jornadaKpiResumo = { programados: kpi.totalProgramados, naoCumpriram: kpi.totalNaoCumpriram, extrapolaram: kpi.totalExtrapolaram };
+        this.jornadaKpiPeriodoLabel = this.formatJornadaKpiPeriodo(kpi.dataInicio, kpi.dataFim);
+        this.jornadaKpiDias = kpi.dias ?? [];
+        this.loadKpisCumprimentoPeriodo(kpi.dataInicio, kpi.dataFim);
+        const centros = new Map<number, string>();
+        for (const funcionario of kpi.funcionariosComMaisOcorrencias) {
+          for (const centro of funcionario.centrosCusto ?? []) centros.set(centro.codigo, centro.descricao);
+        }
+        this.jornadaCentroCustoOptions = [...centros].sort((a, b) => a[0] - b[0])
+          .map(([value, descricao]) => ({ value, label: `${value} - ${descricao}` }));
+        this.jornadaSemCentroCusto = kpi.funcionariosComMaisOcorrencias.filter(funcionario => !funcionario.centrosCusto?.length).length;
+        return kpi.funcionariosComMaisOcorrencias.map(funcionario => {
         // O KPI deve trazer o centro de custo junto do funcionário. Não fazemos
         // consultas adicionais ao histórico/detalhes para evitar N+1 requests.
         const funcionarioComCentro = funcionario as typeof funcionario & {
@@ -1119,7 +1578,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         };
         const centroCusto = this.resolveFuncionarioCentroCusto(funcionarioComCentro);
         return { ...funcionario, centroCusto };
-      })),
+      });
+      }),
       catchError(err => {
         this.messages = [{
           severity: 'error',
@@ -1132,7 +1592,193 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     ).subscribe(funcionarios => {
       this.funcionariosJornadaIrregular = funcionarios;
       this.updateJornadaIrregularChart();
+      this.updatePessoasPorDiaChart();
     });
+  }
+
+  private loadKpisCumprimentoPeriodo(dataInicio: string, dataFim: string): void {
+    this.pessoasPorDiaLoading = true;
+    this.folhaHoraExtraService.getKpiCumprimentoPeriodo({ dataInicio, dataFim }).pipe(
+      catchError(err => {
+        this.messages = [{
+          severity: 'error',
+          summary: 'Erro',
+          detail: `Não foi possível carregar as pessoas do indicador diário. ${mapFolhaHoraExtraError(err)}`,
+        }];
+        return of([] as ResKpiCumprimentoFolhaHoraExtraDTO[]);
+      }),
+      finalize(() => this.pessoasPorDiaLoading = false),
+    ).subscribe(kpis => {
+      this.kpisCumprimentoPeriodo = kpis;
+      this.updatePessoasPorDiaTable();
+    });
+  }
+
+  private loadHorasExtrasNaoAutorizadas(): void {
+    this.horasExtrasNaoAutorizadasLoading = true;
+    const range = this.horasNaoAutorizadasDataRangeFilter.value;
+    const matriculas = this.horasNaoAutorizadasMatriculasFilter.value
+      .split(/[\s,;]+/)
+      .map(matricula => matricula.trim())
+      .filter(Boolean);
+    const nome = this.normalizeSearchText(this.horasNaoAutorizadasNomeFilter.value);
+    const centrosCusto = (this.horasNaoAutorizadasCentroCustoFilter.value ?? []).map(String);
+
+    this.folhaHoraExtraService.getHorasExtrasNaoAutorizadas({
+      dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
+      dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
+      matriculas: matriculas.length ? matriculas : undefined,
+      centroCustos: centrosCusto.length ? centrosCusto : undefined,
+    }).pipe(
+      map(registros => registros
+        .filter(registro => !nome || this.normalizeSearchText(registro.nome).includes(nome))
+        .flatMap(registro => registro.eventos.map(evento => ({
+          id: `${registro.matricula}-${evento.data}-${evento.evento}-${evento.origem}`,
+          matricula: registro.matricula,
+          nome: registro.nome,
+          setor: registro.setor,
+          centroCustoCodigo: typeof registro.ccid === 'number' ? registro.ccid : null,
+          centroCusto: this.formatCentroCustoNaoAutorizado(registro.ccid, registro.setor),
+          data: evento.data,
+          evento: evento.evento,
+          eventoNome: evento.nomeEvento,
+          tipoHoraExtra: evento.tipoHoraExtra,
+          quantidade: evento.quantidade,
+          percentual: this.formatPercentualNaoAutorizado(evento.percentual),
+          origem: evento.origem,
+        })))),
+      catchError(err => {
+        this.messages = [{
+          severity: 'error',
+          summary: 'Erro',
+          detail: `Não foi possível carregar as horas extras não autorizadas. ${mapFolhaHoraExtraError(err)}`,
+        }];
+        return of([] as HoraExtraNaoAutorizadaLinha[]);
+      }),
+      finalize(() => this.horasExtrasNaoAutorizadasLoading = false),
+    ).subscribe(registros => {
+      this.horasExtrasNaoAutorizadas = registros;
+      this.clearHorasExtrasNaoAutorizadasChartSelection();
+      this.updatePessoasPorDiaChart();
+    });
+  }
+
+  protected onHorasExtrasNaoAutorizadasChartSelect(event: { element?: { index?: number } }): void {
+    if (this.horasExtrasNaoAutorizadasCentroSelecionado) return;
+
+    const item = this.horasExtrasNaoAutorizadasChartItems[event.element?.index ?? -1];
+    if (!item) return;
+
+    this.horasExtrasNaoAutorizadasCentroSelecionado = item.chave;
+    this.updateHorasExtrasNaoAutorizadasChart();
+  }
+
+  protected clearHorasExtrasNaoAutorizadasChartSelection(): void {
+    this.horasExtrasNaoAutorizadasCentroSelecionado = null;
+    this.updateHorasExtrasNaoAutorizadasChart();
+  }
+
+  private updateHorasExtrasNaoAutorizadasChart(): void {
+    const centroSelecionado = this.horasExtrasNaoAutorizadasCentroSelecionado;
+    const linhas = centroSelecionado
+      ? this.horasExtrasNaoAutorizadas.filter(linha => this.getCentroCustoChartKey(linha) === centroSelecionado)
+      : this.horasExtrasNaoAutorizadas;
+    const grupos = new Map<string, { rotulo: string; quantidade: number }>();
+
+    for (const linha of linhas) {
+      const chave = centroSelecionado ? linha.matricula : this.getCentroCustoChartKey(linha);
+      const rotulo = centroSelecionado
+        ? `${linha.nome} (${linha.matricula})`
+        : linha.centroCusto;
+      const grupo = grupos.get(chave) ?? { rotulo, quantidade: 0 };
+      grupo.quantidade += Number(linha.quantidade) || 0;
+      grupos.set(chave, grupo);
+    }
+
+    const itens = [...grupos.entries()]
+      .map(([chave, grupo]) => ({ chave, ...grupo }))
+      .sort((a, b) => b.quantidade - a.quantidade);
+    this.horasExtrasNaoAutorizadasChartItems = itens;
+    this.horasExtrasNaoAutorizadasChartData = itens.length ? {
+      labels: itens.map(item => item.rotulo),
+      datasets: [{
+        data: itens.map(item => item.quantidade),
+        backgroundColor: ['#15803d', '#2563eb', '#7c3aed', '#db2777', '#ea580c', '#ca8a04', '#0891b2', '#4f46e5', '#65a30d', '#dc2626'],
+        borderColor: '#fff',
+        borderWidth: 2,
+      }],
+    } : null;
+    this.updateHorasExtrasNaoAutorizadasPorFuncionario(linhas);
+  }
+
+  private updateHorasExtrasNaoAutorizadasPorFuncionario(linhas: HoraExtraNaoAutorizadaLinha[]): void {
+    const funcionarios = new Map<string, ResumoHoraExtraIrregularFuncionario>();
+
+    for (const linha of linhas) {
+      const chave = `${linha.matricula}-${this.getCentroCustoChartKey(linha)}`;
+      const funcionario = funcionarios.get(chave) ?? {
+        matricula: linha.matricula,
+        nome: linha.nome,
+        centroCusto: linha.centroCusto,
+        ocorrencias: 0,
+        horas: 0,
+        percentual: 0,
+        percentualAcumulado: 0,
+      };
+      funcionario.ocorrencias += 1;
+      funcionario.horas += Number(linha.quantidade) || 0;
+      funcionarios.set(chave, funcionario);
+    }
+
+    const ranking = [...funcionarios.values()]
+      .sort((a, b) => b.horas - a.horas || b.ocorrencias - a.ocorrencias);
+    const totalHoras = ranking.reduce((total, funcionario) => total + funcionario.horas, 0);
+    let percentualAcumulado = 0;
+    this.horasExtrasNaoAutorizadasPorFuncionario = ranking.map(funcionario => {
+      const percentual = totalHoras ? funcionario.horas / totalHoras * 100 : 0;
+      percentualAcumulado += percentual;
+      return { ...funcionario, percentual, percentualAcumulado };
+    });
+  }
+
+  private normalizeSearchText(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase()
+      .trim();
+  }
+
+  private getCentroCustoChartKey(linha: HoraExtraNaoAutorizadaLinha): string {
+    return linha.centroCustoCodigo == null ? `setor:${linha.setor}` : `cc:${linha.centroCustoCodigo}`;
+  }
+
+  private formatCentroCustoNaoAutorizado(
+    centroCusto: number | string | object | null,
+    setor?: string,
+  ): string {
+    if (typeof centroCusto === 'number' || typeof centroCusto === 'string') {
+      return setor ? `${centroCusto} - ${setor}` : String(centroCusto);
+    }
+
+    if (!centroCusto) return setor || 'Não informado';
+    const item = centroCusto as {
+      codigo?: number | string;
+      ccid?: number | string;
+      descricao?: string;
+      setor?: string;
+    };
+    const codigo = item.codigo ?? item.ccid;
+    const descricao = setor ?? item.descricao ?? item.setor;
+    if (codigo != null || descricao) return `${codigo ?? ''} - ${descricao ?? ''}`.trim();
+    return Object.values(centroCusto).filter(value => value != null && value !== '').join(' - ') || 'Não informado';
+  }
+
+  private formatPercentualNaoAutorizado(percentual: object | null): string {
+    if (!percentual) return '-';
+    const item = percentual as { valor?: number | string; percentual?: number | string };
+    const value = item.valor ?? item.percentual;
+    return value != null ? `${value}%` : Object.values(percentual).join(' - ');
   }
 
   private resolveFuncionarioCentroCusto(funcionario: {
@@ -1170,7 +1816,10 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected updateJornadaIrregularChart(): void {
     const sortBy = this.jornadaIrregularSort.value;
-    const funcionarios = [...this.funcionariosJornadaIrregular].sort((a, b) => sortBy === 'horas'
+    const centroCodigo = this.jornadaCentroCustoFilter.value;
+    const funcionarios = this.funcionariosJornadaIrregular
+      .filter(funcionario => centroCodigo == null || (funcionario as FuncionarioJornadaIrregular & { centrosCusto?: Array<{ codigo: number }> }).centrosCusto?.some(centro => centro.codigo === centroCodigo))
+      .sort((a, b) => sortBy === 'horas'
       ? ((b.minutosIrregularesNaoCumprimentoHE ?? 0) + (b.minutosIrregularesExtrapolacaoHE ?? 0))
         - ((a.minutosIrregularesNaoCumprimentoHE ?? 0) + (a.minutosIrregularesExtrapolacaoHE ?? 0))
       : ((b.ocorrenciasNaoCumprimento ?? 0) + (b.ocorrenciasExtrapolacao ?? 0))
@@ -1226,6 +1875,121 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.jornadaIrregularChartFuncionarios = funcionarios;
   }
 
+  private updatePessoasPorDiaChart(): void {
+    const naoAutorizadasPorDia = new Map<string, Set<string>>();
+    for (const linha of this.horasExtrasNaoAutorizadas) {
+      const matriculas = naoAutorizadasPorDia.get(linha.data) ?? new Set<string>();
+      matriculas.add(linha.matricula);
+      naoAutorizadasPorDia.set(linha.data, matriculas);
+    }
+
+    const jornadasPorDia = new Map(this.jornadaKpiDias.map(dia => [dia.data, dia]));
+    const datas = [...new Set([...jornadasPorDia.keys(), ...naoAutorizadasPorDia.keys()])]
+      .sort((a, b) => a.localeCompare(b));
+    this.pessoasPorDiaDatas = datas;
+
+    this.pessoasPorDiaChartData = datas.length ? {
+      labels: datas.map(data => this.formatGastoFolhaLabel(data)),
+      datasets: [
+        {
+          label: 'Não autorizadas',
+          data: datas.map(data => naoAutorizadasPorDia.get(data)?.size ?? 0),
+          backgroundColor: 'rgba(220, 38, 38, .74)',
+          borderColor: '#dc2626',
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+        {
+          // A série verde reúne toda HE com folha autorizada, inclusive os
+          // casos de não cumprimento e extrapolação. O detalhe fica na tabela.
+          label: 'Autorizadas',
+          data: datas.map(data => jornadasPorDia.get(data)?.totalProgramados ?? 0),
+          backgroundColor: 'rgba(22, 163, 74, .74)',
+          borderColor: '#15803d',
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+      ],
+    } : null;
+    this.updatePessoasPorDiaTable();
+  }
+
+  protected onPessoasPorDiaChartSelect(event: { element?: { index?: number } }): void {
+    const data = this.pessoasPorDiaDatas[event.element?.index ?? -1];
+    if (!data) return;
+
+    this.zone.run(() => {
+      this.pessoasPorDiaSelecionado = data;
+      this.updatePessoasPorDiaTable();
+    });
+  }
+
+  protected clearPessoasPorDiaSelection(): void {
+    this.pessoasPorDiaSelecionado = null;
+    this.pessoasPorDiaSelecionadas = [];
+  }
+
+  protected getPessoasPorDiaCount(tipo: PessoaPorDiaLinha['tipo']): number {
+    return this.pessoasPorDiaSelecionadas.filter(pessoa => pessoa.tipo === tipo).length;
+  }
+
+  private updatePessoasPorDiaTable(): void {
+    const data = this.pessoasPorDiaSelecionado;
+    if (!data) {
+      this.pessoasPorDiaSelecionadas = [];
+      return;
+    }
+
+    const autorizadas = this.kpisCumprimentoPeriodo
+      .filter(kpi => this.getKpiDataKey(kpi.dataContexto) === data)
+      .flatMap(kpi => kpi.funcionarios.map(funcionario => ({
+        id: `autorizada-${kpi.folhaId}-${funcionario.matricula}`,
+        data,
+        nome: funcionario.nome,
+        matricula: funcionario.matricula,
+        tipo: 'AUTORIZADA' as const,
+        cumprimento: funcionario.temporario
+          ? 'Temporário'
+          : this.getCumprimentoStatusLabel(funcionario.statusCumprimentoHE ?? 'CUMPRIU'),
+        centroCusto: `${kpi.centroCustoCodigo} - ${kpi.centroCustoDescricao}`,
+        horarioHE: `${funcionario.inicioHEPrevisto} - ${funcionario.fimHEPrevisto}`,
+      })));
+
+    const naoAutorizadas = Array.from(new Map(this.horasExtrasNaoAutorizadas
+      .filter(linha => linha.data === data)
+      .map(linha => [linha.matricula, linha])).values())
+      .map(linha => ({
+        id: `nao-autorizada-${data}-${linha.matricula}`,
+        data,
+        nome: linha.nome,
+        matricula: linha.matricula,
+        tipo: 'NAO_AUTORIZADA' as const,
+        cumprimento: 'Sem autorização',
+        centroCusto: linha.centroCusto,
+        horarioHE: '-',
+      }));
+
+    this.pessoasPorDiaSelecionadas = [...autorizadas, ...naoAutorizadas]
+      .sort((a, b) => a.tipo.localeCompare(b.tipo) || a.nome.localeCompare(b.nome, 'pt-BR'));
+  }
+
+  private getKpiDataKey(data: Date | string): string {
+    if (typeof data === 'string') return data.slice(0, 10);
+    return this.formatLocalDate(data);
+  }
+
+  private formatJornadaKpiPeriodo(dataInicio: string, dataFim: string): string {
+    const inicio = new Date(`${dataInicio}T12:00:00`);
+    const fim = new Date(`${dataFim}T12:00:00`);
+    if (inicio.getFullYear() === fim.getFullYear() && inicio.getMonth() === fim.getMonth()) {
+      const mes = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(inicio);
+      return `do mês de ${mes}`;
+    }
+
+    const formatar = (data: Date) => data.toLocaleDateString('pt-BR');
+    return `de ${formatar(inicio)} a ${formatar(fim)}`;
+  }
+
   private formatFuncionarioChartLabel(nome: string): string {
     const normalized = nome.trim();
     return normalized.length > 16 ? `${normalized.slice(0, 15)}…` : normalized;
@@ -1275,6 +2039,11 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     ).subscribe(folhas => this.funcionarioFolhas = folhas);
   }
 
+  protected clearJornadaFuncionarioSelection(): void {
+    this.funcionarioFolhasSelecionado = null;
+    this.funcionarioFolhas = [];
+  }
+
   protected onFuncionarioFolhaExpand(folha: FolhaHoraExtraResumo): void {
     if (this.funcionarioFolhasKpi[folha.id] || this.funcionarioFolhasKpiLoading.has(folha.id)) {
       return;
@@ -1307,7 +2076,9 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       });
   }
 
-  private createGastoFolhaPorDiaChart(dias: Array<{ data: string; custo: number }>): Record<string, unknown> | null {
+  private createGastoFolhaPorDiaChart(
+    dias: Array<{ data: string; custo: number; quantidadeFolhas: number }>,
+  ): Record<string, unknown> | null {
     if (!dias.length) {
       return null;
     }
@@ -1315,19 +2086,48 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return {
       labels: dias.map(dia => this.formatGastoFolhaLabel(dia.data)),
       datasets: [{
-        label: `Gasto por ${this.getGastoFolhaGranularidadeLabel()}`,
+        type: 'bar',
+        label: 'Custo aprovado',
         data: dias.map(dia => dia.custo),
-        borderColor: '#198754',
-        backgroundColor: 'rgba(25, 135, 84, .14)',
-        fill: true,
-        tension: .3,
-        pointBackgroundColor: '#198754',
-        pointRadius: 4,
+        yAxisID: 'yCusto',
+        backgroundColor: 'rgba(22, 163, 74, .72)',
+        borderColor: '#15803d',
+        borderWidth: 1,
+        borderRadius: 5,
+      }, {
+        type: 'line',
+        label: 'Folhas aprovadas',
+        data: dias.map(dia => dia.quantidadeFolhas),
+        yAxisID: 'yFolhas',
+        borderColor: '#4f46e5',
+        backgroundColor: '#4f46e5',
+        pointBackgroundColor: '#fff',
+        pointBorderColor: '#4f46e5',
+        pointBorderWidth: 3,
+        pointRadius: 5,
+        tension: .25,
       }],
     };
   }
 
-  private formatGastoFolhaLabel(data: string): string {
+  private createCustoPorCentroCustoChart(
+    centros: Array<{ codigo: number; descricao: string; custo: number }>,
+  ): Record<string, unknown> | null {
+    if (!centros.length) return null;
+
+    return {
+      labels: centros.map(centro => `${centro.codigo} · ${centro.descricao}`),
+      datasets: [{
+        label: 'Custo aprovado',
+        data: centros.map(centro => centro.custo),
+        backgroundColor: ['#15803d', '#16a34a', '#22c55e', '#4ade80', '#86efac', '#a7f3d0', '#bbf7d0', '#dcfce7'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }],
+    };
+  }
+
+  protected formatGastoFolhaLabel(data: string): string {
     if (this.gastoFolhaGranularidade.value !== 'ano') return this.formatChartDate(data);
     if (data.length >= 7) {
       const [year, month] = data.split('-');
@@ -1377,14 +2177,22 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     const pageSize = 100;
     this.funcionariosFolhasAprovadasLoading = true;
     const range = this.aprovadasDataRangeFilter.value;
-    const matricula = this.aprovadasMatriculaFilter.value.trim().toLocaleLowerCase('pt-BR');
-    const nome = this.aprovadasNomeFilter.value.trim().toLocaleLowerCase('pt-BR');
-
-    this.folhaHoraExtraService.getFolhas({
-      status: 'APROVADO',
+    const matricula = this.aprovadasMatriculaFilter.value.trim();
+    const nome = this.aprovadasNomeFilter.value.trim();
+    const status = this.aprovadasStatusFilter.value;
+    const refeicoes = this.aprovadasRefeicaoFilter.value ?? [];
+    const transportes = this.aprovadasTransporteFilter.value ?? [];
+    const filters = {
       dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
       centroCustoCodigo: this.aprovadasCentroCustoFilter.value ?? undefined,
+      nomeFuncionario: nome || undefined,
+      matriculaFuncionario: matricula || undefined,
+      status: status ?? undefined,
+    };
+
+    this.folhaHoraExtraService.getFolhas({
+      ...filters,
       page: 0,
       limit: pageSize,
     }).pipe(
@@ -1400,10 +2208,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         return forkJoin(
           Array.from({ length: totalPages - 1 }, (_, index) =>
             this.folhaHoraExtraService.getFolhas({
-              status: 'APROVADO',
-              dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
-              dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
-              centroCustoCodigo: this.aprovadasCentroCustoFilter.value ?? undefined,
+              ...filters,
               page: index + 1,
               limit: pageSize,
             }).pipe(map(normalizeFolhasResponse)),
@@ -1418,6 +2223,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
           nome: funcionario.nome,
           matricula: funcionario.matricula,
           dataFolha: folha.dataContexto,
+          atualizadoEm: folha.atualizadoEm,
           centroCustoCodigo: folha.centroCustoCodigo,
           centroCustoDescricao: folha.centroCustoDescricao,
           setor: folha.setor,
@@ -1426,23 +2232,22 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
           refeicao: funcionario.refeicao ?? 'N/A',
           transporte: funcionario.transporte ?? 'N/A',
           observacao: funcionario.justificativa || folha.observacao || '-',
+          status: folha.status,
         }))),
         toArray(),
       )),
       map(funcionariosPorFolha => {
         return funcionariosPorFolha
           .flat()
-          .filter(funcionario =>
-            (!matricula || funcionario.matricula.toLocaleLowerCase('pt-BR').includes(matricula))
-            && (!nome || funcionario.nome.toLocaleLowerCase('pt-BR').includes(nome)),
-          )
+          .filter(funcionario => (!refeicoes.length || refeicoes.includes(funcionario.refeicao))
+            && (!transportes.length || transportes.includes(funcionario.transporte)))
           .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
       }),
       catchError(err => {
         this.messages = [{
           severity: 'error',
           summary: 'Erro',
-          detail: `Não foi possível carregar os funcionários com folha de HE aprovada. ${mapFolhaHoraExtraError(err)}`,
+          detail: `Não foi possível carregar os funcionários das folhas de HE. ${mapFolhaHoraExtraError(err)}`,
         }];
         return of([] as FuncionarioFolhaHEAprovada[]);
       }),
@@ -1477,6 +2282,18 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return year && month && day ? `${day}/${month}/${year}` : date;
   }
 
+  private getHistoricoPeriodoRange(periodo: string): { dataInicio: string; dataFim: string } {
+    const [year, month, day] = periodo.split('-').map(Number);
+    if (day) {
+      return { dataInicio: periodo, dataFim: periodo };
+    }
+
+    const dataInicio = `${year}-${String(month).padStart(2, '0')}-01`;
+    const ultimoDia = new Date(year, month, 0).getDate();
+    const dataFim = `${year}-${String(month).padStart(2, '0')}-${String(ultimoDia).padStart(2, '0')}`;
+    return { dataInicio, dataFim };
+  }
+
   private formatCurrency(value: number): string {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -1508,9 +2325,45 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       return requested as 'rh' | 'folhas' | 'kpi';
     }
 
+    if (this.restoredNavigationState && this.isAllowedTab(this.activeTab)) {
+      return this.activeTab;
+    }
+
     if (this.canViewRhTab()) return 'rh';
     if (this.canViewFolhasTab()) return 'folhas';
     return 'kpi';
+  }
+
+  private saveNavigationState(): void {
+    FolhaHoraExtraListPageComponent.lastNavigationState = {
+      activeTab: this.activeTab,
+      dataRange: this.dataRangeFilter.value?.map(date => new Date(date)) ?? null,
+      centroCusto: this.centroCustoFilter.value,
+      nomeFuncionario: this.nomeFuncionarioFilter.value,
+      matriculaFuncionario: this.matriculaFuncionarioFilter.value,
+      status: this.statusFilter.value,
+      approvalStatus: this.approvalStatusFilter.value,
+      first: this.first,
+      pageSize: this.pageSize,
+    };
+  }
+
+  private restoreNavigationState(): void {
+    const state = FolhaHoraExtraListPageComponent.lastNavigationState;
+    if (!state) {
+      return;
+    }
+
+    this.restoredNavigationState = true;
+    this.activeTab = state.activeTab;
+    this.dataRangeFilter.setValue(state.dataRange?.map(date => new Date(date)) ?? null, { emitEvent: false });
+    this.centroCustoFilter.setValue(state.centroCusto, { emitEvent: false });
+    this.nomeFuncionarioFilter.setValue(state.nomeFuncionario, { emitEvent: false });
+    this.matriculaFuncionarioFilter.setValue(state.matriculaFuncionario, { emitEvent: false });
+    this.statusFilter.setValue(state.status, { emitEvent: false });
+    this.approvalStatusFilter.setValue(state.approvalStatus, { emitEvent: false });
+    this.first = state.first;
+    this.pageSize = state.pageSize;
   }
 
   private isAllowedTab(tab: 'rh' | 'folhas' | 'kpi'): boolean {
@@ -1545,6 +2398,10 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     }
 
     return statuses;
+  }
+
+  private getGeneralQueueStatuses(): FolhaHoraExtraStatus[] {
+    return this.isAdmin() ? FOLHA_HE_STATUS_OPERACIONAL : this.getApprovalStatusesForUser();
   }
 
   private getCombinedLeaderCoordinatorStatuses(

@@ -58,7 +58,7 @@ To generate every client with the development host, set the host explicitly
 in `.env.production` (or in the shell):
 
 ```dotenv
-KUBB_API_HOST=https://dev.ethos.ind.br
+KUBB_API_HOST=https://app.ethos.ind.br
 ```
 
 `KUBB_API_HOST` changes only the host embedded in the generated clients; the

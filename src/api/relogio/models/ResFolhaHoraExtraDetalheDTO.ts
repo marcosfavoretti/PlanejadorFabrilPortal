@@ -61,6 +61,11 @@ export type ResFolhaHoraExtraDetalheDTO = {
    */
   totalFuncionarios: number;
   /**
+   * @description Valor total calculado da folha de hora extra.
+   * @type number | undefined
+   */
+  valorTotal?: number;
+  /**
    * @description Status consolidado do cumprimento de HE da folha.
    * @type string | undefined
    */

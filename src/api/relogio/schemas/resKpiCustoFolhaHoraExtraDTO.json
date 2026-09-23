@@ -15,6 +15,11 @@
       "description": "Custo total do período em reais."
     },
     "custoTotalFormatado": { "type": "string", "example": "R$ 19.342,10" },
+    "quantidadeFolhas": {
+      "type": "number",
+      "example": 2,
+      "description": "Quantidade total de folhas HE consideradas no custo."
+    },
     "periodos": {
       "type": "array",
       "items": {
@@ -31,10 +36,61 @@
             "description": "Custo do dia em reais."
           },
           "custoFormatado": { "type": "string", "example": "R$ 1.248,50" },
+          "quantidadeFolhas": { "type": "number", "example": 3 },
+          "centrosCusto": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "codigo": { "type": "number", "example": 9227 },
+                "descricao": { "type": "string", "example": "SOLDA" },
+                "custo": { "type": "number", "example": 1248.5 },
+                "custoFormatado": {
+                  "type": "string",
+                  "example": "R$ 1.248,50"
+                },
+                "quantidadeFolhas": { "type": "number", "example": 3 }
+              },
+              "required": [
+                "codigo",
+                "descricao",
+                "custo",
+                "custoFormatado",
+                "quantidadeFolhas"
+              ],
+              "x-readme-ref-name": "KpiCustoFolhaHoraExtraCentroCustoDTO"
+            }
+          }
+        },
+        "required": [
+          "data",
+          "custo",
+          "custoFormatado",
+          "quantidadeFolhas",
+          "centrosCusto"
+        ],
+        "x-readme-ref-name": "KpiCustoFolhaHoraExtraPeriodoDTO"
+      }
+    },
+    "centrosCusto": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "codigo": { "type": "number", "example": 9227 },
+          "descricao": { "type": "string", "example": "SOLDA" },
+          "custo": { "type": "number", "example": 1248.5 },
+          "custoFormatado": { "type": "string", "example": "R$ 1.248,50" },
           "quantidadeFolhas": { "type": "number", "example": 3 }
         },
-        "required": ["data", "custo", "custoFormatado", "quantidadeFolhas"],
-        "x-readme-ref-name": "KpiCustoFolhaHoraExtraPeriodoDTO"
+        "required": [
+          "codigo",
+          "descricao",
+          "custo",
+          "custoFormatado",
+          "quantidadeFolhas"
+        ],
+        "x-readme-ref-name": "KpiCustoFolhaHoraExtraCentroCustoDTO"
       }
     }
   },
@@ -45,7 +101,9 @@
     "dataFim",
     "custoTotal",
     "custoTotalFormatado",
-    "periodos"
+    "quantidadeFolhas",
+    "periodos",
+    "centrosCusto"
   ],
   "x-readme-ref-name": "ResKpiCustoFolhaHoraExtraDTO"
 }

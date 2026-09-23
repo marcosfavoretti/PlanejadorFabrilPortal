@@ -32,7 +32,7 @@
         minmax(13rem, 1fr)
         minmax(11rem, 0.8fr)
         minmax(11rem, 0.8fr)
-        minmax(8rem, 0.55fr);
+        minmax(20rem, 1.8fr);
     gap: 0.85rem;
     align-items: end;
 }
@@ -101,6 +101,13 @@
     align-items: flex-end;
 }
 
+.ponto-filter-hours-group {
+    display: grid;
+    grid-template-columns: minmax(7rem, 1fr) minmax(7rem, 1fr) minmax(7rem, 1fr);
+    gap: 0.85rem;
+    align-items: end;
+}
+
 .ponto-filter-submit {
     align-items: center;
     border-radius: 0.5rem;
@@ -165,8 +172,13 @@
     }
 
     .ponto-filter-field--centro,
-    .ponto-filter-actions {
+    .ponto-filter-actions,
+    .ponto-filter-hours-group {
         grid-column: 1 / -1;
+    }
+
+    .ponto-filter-hours-group {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .ponto-filter-submit {
@@ -186,8 +198,13 @@
     }
 
     .ponto-filter-field--centro,
-    .ponto-filter-actions {
+    .ponto-filter-actions,
+    .ponto-filter-hours-group {
         grid-column: auto;
+    }
+
+    .ponto-filter-hours-group {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .ponto-filter-submit {

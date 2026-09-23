@@ -27,12 +27,28 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ProductionHistoryApiService {
-  private readonly mediaUrlVersion = signal(0);
-  private readonly mediaUrls = new Map<string, string>();
+  private readonly responseCache = new Map<
+    string,
+    { expiresAt: number; promise: Promise<unknown> }
+  >();
+  private readonly cacheDurationMs = 5 * 60 * 1000;
+  private readonly maxCachedResponses = 50;
+  private readonly mediaUrls = signal(new Map<string, string>());
   private readonly mediaRequests = new Set<string>();
+  private readonly mediaQueue: MediaAsset[] = [];
+  private activeMediaRequests = 0;
+  private readonly maxConcurrentMediaRequests = 4;
+  private readonly unavailableMedia = new Set<string>();
+
+  clearResponseCache(): void {
+    this.responseCache.clear();
+  }
 
   resolveLabel(label: string): Observable<ProductContext> {
-    return from(resolveProductLabel(label)).pipe(
+    return this.cachedResponse(
+      `label:${label.trim()}`,
+      () => resolveProductLabel(label),
+    ).pipe(
       map((response) => this.toProductContext(response)),
     );
   }
@@ -40,11 +56,13 @@ export class ProductionHistoryApiService {
   loadAlbums(
     product: Pick<ProductContext, 'partCode' | 'serialNumber'>,
   ): Observable<PhotoAlbum[]> {
-    return from(
-      getProductAlbums({
-        pn: product.partCode,
-        serialNumber: product.serialNumber,
-      }),
+    return this.cachedResponse(
+      `albums:${this.productKey(product)}`,
+      () =>
+        getProductAlbums({
+          pn: product.partCode,
+          serialNumber: product.serialNumber,
+        }),
     ).pipe(
       map((response) =>
         response
@@ -62,16 +80,25 @@ export class ProductionHistoryApiService {
     codItem?: string;
     gate?: string;
   }): Observable<PaginatedReports> {
-    return from(
-      getAlbumHistory({
-        page: request.page,
-        limit: request.limit,
-        pn: request.product.partCode,
-        serialNumber: request.product.serialNumber,
-        appName: request.album,
-        'properties.codItem': request.codItem || undefined,
-        'properties.gate': request.gate || undefined,
-      }),
+    return this.cachedResponse(
+      `history:${JSON.stringify([
+        this.productKey(request.product),
+        request.album,
+        request.page,
+        request.limit,
+        request.codItem ?? '',
+        request.gate ?? '',
+      ])}`,
+      () =>
+        getAlbumHistory({
+          page: request.page,
+          limit: request.limit,
+          pn: request.product.partCode,
+          serialNumber: request.product.serialNumber,
+          appName: request.album,
+          'properties.codItem': request.codItem || undefined,
+          'properties.gate': request.gate || undefined,
+        }),
     ).pipe(
       map((response) =>
         this.toPaginatedReports(response, request.page, request.limit),
@@ -83,38 +110,107 @@ export class ProductionHistoryApiService {
     product: Pick<ProductContext, 'partCode' | 'serialNumber'>,
   ): Observable<InspectionFailure[]> {
     const currentYear = new Date().getFullYear();
-    return from(
-      getInspectionFailures({
-        startDate: `01/01/${currentYear - 1} 00:00:00`,
-        endDate: `31/12/${currentYear} 23:59:59`,
-        nSerie: product.serialNumber,
-        partCode: product.partCode,
-      }),
+    return this.cachedResponse(
+      `inspections:${this.productKey(product)}:${currentYear}`,
+      () =>
+        getInspectionFailures({
+          startDate: `01/01/${currentYear - 1} 00:00:00`,
+          endDate: `31/12/${currentYear} 23:59:59`,
+          nSerie: product.serialNumber,
+          partCode: product.partCode,
+        }),
     ).pipe(map((response) => this.toInspectionFailures(response)));
   }
 
   mediaUrl(media: Pick<MediaAsset, 'path' | 'physicalName'>): string {
-    this.mediaUrlVersion();
-    const key = `${media.path}\u0000${media.physicalName}`;
-    const cachedUrl = this.mediaUrls.get(key);
-    if (cachedUrl) return cachedUrl;
+    return this.mediaUrls().get(this.mediaKey(media)) ?? '';
+  }
 
-    if (!this.mediaRequests.has(key)) {
-      this.mediaRequests.add(key);
-      void getMediaUrl({ path: media.path, name: media.physicalName })
+  requestMedia(media: MediaAsset): void {
+    const key = this.mediaKey(media);
+    if (
+      !media.path ||
+      !media.physicalName ||
+      this.mediaUrls().has(key) ||
+      this.mediaRequests.has(key) ||
+      this.unavailableMedia.has(key)
+    ) return;
+
+    this.mediaRequests.add(key);
+    this.mediaQueue.push(media);
+    this.loadQueuedMedia();
+  }
+
+  private loadQueuedMedia(): void {
+    while (
+      this.activeMediaRequests < this.maxConcurrentMediaRequests &&
+      this.mediaQueue.length
+    ) {
+      const media = this.mediaQueue.shift()!;
+      const key = this.mediaKey(media);
+      this.activeMediaRequests++;
+      void getMediaUrl(
+        { path: media.path, name: media.physicalName },
+        { responseType: 'blob' },
+      )
         .then((blob) => {
-          this.mediaUrls.set(key, URL.createObjectURL(blob));
-          this.mediaUrlVersion.update((version) => version + 1);
+          if (!(blob instanceof Blob) || !blob.size) {
+            throw new Error('Resposta de mídia inválida');
+          }
+          const nextUrls = new Map(this.mediaUrls());
+          nextUrls.set(key, URL.createObjectURL(blob));
+          this.mediaUrls.set(nextUrls);
         })
-        .catch(() => undefined)
-        .finally(() => this.mediaRequests.delete(key));
+        .catch(() => this.unavailableMedia.add(key))
+        .finally(() => {
+          this.activeMediaRequests--;
+          this.mediaRequests.delete(key);
+          this.loadQueuedMedia();
+        });
     }
+  }
 
-    return '';
+  private mediaKey(media: Pick<MediaAsset, 'path' | 'physicalName'>): string {
+    return `${media.path}\u0000${media.physicalName}`;
   }
 
   loadPackHtml(code: string): Observable<string> {
-    return from(getPackDetailUrl(code));
+    return this.cachedResponse(`pack:${code}`, () => getPackDetailUrl(code));
+  }
+
+  private productKey(
+    product: Pick<ProductContext, 'partCode' | 'serialNumber'>,
+  ): string {
+    return JSON.stringify([product.partCode.trim(), product.serialNumber.trim()]);
+  }
+
+  private cachedResponse<T>(
+    key: string,
+    loader: () => Promise<T>,
+  ): Observable<T> {
+    const now = Date.now();
+    const cached = this.responseCache.get(key);
+    if (cached && cached.expiresAt > now) {
+      return from(cached.promise as Promise<T>);
+    }
+    if (cached) this.responseCache.delete(key);
+
+    const promise = Promise.resolve()
+      .then(loader)
+      .catch((error) => {
+        if (this.responseCache.get(key)?.promise === promise) {
+          this.responseCache.delete(key);
+        }
+        throw error;
+      });
+    this.responseCache.set(key, {
+      expiresAt: now + this.cacheDurationMs,
+      promise,
+    });
+    if (this.responseCache.size > this.maxCachedResponses) {
+      this.responseCache.delete(this.responseCache.keys().next().value!);
+    }
+    return from(promise);
   }
 
   private toProductContext(value: ProductContextResponse): ProductContext {

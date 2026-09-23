@@ -11,13 +11,13 @@ export class PbIndexApiService {
     listDataset(user?: string): Observable<PowerbiDataset[]> {
         return from(
             pbindexControllerGetDatasets()
-                .then(response => response)
+                .then((response: PowerbiDataset[]) => response)
         );
     }
     listUsers(): Observable<string[]> {
         return from(
             pbindexControllerGetOnlineUsers()
-                .then(response => response)
+                .then((response: string[]) => response)
         );
     }
 }

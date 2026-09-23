@@ -29,6 +29,11 @@
             ]
           },
           "totalFuncionarios": { "type": "number" },
+          "valorTotal": {
+            "type": "number",
+            "description": "Valor total calculado da folha de hora extra.",
+            "example": 1248.75
+          },
           "statusCumprimentoHorarioHE": {
             "type": "string",
             "enum": ["CUMPRIU", "NAO_CUMPRIU", "EXTRAPOLOU"],

@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "usuarioId": { "type": "string" },
+    "subject": { "type": "string" },
+    "text": { "type": "string" },
+    "html": { "type": "string" }
+  },
+  "required": ["usuarioId", "subject"],
+  "x-readme-ref-name": "NotificarUsuarioEmailDTO"
+}

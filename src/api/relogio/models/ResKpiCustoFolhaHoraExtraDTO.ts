@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import type { KpiCustoFolhaHoraExtraCentroCustoDTO } from './KpiCustoFolhaHoraExtraCentroCustoDTO';
 import type { KpiCustoFolhaHoraExtraPeriodoDTO } from './KpiCustoFolhaHoraExtraPeriodoDTO';
 
 export enum ResKpiCustoFolhaHoraExtraDTOViewEnum {
@@ -38,7 +39,16 @@ export type ResKpiCustoFolhaHoraExtraDTO = {
    */
   custoTotalFormatado: string;
   /**
+   * @description Quantidade total de folhas HE consideradas no custo.
+   * @type number
+   */
+  quantidadeFolhas: number;
+  /**
    * @type array
    */
   periodos: KpiCustoFolhaHoraExtraPeriodoDTO[];
+  /**
+   * @type array
+   */
+  centrosCusto: KpiCustoFolhaHoraExtraCentroCustoDTO[];
 };

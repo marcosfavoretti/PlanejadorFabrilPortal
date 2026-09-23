@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { KpiCustoFolhaHoraExtraCentroCustoDTO } from './KpiCustoFolhaHoraExtraCentroCustoDTO';
+
 export type KpiCustoFolhaHoraExtraPeriodoDTO = {
   /**
    * @description YYYY-MM para view=ano; YYYY-MM-DD para view=mes ou view=dia.
@@ -22,4 +24,8 @@ export type KpiCustoFolhaHoraExtraPeriodoDTO = {
    * @type number
    */
   quantidadeFolhas: number;
+  /**
+   * @type array
+   */
+  centrosCusto: KpiCustoFolhaHoraExtraCentroCustoDTO[];
 };
