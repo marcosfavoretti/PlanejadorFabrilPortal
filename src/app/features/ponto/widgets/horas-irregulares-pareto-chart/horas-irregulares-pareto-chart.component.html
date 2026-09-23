@@ -1,6 +1,12 @@
-<div class="card h-full w-full">
-    <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-full w-full" *ngIf="chartData"></p-chart>
-    <div *ngIf="!chartData" class="flex align-items-center justify-content-center h-full">
-        <p>Sem dados para exibir.</p>
+<div class="card chart-card h-full w-full">
+    <div class="chart-scroll" *ngIf="chartData; else emptyState">
+        <div class="chart-content" [style.min-width.px]="chartMinWidth">
+            <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-full w-full"></p-chart>
+        </div>
     </div>
+    <ng-template #emptyState>
+      <div class="flex align-items-center justify-content-center h-full">
+        <p>Sem dados para exibir.</p>
+      </div>
+    </ng-template>
 </div>

@@ -7,14 +7,6 @@ import type { ResHorasIrregularesDTO } from './ResHorasIrregularesDTO';
 
 export type PontoKPIControllerConsultarMaisHorasIrregularesQueryParams = {
   /**
-   * @type number | undefined
-   */
-  page?: number;
-  /**
-   * @type number | undefined
-   */
-  limit?: number;
-  /**
    * @description Identificador do funcionário : nome, matrícula, CPF ou PIS
    * @type string | undefined
    */
@@ -32,6 +24,27 @@ export type PontoKPIControllerConsultarMaisHorasIrregularesQueryParams = {
    * @type string | undefined
    */
   dataFim?: string;
+  /**
+   * @description Quantidade mínima de horas trabalhadas no turno para filtrar o KPI.
+   * @type number | undefined
+   */
+  horasTrabalhadasMin?: number;
+  /**
+   * @description Quantidade máxima de horas trabalhadas no turno para filtrar o KPI.
+   * @type number | undefined
+   */
+  horasTrabalhadasMax?: number;
+  /**
+   * @default 1
+   * @type number | undefined
+   */
+  page?: number;
+  /**
+   * @maxLength 9999
+   * @default 20
+   * @type number | undefined
+   */
+  limit?: number;
 };
 
 export type PontoKPIControllerConsultarMaisHorasIrregularesError =

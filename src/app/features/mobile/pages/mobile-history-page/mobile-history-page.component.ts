@@ -9,6 +9,7 @@ import { PageLayoutComponent } from '@/app/shared/layouts/page-layout/page-layou
 import { TableDynamicComponent } from '@/app/shared/components/table-dynamic/table-dynamic.component';
 import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 import { ProductionHistoryApiService } from '@/app/features/mobile/services/production-history-api.service';
+import { LoadMediaInViewDirective } from './load-media-in-view.directive';
 import {
   HistoryRow,
   InspectionFailure,
@@ -24,6 +25,7 @@ import {
     PaginatorModule,
     PageLayoutComponent,
     TableDynamicComponent,
+    LoadMediaInViewDirective,
   ],
   templateUrl: './mobile-history-page.component.html',
   styleUrl: './mobile-history-page.component.css',
@@ -151,7 +153,7 @@ export class MobileHistoryPageComponent {
     ],
   };
 
-  protected submitLookup(): void {
+  protected submitLookup(refresh = false): void {
     const {
       label,
       partCode: rawPartCode,
@@ -167,6 +169,8 @@ export class MobileHistoryPageComponent {
       );
       return;
     }
+
+    if (refresh) this.historyApi.clearResponseCache();
 
     this.updateLookupUrl({
       label: pdiLabel || null,
@@ -232,6 +236,7 @@ export class MobileHistoryPageComponent {
   }
   protected openMedia(row: HistoryRow): void {
     if (!row.media) return;
+    this.historyApi.requestMedia(row.media);
     this.selectedMedia.set(row);
     this.resetMediaView();
   }
@@ -254,7 +259,11 @@ export class MobileHistoryPageComponent {
   }
   protected startMediaDrag(event: PointerEvent): void {
     const media = this.selectedMedia()?.media;
-    if (media?.type === 'VIDEO' || media?.mimeType?.startsWith('video/'))
+    if (
+      media?.type === 'VIDEO' ||
+      media?.mimeType?.startsWith('video/') ||
+      (this.mediaZoom() === 1 && this.mediaRotation() === 0)
+    )
       return;
     const position = this.mediaPosition();
     this.mediaDragStart = {
@@ -295,6 +304,9 @@ export class MobileHistoryPageComponent {
   }
   protected mediaUrl(row: HistoryRow): string {
     return row.media ? this.historyApi.mediaUrl(row.media) : '';
+  }
+  protected loadMedia(row: HistoryRow): void {
+    if (row.media) this.historyApi.requestMedia(row.media);
   }
   protected isVideo(row: HistoryRow): boolean {
     return (

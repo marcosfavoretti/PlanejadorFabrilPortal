@@ -51,6 +51,11 @@ export type ResExtratoCustoFuncionarioHoraExtraDTO = {
    */
   valorHorasNoturnas: number;
   /**
+   * @description 65% do salario-hora base por hora extra contabilizada.
+   * @type number
+   */
+  encargo: number;
+  /**
    * @type number
    */
   refeicao: number;

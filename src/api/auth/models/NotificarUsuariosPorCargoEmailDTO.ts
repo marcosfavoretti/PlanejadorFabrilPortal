@@ -29,6 +29,11 @@ export type NotificarUsuariosPorCargoEmailDTO = {
    */
   cargo: NotificarUsuariosPorCargoEmailDTOCargoEnum;
   /**
+   * @description Filtra os destinatários pelo centro de custo vinculado.
+   * @type number | undefined
+   */
+  centroCustoCodigo?: number;
+  /**
    * @type string
    */
   subject: string;

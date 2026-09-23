@@ -7,6 +7,7 @@ import {
   FolhaHoraExtraControllerListarQueryParams,
   FolhaHoraExtraControllerListarQueryParamsStatusEnum,
   FolhaHoraExtraKpiControllerCustoQueryParams,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryParams,
   ItemFuncionarioHEDTO,
   ItemFuncionarioHEDTORefeicaoEnum,
   ItemFuncionarioHEDTOTransporteEnum,
@@ -15,6 +16,7 @@ import {
   ResKpiCustoFolhaHoraExtraDTO,
   ResKpiCumprimentoFolhaHoraExtraDTO,
   ResKpiJornadaFolhaHoraExtraDTO,
+  ResHorasExtrasNaoAutorizadasDTO,
   folhaHoraExtraControllerAprovar,
   folhaHoraExtraControllerCriar,
   folhaHoraExtraControllerDetalhes,
@@ -25,6 +27,7 @@ import {
   folhaHoraExtraControllerSubmeter,
   folhaHoraExtraKpiControllerCumprimento,
   folhaHoraExtraKpiControllerCusto,
+  folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas,
   folhaHoraExtraKpiControllerJornada,
 } from '@/api/relogio';
 import {
@@ -70,6 +73,7 @@ export interface FolhaHoraExtraResumo {
   turno: FolhaHoraExtraTurno;
   status: FolhaHoraExtraStatus;
   totalFuncionarios: number;
+  valorTotal?: number;
   statusCumprimentoHorarioHE?: 'NAO_CUMPRIU' | 'EXTRAPOLOU' | 'CUMPRIU';
   autorNome: string;
   criadoEm: string;
@@ -221,6 +225,18 @@ export class FolhaHoraExtraAPIService {
     return from(folhaHoraExtraKpiControllerCumprimento(id));
   }
 
+  getKpiCumprimentoPeriodo(params: {
+    dataInicio: string;
+    dataFim: string;
+    centroCustoCodigo?: number;
+  }): Observable<ResKpiCumprimentoFolhaHoraExtraDTO[]> {
+    return from(client<ResKpiCumprimentoFolhaHoraExtraDTO[]>({
+      method: 'GET',
+      url: 'https://app.ethos.ind.br/api/ponto/folha-he/kpi-cumprimento/periodo',
+      params,
+    }).then(response => response.data));
+  }
+
   getKpiCusto(params?: FolhaHoraExtraKpiControllerCustoQueryParams | {
     granularidade?: 'dia' | 'mes' | 'ano';
     dataInicio?: string;
@@ -231,6 +247,12 @@ export class FolhaHoraExtraAPIService {
 
   getKpiJornada(): Observable<ResKpiJornadaFolhaHoraExtraDTO> {
     return from(folhaHoraExtraKpiControllerJornada());
+  }
+
+  getHorasExtrasNaoAutorizadas(
+    params?: FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryParams,
+  ): Observable<ResHorasExtrasNaoAutorizadasDTO[]> {
+    return from(folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas(params));
   }
 
   getRefeicoes(

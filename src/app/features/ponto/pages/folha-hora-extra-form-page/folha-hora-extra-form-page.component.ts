@@ -35,6 +35,9 @@ import { Subscription } from 'rxjs';
 type FuncionarioForm = FormGroup;
 
 const FRETADO_EXIT_TIMES = new Set(['15:48', '17:18', '01:19', '06:00', '07:30']);
+const HORARIOS_HE = ['06:00', '07:30', '12:00', '14:20', '15:48', '17:18', '18:00', '22:35', '01:19', '03:20'] as const;
+
+type HorarioHE = (typeof HORARIOS_HE)[number];
 
 @Component({
   selector: 'app-folha-hora-extra-form-page',
@@ -78,6 +81,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   protected saving = false;
   protected messages: ToastMessageOptions[] = [];
   protected funcionarioSuggestions: ResFuncionarioListagemDTO[] = [];
+  protected readonly horariosHE: { label: HorarioHE; value: HorarioHE }[] = HORARIOS_HE.map(horario => ({ label: horario, value: horario }));
   private loadedFolha: FolhaHoraExtraDetalhe | null = null;
   private readonly funcionarioRuleSubscriptions = new WeakMap<AbstractControl, Subscription>();
 
@@ -116,7 +120,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       marmitex: [false],
       lanche: [false],
       justificativa: ['', Validators.required],
-    });
+    }, { validators: this.horarioHEValidator.bind(this) });
 
     this.funcionarios.push(funcionarioGroup);
     this.setupFuncionarioRules(funcionarioGroup);
@@ -127,6 +131,24 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
     this.funcionarioRuleSubscriptions.get(this.funcionarios.at(index))?.unsubscribe();
     this.funcionarios.removeAt(index);
     this.funcionarios.controls.forEach(control => control.controls['matricula'].updateValueAndValidity());
+  }
+
+  protected horariosSaida(control: AbstractControl): { label: HorarioHE; value: HorarioHE }[] {
+    const inicioIndex = this.horarioIndex(control.get('inicioHE')?.value);
+    return inicioIndex < 0 ? [...this.horariosHE] : this.horariosHE.slice(inicioIndex + 1);
+  }
+
+  protected onInicioHEChange(control: AbstractControl): void {
+    const fimControl = control.get('fimHE');
+    if (!fimControl) {
+      return;
+    }
+
+    const options = this.horariosSaida(control);
+    if (!options.some(option => option.value === this.normalizeTime(fimControl.value))) {
+      fimControl.setValue('', { emitEvent: false });
+    }
+    control.updateValueAndValidity({ emitEvent: false });
   }
 
   protected onCentroCustoChange(ccid: number | null): void {
@@ -265,7 +287,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       : this.folhaHoraExtraService.createFolha(payload);
 
     request.subscribe({
-      next: folha => this.router.navigate(['/ponto/he/view', folha.id]),
+      next: folha => this.router.navigate(['/ponto/he/view', folha.id], { replaceUrl: true }),
       error: err => {
         this.saving = false;
         this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }];
@@ -275,7 +297,9 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
 
   protected onCancel(): void {
     if (this.isEditMode && this.folhaId) {
-      this.router.navigate(['/ponto/he/view', this.folhaId]);
+      // Substitui o formulário pela visualização para que o botão "Voltar"
+      // da visualização não faça pop de volta para o fluxo de edição.
+      this.router.navigate(['/ponto/he/view', this.folhaId], { replaceUrl: true });
       return;
     }
     this.router.navigate(['/ponto/he']);
@@ -394,12 +418,12 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
           transporte === ItemFuncionarioHEDTOTransporteEnum.TAXI ||
           transporte === ItemFuncionarioHEDTOTransporteEnum.FRETADO
         ],
-        inicioHE: [funcionario.inicioHE, [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
-        fimHE: [funcionario.fimHE, [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
+        inicioHE: [this.normalizeTime(funcionario.inicioHE), [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
+        fimHE: [this.normalizeTime(funcionario.fimHE), [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
         marmitex: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.MARMITEX],
         lanche: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.LANCHE],
         justificativa: [funcionario.justificativa ?? folha.justificativas?.[funcionario.matricula] ?? '', Validators.required],
-      });
+      }, { validators: this.horarioHEValidator.bind(this) });
 
       this.funcionarios.push(funcionarioGroup);
       this.setupFuncionarioRules(funcionarioGroup);
@@ -522,6 +546,20 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
     }
 
     this.funcionarioRuleSubscriptions.set(control, subscription);
+  }
+
+  private horarioHEValidator(control: AbstractControl): ValidationErrors | null {
+    const inicio = this.horarioIndex(control.get('inicioHE')?.value);
+    const fim = this.horarioIndex(control.get('fimHE')?.value);
+    if (inicio < 0 || fim < 0) {
+      return null;
+    }
+
+    return fim > inicio ? null : { horarioSaidaAntesEntrada: true };
+  }
+
+  private horarioIndex(value: unknown): number {
+    return HORARIOS_HE.indexOf(this.normalizeTime(value) as HorarioHE);
   }
 
   private applyRulesToFuncionarios(): void {

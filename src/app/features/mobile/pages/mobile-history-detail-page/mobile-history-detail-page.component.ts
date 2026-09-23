@@ -34,7 +34,7 @@ export class MobileHistoryDetailPageComponent {
         this.route.snapshot.queryParamMap.get('serialNumber')?.trim() ?? '',
     }),
     loader: ({ request }) =>
-      request.partCode && request.serialNumber
+      !this.stateFailure && request.partCode && request.serialNumber
         ? this.historyApi.loadInspectionFailures(request)
         : of([]),
   });

@@ -23,6 +23,10 @@
         "ADMIN_POWERBI_VIEW"
       ]
     },
+    "centroCustoCodigo": {
+      "type": "number",
+      "description": "Filtra os destinatários pelo centro de custo vinculado."
+    },
     "subject": { "type": "string" },
     "text": { "type": "string" },
     "html": { "type": "string" }

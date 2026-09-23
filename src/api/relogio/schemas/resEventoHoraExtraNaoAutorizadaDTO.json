@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "data": { "type": "string" },
+    "evento": { "type": "string" },
+    "nomeEvento": {
+      "type": "string",
+      "description": "Descrição do evento cadastrada na SP9."
+    },
+    "tipoHoraExtra": { "type": "string" },
+    "quantidade": { "type": "number" },
+    "percentual": { "type": "object", "nullable": true },
+    "origem": { "type": "string", "enum": ["SPC010", "SPH010"] }
+  },
+  "required": [
+    "data",
+    "evento",
+    "nomeEvento",
+    "tipoHoraExtra",
+    "quantidade",
+    "percentual",
+    "origem"
+  ],
+  "x-readme-ref-name": "ResEventoHoraExtraNaoAutorizadaDTO"
+}

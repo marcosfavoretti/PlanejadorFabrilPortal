@@ -37,6 +37,10 @@ export type ResExtratoCustoHoraExtraDTO = {
   /**
    * @type number
    */
+  totalEncargo: number;
+  /**
+   * @type number
+   */
   totalHorasDiurnas: number;
   /**
    * @type number

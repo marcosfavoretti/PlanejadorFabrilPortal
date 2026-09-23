@@ -21,6 +21,7 @@ export class HorasIrregularesParetoChartComponent implements OnChanges {
 
   chartData: any;
   chartOptions: any;
+  chartMinWidth = 720;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -49,6 +50,10 @@ export class HorasIrregularesParetoChartComponent implements OnChanges {
     // 2. Calculate Total
     const totalHours = sortedData.reduce((sum, item) => sum + item.horasIrregulares, 0);
 
+    // Keep each employee readable. The chart wrapper scrolls horizontally when
+    // the API returns more employees than fit in the available viewport.
+    this.chartMinWidth = Math.max(720, sortedData.length * 96 + 180);
+
     // 3. Prepare datasets
     const labels = sortedData.map(item => `${item.matricula} - ${item.nome} (${item.setor})`);
     const values = sortedData.map(item => item.horasIrregulares);
@@ -57,7 +62,7 @@ export class HorasIrregularesParetoChartComponent implements OnChanges {
     let cumulativeSum = 0;
     const cumulativePercentages = sortedData.map(item => {
       cumulativeSum += item.horasIrregulares;
-      return (cumulativeSum / totalHours) * 100;
+      return totalHours > 0 ? (cumulativeSum / totalHours) * 100 : 0;
     });
 
             // 4. Set Chart Data

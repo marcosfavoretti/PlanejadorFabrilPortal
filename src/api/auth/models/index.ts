@@ -78,6 +78,7 @@ export type { CentroCustoLider } from './CentroCustoLider';
 export type { CompleteTotpEnrollmentDto } from './CompleteTotpEnrollmentDto';
 export type { CreateUserDto } from './CreateUserDto';
 export type { DisableTwoFactorDto } from './DisableTwoFactorDto';
+export type { NotificarUsuarioEmailDTO } from './NotificarUsuarioEmailDTO';
 export type { NotificarUsuariosPorCargoEmailDTO } from './NotificarUsuariosPorCargoEmailDTO';
 export type { ResLiderCentroCustoDTO } from './ResLiderCentroCustoDTO';
 export type { RotateRecoveryCodesDto } from './RotateRecoveryCodesDto';
@@ -172,6 +173,12 @@ export type {
   UserNotificationInternalControllerNotificarCargoPorEmailMutationRequest,
   UserNotificationInternalControllerNotificarCargoPorEmailMutationResponse,
 } from './UserNotificationInternalControllerNotificarCargoPorEmail';
+export type {
+  UserNotificationInternalControllerNotificarUsuarioPorEmail202,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutation,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutationRequest,
+  UserNotificationInternalControllerNotificarUsuarioPorEmailMutationResponse,
+} from './UserNotificationInternalControllerNotificarUsuarioPorEmail';
 export type { UserResponseDTO } from './UserResponseDTO';
 export type { VerifyTwoFactorDto } from './VerifyTwoFactorDto';
 export type { VincularLiderCentroCustoDTO } from './VincularLiderCentroCustoDTO';

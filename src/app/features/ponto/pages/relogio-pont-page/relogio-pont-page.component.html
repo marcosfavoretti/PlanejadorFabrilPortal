@@ -12,8 +12,6 @@
                                 optionLabel="setor"
                                 inputId="ccid"
                                 styleClass="ponto-control"
-                                [class.centro-custo-selector--locked]="centroCustoSelectorDisabled()"
-                                [attr.aria-disabled]="centroCustoSelectorDisabled()"
                                 formControlName="ccid"
                                 placeholder="Selecione os centros"
                                 [showClear]="true"
@@ -74,11 +72,39 @@
                             </div>
                         </div>
 
-                        <div class="ponto-filter-actions">
-                            <button type="submit" class="btn btn-success ponto-filter-submit">
-                                <i class="pi pi-search"></i>
-                                <span>Filtrar</span>
-                            </button>
+                        <div class="ponto-filter-hours-group">
+                            <div class="ponto-filter-field">
+                                <label for="horasTrabalhadasMin">Horas trabalhadas mín.</label>
+                                <input
+                                    type="number"
+                                    id="horasTrabalhadasMin"
+                                    class="form-control ponto-control"
+                                    formControlName="horasTrabalhadasMin"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Mínimo"
+                                >
+                            </div>
+
+                            <div class="ponto-filter-field">
+                                <label for="horasTrabalhadasMax">Horas trabalhadas máx.</label>
+                                <input
+                                    type="number"
+                                    id="horasTrabalhadasMax"
+                                    class="form-control ponto-control"
+                                    formControlName="horasTrabalhadasMax"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Máximo"
+                                >
+                            </div>
+
+                            <div class="ponto-filter-actions">
+                                <button type="submit" class="btn btn-success ponto-filter-submit">
+                                    <i class="pi pi-search"></i>
+                                    <span>Filtrar</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>

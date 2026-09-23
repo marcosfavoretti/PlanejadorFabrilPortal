@@ -11,7 +11,7 @@
 
     <form
       [formGroup]="lookupForm"
-      (ngSubmit)="submitLookup()"
+      (ngSubmit)="submitLookup(true)"
       class="lookup-card"
     >
       <div class="lookup-card__heading">
@@ -152,30 +152,31 @@
                         <button
                           type="button"
                           class="gallery-item__preview"
+                          appLoadMediaInView
+                          (mediaInView)="loadMedia(row)"
                           (click)="openMedia(row)"
                           [attr.aria-label]="
                             'Abrir ' + (row.media.originalName || 'mídia')
                           "
                         >
                           @if (isVideo(row)) {
-                            <video
-                              muted
-                              preload="metadata"
-                              [src]="mediaUrl(row)"
-                            ></video
-                            ><span class="gallery-item__play"
+                            @if (mediaUrl(row); as url) {
+                              <video muted preload="metadata" [src]="url"></video>
+                            } @else {
+                              <span class="thumbnail-fallback"><i class="pi pi-video"></i></span>
+                            }
+                            <span class="gallery-item__play"
                               ><i class="pi pi-play"></i
                             ></span>
                           } @else {
-                            <img
-                              [src]="mediaUrl(row)"
-                              [alt]="
-                                row.media.originalName || 'Mídia do histórico'
-                              "
-                              (error)="onMediaError($event)"
-                            /><span class="thumbnail-fallback"
-                              ><i class="pi pi-image"></i
-                            ></span>
+                            @if (mediaUrl(row); as url) {
+                              <img
+                                [src]="url"
+                                [alt]="row.media.originalName || 'Mídia do histórico'"
+                                (error)="onMediaError($event)"
+                              />
+                            }
+                            <span class="thumbnail-fallback"><i class="pi pi-image"></i></span>
                           }
                           <span class="gallery-item__open"
                             ><i class="pi pi-expand"></i> Visualizar</span
@@ -291,20 +292,25 @@
       </header>
       <div
         class="media-viewer__stage"
+        [class.media-viewer__stage--draggable]="!isVideo(row) && (mediaZoom() > 1 || mediaRotation() !== 0)"
         (pointerdown)="startMediaDrag($event)"
         (pointermove)="dragMedia($event)"
         (pointerup)="stopMediaDrag()"
         (pointercancel)="stopMediaDrag()"
       >
         @if (isVideo(row)) {
-          <video controls autoplay [src]="mediaUrl(row)"></video>
+          @if (mediaUrl(row); as url) {
+            <video controls autoplay [src]="url"></video>
+          }
         } @else {
-          <img
-            [src]="mediaUrl(row)"
-            [alt]="row.media?.originalName || 'Mídia do álbum'"
-            [style.transform]="mediaTransform()"
-            draggable="false"
-          />
+          @if (mediaUrl(row); as url) {
+            <img
+              [src]="url"
+              [alt]="row.media?.originalName || 'Mídia do álbum'"
+              [style.transform]="mediaTransform()"
+              draggable="false"
+            />
+          }
         }
       </div>
       @if (!isVideo(row)) {

@@ -12,8 +12,35 @@
       "description": "Custo do dia em reais."
     },
     "custoFormatado": { "type": "string", "example": "R$ 1.248,50" },
-    "quantidadeFolhas": { "type": "number", "example": 3 }
+    "quantidadeFolhas": { "type": "number", "example": 3 },
+    "centrosCusto": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "codigo": { "type": "number", "example": 9227 },
+          "descricao": { "type": "string", "example": "SOLDA" },
+          "custo": { "type": "number", "example": 1248.5 },
+          "custoFormatado": { "type": "string", "example": "R$ 1.248,50" },
+          "quantidadeFolhas": { "type": "number", "example": 3 }
+        },
+        "required": [
+          "codigo",
+          "descricao",
+          "custo",
+          "custoFormatado",
+          "quantidadeFolhas"
+        ],
+        "x-readme-ref-name": "KpiCustoFolhaHoraExtraCentroCustoDTO"
+      }
+    }
   },
-  "required": ["data", "custo", "custoFormatado", "quantidadeFolhas"],
+  "required": [
+    "data",
+    "custo",
+    "custoFormatado",
+    "quantidadeFolhas",
+    "centrosCusto"
+  ],
   "x-readme-ref-name": "KpiCustoFolhaHoraExtraPeriodoDTO"
 }

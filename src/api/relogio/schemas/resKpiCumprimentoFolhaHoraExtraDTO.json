@@ -7,6 +7,10 @@
     "centroCustoDescricao": { "type": "string" },
     "setor": { "type": "string" },
     "totalFuncionarios": { "type": "number" },
+    "totalFuncionariosAvaliados": {
+      "type": "number",
+      "description": "Quantidade de funcionarios efetivos considerados no calculo."
+    },
     "totalCumpriram": { "type": "number" },
     "totalNaoCumpriram": { "type": "number" },
     "totalExtrapolaram": { "type": "number" },
@@ -18,6 +22,10 @@
         "properties": {
           "matricula": { "type": "string" },
           "nome": { "type": "string" },
+          "temporario": {
+            "type": "boolean",
+            "description": "Indica que o funcionario e temporario e nao entra no calculo de batidas."
+          },
           "inicioHEPrevisto": { "type": "string" },
           "fimHEPrevisto": { "type": "string" },
           "totalHEPrevisto": { "type": "string" },
@@ -50,6 +58,7 @@
         "required": [
           "matricula",
           "nome",
+          "temporario",
           "inicioHEPrevisto",
           "fimHEPrevisto",
           "totalHEPrevisto",
@@ -57,7 +66,6 @@
           "minutosAtrasoInicioHE",
           "minutosSaidaAntesFimHE",
           "cumpriuHorarioHE",
-          "statusCumprimentoHE",
           "registros"
         ],
         "x-readme-ref-name": "ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO"
@@ -71,6 +79,7 @@
     "centroCustoDescricao",
     "setor",
     "totalFuncionarios",
+    "totalFuncionariosAvaliados",
     "totalCumpriram",
     "totalNaoCumpriram",
     "totalExtrapolaram",

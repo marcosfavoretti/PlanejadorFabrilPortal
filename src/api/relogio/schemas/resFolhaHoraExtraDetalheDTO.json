@@ -19,6 +19,11 @@
       ]
     },
     "totalFuncionarios": { "type": "number" },
+    "valorTotal": {
+      "type": "number",
+      "description": "Valor total calculado da folha de hora extra.",
+      "example": 1248.75
+    },
     "statusCumprimentoHorarioHE": {
       "type": "string",
       "enum": ["CUMPRIU", "NAO_CUMPRIU", "EXTRAPOLOU"],
@@ -118,6 +123,11 @@
               },
               "valorHorasDiurnas": { "type": "number", "example": 37.5 },
               "valorHorasNoturnas": { "type": "number", "example": 20.25 },
+              "encargo": {
+                "type": "number",
+                "example": 22.75,
+                "description": "65% do salario-hora base por hora extra contabilizada."
+              },
               "refeicao": { "type": "number", "example": 0 },
               "transporte": { "type": "number", "example": 0 },
               "total": { "type": "number", "example": 35.25 },
@@ -161,6 +171,7 @@
               "valorHoraNoturnaComEncargo",
               "valorHorasDiurnas",
               "valorHorasNoturnas",
+              "encargo",
               "refeicao",
               "transporte",
               "total",
@@ -174,6 +185,7 @@
         "adicionalNoturno": { "type": "number", "example": 0.35 },
         "totalRefeicao": { "type": "number", "example": 0 },
         "totalTransporte": { "type": "number", "example": 0 },
+        "totalEncargo": { "type": "number", "example": 22.75 },
         "totalHorasDiurnas": { "type": "number", "example": 2.5 },
         "totalHorasNoturnas": { "type": "number", "example": 3 },
         "totalHorasExtras": { "type": "number", "example": 5.5 },
@@ -188,6 +200,7 @@
         "adicionalNoturno",
         "totalRefeicao",
         "totalTransporte",
+        "totalEncargo",
         "totalHorasDiurnas",
         "totalHorasNoturnas",
         "totalHorasExtras",

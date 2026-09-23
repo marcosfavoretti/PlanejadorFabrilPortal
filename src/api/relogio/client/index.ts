@@ -9,7 +9,9 @@ export { folhaHoraExtraControllerRejeitar } from './folhaHoraExtraControllerReje
 export { folhaHoraExtraControllerRelatorioRecursos } from './folhaHoraExtraControllerRelatorioRecursos';
 export { folhaHoraExtraControllerSubmeter } from './folhaHoraExtraControllerSubmeter';
 export { folhaHoraExtraKpiControllerCumprimento } from './folhaHoraExtraKpiControllerCumprimento';
+export { folhaHoraExtraKpiControllerCumprimentoPorPeriodo } from './folhaHoraExtraKpiControllerCumprimentoPorPeriodo';
 export { folhaHoraExtraKpiControllerCusto } from './folhaHoraExtraKpiControllerCusto';
+export { folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas } from './folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export { folhaHoraExtraKpiControllerJornada } from './folhaHoraExtraKpiControllerJornada';
 export { funcionarioControllerConsultaFuncionarios } from './funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './funcionarioControllerConsultaFuncionariosLegado';

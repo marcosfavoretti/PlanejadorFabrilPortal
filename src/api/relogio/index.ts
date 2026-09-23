@@ -108,6 +108,14 @@ export type {
   FolhaHoraExtraKpiControllerCumprimentoQueryResponse,
 } from './models/FolhaHoraExtraKpiControllerCumprimento';
 export type {
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo200,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo401,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo403,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQuery,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQueryParams,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQueryResponse,
+} from './models/FolhaHoraExtraKpiControllerCumprimentoPorPeriodo';
+export type {
   FolhaHoraExtraKpiControllerCusto200,
   FolhaHoraExtraKpiControllerCusto401,
   FolhaHoraExtraKpiControllerCusto403,
@@ -115,6 +123,14 @@ export type {
   FolhaHoraExtraKpiControllerCustoQueryParams,
   FolhaHoraExtraKpiControllerCustoQueryResponse,
 } from './models/FolhaHoraExtraKpiControllerCusto';
+export type {
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas200,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas401,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas403,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQuery,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryParams,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryResponse,
+} from './models/FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export type {
   FolhaHoraExtraKpiControllerJornada200,
   FolhaHoraExtraKpiControllerJornada401,
@@ -152,6 +168,7 @@ export type {
   FuncionarioControllerConsultarTurnoFuncionarioQueryResponse,
 } from './models/FuncionarioControllerConsultarTurnoFuncionario';
 export type { ItemFuncionarioHEDTO } from './models/ItemFuncionarioHEDTO';
+export type { KpiCustoFolhaHoraExtraCentroCustoDTO } from './models/KpiCustoFolhaHoraExtraCentroCustoDTO';
 export type { KpiCustoFolhaHoraExtraPeriodoDTO } from './models/KpiCustoFolhaHoraExtraPeriodoDTO';
 export type { KpiJornadaFolhaHoraExtraCentroCustoDTO } from './models/KpiJornadaFolhaHoraExtraCentroCustoDTO';
 export type { KpiJornadaFolhaHoraExtraDiaDTO } from './models/KpiJornadaFolhaHoraExtraDiaDTO';
@@ -178,6 +195,7 @@ export type { RelatorioRecursosResumoDTO } from './models/RelatorioRecursosResum
 export type { RelatorioSetorDTO } from './models/RelatorioSetorDTO';
 export type { ResAssinaturaAprovacaoDTO } from './models/ResAssinaturaAprovacaoDTO';
 export type { ResCentroDeCustoDTO } from './models/ResCentroDeCustoDTO';
+export type { ResEventoHoraExtraNaoAutorizadaDTO } from './models/ResEventoHoraExtraNaoAutorizadaDTO';
 export type { ResExtratoCustoFuncionarioHoraExtraDTO } from './models/ResExtratoCustoFuncionarioHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraDTO } from './models/ResExtratoCustoHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraLinhaDTO } from './models/ResExtratoCustoHoraExtraLinhaDTO';
@@ -185,6 +203,7 @@ export type { ResFolhaHoraExtraDTO } from './models/ResFolhaHoraExtraDTO';
 export type { ResFolhaHoraExtraDetalheDTO } from './models/ResFolhaHoraExtraDetalheDTO';
 export type { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO } from './models/ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
 export type { ResFuncionarioListagemDTO } from './models/ResFuncionarioListagemDTO';
+export type { ResHorasExtrasNaoAutorizadasDTO } from './models/ResHorasExtrasNaoAutorizadasDTO';
 export type { ResHorasIrregularesDTO } from './models/ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './models/ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './models/ResKpiCumprimentoFolhaHoraExtraDTO';
@@ -211,7 +230,9 @@ export { folhaHoraExtraControllerRejeitar } from './client/folhaHoraExtraControl
 export { folhaHoraExtraControllerRelatorioRecursos } from './client/folhaHoraExtraControllerRelatorioRecursos';
 export { folhaHoraExtraControllerSubmeter } from './client/folhaHoraExtraControllerSubmeter';
 export { folhaHoraExtraKpiControllerCumprimento } from './client/folhaHoraExtraKpiControllerCumprimento';
+export { folhaHoraExtraKpiControllerCumprimentoPorPeriodo } from './client/folhaHoraExtraKpiControllerCumprimentoPorPeriodo';
 export { folhaHoraExtraKpiControllerCusto } from './client/folhaHoraExtraKpiControllerCusto';
+export { folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas } from './client/folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export { folhaHoraExtraKpiControllerJornada } from './client/folhaHoraExtraKpiControllerJornada';
 export { funcionarioControllerConsultaFuncionarios } from './client/funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './client/funcionarioControllerConsultaFuncionariosLegado';
@@ -231,6 +252,7 @@ export { FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum
 export { ItemFuncionarioHEDTORefeicaoEnum } from './models/ItemFuncionarioHEDTO';
 export { ItemFuncionarioHEDTOTransporteEnum } from './models/ItemFuncionarioHEDTO';
 export { ResAssinaturaAprovacaoDTOAcaoEnum } from './models/ResAssinaturaAprovacaoDTO';
+export { ResEventoHoraExtraNaoAutorizadaDTOOrigemEnum } from './models/ResEventoHoraExtraNaoAutorizadaDTO';
 export { ResFolhaHoraExtraDTOPercentualCustoEnum } from './models/ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDTOStatusCumprimentoHorarioHEEnum } from './models/ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDTOStatusEnum } from './models/ResFolhaHoraExtraDTO';

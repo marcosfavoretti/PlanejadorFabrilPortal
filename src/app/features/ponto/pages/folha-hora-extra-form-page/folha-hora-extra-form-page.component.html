@@ -152,13 +152,20 @@
             <div class="time-inputs">
               <div class="field">
                 <label [for]="'inicioHE-' + i">Início</label>
-                <input [id]="'inicioHE-' + i" pInputText type="time" formControlName="inicioHE" class="text-center" />
+                <p-select [inputId]="'inicioHE-' + i" formControlName="inicioHE" [options]="horariosHE"
+                  optionLabel="label" optionValue="value" placeholder="Selecione" appendTo="body"
+                  (onChange)="onInicioHEChange(funcionarioGroup)"></p-select>
               </div>
               <div class="field">
                 <label [for]="'fimHE-' + i">Fim</label>
-                <input [id]="'fimHE-' + i" pInputText type="time" formControlName="fimHE" class="text-center" />
+                <p-select [inputId]="'fimHE-' + i" formControlName="fimHE" [options]="horariosSaida(funcionarioGroup)"
+                  optionLabel="label" optionValue="value" placeholder="Selecione" appendTo="body"></p-select>
               </div>
             </div>
+            @if (funcionarioGroup.hasError('horarioSaidaAntesEntrada')) {
+            <small class="error-text"><i class="pi pi-exclamation-circle icon-label"></i>
+              O fim deve seguir a sequência do horário de início.</small>
+            }
             <div class="total-pill">
               <span><i class="pi pi-stopwatch icon-label"></i>Total</span>
               <strong>{{ totalHE(funcionarioGroup) }}</strong>

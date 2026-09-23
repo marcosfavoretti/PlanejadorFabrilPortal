@@ -108,6 +108,14 @@ export type {
   FolhaHoraExtraKpiControllerCumprimentoQueryResponse,
 } from './FolhaHoraExtraKpiControllerCumprimento';
 export type {
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo200,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo401,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodo403,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQuery,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQueryParams,
+  FolhaHoraExtraKpiControllerCumprimentoPorPeriodoQueryResponse,
+} from './FolhaHoraExtraKpiControllerCumprimentoPorPeriodo';
+export type {
   FolhaHoraExtraKpiControllerCusto200,
   FolhaHoraExtraKpiControllerCusto401,
   FolhaHoraExtraKpiControllerCusto403,
@@ -115,6 +123,14 @@ export type {
   FolhaHoraExtraKpiControllerCustoQueryParams,
   FolhaHoraExtraKpiControllerCustoQueryResponse,
 } from './FolhaHoraExtraKpiControllerCusto';
+export type {
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas200,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas401,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas403,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQuery,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryParams,
+  FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryResponse,
+} from './FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export type {
   FolhaHoraExtraKpiControllerJornada200,
   FolhaHoraExtraKpiControllerJornada401,
@@ -152,6 +168,7 @@ export type {
   FuncionarioControllerConsultarTurnoFuncionarioQueryResponse,
 } from './FuncionarioControllerConsultarTurnoFuncionario';
 export type { ItemFuncionarioHEDTO } from './ItemFuncionarioHEDTO';
+export type { KpiCustoFolhaHoraExtraCentroCustoDTO } from './KpiCustoFolhaHoraExtraCentroCustoDTO';
 export type { KpiCustoFolhaHoraExtraPeriodoDTO } from './KpiCustoFolhaHoraExtraPeriodoDTO';
 export type { KpiJornadaFolhaHoraExtraCentroCustoDTO } from './KpiJornadaFolhaHoraExtraCentroCustoDTO';
 export type { KpiJornadaFolhaHoraExtraDiaDTO } from './KpiJornadaFolhaHoraExtraDiaDTO';
@@ -178,6 +195,7 @@ export type { RelatorioRecursosResumoDTO } from './RelatorioRecursosResumoDTO';
 export type { RelatorioSetorDTO } from './RelatorioSetorDTO';
 export type { ResAssinaturaAprovacaoDTO } from './ResAssinaturaAprovacaoDTO';
 export type { ResCentroDeCustoDTO } from './ResCentroDeCustoDTO';
+export type { ResEventoHoraExtraNaoAutorizadaDTO } from './ResEventoHoraExtraNaoAutorizadaDTO';
 export type { ResExtratoCustoFuncionarioHoraExtraDTO } from './ResExtratoCustoFuncionarioHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraDTO } from './ResExtratoCustoHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraLinhaDTO } from './ResExtratoCustoHoraExtraLinhaDTO';
@@ -185,6 +203,7 @@ export type { ResFolhaHoraExtraDTO } from './ResFolhaHoraExtraDTO';
 export type { ResFolhaHoraExtraDetalheDTO } from './ResFolhaHoraExtraDetalheDTO';
 export type { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO } from './ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
 export type { ResFuncionarioListagemDTO } from './ResFuncionarioListagemDTO';
+export type { ResHorasExtrasNaoAutorizadasDTO } from './ResHorasExtrasNaoAutorizadasDTO';
 export type { ResHorasIrregularesDTO } from './ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './ResKpiCumprimentoFolhaHoraExtraDTO';
@@ -211,6 +230,7 @@ export { FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum
 export { ItemFuncionarioHEDTORefeicaoEnum } from './ItemFuncionarioHEDTO';
 export { ItemFuncionarioHEDTOTransporteEnum } from './ItemFuncionarioHEDTO';
 export { ResAssinaturaAprovacaoDTOAcaoEnum } from './ResAssinaturaAprovacaoDTO';
+export { ResEventoHoraExtraNaoAutorizadaDTOOrigemEnum } from './ResEventoHoraExtraNaoAutorizadaDTO';
 export { ResFolhaHoraExtraDTOPercentualCustoEnum } from './ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDTOStatusCumprimentoHorarioHEEnum } from './ResFolhaHoraExtraDTO';
 export { ResFolhaHoraExtraDTOStatusEnum } from './ResFolhaHoraExtraDTO';

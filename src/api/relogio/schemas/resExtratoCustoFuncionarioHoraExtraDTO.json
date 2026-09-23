@@ -12,6 +12,11 @@
     "valorHoraNoturnaComEncargo": { "type": "number", "example": 20.25 },
     "valorHorasDiurnas": { "type": "number", "example": 37.5 },
     "valorHorasNoturnas": { "type": "number", "example": 20.25 },
+    "encargo": {
+      "type": "number",
+      "example": 22.75,
+      "description": "65% do salario-hora base por hora extra contabilizada."
+    },
     "refeicao": { "type": "number", "example": 0 },
     "transporte": { "type": "number", "example": 0 },
     "total": { "type": "number", "example": 35.25 },
@@ -52,6 +57,7 @@
     "valorHoraNoturnaComEncargo",
     "valorHorasDiurnas",
     "valorHorasNoturnas",
+    "encargo",
     "refeicao",
     "transporte",
     "total",

@@ -3,6 +3,10 @@
   "properties": {
     "matricula": { "type": "string" },
     "nome": { "type": "string" },
+    "temporario": {
+      "type": "boolean",
+      "description": "Indica que o funcionario e temporario e nao entra no calculo de batidas."
+    },
     "inicioHEPrevisto": { "type": "string" },
     "fimHEPrevisto": { "type": "string" },
     "totalHEPrevisto": { "type": "string" },
@@ -35,6 +39,7 @@
   "required": [
     "matricula",
     "nome",
+    "temporario",
     "inicioHEPrevisto",
     "fimHEPrevisto",
     "totalHEPrevisto",
@@ -42,7 +47,6 @@
     "minutosAtrasoInicioHE",
     "minutosSaidaAntesFimHE",
     "cumpriuHorarioHE",
-    "statusCumprimentoHE",
     "registros"
   ],
   "x-readme-ref-name": "ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO"

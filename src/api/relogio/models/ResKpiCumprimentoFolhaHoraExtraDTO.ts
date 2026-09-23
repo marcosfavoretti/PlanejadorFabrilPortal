@@ -31,6 +31,11 @@ export type ResKpiCumprimentoFolhaHoraExtraDTO = {
    */
   totalFuncionarios: number;
   /**
+   * @description Quantidade de funcionarios efetivos considerados no calculo.
+   * @type number
+   */
+  totalFuncionariosAvaliados: number;
+  /**
    * @type number
    */
   totalCumpriram: number;

@@ -59,7 +59,7 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
   constructor(private cacheService: CacheService, private primengconfirmation: ConfirmationService) { }
 
   get showDevMarkAllButton(): boolean {
-    return typeof window !== 'undefined' && window.location.hostname === 'dev.ethos.ind.br';
+    return typeof window !== 'undefined' && window.location.hostname === 'app.ethos.ind.br';
   }
 
   private getItemIdentity(item: ResEstruturaItemTreeDTO | undefined): string {
@@ -127,7 +127,7 @@ export class ItemResultListRegisterChecklistComponent implements OnChanges, OnIn
     })
   }
 
-  /** Disponível somente em dev.ethos.ind.br para facilitar a validação do fluxo. */
+  /** Disponível somente em app.ethos.ind.br para facilitar a validação do fluxo. */
   public markAllForTest(): void {
     if (!this.showDevMarkAllButton || !this.itens) return;
 

@@ -43,6 +43,11 @@ export type FolhaHoraExtraKpiControllerCustoQueryParams = {
    * @type string | undefined
    */
   dataFim?: string;
+  /**
+   * @description Código do centro de custo para filtrar o custo.
+   * @type number | undefined
+   */
+  centroCustoCodigo?: number;
 };
 
 /**

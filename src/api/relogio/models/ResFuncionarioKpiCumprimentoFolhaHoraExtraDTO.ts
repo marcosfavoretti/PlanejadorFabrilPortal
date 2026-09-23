@@ -21,6 +21,11 @@ export type ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO = {
    */
   nome: string;
   /**
+   * @description Indica que o funcionario e temporario e nao entra no calculo de batidas.
+   * @type boolean
+   */
+  temporario: boolean;
+  /**
    * @type string
    */
   inicioHEPrevisto: string;
@@ -58,9 +63,9 @@ export type ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO = {
   cumpriuHorarioHE: boolean;
   /**
    * @description CUMPRIU: saída entre 10 minutos antes e 15 minutos depois do fim previsto; EXTRAPOLOU: saída após essa tolerância.
-   * @type string
+   * @type string | undefined
    */
-  statusCumprimentoHE: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum;
+  statusCumprimentoHE?: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum;
   /**
    * @type array
    */

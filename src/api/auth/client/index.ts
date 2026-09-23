@@ -24,3 +24,4 @@ export { userAuthorizationControllerDesativarCentroCusto } from './userAuthoriza
 export { userAuthorizationControllerListarCentrosCusto } from './userAuthorizationControllerListarCentrosCusto';
 export { userAuthorizationControllerVincularCentroCusto } from './userAuthorizationControllerVincularCentroCusto';
 export { userNotificationInternalControllerNotificarCargoPorEmail } from './userNotificationInternalControllerNotificarCargoPorEmail';
+export { userNotificationInternalControllerNotificarUsuarioPorEmail } from './userNotificationInternalControllerNotificarUsuarioPorEmail';

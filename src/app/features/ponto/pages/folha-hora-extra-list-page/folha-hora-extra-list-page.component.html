@@ -5,7 +5,8 @@
       <div class="header-text">
         <h1 class="page-title">Gestão de Horas Extras</h1>
         <p class="page-subtitle">
-          {{ canAuditHistorico() ? 'Acompanhe o fluxo de HE e audite o cumprimento das folhas aprovadas' : 'Acompanhe, gerencie e aprove as solicitações de horas extras da equipe' }}
+          {{ canAuditHistorico() ? 'Acompanhe o fluxo de HE e audite o cumprimento das folhas aprovadas' : 'Acompanhe,
+          gerencie e aprove as solicitações de horas extras da equipe' }}
         </p>
       </div>
       <div class="header-icon-container">
@@ -19,651 +20,906 @@
   <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)" class="folha-tabs">
     <p-tablist>
       @if (canViewRhTab()) {
-        <p-tab value="rh"><i class="pi pi-users me-2"></i>RH</p-tab>
+      <p-tab value="rh"><i class="pi pi-users me-2"></i>RH</p-tab>
       }
       @if (canViewFolhasTab()) {
-        <p-tab value="folhas"><i class="pi pi-clock me-2"></i>Folhas</p-tab>
+      <p-tab value="folhas"><i class="pi pi-clock me-2"></i>Folhas</p-tab>
       }
       @if (canViewKpiTab()) {
-        <p-tab value="kpi"><i class="pi pi-chart-bar me-2"></i>KPI</p-tab>
+      <p-tab value="kpi"><i class="pi pi-chart-bar me-2"></i>KPI</p-tab>
       }
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="rh">
 
-  @if (!hasVisibleSections()) {
-    <div class="card-container no-access-card">
-      <i class="pi pi-lock"></i>
-      <div>
-        <h2>Nenhuma seção disponível</h2>
-        <p>Seu cargo não possui permissão para consultar folhas de hora extra.</p>
-      </div>
-    </div>
-  }
-
-  @if (canViewRefeicoes()) {
-    <section class="dashboard-section dashboard-section--tables" aria-label="Refeições e equipe">
-    <div class="card-container">
-    <div class="filters-panel refeicoes-filters-panel">
-      <div class="filters-section-title">
-        <div>
-          <h2><i class="pi pi-filter mr-2"></i>Filtros de refeições</h2>
-          <span>O padrão consulta hoje e folhas aguardando a diretoria.</span>
-        </div>
-      </div>
-
-      <div class="filters-grid refeicoes-filters-grid">
-        <div class="field">
-          <label for="refeicoesDataRangeFilter">
-            <i class="pi pi-calendar mr-2"></i>Período
-          </label>
-          <p-datepicker
-            inputId="refeicoesDataRangeFilter"
-            selectionMode="range"
-            [formControl]="refeicoesDataRangeFilter"
-            dateFormat="dd/mm/yy"
-            placeholder="Início - Fim"
-            [showIcon]="true"
-            [showClear]="true"
-            styleClass="w-full"
-          ></p-datepicker>
-        </div>
-
-        <div class="field">
-          <label for="refeicoesCentroCustoFilter">
-            <i class="pi pi-building mr-2"></i>Centro de Custo
-          </label>
-          <p-select
-            inputId="refeicoesCentroCustoFilter"
-            [formControl]="refeicoesCentroCustoFilter"
-            [options]="centrosCusto"
-            optionLabel="setor"
-            optionValue="ccid"
-            placeholder="Todos os centros"
-            [showClear]="true"
-            styleClass="w-full"
-          >
-            <ng-template pTemplate="item" let-centro>
-              {{ centro.ccid }} - {{ centro.setor }}
-            </ng-template>
-            <ng-template pTemplate="selectedItem" let-centro>
-              {{ centro?.ccid }} - {{ centro?.setor }}
-            </ng-template>
-          </p-select>
-        </div>
-
-        <div class="field">
-          <label for="refeicoesMatriculaFilter">
-            <i class="pi pi-id-card mr-2"></i>Matrícula
-          </label>
-          <input
-            pInputText
-            id="refeicoesMatriculaFilter"
-            [formControl]="refeicoesMatriculaFilter"
-            placeholder="Informe a matrícula"
-            (keyup.enter)="applyRefeicoesFilters()"
-          />
-        </div>
-
-        <div class="field">
-          <label for="refeicoesNomeFilter">
-            <i class="pi pi-user mr-2"></i>Nome
-          </label>
-          <input
-            pInputText
-            id="refeicoesNomeFilter"
-            [formControl]="refeicoesNomeFilter"
-            placeholder="Informe o nome"
-            (keyup.enter)="applyRefeicoesFilters()"
-          />
-        </div>
-
-        <div class="field">
-          <label for="refeicoesTipoFilter">
-            <i class="pi pi-shopping-bag mr-2"></i>Refeição
-          </label>
-          <p-select
-            inputId="refeicoesTipoFilter"
-            [formControl]="refeicoesTipoFilter"
-            [options]="refeicaoOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Todas, exceto N/A"
-            [showClear]="true"
-            styleClass="w-full"
-          ></p-select>
-        </div>
-
-        <div class="field refeicoes-status-field">
-          <label for="refeicoesStatusFilter">
-            <i class="pi pi-list-check mr-2"></i>Status
-          </label>
-          <p-multiSelect
-            inputId="refeicoesStatusFilter"
-            [formControl]="refeicoesStatusFilter"
-            [options]="refeicoesStatusOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione os status"
-            display="chip"
-            [showClear]="true"
-            styleClass="w-full"
-          ></p-multiSelect>
-        </div>
-
-        <div class="filter-actions refeicoes-filter-actions">
-          <p-button
-            label="Imprimir tabela"
-            icon="pi pi-print"
-            severity="secondary"
-            [outlined]="true"
-            [disabled]="!refeicoesHoje.length"
-            (click)="printRefeicoes()"
-          ></p-button>
-          <p-button
-            label="Restaurar padrão"
-            icon="pi pi-refresh"
-            severity="secondary"
-            [outlined]="true"
-            (click)="restoreRefeicoesDefaultFilters()"
-          ></p-button>
-          <p-button
-            label="Aplicar"
-            icon="pi pi-search"
-            severity="success"
-            (click)="applyRefeicoesFilters()"
-          ></p-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="table-panel table-dynamic-panel">
-      <app-table-dynamic
-        [data]="refeicoesHoje"
-        [tableModel]="refeicoesTableModel"
-        [exportable]="true"
-        [loading]="refeicoesLoading"
-        [lazy]="true"
-        [first]="refeicoesFirst"
-        [rows]="refeicoesPageSize"
-        [totalRecords]="refeicoesTotalRecords"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        paginatorDropdownAppendTo="body"
-        responsiveLayout="scroll"
-        (lazyLoad)="onRefeicoesLazyLoad($event)"
-      ></app-table-dynamic>
-    </div>
-    </div>
-
-    <section class="print-refeicoes-content" aria-hidden="true">
-      <table>
-        <thead>
-          <tr>
-            <th>Funcionário</th>
-            <th>Matrícula</th>
-            <th>Refeição</th>
-            <th>Horário HE</th>
-            <th>CC - Setor</th>
-            <th>Status</th>
-            <th>Justificativa</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (refeicao of refeicoesHoje; track refeicao.folhaId + refeicao.matricula) {
-            <tr>
-              <td>{{ refeicao.nome }}</td>
-              <td>{{ refeicao.matricula }}</td>
-              <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>
-              <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
-              <td>{{ refeicao.centroCustoCodigo }} - {{ refeicao.setor }}</td>
-              <td>{{ refeicao.status }}</td>
-              <td>{{ refeicao.justificativa }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </section>
-
-    <div class="card-container">
-      <div class="filters-panel">
-        <div class="filters-section-title">
+        @if (!hasVisibleSections()) {
+        <div class="card-container no-access-card">
+          <i class="pi pi-lock"></i>
           <div>
-            <h2><i class="pi pi-filter mr-2"></i>Filtros de funcionários aprovados</h2>
-            <span>O período inicia automaticamente no dia atual.</span>
+            <h2>Nenhuma seção disponível</h2>
+            <p>Seu cargo não possui permissão para consultar folhas de hora extra.</p>
           </div>
         </div>
+        }
 
-        <div class="filters-grid">
-          <div class="field">
-            <label for="aprovadasDataRangeFilter">
-              <i class="pi pi-calendar mr-2"></i>Período da folha
-            </label>
-            <p-datepicker
-              inputId="aprovadasDataRangeFilter"
-              selectionMode="range"
-              [formControl]="aprovadasDataRangeFilter"
-              dateFormat="dd/mm/yy"
-              placeholder="Início - Fim"
-              [showIcon]="true"
-              [showClear]="true"
-              styleClass="w-full"
-            ></p-datepicker>
+        @if (canViewRefeicoes()) {
+        <section class="dashboard-section dashboard-section--tables" aria-label="Refeições e equipe">
+          <div class="card-container">
+            <div class="filters-panel refeicoes-filters-panel">
+              <div class="filters-section-title">
+                <div>
+                  <h2><i class="pi pi-filter mr-2"></i>Filtros de refeições</h2>
+                  <span>O padrão consulta hoje e folhas aguardando a diretoria.</span>
+                </div>
+              </div>
+
+              <div class="filters-grid refeicoes-filters-grid">
+                <div class="field">
+                  <label for="refeicoesDataRangeFilter">
+                    <i class="pi pi-calendar mr-2"></i>Período
+                  </label>
+                  <p-datepicker inputId="refeicoesDataRangeFilter" selectionMode="range"
+                    [formControl]="refeicoesDataRangeFilter" dateFormat="dd/mm/yy" placeholder="Início - Fim"
+                    [showIcon]="true" [showClear]="true" styleClass="w-full"></p-datepicker>
+                </div>
+
+                <div class="field">
+                  <label for="refeicoesCentroCustoFilter">
+                    <i class="pi pi-building mr-2"></i>Centro de Custo
+                  </label>
+                  <p-select inputId="refeicoesCentroCustoFilter" [formControl]="refeicoesCentroCustoFilter"
+                    [options]="centrosCusto" optionLabel="setor" optionValue="ccid" placeholder="Todos os centros"
+                    [showClear]="true" styleClass="w-full">
+                    <ng-template pTemplate="item" let-centro>
+                      {{ centro.ccid }} - {{ centro.setor }}
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-centro>
+                      {{ centro?.ccid }} - {{ centro?.setor }}
+                    </ng-template>
+                  </p-select>
+                </div>
+
+                <div class="field">
+                  <label for="refeicoesMatriculaFilter">
+                    <i class="pi pi-id-card mr-2"></i>Matrícula
+                  </label>
+                  <input pInputText id="refeicoesMatriculaFilter" [formControl]="refeicoesMatriculaFilter"
+                    placeholder="Informe a matrícula" (keyup.enter)="applyRefeicoesFilters()" />
+                </div>
+
+                <div class="field">
+                  <label for="refeicoesNomeFilter">
+                    <i class="pi pi-user mr-2"></i>Nome
+                  </label>
+                  <input pInputText id="refeicoesNomeFilter" [formControl]="refeicoesNomeFilter"
+                    placeholder="Informe o nome" (keyup.enter)="applyRefeicoesFilters()" />
+                </div>
+
+                <div class="field">
+                  <label for="refeicoesTipoFilter">
+                    <i class="pi pi-shopping-bag mr-2"></i>Refeição
+                  </label>
+                  <p-select inputId="refeicoesTipoFilter" [formControl]="refeicoesTipoFilter"
+                    [options]="refeicaoOptions" optionLabel="label" optionValue="value" placeholder="Todas, exceto N/A"
+                    [showClear]="true" styleClass="w-full"></p-select>
+                </div>
+
+                <div class="field refeicoes-status-field">
+                  <label for="refeicoesStatusFilter">
+                    <i class="pi pi-list-check mr-2"></i>Status
+                  </label>
+                  <p-multiSelect inputId="refeicoesStatusFilter" [formControl]="refeicoesStatusFilter"
+                    [options]="refeicoesStatusOptions" optionLabel="label" optionValue="value"
+                    placeholder="Selecione os status" display="chip" [showClear]="true"
+                    styleClass="w-full"></p-multiSelect>
+                </div>
+
+                <div class="filter-actions refeicoes-filter-actions">
+                  <p-button label="Imprimir tabela" icon="pi pi-print" severity="secondary" [outlined]="true"
+                    [disabled]="!refeicoesHoje.length" (click)="printRefeicoes()"></p-button>
+                  <p-button label="Restaurar padrão" icon="pi pi-refresh" severity="secondary" [outlined]="true"
+                    (click)="restoreRefeicoesDefaultFilters()"></p-button>
+                  <p-button label="Aplicar" icon="pi pi-search" severity="success"
+                    (click)="applyRefeicoesFilters()"></p-button>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-panel table-dynamic-panel">
+              <app-table-dynamic [data]="refeicoesHoje" [tableModel]="refeicoesTableModel" [exportable]="true"
+                [loading]="refeicoesLoading" [lazy]="true" [first]="refeicoesFirst" [rows]="refeicoesPageSize"
+                [totalRecords]="refeicoesTotalRecords" [rowsPerPageOptions]="[10, 25, 50]"
+                paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+                (lazyLoad)="onRefeicoesLazyLoad($event)"></app-table-dynamic>
+            </div>
           </div>
 
-          <div class="field">
-            <label for="aprovadasCentroCustoFilter">
-              <i class="pi pi-building mr-2"></i>Centro de custo
-            </label>
-            <p-select
-              inputId="aprovadasCentroCustoFilter"
-              [formControl]="aprovadasCentroCustoFilter"
-              [options]="centrosCusto"
-              optionLabel="setor"
-              optionValue="ccid"
-              placeholder="Todos os centros"
-              [showClear]="true"
-              styleClass="w-full"
-            >
-              <ng-template pTemplate="item" let-centro>
-                {{ centro.ccid }} - {{ centro.setor }}
-              </ng-template>
-              <ng-template pTemplate="selectedItem" let-centro>
-                {{ centro?.ccid }} - {{ centro?.setor }}
-              </ng-template>
-            </p-select>
-          </div>
+          <section class="print-refeicoes-content" aria-hidden="true">
+            <table>
+              <thead>
+                <tr>
+                  <th>Funcionário</th>
+                  <th>Matrícula</th>
+                  <th>Refeição</th>
+                  <th>Horário HE</th>
+                  <th>CC - Setor</th>
+                  <th>Status</th>
+                  <th>Justificativa</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (refeicao of refeicoesHoje; track refeicao.folhaId + refeicao.matricula) {
+                <tr>
+                  <td>{{ refeicao.nome }}</td>
+                  <td>{{ refeicao.matricula }}</td>
+                  <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>
+                  <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
+                  <td>{{ refeicao.centroCustoCodigo }} - {{ refeicao.setor }}</td>
+                  <td>{{ refeicao.status }}</td>
+                  <td>{{ refeicao.justificativa }}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </section>
 
-          <div class="field">
-            <label for="aprovadasMatriculaFilter">
-              <i class="pi pi-id-card mr-2"></i>Matrícula
-            </label>
-            <input
-              pInputText
-              id="aprovadasMatriculaFilter"
-              [formControl]="aprovadasMatriculaFilter"
-              placeholder="Informe a matrícula"
-              (keyup.enter)="applyAprovadasFilters()"
-            />
-          </div>
+          <div class="card-container">
+            <div class="filters-panel">
+              <div class="filters-section-title">
+                <div>
+                  <h2><i class="pi pi-filter mr-2"></i>Filtros de funcionários nas folhas de HE</h2>
+                  <span>O período inicia automaticamente no dia atual; selecione um status para restringir os
+                    resultados.</span>
+                </div>
+              </div>
 
-          <div class="field">
-            <label for="aprovadasNomeFilter">
-              <i class="pi pi-user mr-2"></i>Nome
-            </label>
-            <input
-              pInputText
-              id="aprovadasNomeFilter"
-              [formControl]="aprovadasNomeFilter"
-              placeholder="Informe o nome"
-              (keyup.enter)="applyAprovadasFilters()"
-            />
-          </div>
+              <div class="filters-grid">
+                <div class="field">
+                  <label for="aprovadasDataRangeFilter">
+                    <i class="pi pi-calendar mr-2"></i>Período da folha
+                  </label>
+                  <p-datepicker inputId="aprovadasDataRangeFilter" selectionMode="range"
+                    [formControl]="aprovadasDataRangeFilter" dateFormat="dd/mm/yy" placeholder="Início - Fim"
+                    [showIcon]="true" [showClear]="true" styleClass="w-full"></p-datepicker>
+                </div>
 
-          <div class="filter-actions">
-            <p-button
-              label="Restaurar padrão"
-              icon="pi pi-refresh"
-              severity="secondary"
-              [outlined]="true"
-              (click)="restoreAprovadasDefaultFilters()"
-            ></p-button>
-            <p-button
-              label="Aplicar"
-              icon="pi pi-search"
-              severity="success"
-              (click)="applyAprovadasFilters()"
-            ></p-button>
-          </div>
-        </div>
-      </div>
+                <div class="field">
+                  <label for="aprovadasCentroCustoFilter">
+                    <i class="pi pi-building mr-2"></i>Centro de custo
+                  </label>
+                  <p-select inputId="aprovadasCentroCustoFilter" [formControl]="aprovadasCentroCustoFilter"
+                    [options]="centrosCusto" optionLabel="setor" optionValue="ccid" placeholder="Todos os centros"
+                    [showClear]="true" styleClass="w-full">
+                    <ng-template pTemplate="item" let-centro>
+                      {{ centro.ccid }} - {{ centro.setor }}
+                    </ng-template>
+                    <ng-template pTemplate="selectedItem" let-centro>
+                      {{ centro?.ccid }} - {{ centro?.setor }}
+                    </ng-template>
+                  </p-select>
+                </div>
 
-      <div class="table-panel table-dynamic-panel">
-        <app-table-dynamic
-          [data]="funcionariosFolhasAprovadas"
-          [tableModel]="funcionariosFolhasAprovadasTableModel"
-          [exportable]="true"
-          [loading]="funcionariosFolhasAprovadasLoading"
-          [rows]="50"
-          [rowsPerPageOptions]="[10, 25, 50]"
-          paginatorDropdownAppendTo="body"
-          responsiveLayout="scroll"
-        ></app-table-dynamic>
-      </div>
-    </div>
-    </section>
-  }
+                <div class="field">
+                  <label for="aprovadasMatriculaFilter">
+                    <i class="pi pi-id-card mr-2"></i>Matrícula
+                  </label>
+                  <input pInputText id="aprovadasMatriculaFilter" [formControl]="aprovadasMatriculaFilter"
+                    placeholder="Informe a matrícula" (keyup.enter)="applyAprovadasFilters()" />
+                </div>
+
+                <div class="field">
+                  <label for="aprovadasNomeFilter">
+                    <i class="pi pi-user mr-2"></i>Nome
+                  </label>
+                  <input pInputText id="aprovadasNomeFilter" [formControl]="aprovadasNomeFilter"
+                    placeholder="Informe o nome" (keyup.enter)="applyAprovadasFilters()" />
+                </div>
+
+                <div class="field">
+                  <label for="aprovadasStatusFilter">Status da folha</label>
+                  <p-multiSelect inputId="aprovadasStatusFilter" [formControl]="aprovadasStatusFilter"
+                    [options]="refeicoesStatusOptions" optionLabel="label" optionValue="value"
+                    placeholder="Status selecionados" display="chip" [showClear]="true"
+                    styleClass="w-full"></p-multiSelect>
+                </div>
+                <div class="field">
+                  <label for="aprovadasRefeicaoFilter">Refeição</label>
+                  <p-multiSelect inputId="aprovadasRefeicaoFilter" [formControl]="aprovadasRefeicaoFilter"
+                    [options]="refeicaoOptions" optionLabel="label" optionValue="value" placeholder="Todas as refeições"
+                    display="chip" [showClear]="true" styleClass="w-full"></p-multiSelect>
+                </div>
+                <div class="field">
+                  <label for="aprovadasTransporteFilter">Transporte</label>
+                  <p-multiSelect inputId="aprovadasTransporteFilter" [formControl]="aprovadasTransporteFilter"
+                    [options]="transporteOptions" optionLabel="label" optionValue="value"
+                    placeholder="Todos os transportes" display="chip" [showClear]="true"
+                    styleClass="w-full"></p-multiSelect>
+                </div>
+
+                <div class="filter-actions">
+                  <p-button label="Restaurar padrão" icon="pi pi-refresh" severity="secondary" [outlined]="true"
+                    (click)="restoreAprovadasDefaultFilters()"></p-button>
+                  <p-button label="Aplicar" icon="pi pi-search" severity="success"
+                    (click)="applyAprovadasFilters()"></p-button>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-panel table-dynamic-panel">
+              <app-table-dynamic [data]="funcionariosFolhasAprovadas"
+                [tableModel]="funcionariosFolhasAprovadasTableModel" [exportable]="true"
+                [loading]="funcionariosFolhasAprovadasLoading" [rows]="100" [rowsPerPageOptions]="[10, 25, 50, 100]"
+                paginatorDropdownAppendTo="body" responsiveLayout="scroll"></app-table-dynamic>
+            </div>
+          </div>
+        </section>
+        }
 
       </p-tabpanel>
       <p-tabpanel value="folhas">
 
-  @if (canViewFolhas()) {
-    <section class="dashboard-section" aria-label="Folhas e gastos">
-    <div class="card-container folha-workspace">
-    <div class="filters-panel">
-      <div class="filters-grid">
-        <div class="field">
-          <label for="dataRangeFilter"><i class="pi pi-calendar mr-2"></i>Período</label>
-          <p-datepicker
-            inputId="dataRangeFilter"
-            selectionMode="range"
-            [formControl]="dataRangeFilter"
-            dateFormat="dd/mm/yy"
-            placeholder="Início - Fim"
-            [showIcon]="true"
-            (onSelect)="applyFilters()"
-            styleClass="w-full"
-          ></p-datepicker>
-        </div>
+        @if (canViewFolhas()) {
+        <section class="dashboard-section" aria-label="Folhas e gastos">
+          <div class="card-container folha-workspace">
+            <div class="filters-panel">
+              <div class="filters-grid">
+                <div class="field">
+                  <label for="dataRangeFilter"><i class="pi pi-calendar mr-2"></i>Período</label>
+                  <p-datepicker inputId="dataRangeFilter" selectionMode="range" [formControl]="dataRangeFilter"
+                    dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" (onSelect)="applyFilters()"
+                    styleClass="w-full"></p-datepicker>
+                </div>
 
-        <div class="field">
-          <label for="centroCustoFilter"><i class="pi pi-building mr-2"></i>Centro de Custo</label>
-          <p-select
-            inputId="centroCustoFilter"
-            [options]="centrosCusto"
-            [formControl]="centroCustoFilter"
-            optionLabel="setor"
-            optionValue="ccid"
-            placeholder="Todos os Centros"
-            [showClear]="true"
-            (onChange)="applyFilters()"
-            styleClass="w-full"
-          >
-            <ng-template let-centro pTemplate="item">
-              {{ centro.ccid }} - {{ centro.setor }}
-            </ng-template>
-            <ng-template let-centro pTemplate="selectedItem">
-              {{ centro?.ccid }} - {{ centro?.setor }}
-            </ng-template>
-          </p-select>
-        </div>
+                <div class="field">
+                  <label for="centroCustoFilter"><i class="pi pi-building mr-2"></i>Centro de Custo</label>
+                  <p-select inputId="centroCustoFilter" [options]="centrosCusto" [formControl]="centroCustoFilter"
+                    optionLabel="setor" optionValue="ccid" placeholder="Todos os Centros" [showClear]="true"
+                    (onChange)="applyFilters()" styleClass="w-full">
+                    <ng-template let-centro pTemplate="item">
+                      {{ centro.ccid }} - {{ centro.setor }}
+                    </ng-template>
+                    <ng-template let-centro pTemplate="selectedItem">
+                      {{ centro?.ccid }} - {{ centro?.setor }}
+                    </ng-template>
+                  </p-select>
+                </div>
 
-        @if (!usesHistoricoDashboard()) {
-        <div class="field">
-          <label for="statusFilter"><i class="pi pi-flag mr-2"></i>Status</label>
-          <p-select
-            inputId="statusFilter"
-            [options]="statusOptions"
-            [formControl]="statusFilter"
-            placeholder="Todos os Status"
-            [showClear]="true"
-            (onChange)="applyFilters()"
-            styleClass="w-full"
-          ></p-select>
-        </div>
+                @if (!usesHistoricoDashboard()) {
+                <div class="field">
+                  <label for="statusFilter"><i class="pi pi-flag mr-2"></i>Status</label>
+                  <p-select inputId="statusFilter" [options]="statusOptions" [formControl]="statusFilter"
+                    placeholder="Todos os Status" [showClear]="true" (onChange)="applyFilters()"
+                    styleClass="w-full"></p-select>
+                </div>
+                }
+
+                <div class="field">
+                  <label for="nomeFuncionarioFilter">Nome do funcionário</label>
+                  <input pInputText id="nomeFuncionarioFilter" [formControl]="nomeFuncionarioFilter"
+                    placeholder="Informe o nome" (keyup.enter)="applyFilters()" />
+                </div>
+                <div class="field">
+                  <label for="matriculaFuncionarioFilter">Matrícula do funcionário</label>
+                  <input pInputText id="matriculaFuncionarioFilter" [formControl]="matriculaFuncionarioFilter"
+                    placeholder="Informe a matrícula" (keyup.enter)="applyFilters()" />
+                </div>
+
+                <div class="filter-actions">
+                  @if (isAdmin()) {
+                  @for (queue of approvalQueueOptions; track queue.status) {
+                  <p-button [label]="queue.label" icon="pi pi-list-check" severity="secondary"
+                    [outlined]="approvalStatusFilter.value !== queue.status"
+                    (click)="applyApprovalQueue(queue.status)"></p-button>
+                  }
+                  }
+                  <p-button label="Aplicar" icon="pi pi-search" severity="success" (click)="applyFilters()"></p-button>
+                  <p-button label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true"
+                    (click)="clearFilters()"></p-button>
+                  @if (canCreateFolha()) {
+                  <p-button label="Nova Folha" icon="pi pi-plus" class="btn-nova-folha" severity="success"
+                    (click)="createFolha()"></p-button>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="folha-content-grid folha-content-grid--without-chart">
+              <div class="table-panel table-dynamic-panel">
+                <app-table-dynamic [data]="folhas" [tableModel]="folhasTableModel" [exportable]="false"
+                  [loading]="loading" [lazy]="true" [first]="first" [rows]="pageSize" [totalRecords]="totalRecords"
+                  [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+                  (lazyLoad)="onLazyLoad($event)"></app-table-dynamic>
+              </div>
+            </div>
+          </div>
+        </section>
         }
 
-        <div class="filter-actions">
-          @if (isAdmin()) {
-            @for (queue of approvalQueueOptions; track queue.status) {
-              <p-button [label]="queue.label" icon="pi pi-list-check" severity="secondary" [outlined]="approvalStatusFilter.value !== queue.status" (click)="applyApprovalQueue(queue.status)"></p-button>
-            }
-          }
-          <p-button label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true" (click)="clearFilters()"></p-button>
-          @if (canCreateFolha()) {
-            <p-button label="Nova Folha" icon="pi pi-plus" class="btn-nova-folha" severity="success" (click)="createFolha()"></p-button>
-          }
-        </div>
-      </div>
-    </div>
-
-    <div class="folha-content-grid folha-content-grid--without-chart">
-    <div class="table-panel table-dynamic-panel">
-      <app-table-dynamic
-        [data]="folhas"
-        [tableModel]="folhasTableModel"
-        [exportable]="false"
-        [loading]="loading"
-        [lazy]="true"
-        [first]="first"
-        [rows]="pageSize"
-        [totalRecords]="totalRecords"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        paginatorDropdownAppendTo="body"
-        responsiveLayout="scroll"
-        (lazyLoad)="onLazyLoad($event)"
-      ></app-table-dynamic>
-    </div>
-    </div>
-    </div>
-    </section>
-  }
-
-  @if (canAuditHistorico()) {
-    <section class="dashboard-section" aria-label="Histórico e auditoria">
-    <div class="card-container">
-      <div class="table-panel table-dynamic-panel">
-        <app-table-dynamic
-          [data]="historicoFolhas"
-          [tableModel]="historicoTableModel"
-          [exportable]="false"
-          [loading]="historicoLoading"
-          [lazy]="true"
-          [first]="historicoFirst"
-          [rows]="historicoPageSize"
-          [totalRecords]="historicoTotalRecords"
-          [rowsPerPageOptions]="[10, 25, 50]"
-          paginatorDropdownAppendTo="body"
-          responsiveLayout="scroll"
-          [rowExpansionTemplate]="historicoExpansion"
-          (onRowExpanded)="onHistoricoExpand($event)"
-          (lazyLoad)="onHistoricoLazyLoad($event)"
-        ></app-table-dynamic>
-
-        <ng-template #historicoExpansion let-folha>
-          <div class="funcionario-folha-kpi-expansion p-3">
-            @if (historicoKpiLoading.has(folha.id)) {
-              <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
-            } @else if (historicoKpi[folha.id]) {
-              @let kpi = historicoKpi[folha.id]!;
-              <div class="funcionario-folha-kpi-expansion__summary">
-                <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
-                <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
-                <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
-                <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
-                <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+        @if (canAuditHistorico()) {
+        <section class="dashboard-section" aria-label="Histórico e auditoria">
+          <div class="filters-panel">
+            <div class="filters-section-title">
+              <h2><i class="pi pi-filter mr-2"></i>Filtros do histórico de folhas de HE</h2>
+            </div>
+            <div class="filters-grid">
+              <div class="field">
+                <label for="historicoDataRangeFilter">Período da folha</label>
+                <p-datepicker inputId="historicoDataRangeFilter" selectionMode="range"
+                  [formControl]="historicoDataRangeFilter" dateFormat="dd/mm/yy" placeholder="Início - Fim"
+                  [showIcon]="true" [showClear]="true" styleClass="w-full"></p-datepicker>
               </div>
-              <app-table-dynamic
-                [data]="kpi.funcionarios"
-                [tableModel]="kpiFuncionariosTableModel"
-                [exportable]="false"
-                [rows]="10"
-                [rowsPerPageOptions]="[10, 25, 50]"
-                paginatorDropdownAppendTo="body"
-                responsiveLayout="scroll"
-              ></app-table-dynamic>
-            } @else {
-              <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
-            }
+              <div class="field">
+                <label for="historicoCentroCustoFilter">Centro de custo</label>
+                <p-select inputId="historicoCentroCustoFilter" [formControl]="historicoCentroCustoFilter"
+                  [options]="centrosCusto" optionLabel="setor" optionValue="ccid" placeholder="Todos os centros"
+                  [showClear]="true" styleClass="w-full">
+                  <ng-template pTemplate="item" let-centro>{{ centro.ccid }} - {{ centro.setor }}</ng-template>
+                  <ng-template pTemplate="selectedItem" let-centro>{{ centro?.ccid }} - {{ centro?.setor
+                    }}</ng-template>
+                </p-select>
+              </div>
+              <div class="field">
+                <label for="historicoNomeFuncionarioFilter">Nome do funcionário</label>
+                <input pInputText id="historicoNomeFuncionarioFilter" [formControl]="historicoNomeFuncionarioFilter"
+                  placeholder="Informe o nome" (keyup.enter)="applyHistoricoFilters()" />
+              </div>
+              <div class="field">
+                <label for="historicoMatriculaFuncionarioFilter">Matrícula do funcionário</label>
+                <input pInputText id="historicoMatriculaFuncionarioFilter"
+                  [formControl]="historicoMatriculaFuncionarioFilter" placeholder="Informe a matrícula"
+                  (keyup.enter)="applyHistoricoFilters()" />
+              </div>
+              <div class="filter-actions">
+                <p-button label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true"
+                  (click)="clearHistoricoFilters()"></p-button>
+                <p-button label="Aplicar" icon="pi pi-search" severity="success"
+                  (click)="applyHistoricoFilters()"></p-button>
+              </div>
+            </div>
           </div>
-        </ng-template>
-      </div>
-    </div>
-    </section>
-  }
+          <div class="card-container">
+            <div class="table-panel table-dynamic-panel">
+              <app-table-dynamic [data]="historicoFolhas" [tableModel]="historicoTableModel" [exportable]="false"
+                [loading]="historicoLoading" [lazy]="true" [first]="historicoFirst" [rows]="historicoPageSize"
+                [totalRecords]="historicoTotalRecords" [rowsPerPageOptions]="[10, 25, 50]"
+                paginatorDropdownAppendTo="body" responsiveLayout="scroll" [rowExpansionTemplate]="historicoExpansion"
+                (onRowExpanded)="onHistoricoExpand($event)"
+                (lazyLoad)="onHistoricoLazyLoad($event)"></app-table-dynamic>
+
+              <ng-template #historicoExpansion let-folha>
+                <div class="funcionario-folha-kpi-expansion p-3">
+                  @if (historicoKpiLoading.has(folha.id)) {
+                  <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
+                  } @else if (historicoKpi[folha.id]) {
+                  @let kpi = historicoKpi[folha.id]!;
+                  <div class="funcionario-folha-kpi-expansion__summary">
+                    <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
+                    <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
+                    <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
+                    <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
+                    <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+                  </div>
+                  <app-table-dynamic [data]="kpi.funcionarios" [tableModel]="kpiFuncionariosTableModel"
+                    [exportable]="false" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    paginatorDropdownAppendTo="body" responsiveLayout="scroll"></app-table-dynamic>
+                  } @else {
+                  <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
+                  }
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </section>
+        }
 
       </p-tabpanel>
       <p-tabpanel value="kpi">
         @if (canViewGastoFolhaPorDia()) {
-          <section class="kpi-charts-grid" aria-label="Indicadores de horas extras">
-            <section class="gasto-folha-chart" aria-labelledby="gasto-folha-chart-title">
-              <div class="gasto-folha-chart__header">
-                <div>
-                  <h2 id="gasto-folha-chart-title"><i class="pi pi-chart-line me-2"></i>Gasto de folhas de HE por {{ getGastoFolhaGranularidadeLabel() }}</h2>
-                  <span>Folhas aprovadas no período retornado, conforme os centros de custo permitidos para o seu cargo.</span>
-                </div>
-                <div class="gasto-folha-chart__granularity">
-                  <label for="gastoFolhaGranularidade">Visualizar por</label>
-                  <p-select
-                    inputId="gastoFolhaGranularidade"
-                    [formControl]="gastoFolhaGranularidade"
-                    [options]="gastoFolhaGranularidadeOptions"
-                    optionLabel="label"
-                    optionValue="value"
-                    (onChange)="updateGastoFolhaPorDiaChart()"
-                    styleClass="w-full"
-                  ></p-select>
-                </div>
+        <section class="kpi-charts-grid" aria-label="Indicadores de horas extras">
+          <nav class="kpi-section-nav" aria-label="Navegação dos indicadores">
+            <span class="kpi-section-nav__title">Explorar indicadores</span>
+            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--authorized"
+              (click)="scrollToKpiSection('kpi-visao-financeira')">
+              <i class="pi pi-wallet"></i><span><strong>Visão financeira</strong><small>Custos e centros de
+                  custo</small></span><i class="pi pi-arrow-down-right"></i>
+            </button>
+            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--operations"
+              (click)="scrollToKpiSection('kpi-visao-operacional')">
+              <i class="pi pi-chart-bar"></i><span><strong>Visão operacional</strong><small>Cumprimento e
+                  desvios</small></span><i class="pi pi-arrow-down-right"></i>
+            </button>
+            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--audit"
+              (click)="scrollToKpiSection('kpi-he-nao-autorizadas')">
+              <i class="pi pi-shield"></i><span><strong>Auditoria de apontamentos</strong><small>Horas sem folha
+                  autorizada</small></span><i class="pi pi-arrow-down-right"></i>
+            </button>
+          </nav>
+          <div id="kpi-visao-financeira" class="kpi-subsection-heading kpi-subsection-heading--financial">
+            <i class="pi pi-wallet"></i>
+            <div><strong>Visão financeira</strong><span>Custos aprovados e distribuição por centro de custo</span></div>
+          </div>
+          @if (custoKpiResumo; as resumo) {
+          <div class="he-kpi-summary" aria-label="Resumo das folhas aprovadas">
+            <div><span>Custo aprovado no período</span><strong>{{ resumo.custo | currency: 'BRL' }}</strong></div>
+            <div><span>Folhas de HE aprovadas no período</span><strong>{{ resumo.folhas | number }}</strong></div>
+            <div><span>Custo médio por folha de HE</span><strong>{{ resumo.custoMedio | currency: 'BRL' }}</strong></div>
+          </div>
+          }
+          <section class="gasto-folha-chart" aria-labelledby="gasto-folha-chart-title">
+            <div class="gasto-folha-chart__header">
+              <div>
+                <h2 id="gasto-folha-chart-title"><i class="pi pi-chart-bar me-2"></i>Custo e volume de folhas de HE por
+                  {{ getGastoFolhaGranularidadeLabel() }}</h2>
+                <span>Barras verdes mostram o custo aprovado; a linha azul mostra a quantidade de folhas no mesmo
+                  período.</span>
               </div>
-              @if (gastoFolhaPorDiaLoading) {
-                <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
-              } @else if (gastoFolhaPorDiaChartData) {
-                <div class="gasto-folha-chart__canvas">
-                  <p-chart type="line" [data]="gastoFolhaPorDiaChartData" [options]="gastoFolhaPorDiaChartOptions"></p-chart>
-                </div>
-              } @else {
-                <p class="gasto-folha-chart__empty">Não há folhas aprovadas para o período.</p>
-              }
-            </section>
-
-            <section class="jornada-irregular-chart" aria-labelledby="jornada-irregular-chart-title">
-              <div class="jornada-irregular-chart__header">
-                <div>
-                  <h2 id="jornada-irregular-chart-title"><i class="pi pi-chart-bar me-2"></i>HE irregular por funcionário</h2>
-                  <span>Barras mostram ocorrências; linhas mostram horas, separando não cumprimento e extrapolação.</span>
-                </div>
-                <div class="jornada-irregular-chart__sort">
-                  <label for="jornada-irregular-sort">Ordenar por</label>
-                  <p-select inputId="jornada-irregular-sort" [formControl]="jornadaIrregularSort"
-                    [options]="[
-                      { label: 'Horas irregulares', value: 'horas' },
-                      { label: 'Ocorrências', value: 'ocorrencias' }
-                    ]" optionLabel="label" optionValue="value"
-                    (onChange)="updateJornadaIrregularChart()"></p-select>
-                </div>
+              <div class="gasto-folha-chart__granularity">
+                <label for="gastoFolhaGranularidade">Visualizar por</label>
+                <p-select inputId="gastoFolhaGranularidade" [formControl]="gastoFolhaGranularidade"
+                  [options]="gastoFolhaGranularidadeOptions" optionLabel="label" optionValue="value"
+                  (onChange)="updateGastoFolhaPorDiaChart()" styleClass="w-full"></p-select>
               </div>
-              @if (jornadaIrregularLoading) {
-                <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
-              } @else if (jornadaIrregularChartData) {
-                <div class="jornada-irregular-chart__canvas">
-                  <p-chart type="bar" [data]="jornadaIrregularChartData" [options]="jornadaIrregularChartOptions"
-                    (onDataSelect)="onJornadaFuncionarioSelect($event)"></p-chart>
-                </div>
-              } @else {
-                <p class="jornada-irregular-chart__empty">Não há ocorrências de HE irregular no período.</p>
-              }
-            </section>
-
-            @if (funcionarioFolhasSelecionado) {
-              <section class="funcionario-folhas-kpi-table" aria-label="Folhas do funcionário selecionado">
-                <div class="funcionario-folhas-kpi-table__header">
-                  <h2><i class="pi pi-user me-2"></i>Folhas de {{ funcionarioFolhasSelecionado.nome }}</h2>
-                  <span>Matrícula {{ funcionarioFolhasSelecionado.matricula }} · CC {{ funcionarioFolhasSelecionado.centroCusto }}</span>
-                </div>
-                <app-table-dynamic
-                  [data]="funcionarioFolhas"
-                  [tableModel]="funcionarioFolhasTableModel"
-                  [exportable]="false"
-                  [loading]="funcionarioFolhasLoading"
-                  [rows]="50"
-                  [rowsPerPageOptions]="[10, 25, 50]"
-                  paginatorDropdownAppendTo="body"
-                  responsiveLayout="scroll"
-                  [rowExpansionTemplate]="funcionarioFolhasExpansion"
-                  (onRowExpanded)="onFuncionarioFolhaExpand($event)"
-                ></app-table-dynamic>
-
-                <ng-template #funcionarioFolhasExpansion let-folha>
-                  <div class="funcionario-folha-kpi-expansion p-3">
-                    @if (funcionarioFolhasKpiLoading.has(folha.id)) {
-                      <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
-                    } @else if (funcionarioFolhasKpi[folha.id]) {
-                      @let kpi = funcionarioFolhasKpi[folha.id]!;
-                      <div class="funcionario-folha-kpi-expansion__summary">
-                        <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
-                        <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
-                        <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
-                        <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
-                        <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
-                      </div>
-                      <app-table-dynamic
-                        [data]="kpi.funcionarios"
-                        [tableModel]="kpiFuncionariosTableModel"
-                        [exportable]="false"
-                        [rows]="10"
-                        [rowsPerPageOptions]="[10, 25, 50]"
-                        paginatorDropdownAppendTo="body"
-                        responsiveLayout="scroll"
-                      ></app-table-dynamic>
-                    } @else {
-                      <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
-                    }
-                  </div>
-                </ng-template>
-              </section>
+            </div>
+            @if (gastoFolhaPorDiaLoading) {
+            <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+            } @else if (gastoFolhaPorDiaChartData) {
+            <div class="gasto-folha-chart__canvas" (mouseleave)="resetCustoKpiPeriodo()">
+              <p-chart type="bar" [data]="gastoFolhaPorDiaChartData" [options]="gastoFolhaPorDiaChartOptions"
+                (onDataSelect)="onGastoFolhaChartSelect($event)"></p-chart>
+            </div>
             } @else {
-              <section class="funcionario-folhas-kpi-table__placeholder" aria-label="Seleção de funcionário">
-                <i class="pi pi-hand-pointer"></i>
-                <div>
-                  <strong>Selecione um funcionário no gráfico</strong>
-                  <span>Clique em uma barra ou em um ponto da linha para carregar as folhas de HE pela matrícula.</span>
-                </div>
-              </section>
+            <p class="gasto-folha-chart__empty">Não há folhas aprovadas para o período.</p>
             }
           </section>
+
+          <section class="gasto-folha-chart" aria-labelledby="custo-centro-custo-title">
+            <div class="gasto-folha-chart__header">
+              <div>
+                <h2 id="custo-centro-custo-title"><i class="pi pi-building me-2"></i>Centros de custo com maior gasto
+                </h2>
+                <span>Ranking dos 8 centros com maior custo aprovado. Passe o cursor para ver folhas e participação no
+                  total.</span>
+                @if (custoKpiPeriodoFixado; as periodoFixado) {
+                <p class="gasto-folha-chart__highlight">Filtro fixado: <strong>{{ formatGastoFolhaLabel(periodoFixado)
+                    }}</strong>. O ranking abaixo mostra somente esse período.</p>
+                } @else {
+                @if (custoKpiPeriodoSelecionado; as periodo) {
+                <p class="gasto-folha-chart__highlight">Período sob o cursor: <strong>{{ formatGastoFolhaLabel(periodo)
+                    }}</strong>. O ranking abaixo mostra somente esse período.</p>
+                }
+                }
+                @if (custoKpiPeriodoFixado) {
+                <p-button label="Remover filtro do dia" icon="pi pi-filter-slash" severity="secondary" [outlined]="true"
+                  size="small" (click)="clearCustoKpiPeriodo()"></p-button>
+                }
+                @if (centroCustoMaiorGasto; as centro) {
+                <p class="gasto-folha-chart__highlight">
+                  Maior gasto: <strong>{{ centro.codigo }} · {{ centro.descricao }}</strong> —
+                  {{ centro.custo | currency: 'BRL' }} em {{ centro.quantidadeFolhas }} folha(s)
+                </p>
+                }
+              </div>
+            </div>
+            @if (gastoFolhaPorDiaLoading) {
+            <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+            } @else if (custoPorCentroCustoChartData) {
+            <div class="gasto-folha-chart__canvas gasto-folha-chart__canvas--ranking">
+              <p-chart type="bar" [data]="custoPorCentroCustoChartData" [options]="custoPorCentroCustoChartOptions"
+                (onDataSelect)="onCustoCentroCustoSelect($event)"></p-chart>
+            </div>
+            } @else { <p class="gasto-folha-chart__empty">Não há centros de custo com gasto no período.</p> }
+          </section>
+
+          @if (gastoFolhaHistoricoSelecionado; as historicoSelecionado) {
+          <section class="gasto-folha-historico-context-table"
+            aria-label="Histórico de folhas do centro de custo selecionado">
+            <div class="gasto-folha-chart__header">
+              <div>
+                <h2><i class="pi pi-list me-2"></i>Folhas de HE do centro {{ historicoSelecionado.centroCustoCodigo }}
+                </h2>
+                <span>
+                  {{ historicoSelecionado.centroCustoDescricao }}
+                  @if (historicoSelecionado.periodo) {
+                  · período {{ formatGastoFolhaLabel(historicoSelecionado.periodo) }}
+                  } @else {
+                  · todos os períodos
+                  }
+                </span>
+              </div>
+              <p-button label="Fechar tabela" icon="pi pi-times" severity="secondary" [outlined]="true"
+                (click)="clearGastoFolhaHistorico()"></p-button>
+            </div>
+            @if (gastoFolhaHistoricoLoading) {
+            <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+            } @else if (gastoFolhaHistoricoFolhas.length) {
+            <app-table-dynamic [data]="gastoFolhaHistoricoFolhas" [tableModel]="historicoTableModel" [exportable]="true"
+              [rows]="50" [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+              [rowExpansionTemplate]="gastoFolhaHistoricoExpansion"
+              (onRowExpanded)="onHistoricoExpand($event)"></app-table-dynamic>
+
+            <ng-template #gastoFolhaHistoricoExpansion let-folha>
+              <div class="funcionario-folha-kpi-expansion p-3">
+                @if (historicoKpiLoading.has(folha.id)) {
+                <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
+                } @else if (historicoKpi[folha.id]) {
+                @let kpi = historicoKpi[folha.id]!;
+                <div class="funcionario-folha-kpi-expansion__summary">
+                  <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
+                  <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
+                  <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
+                  <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
+                  <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+                </div>
+                <app-table-dynamic [data]="kpi.funcionarios" [tableModel]="kpiFuncionariosTableModel"
+                  [exportable]="false" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body"
+                  responsiveLayout="scroll"></app-table-dynamic>
+                } @else {
+                <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
+                }
+              </div>
+            </ng-template>
+            } @else {
+            <p class="gasto-folha-chart__empty">Nenhuma folha aprovada encontrada para o centro e período selecionados.
+            </p>
+            }
+          </section>
+          }
+
+          <div id="kpi-visao-operacional" class="kpi-subsection-heading kpi-subsection-heading--operations">
+            <i class="pi pi-chart-bar"></i>
+            <div><strong>Visão operacional</strong><span>Pessoas programadas, cumprimento e desvios de jornada</span>
+            </div>
+          </div>
+          @if (jornadaKpiResumo; as resumo) {
+          <div class="he-kpi-summary he-kpi-summary--operations" aria-label="Resumo da jornada de HE">
+            <div><span>Programações {{ jornadaKpiPeriodoLabel }}</span><strong>{{ resumo.programados | number
+                }}</strong></div>
+            <div><span>Não cumpriram {{ jornadaKpiPeriodoLabel }}</span><strong>{{ resumo.naoCumpriram | number
+                }}</strong></div>
+            <div><span>Extrapolaram {{ jornadaKpiPeriodoLabel }}</span><strong>{{ resumo.extrapolaram | number
+                }}</strong></div>
+          </div>
+          }
+          <section class="pessoas-por-dia-workspace"
+            [class.pessoas-por-dia-workspace--selected]="pessoasPorDiaSelecionado">
+            <div class="pessoas-por-dia-chart" aria-labelledby="pessoas-por-dia-chart-title">
+              <div class="pessoas-por-dia-chart__header">
+                <div>
+                  <span class="pessoas-por-dia-chart__eyebrow">VISÃO OPERACIONAL</span>
+                  <h2 id="pessoas-por-dia-chart-title">Pessoas por dia</h2>
+                  <p>Selecione uma data no gráfico para ver quem teve HE autorizada e quem teve HE sem autorização.</p>
+                </div>
+                <div class="pessoas-por-dia-chart__legend" aria-label="Legenda">
+                  <span><i class="is-unauthorized"></i>Não autorizadas</span>
+                  <span><i class="is-authorized"></i>Autorizadas</span>
+                </div>
+              </div>
+              @if (jornadaIrregularLoading || horasExtrasNaoAutorizadasLoading) {
+              <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+              } @else if (pessoasPorDiaChartData) {
+              <div class="pessoas-por-dia-chart__canvas">
+                <p-chart type="bar" [data]="pessoasPorDiaChartData" [options]="pessoasPorDiaChartOptions"
+                  [height]="pessoasPorDiaSelecionado ? '216px' : '256px'"
+                  (onDataSelect)="onPessoasPorDiaChartSelect($event)"></p-chart>
+              </div>
+              } @else {
+              <p class="jornada-irregular-chart__empty">Não há pessoas com HE no período consultado.</p>
+              }
+            </div>
+
+            @if (pessoasPorDiaSelecionado; as dataSelecionada) {
+            <div class="pessoas-por-dia-table" aria-label="Pessoas do dia selecionado">
+              <div class="pessoas-por-dia-table__header">
+                <div>
+                  <span class="pessoas-por-dia-chart__eyebrow">DETALHAMENTO DO DIA</span>
+                  <h2>{{ formatGastoFolhaLabel(dataSelecionada) }}</h2>
+                  <p>Confira a relação de pessoas associadas à data selecionada.</p>
+                </div>
+                <div class="pessoas-por-dia-table__actions">
+                  <span class="pessoas-por-dia-table__count">{{ pessoasPorDiaSelecionadas.length }} pessoa(s)</span>
+                  <p-button label="Fechar tabela" icon="pi pi-times" severity="secondary" [outlined]="true"
+                    (click)="clearPessoasPorDiaSelection()"></p-button>
+                </div>
+              </div>
+              @if (pessoasPorDiaLoading) {
+              <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+              } @else if (pessoasPorDiaSelecionadas.length) {
+              <div class="pessoas-por-dia-table__summary" aria-label="Resumo">
+                <span class="pessoas-por-dia-table__summary-item pessoas-por-dia-table__summary-item--authorized">
+                  <i class="pi pi-check-circle"></i>{{ getPessoasPorDiaCount('AUTORIZADA') }} autorizada(s)
+                </span>
+                <span class="pessoas-por-dia-table__summary-item pessoas-por-dia-table__summary-item--unauthorized">
+                  <i class="pi pi-exclamation-circle"></i>{{ getPessoasPorDiaCount('NAO_AUTORIZADA') }} não
+                  autorizada(s)
+                </span>
+              </div>
+              <div class="pessoas-por-dia-list" role="table" aria-label="Lista de pessoas do dia">
+                <div class="pessoas-por-dia-list__head" role="row">
+                  <span>Pessoa</span><span>Situação</span><span>Cumprimento</span><span>Centro de
+                    custo</span><span>Horário HE</span>
+                </div>
+                @for (pessoa of pessoasPorDiaSelecionadas; track pessoa.id) {
+                <article class="pessoas-por-dia-list__row" role="row"
+                  [class.pessoas-por-dia-list__row--authorized]="pessoa.tipo === 'AUTORIZADA'"
+                  [class.pessoas-por-dia-list__row--unauthorized]="pessoa.tipo === 'NAO_AUTORIZADA'">
+                  <div class="pessoas-por-dia-list__person">
+                    <strong>{{ pessoa.nome }}</strong>
+                    <span>Matrícula {{ pessoa.matricula }}</span>
+                  </div>
+                  <span class="pessoas-por-dia-list__badge"><i></i>{{ pessoa.tipo === 'AUTORIZADA' ? 'Autorizada' : 'Não
+                    autorizada' }}</span>
+                  <div class="pessoas-por-dia-list__detail">
+                    <span>Cumprimento</span><strong>{{ pessoa.cumprimento }}</strong>
+                  </div>
+                  <div class="pessoas-por-dia-list__detail pessoas-por-dia-list__detail--cc">
+                    <span>Centro de custo</span><strong>{{ pessoa.centroCusto }}</strong>
+                  </div>
+                  <div class="pessoas-por-dia-list__detail">
+                    <span>Horário HE</span><strong>{{ pessoa.horarioHE }}</strong>
+                  </div>
+                </article>
+                }
+              </div>
+              } @else {
+              <p class="jornada-irregular-chart__empty">Não há pessoas para o dia selecionado.</p>
+              }
+            </div>
+            }
+          </section>
+
+          <section class="jornada-irregular-chart"
+            [class.jornada-irregular-chart--selected]="funcionarioFolhasSelecionado"
+            aria-labelledby="jornada-irregular-chart-title">
+            <div class="jornada-irregular-chart__header">
+              <div>
+                <h2 id="jornada-irregular-chart-title"><i class="pi pi-chart-bar me-2"></i>HE irregular por funcionário
+                  - Segundo Folha HE</h2>
+                <span>Barras mostram ocorrências; linhas mostram horas, separando não cumprimento e extrapolação.</span>
+              </div>
+              <div class="jornada-irregular-chart__sort">
+                <label for="jornada-centro-custo">Centro de custo dos funcionários</label>
+                <p-select inputId="jornada-centro-custo" [formControl]="jornadaCentroCustoFilter"
+                  [options]="jornadaCentroCustoOptions" optionLabel="label" optionValue="value"
+                  placeholder="Todos os CCs" [showClear]="true" (onChange)="updateJornadaIrregularChart()"></p-select>
+                <label for="jornada-irregular-sort">Ordenar por</label>
+                <p-select inputId="jornada-irregular-sort" [formControl]="jornadaIrregularSort" [options]="[
+                      { label: 'Horas irregulares', value: 'horas' },
+                      { label: 'Ocorrências', value: 'ocorrencias' }
+                    ]" optionLabel="label" optionValue="value" (onChange)="updateJornadaIrregularChart()"></p-select>
+              </div>
+            </div>
+            <p class="he-kpi-scope-note">O filtro de CC atua somente neste ranking de funcionários. As métricas
+              agregadas ainda abrangem todos os CCs permitidos pela API. Funcionários ligados a mais de um CC podem
+              aparecer em ambos. @if (jornadaSemCentroCusto) { {{ jornadaSemCentroCusto }} funcionário(s) sem CC
+              informado ficam visíveis apenas em “Todos os CCs”. }</p>
+            @if (jornadaIrregularLoading) {
+            <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+            } @else if (jornadaIrregularChartData) {
+            <div class="jornada-irregular-chart__canvas">
+              <p-chart type="bar" [data]="jornadaIrregularChartData" [options]="jornadaIrregularChartOptions"
+                [height]="funcionarioFolhasSelecionado ? '216px' : '256px'"
+                (onDataSelect)="onJornadaFuncionarioSelect($event)"></p-chart>
+            </div>
+            } @else {
+            <p class="jornada-irregular-chart__empty">Não há ocorrências de HE irregular no período.</p>
+            }
+
+            @if (funcionarioFolhasSelecionado) {
+            <section class="funcionario-folhas-kpi-table" aria-label="Folhas do funcionário selecionado">
+              <div class="funcionario-folhas-kpi-table__header">
+                <div>
+                  <h2><i class="pi pi-user me-2"></i>Folhas de {{ funcionarioFolhasSelecionado.nome }}</h2>
+                  <span>Matrícula {{ funcionarioFolhasSelecionado.matricula }} · CC {{
+                    funcionarioFolhasSelecionado.centroCusto }}</span>
+                </div>
+                <p-button label="Fechar tabela" icon="pi pi-times" severity="secondary" [outlined]="true"
+                  (click)="clearJornadaFuncionarioSelection()"></p-button>
+              </div>
+              <app-table-dynamic [data]="funcionarioFolhas" [tableModel]="funcionarioFolhasTableModel"
+                [exportable]="false" [loading]="funcionarioFolhasLoading" [rows]="50"
+                [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+                [rowExpansionTemplate]="funcionarioFolhasExpansion"
+                (onRowExpanded)="onFuncionarioFolhaExpand($event)"></app-table-dynamic>
+
+              <ng-template #funcionarioFolhasExpansion let-folha>
+                <div class="funcionario-folha-kpi-expansion p-3">
+                  @if (funcionarioFolhasKpiLoading.has(folha.id)) {
+                  <p-progressbar mode="indeterminate" [style]="{ height: '5px' }"></p-progressbar>
+                  } @else if (funcionarioFolhasKpi[folha.id]) {
+                  @let kpi = funcionarioFolhasKpi[folha.id]!;
+                  <div class="funcionario-folha-kpi-expansion__summary">
+                    <span><strong>{{ kpi.totalFuncionarios }}</strong> funcionários</span>
+                    <span class="text-success"><strong>{{ kpi.totalCumpriram }}</strong> cumpriram</span>
+                    <span class="text-danger"><strong>{{ kpi.totalNaoCumpriram }}</strong> não cumpriram</span>
+                    <span class="text-warning"><strong>{{ kpi.totalExtrapolaram }}</strong> extrapolaram</span>
+                    <span><strong>{{ kpi.percentualCumprimento | number: '1.0-1' }}%</strong> de cumprimento</span>
+                  </div>
+                  <app-table-dynamic [data]="kpi.funcionarios" [tableModel]="kpiFuncionariosTableModel"
+                    [exportable]="false" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                    paginatorDropdownAppendTo="body" responsiveLayout="scroll"></app-table-dynamic>
+                  } @else {
+                  <span class="text-muted small">Não foi possível carregar o KPI desta folha.</span>
+                  }
+                </div>
+              </ng-template>
+            </section>
+            }
+          </section>
+
+          <div id="kpi-he-nao-autorizadas" class="kpi-subsection-heading kpi-subsection-heading--audit">
+            <i class="pi pi-shield"></i>
+            <div><strong>Auditoria de apontamentos</strong><span>Identifique horas extras sem folha autorizada no
+                Protheus</span></div>
+          </div>
+          <section class="gasto-folha-chart horas-extras-nao-autorizadas-table"
+            aria-labelledby="horas-extras-nao-autorizadas-title">
+            <div class="gasto-folha-chart__header">
+              <div>
+                <h2 id="horas-extras-nao-autorizadas-title"><i class="pi pi-exclamation-triangle me-2"></i>Horas extras
+                  não autorizadas</h2>
+                <span>Horas apontadas no Protheus que não possuem registro correspondente em uma folha de HE.</span>
+              </div>
+            </div>
+            <div class="filters-panel horas-nao-autorizadas-filters">
+              <div class="filters-grid">
+                <div class="field">
+                  <label for="horasNaoAutorizadasDataRangeFilter"><i class="pi pi-calendar mr-2"></i>Período</label>
+                  <p-datepicker inputId="horasNaoAutorizadasDataRangeFilter" selectionMode="range"
+                    [formControl]="horasNaoAutorizadasDataRangeFilter" dateFormat="dd/mm/yy" placeholder="Início - Fim"
+                    [showIcon]="true" [showClear]="true" styleClass="w-full"></p-datepicker>
+                </div>
+                <div class="field">
+                  <label for="horasNaoAutorizadasCentroCustoFilter"><i class="pi pi-building mr-2"></i>Centro de
+                    custo</label>
+                  <p-multiSelect inputId="horasNaoAutorizadasCentroCustoFilter"
+                    [formControl]="horasNaoAutorizadasCentroCustoFilter" [options]="centrosCusto" optionLabel="setor"
+                    optionValue="ccid" placeholder="Todos os centros" display="chip" [showClear]="true"
+                    styleClass="w-full">
+                    <ng-template pTemplate="item" let-centro>
+                      {{ centro.ccid }} - {{ centro.setor }}
+                    </ng-template>
+                  </p-multiSelect>
+                </div>
+                <div class="field">
+                  <label for="horasNaoAutorizadasMatriculasFilter"><i class="pi pi-id-card mr-2"></i>Matrículas</label>
+                  <input pInputText id="horasNaoAutorizadasMatriculasFilter"
+                    [formControl]="horasNaoAutorizadasMatriculasFilter" placeholder="Uma ou mais, separadas por vírgula"
+                    (keyup.enter)="applyHorasNaoAutorizadasFilters()" />
+                </div>
+                <div class="field">
+                  <label for="horasNaoAutorizadasNomeFilter"><i class="pi pi-user mr-2"></i>Nome</label>
+                  <input pInputText id="horasNaoAutorizadasNomeFilter" [formControl]="horasNaoAutorizadasNomeFilter"
+                    placeholder="Informe o nome" (keyup.enter)="applyHorasNaoAutorizadasFilters()" />
+                </div>
+                <div class="filter-actions">
+                  <p-button label="Restaurar" icon="pi pi-refresh" severity="secondary" [outlined]="true"
+                    (click)="clearHorasNaoAutorizadasFilters()"></p-button>
+                  <p-button label="Aplicar" icon="pi pi-search" severity="success"
+                    (click)="applyHorasNaoAutorizadasFilters()"></p-button>
+                </div>
+              </div>
+            </div>
+            @if (horasExtrasNaoAutorizadasLoading) {
+            <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+            } @else if (horasExtrasNaoAutorizadas.length) {
+            <div class="horas-extras-nao-autorizadas-chart">
+              <div class="horas-extras-nao-autorizadas-chart__header">
+                <div>
+                  <h3>
+                    {{ horasExtrasNaoAutorizadasCentroSelecionado
+                    ? 'Horas extras por funcionário'
+                    : 'Horas extras por centro de custo' }}
+                  </h3>
+                  <span>
+                    @if (horasExtrasNaoAutorizadasCentroSelecionado) {
+                    Distribuição das horas extras entre os funcionários do centro selecionado.
+                    } @else {
+                    Clique em um centro de custo para detalhar os funcionários.
+                    }
+                  </span>
+                </div>
+                @if (horasExtrasNaoAutorizadasCentroSelecionado) {
+                <p-button label="Ver por CC" icon="pi pi-arrow-left" severity="secondary" [outlined]="true" size="small"
+                  (click)="clearHorasExtrasNaoAutorizadasChartSelection()"></p-button>
+                }
+              </div>
+              @if (horasExtrasNaoAutorizadasChartData) {
+              <div class="horas-extras-nao-autorizadas-chart__canvas">
+                <p-chart type="pie" [data]="horasExtrasNaoAutorizadasChartData"
+                  [options]="horasExtrasNaoAutorizadasChartOptions" [height]="'500px'"
+                  (onDataSelect)="onHorasExtrasNaoAutorizadasChartSelect($event)"></p-chart>
+              </div>
+              }
+              @if (horasExtrasNaoAutorizadasPorFuncionario.length) {
+              <section class="horas-extras-nao-autorizadas-ranking" aria-label="Ocorrências por funcionário">
+                <div class="horas-extras-nao-autorizadas-ranking__header">
+                  <div>
+                    <h3><i class="pi pi-users me-2"></i>Ocorrências por funcionário</h3>
+                    <span>Ranking por total de horas extras irregulares no recorte atual.</span>
+                  </div>
+                </div>
+                <div class="horas-extras-nao-autorizadas-ranking__table">
+                  <div
+                    class="horas-extras-nao-autorizadas-ranking__row horas-extras-nao-autorizadas-ranking__row--head">
+                    <span>Funcionário</span><span>CC - Setor</span><span>Ocorrências</span><span>Horas
+                      irregulares</span><span>80/20</span>
+                  </div>
+                  @for (funcionario of horasExtrasNaoAutorizadasPorFuncionario.slice(0, 10); track
+                  funcionario.matricula) {
+                  <div class="horas-extras-nao-autorizadas-ranking__row">
+                    <span><strong>{{ funcionario.nome }}</strong><small>{{ funcionario.matricula }}</small></span>
+                    <span>{{ funcionario.centroCusto }}</span>
+                    <span>{{ funcionario.ocorrencias }}</span>
+                    <span>{{ funcionario.horas | number: '1.0-2' }}h</span>
+                    <span>{{ funcionario.percentual | number: '1.1-1' }}% <small>({{ funcionario.percentualAcumulado |
+                        number: '1.1-1' }}% acum.)</small></span>
+                  </div>
+                  }
+                </div>
+              </section>
+              }
+            </div>
+            <app-table-dynamic [data]="horasExtrasNaoAutorizadas" [tableModel]="horasExtrasNaoAutorizadasTableModel"
+              [exportable]="true" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body"
+              responsiveLayout="scroll"></app-table-dynamic>
+            } @else {
+            <p class="gasto-folha-chart__empty">Não há horas extras não autorizadas no período consultado.</p>
+            }
+          </section>
+
+        </section>
         }
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>
 
-  <p-dialog
-    [(visible)]="kpiDialogVisible"
-    [modal]="true"
-    [draggable]="false"
-    [resizable]="false"
-    [style]="{ width: 'min(1120px, 96vw)' }"
-    [breakpoints]="{ '960px': '96vw' }"
-    (onHide)="closeKpi()"
-  >
+  <p-dialog [(visible)]="kpiDialogVisible" [modal]="true" [draggable]="false" [resizable]="false"
+    [style]="{ width: 'min(1120px, 96vw)' }" [breakpoints]="{ '960px': '96vw' }" (onHide)="closeKpi()">
     <ng-template pTemplate="header">
       <div class="dialog-title">
         <span>KPI de Cumprimento de HE</span>
         @if (selectedFolha) {
-          <small>{{ selectedFolha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} - {{ selectedFolha.centroCustoCodigo }} {{ selectedFolha.centroCustoDescricao }}</small>
+        <small>{{ selectedFolha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} - {{ selectedFolha.centroCustoCodigo }} {{
+          selectedFolha.centroCustoDescricao }}</small>
         }
       </div>
     </ng-template>
 
     @if (kpiLoading) {
-      <div class="kpi-loading">
-        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
-      </div>
+    <div class="kpi-loading">
+      <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+    </div>
     } @else if (selectedKpi) {
-      <div class="kpi-summary-grid">
-        <div class="kpi-summary-item">
-          <span>Total</span>
-          <strong>{{ selectedKpi.totalFuncionarios }}</strong>
-        </div>
-        <div class="kpi-summary-item success">
-          <span>Cumpriram</span>
-          <strong>{{ selectedKpi.totalCumpriram }}</strong>
-        </div>
-        <div class="kpi-summary-item danger">
-          <span>Nao cumpriram</span>
-          <strong>{{ selectedKpi.totalNaoCumpriram }}</strong>
-        </div>
-        <div class="kpi-summary-item warning">
-          <span>Extrapolaram</span>
-          <strong>{{ selectedKpi.totalExtrapolaram }}</strong>
-        </div>
-        <div class="kpi-summary-item">
-          <span>Cumprimento</span>
-          <strong>{{ selectedKpi.percentualCumprimento | number: '1.0-1' }}%</strong>
-        </div>
+    <div class="kpi-summary-grid">
+      <div class="kpi-summary-item">
+        <span>Total</span>
+        <strong>{{ selectedKpi.totalFuncionarios }}</strong>
       </div>
-
-      <div class="kpi-progress">
-        <p-progressbar [value]="selectedKpi.percentualCumprimento" [showValue]="false"></p-progressbar>
+      <div class="kpi-summary-item success">
+        <span>Cumpriram</span>
+        <strong>{{ selectedKpi.totalCumpriram }}</strong>
       </div>
+      <div class="kpi-summary-item danger">
+        <span>Nao cumpriram</span>
+        <strong>{{ selectedKpi.totalNaoCumpriram }}</strong>
+      </div>
+      <div class="kpi-summary-item warning">
+        <span>Extrapolaram</span>
+        <strong>{{ selectedKpi.totalExtrapolaram }}</strong>
+      </div>
+      <div class="kpi-summary-item">
+        <span>Cumprimento</span>
+        <strong>{{ selectedKpi.percentualCumprimento | number: '1.0-1' }}%</strong>
+      </div>
+    </div>
 
-      <app-table-dynamic
-        [data]="selectedKpi.funcionarios"
-        [tableModel]="kpiFuncionariosTableModel"
-        [exportable]="true"
-        [rows]="10"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        paginatorDropdownAppendTo="body"
-        responsiveLayout="scroll"
-      ></app-table-dynamic>
+    <div class="kpi-progress">
+      <p-progressbar [value]="selectedKpi.percentualCumprimento" [showValue]="false"></p-progressbar>
+    </div>
+
+    <app-table-dynamic [data]="selectedKpi.funcionarios" [tableModel]="kpiFuncionariosTableModel" [exportable]="true"
+      [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body"
+      responsiveLayout="scroll"></app-table-dynamic>
     }
   </p-dialog>
 </div>
