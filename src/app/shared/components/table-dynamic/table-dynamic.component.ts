@@ -55,6 +55,7 @@ export class TableDynamicComponent implements OnChanges, OnInit {
   @Input() exportable: boolean = true;
   @Input() scrollable: boolean = false;
   @Input() scrollHeight: string = 'auto';
+  @Input() tableMinWidth?: string;
   @Input() responsiveLayout: 'scroll' | 'stack' = 'scroll';
   @Input() breakpoint: string = '960px';
   @Input() lazy: boolean = false;

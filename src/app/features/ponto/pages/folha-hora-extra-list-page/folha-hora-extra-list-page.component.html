@@ -324,10 +324,11 @@
             </div>
 
             <div class="folha-content-grid folha-content-grid--without-chart">
-              <div class="table-panel table-dynamic-panel">
+              <div class="table-panel table-dynamic-panel approval-table-panel">
                 <app-table-dynamic [data]="folhas" [tableModel]="folhasTableModel" [exportable]="false"
                   [loading]="loading" [lazy]="true" [first]="first" [rows]="pageSize" [totalRecords]="totalRecords"
                   [rowsPerPageOptions]="[10, 25, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+                  [scrollable]="true" tableMinWidth="68rem"
                   (lazyLoad)="onLazyLoad($event)"></app-table-dynamic>
               </div>
             </div>

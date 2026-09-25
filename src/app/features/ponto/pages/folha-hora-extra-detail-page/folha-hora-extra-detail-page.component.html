@@ -36,7 +36,8 @@
     </div>
 
     <p-panel header="Funcionarios" styleClass="detail-panel">
-      <p-table [value]="item.funcionarios" responsiveLayout="scroll" styleClass="p-datatable-sm folha-funcionarios-table">
+      <p-table [value]="item.funcionarios" responsiveLayout="scroll"
+        styleClass="p-datatable-sm folha-funcionarios-table">
         <ng-template pTemplate="header">
           <tr>
             <th>Matricula</th>
@@ -121,11 +122,12 @@
       </div>
 
       <div class="cost-rules">
-        <span>Compensacao: {{ formatNumber(extrato.multiplicadorCompensacao) }}x</span>
+        <span>Compensacao: {{ formatNumber(extrato.multiplicadorAdicionalHE) }}x</span>
         <span>Adicional noturno: {{ formatNumber(extrato.adicionalNoturno * 100) }}%</span>
       </div>
 
-      <p-table [value]="extratoFuncionarios()" responsiveLayout="scroll" styleClass="p-datatable-sm cost-table folha-custos-table">
+      <p-table [value]="extratoFuncionarios()" responsiveLayout="scroll"
+        styleClass="p-datatable-sm cost-table folha-custos-table">
         <ng-template pTemplate="header">
           <tr>
             <th>Funcionario</th>

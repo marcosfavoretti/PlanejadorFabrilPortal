@@ -20,7 +20,9 @@
     [rowGroupMode]="tableModel.totalize ? 'subheader' : undefined"
     class="custom-table" sortMode="single"
     [sortField]="tableSortField" [sortOrder]="tableSortOrder"
-    [scrollable]="scrollable" [scrollHeight]="scrollHeight" (onFilter)="onTableFilter($event)"
+    [scrollable]="scrollable" [scrollHeight]="scrollHeight"
+    [tableStyle]="tableMinWidth ? { 'min-width': tableMinWidth } : undefined"
+    (onFilter)="onTableFilter($event)"
     [responsiveLayout]="responsiveLayout" [breakpoint]="breakpoint"
     (onLazyLoad)="lazyLoad.emit($event)"
     (onRowExpand)="handleRowExpand($event)" (onRowCollapse)="handleRowCollapse($event)">
