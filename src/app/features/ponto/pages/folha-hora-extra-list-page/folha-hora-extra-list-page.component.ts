@@ -722,9 +722,15 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     columns: this.createFolhasColumns(true),
     ghostControll: [
       {
+        field: 'dataContexto',
+        desc: 'Hoje ou futura',
+        ifRowFunction: row => this.isFolhaHojeOuFutura(row),
+        color: '#ffffff',
+      },
+      {
         field: 'statusCumprimentoHorarioHE',
         desc: 'Não cumpriu',
-        ifRowFunction: row => row.statusCumprimentoHorarioHE === 'NAO_CUMPRIU' && !this.isFolhaHoje(row),
+        ifValueEqual: 'NAO_CUMPRIU',
         color: '#fee2e2',
       },
       {
@@ -736,7 +742,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       {
         field: 'statusCumprimentoHorarioHE',
         desc: 'Cumpriu',
-        ifRowFunction: row => row.statusCumprimentoHorarioHE === 'CUMPRIU' && !this.isFolhaHoje(row),
+        ifValueEqual: 'CUMPRIU',
         color: '#dcfce7',
       },
     ],
@@ -1355,31 +1361,15 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private loadHistoricoFolhas(): void {
     this.historicoLoading = true;
     const range = this.historicoDataRangeFilter.value;
-    const ontem = new Date();
-    ontem.setHours(0, 0, 0, 0);
-    ontem.setDate(ontem.getDate() - 1);
-    const ontemISO = this.formatLocalDate(ontem);
     const dataInicio = range?.[0] ? this.formatLocalDate(range[0]) : undefined;
     const dataFimSelecionada = range?.[1] ?? range?.[0];
-    const dataFimSelecionadaISO = dataFimSelecionada
+    const dataFim = dataFimSelecionada
       ? this.formatLocalDate(dataFimSelecionada)
       : undefined;
 
-    // O histórico deve conter somente folhas de dias já encerrados.
-    // Quando o usuário informa um período que avança para hoje/futuro,
-    // limitamos o fim para ontem; se o início já estiver no futuro, não há dados.
-    if (dataInicio && dataInicio > ontemISO) {
-      this.historicoFolhas = [];
-      this.historicoTotalRecords = 0;
-      this.historicoLoading = false;
-      return;
-    }
-
     this.folhaHoraExtraService.getHistorico({
       dataInicio,
-      dataFim: dataFimSelecionadaISO && dataFimSelecionadaISO < ontemISO
-        ? dataFimSelecionadaISO
-        : ontemISO,
+      dataFim,
       centroCustoCodigo: this.historicoCentroCustoFilter.value ?? undefined,
       nomeFuncionario: this.historicoNomeFuncionarioFilter.value.trim() || undefined,
       matriculaFuncionario: this.historicoMatriculaFuncionarioFilter.value.trim() || undefined,
@@ -2269,12 +2259,14 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  private isFolhaHoje(folha: Pick<FolhaHoraExtraResumo, 'dataContexto'>): boolean {
+  private isFolhaHojeOuFutura(folha: Pick<FolhaHoraExtraResumo, 'dataContexto'>): boolean {
     const dataFolha = String(folha.dataContexto ?? '');
+    const dataInformada = new Date(dataFolha);
+    if (Number.isNaN(dataInformada.getTime())) return false;
     const dataISO = /^\d{4}-\d{2}-\d{2}/.test(dataFolha)
       ? dataFolha.slice(0, 10)
-      : this.formatLocalDate(new Date(dataFolha));
-    return dataISO === this.formatLocalDate(new Date());
+      : this.formatLocalDate(dataInformada);
+    return dataISO >= this.formatLocalDate(new Date());
   }
 
   private formatChartDate(date: string): string {

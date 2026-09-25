@@ -489,6 +489,10 @@
   padding: 1.5rem;
 }
 
+.approval-table-panel {
+  min-width: 0;
+}
+
 .gasto-folha-chart {
   background: #f5f7fa;
   border: 1px solid #d5dee8;

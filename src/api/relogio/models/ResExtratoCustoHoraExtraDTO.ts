@@ -21,7 +21,7 @@ export type ResExtratoCustoHoraExtraDTO = {
   /**
    * @type number
    */
-  multiplicadorCompensacao: number;
+  multiplicadorAdicionalHE: number;
   /**
    * @type number
    */

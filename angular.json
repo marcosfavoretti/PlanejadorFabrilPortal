@@ -64,7 +64,8 @@
           "options": {
             "host": "0.0.0.0",
             "allowedHosts": [
-              "app.ethos.ind.br"
+              "app.ethos.ind.br",
+              "dev.ethos.ind.br"
             ]
           },
           "configurations": {
