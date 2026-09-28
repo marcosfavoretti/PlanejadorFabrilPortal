@@ -20,6 +20,7 @@ failures=0
 
 if rg -n -H \
   -e 'dev\.ethos\.ind\.br' \
+  -e 'dev\.ethos\.idn\.br' \
   -e '\blocalhost\b' \
   -e '\b127(?:\.\d{1,3}){3}\b' \
   -e '\b0\.0\.0\.0\b' \

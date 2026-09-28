@@ -1,0 +1,243 @@
+<app-page-layout>
+  <main class="photo-audit-page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Qualidade</p>
+        <h1>Auditoria de fotos</h1>
+        <p class="description">Consulte os reportes enviados pelos aplicativos e confira cada mídia armazenada.</p>
+      </div>
+      <p-button label="Atualizar" icon="pi pi-refresh" severity="secondary" [outlined]="true" [disabled]="loading()"
+        (click)="refresh()"></p-button>
+    </header>
+
+    <section class="filters-panel" aria-label="Filtros de reportes">
+      <div class="filters-section-title">
+      </div>
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+        <div class="filters-grid">
+          <div class="field">
+            <label for="appName"><i class="pi pi-mobile"></i>Aplicativo</label>
+            <input pInputText id="appName" formControlName="appName" list="photo-app-names"
+              placeholder="Todos os aplicativos" />
+            <datalist id="photo-app-names">
+              @for (name of appNames(); track name) { <option [value]="name"></option> }
+            </datalist>
+          </div>
+          <div class="field">
+            <label for="mediaType"><i class="pi pi-images"></i>Tipo de mídia</label>
+            <select id="mediaType" formControlName="mediaType">
+              <option value="">Fotos e vídeos</option>
+              <option value="IMAGE">Fotos</option>
+              <option value="VIDEO">Vídeos</option>
+            </select>
+          </div>
+          <div class="field"><label for="createdFrom"><i class="pi pi-calendar"></i>Registro inicial</label><input
+              id="createdFrom" type="date" formControlName="createdFrom" /></div>
+          <div class="field"><label for="createdTo"><i class="pi pi-calendar"></i>Registro final</label><input
+              id="createdTo" type="date" formControlName="createdTo" /></div>
+          <div class="field"><label for="uploadedFrom"><i class="pi pi-upload"></i>Upload inicial</label><input
+              id="uploadedFrom" type="date" formControlName="uploadedFrom" /></div>
+          <div class="field"><label for="uploadedTo"><i class="pi pi-upload"></i>Upload final</label><input
+              id="uploadedTo" type="date" formControlName="uploadedTo" /></div>
+          <div class="field"><label for="serialNumber"><i class="pi pi-barcode"></i>Serial do item</label><input
+              pInputText id="serialNumber" formControlName="serialNumber" placeholder="Número de série" /></div>
+          <div class="field"><label for="codItem"><i class="pi pi-tag"></i>Código do item</label><input pInputText
+              id="codItem" formControlName="codItem" placeholder="Código do item" /></div>
+          <div class="field"><label for="componSN"><i class="pi pi-hashtag"></i>Serial do componente</label><input
+              pInputText id="componSN" formControlName="componSN" placeholder="Serial do componente" /></div>
+          <div class="field"><label for="componPN"><i class="pi pi-box"></i>Código do componente</label><input
+              pInputText id="componPN" formControlName="componPN" placeholder="Código do componente" /></div>
+        </div>
+
+        <details class="advanced-filters">
+          <summary><i class="pi pi-sliders-h"></i>Mais filtros de auditoria</summary>
+          <div class="filters-grid">
+            <div class="field"><label for="pn">PN do produto</label><input pInputText id="pn" formControlName="pn" />
+            </div>
+            <div class="field"><label for="productionId">ID da produção</label><input pInputText id="productionId"
+                formControlName="productionId" /></div>
+            <div class="field"><label for="gate">Gate</label><input pInputText id="gate" formControlName="gate" /></div>
+            <div class="field"><label for="reportId">ID do reporte</label><input pInputText id="reportId"
+                formControlName="reportId" /></div>
+            <div class="field"><label for="correlationId">ID de correlação</label><input pInputText id="correlationId"
+                formControlName="correlationId" /></div>
+            <div class="field"><label for="userId">ID do usuário</label><input pInputText id="userId"
+                formControlName="userId" /></div>
+            <div class="field"><label for="appVersion">Versão do app</label><input pInputText id="appVersion"
+                formControlName="appVersion" /></div>
+            <div class="field"><label for="updatedFrom">Atualização inicial</label><input id="updatedFrom" type="date"
+                formControlName="updatedFrom" /></div>
+            <div class="field"><label for="updatedTo">Atualização final</label><input id="updatedTo" type="date"
+                formControlName="updatedTo" /></div>
+            <div class="field"><label for="technicalError">Erro técnico</label><input pInputText id="technicalError"
+                formControlName="technicalError" /></div>
+            <div class="field"><label for="mediaStorageStatus">Status da mídia</label><input pInputText
+                id="mediaStorageStatus" formControlName="mediaStorageStatus" /></div>
+            <div class="field"><label for="mediaPhysicalName">Nome físico da mídia</label><input pInputText
+                id="mediaPhysicalName" formControlName="mediaPhysicalName" /></div>
+            <div class="field"><label for="mediaPath">Pasta da mídia</label><input pInputText id="mediaPath"
+                formControlName="mediaPath" /></div>
+            <div class="field"><label for="mediaMimeType">Tipo MIME</label><input pInputText id="mediaMimeType"
+                formControlName="mediaMimeType" placeholder="Ex.: image/jpeg" /></div>
+            <div class="field"><label for="propertyKey">Outra propriedade</label><input pInputText id="propertyKey"
+                formControlName="propertyKey" placeholder="Nome da propriedade" /></div>
+            <div class="field"><label for="propertyValue">Valor da propriedade</label><input pInputText
+                id="propertyValue" formControlName="propertyValue" /></div>
+          </div>
+        </details>
+        <div class="filter-actions">
+          <p-button type="submit" label="Aplicar filtros" icon="pi pi-search" severity="success"
+            [disabled]="loading()"></p-button>
+          <p-button type="button" label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true"
+            (click)="clearFilters()"></p-button>
+        </div>
+      </form>
+    </section>
+
+    @if (error()) { <div class="error-message" role="alert">{{ error() }}</div> }
+
+    <section class="results-panel" aria-label="Reportes encontrados">
+      <div class="results-header">
+        <div>
+          <h2>Reportes encontrados</h2>
+          <p>{{ total() }} reportes no total · {{ mediaCount() }} mídias nesta página</p>
+        </div>
+        <span>Página {{ page() + 1 }}</span>
+      </div>
+
+      @if (loading()) {
+      <div class="state-message"><i class="pi pi-spin pi-spinner"></i> Carregando reportes...</div>
+      } @else if (!reports().length && !error()) {
+      <div class="state-message"><i class="pi pi-inbox"></i> Nenhum reporte encontrado para os filtros informados.</div>
+      } @else {
+      <div class="report-list">
+        @for (report of reports(); track report._id) {
+        <article class="report-card">
+          <div class="report-heading">
+            <div>
+              <div class="report-badges">
+                <span class="report-badge">{{ report.appName }}</span>
+                <span class="report-badge report-badge--type">{{ report.reportType }}</span>
+                <span class="report-badge" [class.report-badge--uploaded]="report.status === 'UPLOADED'">{{
+                  report.status }}</span>
+              </div>
+              <h3>Reporte {{ report._id }}</h3>
+              <p>Registrado em {{ report.createdAt | date:'dd/MM/yyyy HH:mm:ss' }} · Último upload {{ report.uploadedAt
+                | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+            </div>
+            <div class="report-actions">
+              <span>{{ report.media.length }} {{ report.media.length === 1 ? 'mídia' : 'mídias' }}</span>
+              @if (canOpenHistory(report)) { <button type="button" class="history-link" (click)="openHistory(report)"><i
+                  class="pi pi-external-link"></i>Histórico</button> }
+            </div>
+          </div>
+
+          @if (report.media.length) {
+          <div class="media-grid">
+            @for (media of report.media; track media.path + media.physicalName) {
+            <button type="button" class="media-card" (click)="showMedia(media)"
+              [attr.aria-label]="'Visualizar ' + (media.originalName || media.physicalName)">
+              <div class="media-preview">
+                @if (media.type === 'IMAGE' && mediaUrl(media); as url) { <img [src]="url"
+                  [alt]="media.originalName || media.physicalName" loading="lazy" /> }
+                @else { <i class="pi" [class.pi-video]="media.type === 'VIDEO'"
+                  [class.pi-image]="media.type !== 'VIDEO'"></i> }
+              </div>
+              <strong [title]="media.physicalName">{{ media.originalName || media.physicalName }}</strong>
+              <span>{{ media.storageStatus || 'Sem status' }} · {{ media.uploadedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </button>
+            }
+          </div>
+          } @else { <p class="no-media">Este reporte não contém mídias.</p> }
+
+          <details class="report-details">
+            <summary>Dados completos do reporte</summary>
+            <dl>
+              <div>
+                <dt>ID de correlação</dt>
+                <dd>{{ report.correlationId || '—' }}</dd>
+              </div>
+              <div>
+                <dt>Usuário</dt>
+                <dd>{{ report.userId || '—' }}</dd>
+              </div>
+              <div>
+                <dt>Versão do app</dt>
+                <dd>{{ report.appVersion || '—' }}</dd>
+              </div>
+              <div>
+                <dt>Tentativas</dt>
+                <dd>{{ report.attempts }}</dd>
+              </div>
+              <div>
+                <dt>Atualizado em</dt>
+                <dd>{{ report.updatedAt | date:'dd/MM/yyyy HH:mm:ss' }}</dd>
+              </div>
+              <div>
+                <dt>Erro técnico</dt>
+                <dd>{{ report.technicalError || '—' }}</dd>
+              </div>
+              @for (property of report.properties | keyvalue; track property.key) { <div>
+                <dt>{{ property.key }}</dt>
+                <dd>{{ propertyValue(property.value) }}</dd>
+              </div> }
+            </dl>
+          </details>
+        </article>
+        }
+      </div>
+      }
+
+      @if (total() > pageSize()) {
+      <p-paginator [first]="page() * pageSize()" [rows]="pageSize()" [totalRecords]="total()"
+        [rowsPerPageOptions]="[10, 20, 50]" (onPageChange)="onPageChange($event)"></p-paginator>
+      }
+    </section>
+  </main>
+
+  <p-dialog [visible]="!!selectedMedia()" (visibleChange)="closeMedia()" [modal]="true" [draggable]="false"
+    [resizable]="false" [style]="{ width: 'min(960px, 96vw)' }" header="Mídia do reporte">
+    @if (selectedMedia(); as media) {
+    <div class="media-dialog">
+      @if (mediaUrl(media); as url) {
+      @if (media.type === 'VIDEO') { <video [src]="url" controls></video> }
+      @else { <img [src]="url" [alt]="media.originalName || media.physicalName" /> }
+      } @else { <div class="state-message">Carregando mídia...</div> }
+      <dl>
+        <div>
+          <dt>Arquivo</dt>
+          <dd>{{ media.originalName || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Nome físico</dt>
+          <dd>{{ media.physicalName }}</dd>
+        </div>
+        <div>
+          <dt>Pasta</dt>
+          <dd>{{ media.path }}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ media.storageStatus || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Upload</dt>
+          <dd>{{ media.uploadedAt | date:'dd/MM/yyyy HH:mm:ss' }}</dd>
+        </div>
+        <div>
+          <dt>Tipo</dt>
+          <dd>{{ media.mimeType || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Tamanho</dt>
+          <dd>{{ media.size ? ((media.size / 1024 / 1024) | number:'1.2-2') + ' MB' : '—' }}</dd>
+        </div>
+        <div>
+          <dt>Checksum</dt>
+          <dd>{{ media.checksum || '—' }}</dd>
+        </div>
+      </dl>
+    </div>
+    }
+  </p-dialog>
+</app-page-layout>

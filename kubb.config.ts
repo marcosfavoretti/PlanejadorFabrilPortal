@@ -41,8 +41,8 @@ function resolveApiUrl(value: string): string {
     return url.toString();
 }
 
-function resolveApiBaseUrl(value: string): string {
-    return new URL(resolveApiUrl(value)).origin;
+function resolveApiBaseUrl(_value: string): string {
+    return 'https://app.ethos.ind.br';
 }
 
 const {

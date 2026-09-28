@@ -7,7 +7,7 @@
         routerLinkActive="active-link"
         [routerLinkActiveOptions]="{ exact: false }"
         (click)="sidebarItemClickEvent(i)">
-        <span class="text-truncate">{{ item.name }}</span>
+        <span class="text-truncate">{{ routeLabel(item.route, item.name) }}</span>
       </a>
     </li>
     }

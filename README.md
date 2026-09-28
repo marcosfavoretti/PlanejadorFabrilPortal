@@ -54,15 +54,16 @@ defined there:
 npm run generate --production
 ```
 
-To generate every client with the development host, set the host explicitly
-in `.env.production` (or in the shell):
+The generated clients always use `https://app.ethos.ind.br`. To fetch Swagger
+from a different host during generation, set `KUBB_API_HOST` in
+`.env.production` (or in the shell):
 
 ```dotenv
-KUBB_API_HOST=https://app.ethos.ind.br
+KUBB_API_HOST=https://dev.ethos.ind.br
 ```
 
-`KUBB_API_HOST` changes only the host embedded in the generated clients; the
-Swagger URLs remain controlled by their respective `API_SWAGGER_*` variables.
+`KUBB_API_HOST` changes only the host used to fetch the Swagger files. The
+generated client host remains `https://app.ethos.ind.br`.
 
 Operational rules:
 
@@ -74,7 +75,7 @@ Operational rules:
 npm run check:api-client
 ```
 
-The generator depends on the Swagger environment variables configured for local use in `kubb.config.ts`. A development host can be selected explicitly with `KUBB_API_HOST`; this is intended for local validation and should not be committed to `src/api`.
+The generator depends on the Swagger environment variables configured for local use in `kubb.config.ts`.
 
 ## Running unit tests
 

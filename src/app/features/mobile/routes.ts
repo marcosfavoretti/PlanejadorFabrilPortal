@@ -24,6 +24,18 @@ export const MOBILE_ROUTES: Routes = [
       ),
   },
   {
+    path: 'fotos',
+    loadComponent: () =>
+      import('@/app/features/mobile/pages/mobile-photo-audit/mobile-photo-audit.component').then(
+        (module) => module.MobilePhotoAuditComponent,
+      ),
+  },
+  {
+    path: 'componentes',
+    pathMatch: 'full',
+    redirectTo: 'fotos',
+  },
+  {
     path: 'historico/ficha/:id',
     canActivate: [AuthGuard],
     loadComponent: () =>

@@ -49,7 +49,14 @@ export class SideBarComponent implements OnInit {
   }
 
   protected buildRouteLink(route: string): string[] {
+    if (this.currentBaseRoute() === 'qualidade' && route === 'componentes') {
+      return ['/', 'qualidade', 'fotos'];
+    }
     return ['/', this.currentBaseRoute(), ...route.split('/').filter(Boolean)];
+  }
+
+  protected routeLabel(route: string, name: string): string {
+    return this.currentBaseRoute() === 'qualidade' && route === 'componentes' ? 'Fotos' : name;
   }
 
   protected sidebarItemClickEvent(index: number) {

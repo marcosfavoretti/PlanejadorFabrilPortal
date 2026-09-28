@@ -1,6 +1,7 @@
 const DEFAULT_HOME_EXTERNAL_URL = 'https://www.ethos.ind.br/';
 const DEFAULT_PB_WS_PATH = '/ws/pb';
 const DEFAULT_ALLOWED_RESOURCE_ORIGINS = ['https://app.powerbi.com'];
+const KUBB_API_ORIGIN = 'https://app.ethos.ind.br';
 
 export interface RuntimeAppConfig {
   httpGatewayOrigin: string;
@@ -155,6 +156,9 @@ export function resolveRuntimeUrl(pathOrUrl: string, baseOrigin = getRuntimeAppC
 export function rewriteUrlToRuntimeGateway(url: string): string {
   try {
     const parsed = new URL(url, getRuntimeAppConfig().httpGatewayOrigin);
+    if (parsed.origin === KUBB_API_ORIGIN) {
+      return parsed.toString();
+    }
     return resolveRuntimeUrl(`${parsed.pathname}${parsed.search}${parsed.hash}`);
   } catch {
     return url;
