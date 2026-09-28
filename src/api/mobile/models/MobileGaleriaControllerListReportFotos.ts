@@ -5,9 +5,6 @@
 
 import type { PaginatedReportFotosResDto } from './PaginatedReportFotosResDto';
 
-/**
- * @example [object Object]
- */
 export type MobileGaleriaControllerListReportFotosQueryParams = {
   /**
    * @type number | undefined
@@ -104,6 +101,18 @@ export type MobileGaleriaControllerListReportFotosQueryParams = {
    */
   updatedTo?: string;
   /**
+   * @description Filtros dinâmicos por properties. Exemplo: properties[componente]=MOTOR.
+   * @type object | undefined
+   */
+  properties?: {
+    [key: string]: any;
+  };
+  /**
+   * @description Atalho para filtrar properties.componente. Outros campos dinâmicos também podem ser enviados diretamente na query.
+   * @type string | undefined
+   */
+  componente?: string;
+  /**
    * @type string | undefined
    */
   productionId?: string;
@@ -124,7 +133,6 @@ export type MobileGaleriaControllerListReportFotosQueryParams = {
    * @type string | undefined
    */
   gate?: string;
-  [key: string]: unknown;
 };
 
 /**
