@@ -1,0 +1,18 @@
+<section class="card form-card" aria-labelledby="form-title">
+  <div class="section-heading"><span class="heading-icon"><i class="pi pi-plus-circle"></i></span><div><h2 id="form-title">Registrar pesagem</h2><p>Informe o responsável e o peso do palete.</p></div></div>
+  <form (ngSubmit)="enviar()">
+    <label for="sucata-nome">Funcionário</label>
+    <p-autocomplete inputId="sucata-nome" name="nome" [(ngModel)]="nome" [suggestions]="sugestoes"
+      optionLabel="nome" [forceSelection]="false" [dropdown]="true" [minLength]="0"
+      placeholder="Digite o nome ou a matrícula" appendTo="body" (completeMethod)="buscarFuncionarios($event)">
+      <ng-template let-funcionario pTemplate="item">
+        <span>{{ funcionario.nome }} <small>({{ funcionario.matricula }})</small></span>
+      </ng-template>
+    </p-autocomplete>
+    <small class="help-text">Selecione um funcionário da lista ou informe um nome manualmente.</small>
+    <label for="sucata-peso">Peso do palete (kg)</label>
+    <div class="weight-input"><input id="sucata-peso" name="peso" class="field" inputmode="decimal" [(ngModel)]="peso" placeholder="0,000" autocomplete="off" /><span>kg</span></div>
+    <button type="submit" class="submit-button" [disabled]="salvando"><i class="pi" [class.pi-spin]="salvando" [class.pi-spinner]="salvando" [class.pi-check]="!salvando"></i>{{ salvando ? 'Salvando…' : 'Registrar pesagem' }}</button>
+    <p *ngIf="mensagem" class="form-message" [class.error]="mensagemErro" role="status">{{ mensagem }}</p>
+  </form>
+</section>

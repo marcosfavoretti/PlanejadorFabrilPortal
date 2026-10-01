@@ -1,0 +1,16 @@
+.list-card { padding: 0; overflow: hidden; border: 1px solid #e5eaf1; border-radius: .95rem; background: #fff; box-shadow: 0 5px 18px rgb(15 23 42 / 4%); }
+.list-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.25rem; }
+.list-heading h2 { margin: 0; color: #0f172a; font-size: 1rem; font-weight: 750; }
+.list-heading p { margin: .22rem 0 0; color: #64748b; font-size: .78rem; }
+.count { display: inline-grid; min-width: 1.5rem; height: 1.5rem; place-items: center; margin-left: .3rem; border-radius: 99px; color: #1d4ed8; background: #eff6ff; font-size: .72rem; vertical-align: middle; }
+.refresh-button { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid #cbd5e1; border-radius: .55rem; padding: .48rem .7rem; color: #334155; background: #fff; font-size: .78rem; font-weight: 650; }
+.refresh-button:hover:not(:disabled) { background: #f8fafc; }.refresh-button:disabled { opacity: .65; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+th { padding: .65rem 1rem; color: #64748b; background: #f8fafc; font-size: .66rem; font-weight: 750; letter-spacing: .05em; text-align: left; text-transform: uppercase; white-space: nowrap; }
+td { padding: .75rem 1rem; border-top: 1px solid #f1f5f9; color: #475569; vertical-align: middle; }
+.numeric { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }.weight { color: #0f172a; font-weight: 700; }.date,.registration { white-space: nowrap; }.person-name { color: #1e293b; font-weight: 650; }.temporary-tag { margin-left: .45rem; border-radius: 99px; padding: .15rem .4rem; color: #92400e; background: #fef3c7; font-size: .62rem; }
+.actions { width: 1%; text-align: right; white-space: nowrap; }.icon-button { width: 1.9rem; height: 1.9rem; margin-left: .25rem; border: 1px solid #e2e8f0; border-radius: .5rem; color: #64748b; background: #fff; }.icon-button:hover { color: #1d4ed8; background: #eff6ff; }.icon-button.delete:hover { color: #b91c1c; background: #fef2f2; }.icon-button.save { color: #15803d; }.editing td { background: #eff6ff; }
+.inline-field { width: min(13rem,100%); min-height: 2rem; border: 1px solid #cbd5e1; border-radius: .4rem; padding: .35rem .5rem; }.inline-field.numeric { width: 7rem; }
+.state { height: 7rem; color: #64748b; text-align: center; }
+@media(max-width:650px){.list-heading{align-items:flex-start;padding:.9rem;}.list-heading p{max-width:16rem;}th,td{padding:.65rem .75rem;}}

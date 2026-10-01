@@ -1,0 +1,18 @@
+<section class="card list-card" aria-labelledby="pesagens-title">
+  <header class="list-heading"><div><h2 id="pesagens-title">Pesagens registradas <span class="count">{{ pesagens.length }}</span></h2><p>Consulte, ajuste ou remova um registro.</p></div><button type="button" class="refresh-button" (click)="atualizar.emit()" [disabled]="carregando"><i class="pi" [class.pi-spin]="carregando" [class.pi-spinner]="carregando" [class.pi-refresh]="!carregando"></i><span>Atualizar</span></button></header>
+  <div class="table-wrap">
+    <table><thead><tr><th>Data e hora</th><th>Funcionário</th><th>Matrícula</th><th class="numeric">Peso</th><th class="actions">Ações</th></tr></thead>
+      <tbody>
+        <tr *ngIf="carregando"><td colspan="5" class="state"><i class="pi pi-spin pi-spinner"></i> Carregando pesagens…</td></tr>
+        <tr *ngIf="!carregando && !pesagens.length"><td colspan="5" class="state">Nenhuma pesagem encontrada neste período.</td></tr>
+        <tr *ngFor="let pesagem of pesagens" [class.editing]="editandoId === pesagem.id">
+          <td class="date">{{ pesagem.dataColeta | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><ng-container *ngIf="editandoId === pesagem.id; else nome"><input class="inline-field" [(ngModel)]="nomeEdicao" aria-label="Nome do funcionário" /></ng-container><ng-template #nome><span class="person-name">{{ pesagem.nome }}</span><span *ngIf="pesagem.temporario" class="temporary-tag">Manual</span></ng-template></td>
+          <td class="registration">{{ pesagem.matricula || '—' }}</td>
+          <td class="numeric weight"><ng-container *ngIf="editandoId === pesagem.id; else peso"><input class="inline-field numeric" inputmode="decimal" [(ngModel)]="pesoEdicao" aria-label="Peso em quilogramas" /> kg</ng-container><ng-template #peso>{{ pesagem.pesoKg | number:'1.0-3':'pt-BR' }} kg</ng-template></td>
+          <td class="actions"><ng-container *ngIf="editandoId === pesagem.id; else buttons"><button class="icon-button save" type="button" title="Salvar" aria-label="Salvar edição" [disabled]="salvandoId === pesagem.id" (click)="salvarEdicao(pesagem)"><i class="pi pi-check"></i></button><button class="icon-button" type="button" title="Cancelar" aria-label="Cancelar edição" (click)="editandoId = null"><i class="pi pi-times"></i></button></ng-container><ng-template #buttons><button class="icon-button" type="button" title="Editar" aria-label="Editar pesagem" (click)="iniciarEdicao(pesagem)"><i class="pi pi-pencil"></i></button><button class="icon-button delete" type="button" title="Excluir" aria-label="Excluir pesagem" (click)="excluir.emit(pesagem)"><i class="pi pi-trash"></i></button></ng-template></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

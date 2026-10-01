@@ -24,6 +24,10 @@ export const PROD_LASER_ROUTES: Routes = [
     loadComponent: () => import('./pages/prod-laser-criticados-page/prod-laser-criticados-page.component').then(m => m.ProdLaserCriticadosPageComponent),
   },
   {
+    path: 'sucata',
+    loadComponent: () => import('./pages/sucata-report-page/sucata-report-page.component').then(m => m.SucataReportPageComponent),
+  },
+  {
     matcher: producaoMatcher,
     loadComponent: () => import('./pages/prod-laser-page/prod-laser-page.component').then(m => m.ProdLaserPageComponent),
   },
