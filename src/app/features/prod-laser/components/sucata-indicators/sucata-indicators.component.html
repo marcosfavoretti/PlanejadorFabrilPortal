@@ -1,0 +1,8 @@
+<section class="card indicators-card" aria-labelledby="indicators-title">
+  <header class="indicators-heading"><div><h2 id="indicators-title">Indicadores de sucata</h2><p>Volume por {{ dados?.agrupamento || 'período' }} no intervalo selecionado.</p></div><span class="chart-icon"><i class="pi pi-chart-bar"></i></span></header>
+  <ng-container *ngIf="dados; else empty"><div class="total-line">Total no período <strong>{{ dados.totalKg | number:'1.0-3':'pt-BR' }} kg</strong><span>({{ dados.totalTon | number:'1.0-3':'pt-BR' }} t)</span><small>{{ dados.qtdPesagens }} {{ dados.qtdPesagens === 1 ? 'pesagem' : 'pesagens' }}</small></div>
+    <div class="bars" *ngIf="dados.itens.length; else noItems"><div class="bar-row" *ngFor="let item of dados.itens"><span class="bar-label">{{ item.periodo | date:'dd/MM/yyyy':'UTC' }}</span><div class="bar-track"><div class="bar" [style.width]="largura(item.totalKg)"></div></div><span class="bar-value">{{ item.totalKg | number:'1.0-0':'pt-BR' }} kg</span></div></div>
+    <ng-template #noItems><div class="no-items">Sem pesagens no intervalo selecionado.</div></ng-template>
+  </ng-container>
+  <ng-template #empty><div class="indicators-state"><i class="pi pi-chart-bar"></i> Selecione um período para visualizar os indicadores.</div></ng-template>
+</section>
