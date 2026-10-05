@@ -1335,3 +1335,11 @@
 .funcionario-folha-kpi-expansion__summary strong {
   color: #1e293b;
 }
+
+:host ::ng-deep .he-excecao, :host ::ng-deep .he-excecao > td {
+  background-color: #fef9c3 !important;
+  color: #422006;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.excecao-legend { font-size: 0.875rem; color: #854d0e; }

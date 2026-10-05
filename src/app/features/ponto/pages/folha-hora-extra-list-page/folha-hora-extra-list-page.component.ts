@@ -1,3 +1,4 @@
+import { temExcecaoHE } from '../../utils/horarios-he';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -113,6 +114,7 @@ interface PessoaPorDiaLinha {
   cumprimento: string;
   centroCusto: string;
   horarioHE: string;
+  excecaoHE?: boolean;
 }
 
 interface FolhaHeListNavigationState {
@@ -234,6 +236,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected kpiLoading = false;
   protected selectedFolha: FolhaHoraExtraResumo | null = null;
   protected selectedKpi: ResKpiCumprimentoFolhaHoraExtraDTO | null = null;
+  protected readonly temExcecaoHE = temExcecaoHE;
   protected printingRefeicoes = false;
   private historicoSortField: keyof FolhaHoraExtraResumo | null = null;
   private historicoSortOrder: 1 | -1 = 1;
@@ -527,6 +530,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       },
     ],
     ghostControll: [
+      { field: 'inicioHE', desc: 'Exceção de horário', ifRowFunction: row => temExcecaoHE(row), color: '#fef9c3' },
       { field: 'status', desc: 'Aprovada', ifValueEqual: 'APROVADO', color: '#dcfce7' },
       {
         field: 'status',
@@ -605,6 +609,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       },
       { alias: 'Observações', field: 'observacao', filterable: false },
     ],
+    ghostControll: [{ field: 'inicioHE', desc: 'Exceção de horário', ifRowFunction: row => temExcecaoHE(row), color: '#fef9c3' }],
   };
 
   protected readonly pessoasPorDiaTableModel: TableModel = {
@@ -628,6 +633,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       { alias: 'Horário HE', field: 'horarioHE', filterable: false },
     ],
     ghostControll: [
+      { field: 'excecaoHE', desc: 'Exceção de horário', ifValueEqual: true, color: '#fef9c3' },
       { field: 'tipo', desc: 'Autorizada', ifValueEqual: 'AUTORIZADA', color: '#dcfce7' },
       { field: 'tipo', desc: 'Não autorizada', ifValueEqual: 'NAO_AUTORIZADA', color: '#fee2e2' },
     ],
@@ -676,6 +682,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         valueFormatter: (_, row: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO) => this.formatMarcacoes(row),
       },
     ],
+    ghostControll: [{ field: 'inicioHEPrevisto', desc: 'Exceção de horário', ifRowFunction: row => temExcecaoHE({ inicioHE: row.inicioHEPrevisto, fimHE: row.fimHEPrevisto }), color: '#fef9c3' }],
   };
 
   protected readonly horasExtrasNaoAutorizadasTableModel: TableModel = {
@@ -1943,6 +1950,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
           : this.getCumprimentoStatusLabel(funcionario.statusCumprimentoHE ?? 'CUMPRIU'),
         centroCusto: `${kpi.centroCustoCodigo} - ${kpi.centroCustoDescricao}`,
         horarioHE: `${funcionario.inicioHEPrevisto} - ${funcionario.fimHEPrevisto}`,
+        excecaoHE: temExcecaoHE({ inicioHE: funcionario.inicioHEPrevisto, fimHE: funcionario.fimHEPrevisto }),
       })));
 
     const naoAutorizadas = Array.from(new Map(this.horasExtrasNaoAutorizadas

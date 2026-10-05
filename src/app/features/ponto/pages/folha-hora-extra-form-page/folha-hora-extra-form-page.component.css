@@ -141,7 +141,7 @@
 /* Grid Layouts */
 .sheet-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 1.5rem;
   align-items: flex-end;
   margin-top: 1.5rem;
@@ -238,7 +238,7 @@
 
 .employee-table-header {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 1fr 2fr 4rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr) minmax(0, 1.2fr) minmax(0, 2fr) 3rem;
   gap: 1.5rem;
   padding: 0 1.5rem;
   color: var(--text-color-secondary);
@@ -250,7 +250,7 @@
 
 .employee-table-row {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 1fr 2fr 4rem;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr) minmax(0, 1.2fr) minmax(0, 2fr) 3rem;
   gap: 1.5rem;
   background: var(--surface-card);
   border: 1px solid var(--surface-border);
@@ -548,5 +548,122 @@
   .cost-row {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+}
+
+:host ::ng-deep .he-excecao, :host ::ng-deep .he-excecao > td {
+  background-color: #fef9c3 !important;
+  color: #422006;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.excecao-legend { font-size: 0.875rem; color: #854d0e; }
+
+/* Adapt to the space available inside the page, including browser zoom. */
+.form-card {
+  container-type: inline-size;
+  container-name: he-form;
+  min-width: 0;
+}
+
+.employee-table-row > *,
+.field,
+.section-info,
+.header-text,
+.input-with-button input,
+.employee-shift span {
+  min-width: 0;
+}
+
+.employee-table-row input,
+.employee-table-row textarea,
+.sheet-grid input,
+.observation-field textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.time-inputs {
+  flex-wrap: wrap;
+}
+
+.time-inputs .field {
+  flex: 1 1 7rem;
+}
+
+.check-item p-checkbox,
+.input-with-button p-button,
+.section-icon {
+  flex-shrink: 0;
+}
+
+.employee-shift span,
+.check-item label,
+.section-info,
+.header-text {
+  overflow-wrap: anywhere;
+}
+
+.header-content,
+.section-header-split {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-banner-actions {
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep .p-autocomplete-input,
+:host ::ng-deep .p-datepicker-input,
+:host ::ng-deep .p-select-label {
+  min-width: 0;
+}
+
+@container he-form (max-width: 1150px) {
+  .employee-table-header {
+    display: none;
+  }
+
+  .employee-table-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .employee-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    border-top: 1px solid var(--surface-border);
+    padding-top: 0.75rem;
+  }
+
+  .hide-mobile {
+    display: inline;
+  }
+}
+
+@container he-form (max-width: 640px) {
+  .employee-table-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1rem;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .folha-hora-extra-form-container {
+    padding: 0.75rem;
+  }
+
+  .form-card {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
   }
 }

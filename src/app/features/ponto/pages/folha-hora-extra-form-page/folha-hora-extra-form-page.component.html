@@ -85,8 +85,8 @@
           <span class="text-center">Ações</span>
         </div>
 
-        @for (funcionarioGroup of funcionarios.controls; track $index; let i = $index) {
-        <div class="employee-table-row fade-in-up" [formGroupName]="i">
+        @for (funcionarioGroup of funcionarios.controls; track funcionarioGroup; let i = $index) {
+        <div class="employee-table-row fade-in-up" [formGroupName]="i" [class.he-excecao]="temExcecao(funcionarioGroup)">
           <div class="employee-person">
             <label [for]="'nome-' + i">Nome / Busca</label>
             <p-autocomplete [inputId]="'nome-' + i" formControlName="nome" [suggestions]="funcionarioSuggestions"
@@ -152,14 +152,32 @@
             <div class="time-inputs">
               <div class="field">
                 <label [for]="'inicioHE-' + i">Início</label>
+                <span class="check-item">
+                  <p-checkbox [inputId]="'excecaoInicioHE-' + i" formControlName="excecaoInicioHE" [binary]="true"
+                    (onChange)="onExcecaoChange(funcionarioGroup, 'inicioHE')"></p-checkbox>
+                  <label [for]="'excecaoInicioHE-' + i">Exceção</label>
+                </span>
+                @if (funcionarioGroup.get('excecaoInicioHE')?.value) {
+                  <input [id]="'inicioHE-' + i" pInputText type="time" step="60" formControlName="inicioHE" />
+                } @else {
                 <p-select [inputId]="'inicioHE-' + i" formControlName="inicioHE" [options]="horariosHE"
                   optionLabel="label" optionValue="value" placeholder="Selecione" appendTo="body"
                   (onChange)="onInicioHEChange(funcionarioGroup)"></p-select>
+                }
               </div>
               <div class="field">
                 <label [for]="'fimHE-' + i">Fim</label>
+                <span class="check-item">
+                  <p-checkbox [inputId]="'excecaoFimHE-' + i" formControlName="excecaoFimHE" [binary]="true"
+                    (onChange)="onExcecaoChange(funcionarioGroup, 'fimHE')"></p-checkbox>
+                  <label [for]="'excecaoFimHE-' + i">Exceção</label>
+                </span>
+                @if (funcionarioGroup.get('excecaoFimHE')?.value) {
+                  <input [id]="'fimHE-' + i" pInputText type="time" step="60" formControlName="fimHE" />
+                } @else {
                 <p-select [inputId]="'fimHE-' + i" formControlName="fimHE" [options]="horariosSaida(funcionarioGroup)"
                   optionLabel="label" optionValue="value" placeholder="Selecione" appendTo="body"></p-select>
+                }
               </div>
             </div>
             @if (funcionarioGroup.hasError('horarioSaidaAntesEntrada')) {
