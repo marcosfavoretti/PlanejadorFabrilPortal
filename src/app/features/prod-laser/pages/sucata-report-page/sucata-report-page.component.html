@@ -1,13 +1,175 @@
 <app-page-layout>
   <main class="scrap-page">
-    <header class="page-header"><div class="brand"><img src="/ethos35.png" alt="Ethos" /><span>Report de Sucata</span></div></header>
+    <header class="page-header">
+      <div class="brand">
+        <img src="/ethos35.png" alt="Ethos" /><span>Report de Sucata</span>
+      </div>
+    </header>
     <div class="content">
-      <div class="page-intro"><div><div class="eyebrow"><span></span> Controle de produção</div><h1>Pesagem de sucata</h1><p>Registre os paletes e acompanhe os volumes gerados pela fábrica.</p></div><div class="date-filter"><label>De <input type="date" [value]="inicio()" [max]="fim()" (change)="setInicio($any($event.target).value)" /></label><label>Até <input type="date" [value]="fim()" [min]="inicio()" [max]="hoje" (change)="setFim($any($event.target).value)" /></label><button type="button" (click)="carregarDados()" [disabled]="carregando()"><i class="pi pi-filter"></i><span>Filtrar</span></button></div></div>
-      <div *ngIf="erro()" class="page-error" role="alert"><i class="pi pi-exclamation-circle"></i>{{ erro() }}</div>
-      <div class="top-grid"><app-sucata-pesagem-form [funcionarios]="funcionarios()" [salvando]="salvando()" (registrar)="registrar($event)" /><section class="summary-grid" aria-label="Resumo de sucata"><app-sucata-resumo-card title="Hoje" [value]="formatarPeso(resumo()?.hoje?.totalKg)" [detail]="(resumo()?.hoje?.qtdPesagens ?? 0) + ' pesagens'" icon="pi-sun" tone="amber" /><app-sucata-resumo-card title="Esta semana" [value]="formatarPeso(resumo()?.semana?.totalKg)" [detail]="(resumo()?.semana?.qtdPesagens ?? 0) + ' pesagens'" icon="pi-calendar" tone="blue" /><app-sucata-resumo-card title="Este mês" [value]="formatarPeso(resumo()?.mes?.totalKg)" [detail]="(resumo()?.mes?.qtdPesagens ?? 0) + ' pesagens'" icon="pi-chart-line" tone="green" /><app-sucata-resumo-card title="Este ano" [value]="formatarPeso(resumo()?.ano?.totalKg)" [detail]="(resumo()?.ano?.qtdPesagens ?? 0) + ' pesagens'" icon="pi-chart-bar" tone="violet" /></section></div>
-      <app-sucata-pesagens-list [pesagens]="pesagens()" [carregando]="carregando()" [salvandoId]="salvandoId()" (atualizar)="carregarDados()" (editar)="editar($event)" (excluir)="excluir($event)" />
-      <app-sucata-indicators [dados]="indicadores()" />
-      <footer>Ethos · Produção industrial <span>Dados atualizados em tempo real após cada registro</span></footer>
+      <div class="page-intro">
+        <div>
+          <div class="eyebrow"><span></span> Controle de produção</div>
+          <h1>Pesagem de sucata</h1>
+          <p>
+            Registre os paletes e acompanhe os volumes gerados pela fábrica.
+          </p>
+        </div>
+      </div>
+      <div *ngIf="erro()" class="page-error" role="alert">
+        <i class="pi pi-exclamation-circle"></i>{{ erro() }}
+      </div>
+      <div class="top-grid">
+        <app-sucata-pesagem-form
+          [funcionarios]="funcionarios()"
+          [aviso]="avisoFuncionarios()"
+          [salvando]="salvando()"
+          (registrar)="registrar($event)"
+        />
+        <section class="summary-grid" aria-label="Resumo de sucata">
+          <h2 class="summary-title">Sucata gerada</h2>
+          <app-sucata-resumo-card
+            title="Hoje"
+            [value]="formatarPeso(resumo()?.hoje?.totalKg)"
+            [detail]="(resumo()?.hoje?.qtdPesagens ?? 0) + ' pesagens'"
+            icon="pi-sun"
+            tone="amber"
+          /><app-sucata-resumo-card
+            title="Esta semana"
+            [value]="formatarPeso(resumo()?.semana?.totalKg)"
+            [detail]="(resumo()?.semana?.qtdPesagens ?? 0) + ' pesagens'"
+            icon="pi-calendar"
+            tone="blue"
+          /><app-sucata-resumo-card
+            title="Este mês"
+            [value]="formatarPeso(resumo()?.mes?.totalKg)"
+            [detail]="(resumo()?.mes?.qtdPesagens ?? 0) + ' pesagens'"
+            icon="pi-chart-line"
+            tone="green"
+          /><app-sucata-resumo-card
+            title="Este ano"
+            [value]="formatarPeso(resumo()?.ano?.totalKg)"
+            [detail]="(resumo()?.ano?.qtdPesagens ?? 0) + ' pesagens'"
+            icon="pi-chart-bar"
+            tone="violet"
+          />
+          <div class="pending-summary">
+            <span>Ainda não reportado (na fábrica)</span
+            ><strong>{{ formatarPeso(resumo()?.pendente?.totalKg) }}</strong
+            ><small
+              >{{
+                (resumo()?.pendente?.totalKg ?? 0) / 1000
+                  | number: "1.0-3" : "pt-BR"
+              }}
+              t · {{ resumo()?.pendente?.qtdPesagens ?? 0 }} pesagens</small
+            >
+          </div>
+        </section>
+      </div>
+      <div class="list-filters">
+        <div class="segmented">
+          <button
+            [class.active]="modo() === 'pendentes'"
+            [disabled]="ocupado()"
+            (click)="modo.set('pendentes'); carregarDados()"
+          >
+            Não reportadas</button
+          ><button
+            [class.active]="modo() === 'periodo'"
+            [disabled]="ocupado()"
+            (click)="modo.set('periodo'); carregarDados()"
+          >
+            Por período
+          </button>
+        </div>
+        <div class="date-filter" *ngIf="modo() === 'periodo'">
+          <label
+            >De
+            <input
+              type="date"
+              [value]="inicio()"
+              [max]="fim()"
+              (change)="setInicio($any($event.target).value)" /></label
+          ><label
+            >Até
+            <input
+              type="date"
+              [value]="fim()"
+              [min]="inicio()"
+              (change)="setFim($any($event.target).value)" /></label
+          ><button [disabled]="carregando()" (click)="carregarDados()">
+            Filtrar
+          </button>
+        </div>
+      </div>
+      <p *ngIf="mensagem()" class="success-message" role="status">
+        {{ mensagem() }}
+      </p>
+      <app-sucata-pesagens-list
+        [funcionarios]="funcionarios()"
+        [ocupado]="ocupado()"
+        [modo]="modo()"
+        (reportar)="reportar($event)"
+        (desfazer)="desfazer($event)"
+        [pesagens]="pesagens()"
+        [carregando]="carregando()"
+        [salvandoId]="salvandoId()"
+        (atualizar)="carregarDados()"
+        (editar)="editar($event)"
+        (excluir)="excluir($event)"
+      />
+      <section class="indicator-controls">
+        <h2>Indicadores</h2>
+        <div class="segmented">
+          <button
+            [class.active]="tipo() === 'gerada'"
+            (click)="tipo.set('gerada'); carregarIndicadores()"
+          >
+            Gerada</button
+          ><button
+            [class.active]="tipo() === 'reportada'"
+            (click)="tipo.set('reportada'); carregarIndicadores()"
+          >
+            Reportada
+          </button>
+        </div>
+        <div class="segmented">
+          <button
+            *ngFor="let opcao of ['dia', 'semana', 'mes', 'ano']"
+            [class.active]="agrupamento() === opcao"
+            (click)="agrupamento.set($any(opcao)); carregarIndicadores()"
+          >
+            {{ opcao === "mes" ? "Mês" : (opcao | titlecase) }}
+          </button>
+        </div>
+        <div class="date-filter">
+          <label
+            >De
+            <input
+              type="date"
+              [value]="indicadorInicio()"
+              [max]="indicadorFim()"
+              (change)="
+                indicadorInicio.set($any($event.target).value);
+                carregarIndicadores()
+              " /></label
+          ><label
+            >Até
+            <input
+              type="date"
+              [value]="indicadorFim()"
+              [min]="indicadorInicio()"
+              (change)="
+                indicadorFim.set($any($event.target).value);
+                carregarIndicadores()
+              "
+          /></label>
+        </div>
+      </section>
+      <app-sucata-indicators [dados]="indicadores()" [tipo]="tipo()" />
+      <footer>
+        Ethos · Produção industrial
+        <span>Dados atualizados em tempo real após cada registro</span>
+      </footer>
     </div>
   </main>
 </app-page-layout>
