@@ -1,18 +1,194 @@
-<section class="card list-card" aria-labelledby="pesagens-title">
-  <header class="list-heading"><div><h2 id="pesagens-title">Pesagens registradas <span class="count">{{ pesagens.length }}</span></h2><p>Consulte, ajuste ou remova um registro.</p></div><button type="button" class="refresh-button" (click)="atualizar.emit()" [disabled]="carregando"><i class="pi" [class.pi-spin]="carregando" [class.pi-spinner]="carregando" [class.pi-refresh]="!carregando"></i><span>Atualizar</span></button></header>
+<section class="list-card">
+  <header class="list-heading">
+    <div>
+      <h2>
+        Pesagens <span class="count">{{ pesagens.length }}</span>
+      </h2>
+      <p>
+        {{
+          modo === "pendentes"
+            ? "Todos os paletes aguardando retirada, de qualquer data."
+            : "Pesagens no período selecionado."
+        }}
+      </p>
+    </div>
+    <button
+      class="refresh-button"
+      [disabled]="bloqueado"
+      (click)="atualizar.emit()"
+    >
+      Atualizar
+    </button>
+  </header>
+  <div *ngIf="erroEdicao" class="report-toolbar" role="alert">
+    {{ erroEdicao }}
+  </div>
+  <div class="report-toolbar" *ngIf="pendentes.length">
+    <span *ngIf="!itensSelecionados.length"
+      >Marque os IDs dos paletes que o comprador está levando.</span
+    ><span *ngIf="itensSelecionados.length"
+      >{{ itensSelecionados.length }} paletes selecionados ·
+      <strong
+        >{{ pesoSelecionado | number: "1.0-3" : "pt-BR" }} kg ({{
+          pesoSelecionado / 1000 | number: "1.0-3" : "pt-BR"
+        }}
+        t)</strong
+      ></span
+    ><button
+      class="report-button"
+      [disabled]="bloqueado || !itensSelecionados.length"
+      (click)="reportarSelecionados()"
+    >
+      Reportar selecionados
+    </button>
+  </div>
   <div class="table-wrap">
-    <table><thead><tr><th>Data e hora</th><th>Funcionário</th><th>Matrícula</th><th class="numeric">Peso</th><th class="actions">Ações</th></tr></thead>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              aria-label="Selecionar todos os não reportados"
+              [checked]="todosMarcados"
+              [disabled]="bloqueado || !pendentes.length"
+              (change)="alternarTodos()"
+            />
+          </th>
+          <th>ID</th>
+          <th>Data/hora</th>
+          <th>Nome</th>
+          <th class="numeric">Peso</th>
+          <th>Situação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr *ngIf="carregando"><td colspan="5" class="state"><i class="pi pi-spin pi-spinner"></i> Carregando pesagens…</td></tr>
-        <tr *ngIf="!carregando && !pesagens.length"><td colspan="5" class="state">Nenhuma pesagem encontrada neste período.</td></tr>
-        <tr *ngFor="let pesagem of pesagens" [class.editing]="editandoId === pesagem.id">
-          <td class="date">{{ pesagem.dataColeta | date:'dd/MM/yyyy HH:mm' }}</td>
-          <td><ng-container *ngIf="editandoId === pesagem.id; else nome"><input class="inline-field" [(ngModel)]="nomeEdicao" aria-label="Nome do funcionário" /></ng-container><ng-template #nome><span class="person-name">{{ pesagem.nome }}</span><span *ngIf="pesagem.temporario" class="temporary-tag">Manual</span></ng-template></td>
-          <td class="registration">{{ pesagem.matricula || '—' }}</td>
-          <td class="numeric weight"><ng-container *ngIf="editandoId === pesagem.id; else peso"><input class="inline-field numeric" inputmode="decimal" [(ngModel)]="pesoEdicao" aria-label="Peso em quilogramas" /> kg</ng-container><ng-template #peso>{{ pesagem.pesoKg | number:'1.0-3':'pt-BR' }} kg</ng-template></td>
-          <td class="actions"><ng-container *ngIf="editandoId === pesagem.id; else buttons"><button class="icon-button save" type="button" title="Salvar" aria-label="Salvar edição" [disabled]="salvandoId === pesagem.id" (click)="salvarEdicao(pesagem)"><i class="pi pi-check"></i></button><button class="icon-button" type="button" title="Cancelar" aria-label="Cancelar edição" (click)="editandoId = null"><i class="pi pi-times"></i></button></ng-container><ng-template #buttons><button class="icon-button" type="button" title="Editar" aria-label="Editar pesagem" (click)="iniciarEdicao(pesagem)"><i class="pi pi-pencil"></i></button><button class="icon-button delete" type="button" title="Excluir" aria-label="Excluir pesagem" (click)="excluir.emit(pesagem)"><i class="pi pi-trash"></i></button></ng-template></td>
+        <tr
+          *ngFor="let item of pesagens"
+          [class.editing]="editandoId === item.id"
+          [class.selected]="selecionados.has(item.id)"
+        >
+          <td>
+            <input
+              *ngIf="!item.reportado"
+              type="checkbox"
+              [attr.aria-label]="'Selecionar palete ' + item.id"
+              [checked]="selecionados.has(item.id)"
+              [disabled]="bloqueado"
+              (change)="alternar(item.id)"
+            />
+          </td>
+          <td class="weight">{{ item.id }}</td>
+          <ng-container *ngIf="editandoId === item.id; else leitura"
+            ><td>
+              <input
+                class="inline-field"
+                type="datetime-local"
+                aria-label="Data da coleta"
+                [(ngModel)]="dataEdicao"
+              />
+            </td>
+            <td>
+              <input
+                class="inline-field"
+                aria-label="Nome do funcionário"
+                [(ngModel)]="nomeEdicao"
+                list="funcionarios-edicao"
+              />
+            </td>
+            <td>
+              <input
+                class="inline-field numeric"
+                aria-label="Peso em kg"
+                inputmode="decimal"
+                [(ngModel)]="pesoEdicao"
+              />
+            </td>
+            <td></td>
+            <td class="actions">
+              <button [disabled]="bloqueado" (click)="salvarEdicao(item)">
+                Salvar</button
+              ><button [disabled]="bloqueado" (click)="editandoId = null">
+                Cancelar
+              </button>
+            </td></ng-container
+          >
+          <ng-template #leitura
+            ><td class="date">
+              {{ item.dataColeta | date: "dd/MM/yyyy HH:mm" }}
+            </td>
+            <td>
+              {{ item.nome
+              }}<span *ngIf="item.temporario" class="temporary-tag"
+                >temporário</span
+              >
+            </td>
+            <td class="numeric weight">
+              {{ item.pesoKg | number: "1.0-3" : "pt-BR" }} kg
+            </td>
+            <td>
+              <span class="status" [class.reported]="item.reportado"
+                >{{ item.reportado ? "Reportado" : "Não reportado"
+                }}<small *ngIf="item.reportado && item.dataReportado">
+                  · {{ item.dataReportado | date: "dd/MM/yyyy HH:mm" }}</small
+                ></span
+              >
+            </td>
+            <td class="actions">
+              <button
+                *ngIf="item.reportado"
+                [disabled]="bloqueado"
+                (click)="desfazer.emit(item)"
+              >
+                Desfazer reporte</button
+              ><ng-container *ngIf="!item.reportado"
+                ><button
+                  class="report-button"
+                  [disabled]="bloqueado"
+                  (click)="reportar.emit([item.id])"
+                >
+                  Reportar</button
+                ><button [disabled]="bloqueado" (click)="iniciarEdicao(item)">
+                  Editar</button
+                ><button
+                  class="delete-button"
+                  [disabled]="bloqueado"
+                  (click)="excluir.emit(item)"
+                >
+                  Excluir
+                </button></ng-container
+              >
+            </td></ng-template
+          >
+        </tr>
+        <tr *ngIf="carregando">
+          <td colspan="7" class="state" role="status">Carregando pesagens…</td>
+        </tr>
+        <tr *ngIf="!carregando && !pesagens.length">
+          <td colspan="7" class="state">
+            {{
+              modo === "pendentes"
+                ? "Nenhum palete aguardando reporte."
+                : "Nenhuma pesagem no período."
+            }}
+          </td>
         </tr>
       </tbody>
+      <tfoot *ngIf="pesagens.length">
+        <tr>
+          <td colspan="4">Total ({{ pesagens.length }} pesagens)</td>
+          <td class="numeric weight">
+            {{ total | number: "1.0-3" : "pt-BR" }} kg
+          </td>
+          <td colspan="2">{{ total / 1000 | number: "1.0-3" : "pt-BR" }} t</td>
+        </tr>
+      </tfoot>
     </table>
   </div>
+  <datalist id="funcionarios-edicao">
+    <option *ngFor="let funcionario of funcionarios" [value]="funcionario.nome">
+      {{ funcionario.matricula }}
+    </option>
+  </datalist>
 </section>

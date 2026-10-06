@@ -2,7 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { resolveRuntimeUrl } from '@/app/shared/config/runtime-app-config';
 import { Observable, map } from 'rxjs';
-import { FuncionarioSucata, IndicadoresSucata, PesagemSucata, PesagemSucataPayload, ResumoSucata } from '../models/sucata.model';
+import {
+  FuncionarioSucata,
+  IndicadoresSucata,
+  PesagemSucata,
+  PesagemSucataPayload,
+  ResumoSucata,
+  ReporteSucataResultado,
+} from '../models/sucata.model';
 
 const SUCATA_API_PATH = '/api';
 
@@ -25,16 +32,26 @@ export class SucataApiService {
   }
 
   listarFuncionarios(): Observable<FuncionarioSucata[]> {
-    return this.http.get<FuncionarioSucataResponse[]>(`${this.apiUrl}/sucata/funcionarios`).pipe(
-      map((funcionarios) => funcionarios.map(({ MATRICULA, NOME }) => ({ matricula: MATRICULA, nome: NOME }))),
-    );
+    return this.http
+      .get<FuncionarioSucataResponse[]>(`${this.apiUrl}/sucata/funcionarios`)
+      .pipe(
+        map((funcionarios) =>
+          funcionarios.map(({ MATRICULA, NOME }) => ({
+            matricula: MATRICULA,
+            nome: NOME,
+          })),
+        ),
+      );
   }
 
   criarPesagem(payload: PesagemSucataPayload): Observable<PesagemSucata> {
     return this.http.post<PesagemSucata>(`${this.apiUrl}/sucata`, payload);
   }
 
-  atualizarPesagem(id: number, payload: Partial<PesagemSucataPayload>): Observable<PesagemSucata> {
+  atualizarPesagem(
+    id: number,
+    payload: Partial<PesagemSucataPayload>,
+  ): Observable<PesagemSucata> {
     return this.http.put<PesagemSucata>(`${this.apiUrl}/sucata/${id}`, payload);
   }
 
@@ -42,12 +59,50 @@ export class SucataApiService {
     return this.http.delete<void>(`${this.apiUrl}/sucata/${id}`);
   }
 
-  obterResumo(): Observable<ResumoSucata> {
-    return this.http.get<ResumoSucata>(`${this.apiUrl}/sucata/indicadores/resumo`);
+  listarPendentes(): Observable<PesagemSucata[]> {
+    return this.http
+      .get<{ itens: PesagemSucata[] }>(`${this.apiUrl}/sucata/pendentes`)
+      .pipe(map((response) => response.itens));
   }
 
-  obterIndicadores(agrupamento: string, inicio: string, fim: string): Observable<IndicadoresSucata> {
-    const params = new HttpParams().set('agrupamento', agrupamento).set('inicio', inicio).set('fim', fim);
-    return this.http.get<IndicadoresSucata>(`${this.apiUrl}/sucata/indicadores`, { params });
+  reportarPesagens(ids: number[]): Observable<ReporteSucataResultado> {
+    return this.http.post<ReporteSucataResultado>(
+      `${this.apiUrl}/sucata/reportar`,
+      { ids },
+    );
+  }
+
+  reportarPesagem(id: number): Observable<PesagemSucata> {
+    return this.http.post<PesagemSucata>(
+      `${this.apiUrl}/sucata/${id}/reportar`,
+      {},
+    );
+  }
+
+  desfazerReporte(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/sucata/${id}/reportar`);
+  }
+
+  obterResumo(): Observable<ResumoSucata> {
+    return this.http.get<ResumoSucata>(
+      `${this.apiUrl}/sucata/indicadores/resumo`,
+    );
+  }
+
+  obterIndicadores(
+    agrupamento: string,
+    inicio: string,
+    fim: string,
+    tipo: 'gerada' | 'reportada' = 'gerada',
+  ): Observable<IndicadoresSucata> {
+    const params = new HttpParams()
+      .set('tipo', tipo)
+      .set('agrupamento', agrupamento)
+      .set('inicio', inicio)
+      .set('fim', fim);
+    return this.http.get<IndicadoresSucata>(
+      `${this.apiUrl}/sucata/indicadores`,
+      { params },
+    );
   }
 }

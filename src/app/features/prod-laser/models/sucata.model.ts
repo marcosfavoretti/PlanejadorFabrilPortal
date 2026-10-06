@@ -7,6 +7,8 @@ export interface PesagemSucata {
   dataColeta: string;
   criadoEm: string;
   atualizadoEm: string | null;
+  reportado: boolean;
+  dataReportado: string | null;
 }
 
 export interface PesagemSucataPayload {
@@ -27,6 +29,7 @@ export interface ResumoSucata {
   semana: TotalSucataPeriodo;
   mes: TotalSucataPeriodo;
   ano: TotalSucataPeriodo;
+  pendente: TotalSucataPeriodo;
 }
 
 export interface IndicadorSucataItem {
@@ -49,4 +52,11 @@ export interface IndicadoresSucata {
 export interface FuncionarioSucata {
   matricula: string;
   nome: string;
+}
+
+export interface ReporteSucataResultado {
+  qtdReportados: number;
+  totalKg: number;
+  jaReportados: { id: number }[];
+  naoEncontrados: number[];
 }
