@@ -149,7 +149,7 @@
               </thead>
               <tbody>
                 @for (refeicao of refeicoesHoje; track refeicao.folhaId + refeicao.matricula) {
-                <tr>
+                <tr [class.he-excecao]="temExcecaoHE(refeicao)">
                   <td>{{ refeicao.nome }}</td>
                   <td>{{ refeicao.matricula }}</td>
                   <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>

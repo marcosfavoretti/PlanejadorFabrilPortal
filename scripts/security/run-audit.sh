@@ -5,7 +5,9 @@ set -euo pipefail
 audit_output=''
 audit_status=0
 
-if ! audit_output="$(npm audit --json 2>&1)"; then
+if audit_output="$(npm audit --json 2>&1)"; then
+  audit_status=0
+else
   audit_status=$?
 fi
 
@@ -16,6 +18,10 @@ fi
 
 AUDIT_OUTPUT="$audit_output" node <<'EOF'
 const report = JSON.parse(process.env.AUDIT_OUTPUT ?? '{}');
+if (report.error || !report.vulnerabilities || !report.metadata?.vulnerabilities) {
+  console.error('npm audit não retornou um relatório válido:', report.error ?? report);
+  process.exit(1);
+}
 const vulnerabilities = Object.values(report.vulnerabilities ?? {});
 
 // Debt register:
@@ -79,8 +85,39 @@ const severityRank = {
 };
 
 const highOrCritical = vulnerabilities.filter((entry) => severityRank[entry.severity] >= severityRank.high);
-const blocking = highOrCritical.filter((entry) => !temporarilyAccepted.has(entry.name));
-const accepted = highOrCritical.filter((entry) => temporarilyAccepted.has(entry.name));
+// Approved on 2026-10-06: no patched release exists for these two advisories.
+// These packages are used by build/test tooling; the production image serves
+// only the compiled frontend through Nginx. Remove when upstream fixes land.
+// Match advisories, not package names, so new high/critical issues still fail.
+const acceptedAdvisories = new Map([
+  ['braces', 'https://github.com/advisories/GHSA-vfj7-8cjw-p6xm'],
+  ['node-forge', 'https://github.com/advisories/GHSA-86w9-cpqp-85rv'],
+]);
+const advisoryDependents = new Set([
+  'braces', 'node-forge', 'chokidar', 'copy-webpack-plugin', 'fast-glob',
+  'globby', 'http-proxy-middleware', 'karma', 'karma-jasmine',
+  'karma-jasmine-html-reporter', 'micromatch', 'selfsigned', 'webpack-dev-server',
+]);
+
+function hasOnlyAcceptedAdvisories(entry, visited = new Set()) {
+  if (!advisoryDependents.has(entry.name) || visited.has(entry.name)) return false;
+  const nextVisited = new Set(visited).add(entry.name);
+  const causes = (entry.via ?? []).filter(issue => typeof issue === 'string'
+    ? severityRank[report.vulnerabilities[issue]?.severity] >= severityRank.high
+      || !report.vulnerabilities[issue]
+    : severityRank[issue.severity] >= severityRank.high);
+  return causes.length > 0 && causes.every(issue => {
+    if (typeof issue !== 'string') {
+      return issue.name === entry.name && issue.url === acceptedAdvisories.get(entry.name);
+    }
+    const dependency = report.vulnerabilities[issue];
+    return dependency && hasOnlyAcceptedAdvisories(dependency, nextVisited);
+  });
+}
+
+const isAccepted = entry => temporarilyAccepted.has(entry.name) || hasOnlyAcceptedAdvisories(entry);
+const blocking = highOrCritical.filter(entry => !isAccepted(entry));
+const accepted = highOrCritical.filter(isAccepted);
 
 if (blocking.length > 0) {
   console.error('npm audit encontrou vulnerabilidades high/critical:');

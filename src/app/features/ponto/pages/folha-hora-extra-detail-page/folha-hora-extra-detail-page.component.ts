@@ -1,3 +1,4 @@
+import { temExcecaoHE } from '../../utils/horarios-he';
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -46,10 +47,15 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   private readonly dialogService = inject(DialogService);
 
   protected folha: FolhaHoraExtraDetalhe | null = null;
+  protected readonly temExcecaoHE = temExcecaoHE;
   protected loading = false;
   protected messages: ToastMessageOptions[] = [];
   protected showCostDetails = false;
   private shouldPrintAfterLoad = false;
+
+  protected funcionarioTemExcecao(matricula: string): boolean {
+    return this.folha?.funcionarios.some(item => item.matricula === matricula && temExcecaoHE(item)) ?? false;
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('idFolha');

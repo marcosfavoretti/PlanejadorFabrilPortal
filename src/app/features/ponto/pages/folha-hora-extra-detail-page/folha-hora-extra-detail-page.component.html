@@ -35,6 +35,7 @@
       <div><span>Atualizado em</span><strong>{{ item.atualizadoEm | date: 'dd/MM/yyyy HH:mm' }}</strong></div>
     </div>
 
+    <p class="excecao-legend">Linhas em amarelo claro indicam exceção: início ou fim fora dos horários padrão.</p>
     <p-panel header="Funcionarios" styleClass="detail-panel">
       <p-table [value]="item.funcionarios" responsiveLayout="scroll"
         styleClass="p-datatable-sm folha-funcionarios-table">
@@ -51,7 +52,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-funcionario>
-          <tr>
+          <tr [class.he-excecao]="funcionarioTemExcecao(funcionario.matricula)" [attr.title]="funcionarioTemExcecao(funcionario.matricula) ? 'Exceção: horário informado manualmente' : null">
             <td>{{ funcionario.matricula }}</td>
             <td>{{ funcionario.nome }}</td>
             <td>{{ funcionario.inicioHE }}</td>
@@ -140,7 +141,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-funcionario>
-          <tr>
+          <tr [class.he-excecao]="funcionarioTemExcecao(funcionario.matricula)" [attr.title]="funcionarioTemExcecao(funcionario.matricula) ? 'Exceção: horário informado manualmente' : null">
             <td>
               <strong>{{ funcionario.nome }}</strong>
               <span class="muted-line">{{ funcionario.matricula }}</span>

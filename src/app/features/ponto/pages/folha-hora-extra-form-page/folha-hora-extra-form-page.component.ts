@@ -1,3 +1,4 @@
+import { HORARIOS_HE, HORARIO_HE_PATTERN, isHorarioHEExcecao, temExcecaoHE } from '../../utils/horarios-he';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -35,7 +36,6 @@ import { Subscription } from 'rxjs';
 type FuncionarioForm = FormGroup;
 
 const FRETADO_EXIT_TIMES = new Set(['15:48', '17:18', '01:19', '06:00', '07:30']);
-const HORARIOS_HE = ['06:00', '07:30', '12:00', '14:20', '15:48', '17:18', '18:00', '22:35', '01:19', '03:20'] as const;
 
 type HorarioHE = (typeof HORARIOS_HE)[number];
 
@@ -115,8 +115,10 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       turnoFuncionario: [null as ResTurnoFuncionarioDTO | null],
       turnoDescricao: [''],
       precisaUber: [false],
-      inicioHE: ['', [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
-      fimHE: ['', [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
+      excecaoInicioHE: [false],
+      excecaoFimHE: [false],
+      inicioHE: ['', [Validators.required, Validators.pattern(HORARIO_HE_PATTERN)]],
+      fimHE: ['', [Validators.required, Validators.pattern(HORARIO_HE_PATTERN)]],
       marmitex: [false],
       lanche: [false],
       justificativa: ['', Validators.required],
@@ -135,7 +137,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
 
   protected horariosSaida(control: AbstractControl): { label: HorarioHE; value: HorarioHE }[] {
     const inicioIndex = this.horarioIndex(control.get('inicioHE')?.value);
-    return inicioIndex < 0 ? [...this.horariosHE] : this.horariosHE.slice(inicioIndex + 1);
+    return control.get('excecaoInicioHE')?.value || inicioIndex < 0 ? [...this.horariosHE] : this.horariosHE.slice(inicioIndex + 1);
   }
 
   protected onInicioHEChange(control: AbstractControl): void {
@@ -144,11 +146,25 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       return;
     }
 
+    if (control.get('excecaoFimHE')?.value) return;
     const options = this.horariosSaida(control);
     if (!options.some(option => option.value === this.normalizeTime(fimControl.value))) {
       fimControl.setValue('', { emitEvent: false });
     }
     control.updateValueAndValidity({ emitEvent: false });
+  }
+
+  protected temExcecao(control: AbstractControl): boolean {
+    return temExcecaoHE(control.value);
+  }
+
+  protected onExcecaoChange(control: AbstractControl, campo: 'inicioHE' | 'fimHE'): void {
+    const excecao = control.get(campo === 'inicioHE' ? 'excecaoInicioHE' : 'excecaoFimHE')?.value;
+    if (!excecao && this.horarioIndex(control.get(campo)?.value) < 0) {
+      control.get(campo)?.setValue('');
+    }
+    this.onInicioHEChange(control);
+    control.updateValueAndValidity();
   }
 
   protected onCentroCustoChange(ccid: number | null): void {
@@ -418,8 +434,10 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
           transporte === ItemFuncionarioHEDTOTransporteEnum.TAXI ||
           transporte === ItemFuncionarioHEDTOTransporteEnum.FRETADO
         ],
-        inicioHE: [this.normalizeTime(funcionario.inicioHE), [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
-        fimHE: [this.normalizeTime(funcionario.fimHE), [Validators.required, Validators.pattern(/^\d{2}:\d{2}$/)]],
+        excecaoInicioHE: [isHorarioHEExcecao(funcionario.inicioHE)],
+        excecaoFimHE: [isHorarioHEExcecao(funcionario.fimHE)],
+        inicioHE: [this.normalizeTime(funcionario.inicioHE), [Validators.required, Validators.pattern(HORARIO_HE_PATTERN)]],
+        fimHE: [this.normalizeTime(funcionario.fimHE), [Validators.required, Validators.pattern(HORARIO_HE_PATTERN)]],
         marmitex: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.MARMITEX],
         lanche: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.LANCHE],
         justificativa: [funcionario.justificativa ?? folha.justificativas?.[funcionario.matricula] ?? '', Validators.required],
@@ -549,6 +567,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   }
 
   private horarioHEValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.get('excecaoInicioHE')?.value || control.get('excecaoFimHE')?.value) return null;
     const inicio = this.horarioIndex(control.get('inicioHE')?.value);
     const fim = this.horarioIndex(control.get('fimHE')?.value);
     if (inicio < 0 || fim < 0) {
