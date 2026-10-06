@@ -5,7 +5,9 @@ set -euo pipefail
 audit_output=''
 audit_status=0
 
-if ! audit_output="$(npm audit --json 2>&1)"; then
+if audit_output="$(npm audit --json 2>&1)"; then
+  audit_status=0
+else
   audit_status=$?
 fi
 
