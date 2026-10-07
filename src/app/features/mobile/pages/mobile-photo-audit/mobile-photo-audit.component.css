@@ -35,7 +35,7 @@ h1 { margin: 0; color: #173f35; font-size: clamp(1.5rem, 3vw, 2rem); font-weight
 .report-actions { display: flex; align-items: center; gap: .75rem; white-space: nowrap; color: #64748b; font-size: .85rem; }
 .history-link { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid #bbd7c4; border-radius: .4rem; background: #f0fdf4; color: #166534; padding: .4rem .7rem; font-weight: 700; }
 .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .75rem; padding: 0 1.25rem 1.25rem; }
-.media-card { display: flex; flex-direction: column; gap: .35rem; min-width: 0; padding: .4rem; border: 1px solid #e2e8f0; border-radius: .5rem; background: #fff; text-align: left; cursor: pointer; }
+.media-card { position: relative; min-width: 0; border: 1px solid #e2e8f0; border-radius: .5rem; background: #fff; }
 .media-card:hover { border-color: #16a34a; }
 .media-preview { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 4 / 3; border-radius: .35rem; background: #f1f5f9; color: #94a3b8; overflow: hidden; }
 .media-preview img { width: 100%; height: 100%; object-fit: cover; }
@@ -61,3 +61,12 @@ h1 { margin: 0; color: #173f35; font-size: clamp(1.5rem, 3vw, 2rem); font-weight
   .report-actions { flex-wrap: wrap; white-space: normal; }
   .results-header { align-items: flex-start; flex-direction: column; }
 }
+
+.media-open { display: flex; flex-direction: column; gap: .35rem; width: 100%; min-width: 0; padding: .4rem; border: 0; border-radius: .5rem; background: transparent; text-align: left; cursor: pointer; }
+.media-download { position: absolute; top: .7rem; right: .7rem; display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border: 1px solid #bbd7c4; border-radius: .4rem; background: #fff; color: #166534; box-shadow: 0 2px 6px #0003; opacity: 0; pointer-events: none; transition: opacity .15s; cursor: pointer; }
+.media-card:hover .media-download, .media-card:focus-within .media-download, .media-download.is-downloading { opacity: 1; pointer-events: auto; }
+.media-download:hover { background: #dcfce7; }
+.media-open:focus-visible, .media-download:focus-visible, .history-link:focus-visible { outline: 2px solid #16a34a; outline-offset: 2px; }
+.history-link { cursor: pointer; }
+.history-link:disabled, .media-download:disabled { cursor: wait; }
+@media (hover: none) { .media-download { opacity: 1; pointer-events: auto; } }
