@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+import { getMediaUrl } from '@/api/production-history';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -57,6 +59,81 @@ export class MobilePhotoAuditComponent implements OnInit {
   protected readonly pageSize = signal(10);
   protected readonly total = signal(0);
   protected readonly selectedMedia = signal<AuditMedia | null>(null);
+
+  protected readonly downloadingReports = signal(new Set<string>());
+  protected readonly downloadingMedia = signal(new Set<AuditMedia>());
+  protected readonly downloadError = signal<string | null>(null);
+
+  protected async downloadSingleMedia(media: AuditMedia): Promise<void> {
+    if (this.downloadingMedia().has(media)) return;
+    this.downloadingMedia.update((current) => new Set(current).add(media));
+    this.downloadError.set(null);
+    try {
+      saveAs(await this.downloadBlob(media), this.downloadName(media));
+    } catch {
+      this.downloadError.set('Não foi possível baixar a mídia. Tente novamente.');
+    } finally {
+      this.downloadingMedia.update((current) => {
+        const next = new Set(current);
+        next.delete(media);
+        return next;
+      });
+    }
+  }
+
+  protected async downloadReport(report: AuditReport): Promise<void> {
+    if (!report.media.length || this.downloadingReports().has(report._id)) return;
+    this.downloadingReports.update((current) => new Set(current).add(report._id));
+    this.downloadError.set(null);
+    try {
+      const { default: JSZip } = await import('jszip');
+      const zip = new JSZip();
+      const names = new Set<string>();
+      for (const media of report.media) {
+        const original = this.downloadName(media);
+        let name = original;
+        let suffix = 2;
+        const dot = original.lastIndexOf('.');
+        const stem = dot > 0 ? original.slice(0, dot) : original;
+        const extension = dot > 0 ? original.slice(dot) : '';
+        while (names.has(name.toLowerCase())) name = `${stem} (${suffix++})${extension}`;
+        names.add(name.toLowerCase());
+        zip.file(name, await this.downloadBlob(media));
+      }
+      saveAs(await zip.generateAsync({ type: 'blob' }), `reporte-${report._id}.zip`);
+    } catch {
+      this.downloadError.set('Não foi possível baixar todas as mídias do reporte. Tente novamente.');
+    } finally {
+      this.downloadingReports.update((current) => {
+        const next = new Set(current);
+        next.delete(report._id);
+        return next;
+      });
+    }
+  }
+
+  private downloadName(media: AuditMedia): string {
+    return (media.originalName || media.physicalName).replace(/[\\/:*?"<>|\x00-\x1f]/g, '_').replace(/^\.+$/, '_') || 'midia';
+  }
+
+  private async downloadBlob(media: AuditMedia): Promise<Blob> {
+    const url = this.mediaUrl(media);
+    let blob: Blob;
+    if (url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Falha no download');
+      blob = await response.blob();
+    } else {
+      const response = await getMediaUrl(
+        { path: media.path, name: media.physicalName },
+        { responseType: 'blob' },
+      );
+      if (!(response instanceof Blob)) throw new Error('Resposta de mídia inválida');
+      blob = response;
+    }
+    if (!blob.size) throw new Error('Mídia vazia');
+    return blob;
+  }
 
   ngOnInit(): void {
     void this.loadAppNames();

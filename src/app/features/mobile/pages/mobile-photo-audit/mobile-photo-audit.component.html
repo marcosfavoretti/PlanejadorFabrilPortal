@@ -96,6 +96,8 @@
 
     @if (error()) { <div class="error-message" role="alert">{{ error() }}</div> }
 
+    @if (downloadError()) { <div class="error-message" role="alert">{{ downloadError() }}</div> }
+
     <section class="results-panel" aria-label="Reportes encontrados">
       <div class="results-header">
         <div>
@@ -127,6 +129,14 @@
             </div>
             <div class="report-actions">
               <span>{{ report.media.length }} {{ report.media.length === 1 ? 'mídia' : 'mídias' }}</span>
+              @if (report.media.length) {
+              <button type="button" class="history-link" [disabled]="downloadingReports().has(report._id)"
+                (click)="downloadReport(report)" [attr.aria-busy]="downloadingReports().has(report._id)">
+                <i class="pi" [class.pi-download]="!downloadingReports().has(report._id)"
+                  [class.pi-spinner]="downloadingReports().has(report._id)" [class.pi-spin]="downloadingReports().has(report._id)"></i>
+                {{ downloadingReports().has(report._id) ? 'Preparando ZIP...' : 'Baixar todas' }}
+              </button>
+              }
               @if (canOpenHistory(report)) { <button type="button" class="history-link" (click)="openHistory(report)"><i
                   class="pi pi-external-link"></i>Histórico</button> }
             </div>
@@ -135,17 +145,26 @@
           @if (report.media.length) {
           <div class="media-grid">
             @for (media of report.media; track media.path + media.physicalName) {
-            <button type="button" class="media-card" (click)="showMedia(media)"
-              [attr.aria-label]="'Visualizar ' + (media.originalName || media.physicalName)">
-              <div class="media-preview">
-                @if (media.type === 'IMAGE' && mediaUrl(media); as url) { <img [src]="url"
-                  [alt]="media.originalName || media.physicalName" loading="lazy" /> }
-                @else { <i class="pi" [class.pi-video]="media.type === 'VIDEO'"
-                  [class.pi-image]="media.type !== 'VIDEO'"></i> }
-              </div>
-              <strong [title]="media.physicalName">{{ media.originalName || media.physicalName }}</strong>
-              <span>{{ media.storageStatus || 'Sem status' }} · {{ media.uploadedAt | date:'dd/MM/yyyy HH:mm' }}</span>
-            </button>
+            <div class="media-card">
+              <button type="button" class="media-open" (click)="showMedia(media)"
+                [attr.aria-label]="'Visualizar ' + (media.originalName || media.physicalName)">
+                <div class="media-preview">
+                  @if (media.type === 'IMAGE' && mediaUrl(media); as url) { <img [src]="url"
+                    [alt]="media.originalName || media.physicalName" loading="lazy" /> }
+                  @else { <i class="pi" [class.pi-video]="media.type === 'VIDEO'"
+                    [class.pi-image]="media.type !== 'VIDEO'"></i> }
+                </div>
+                <strong [title]="media.physicalName">{{ media.originalName || media.physicalName }}</strong>
+                <span>{{ media.storageStatus || 'Sem status' }} · {{ media.uploadedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+              </button>
+              <button type="button" class="media-download" (click)="downloadSingleMedia(media)"
+                [disabled]="downloadingMedia().has(media)" [class.is-downloading]="downloadingMedia().has(media)"
+                [attr.aria-label]="'Baixar ' + (media.originalName || media.physicalName)"
+                [title]="'Baixar ' + (media.originalName || media.physicalName)">
+                <i class="pi" [class.pi-download]="!downloadingMedia().has(media)"
+                  [class.pi-spinner]="downloadingMedia().has(media)" [class.pi-spin]="downloadingMedia().has(media)"></i>
+              </button>
+            </div>
             }
           </div>
           } @else { <p class="no-media">Este reporte não contém mídias.</p> }
