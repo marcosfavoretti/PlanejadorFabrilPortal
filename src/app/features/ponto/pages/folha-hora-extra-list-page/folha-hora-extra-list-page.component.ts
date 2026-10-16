@@ -1201,7 +1201,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private isWithinDinnerRange(time: string): boolean {
     const [hours, minutes] = time.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes;
-    const dinnerStart = 15 * 60 + 48;
+    const dinnerStart = 14 * 60;
     const dinnerEnd = 1 * 60;
 
     return totalMinutes >= dinnerStart || totalMinutes <= dinnerEnd;
