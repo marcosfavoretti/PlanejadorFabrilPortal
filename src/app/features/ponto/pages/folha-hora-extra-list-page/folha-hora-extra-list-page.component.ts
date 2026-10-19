@@ -1187,24 +1187,20 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected getRefeicaoLabel(
     refeicao: FolhaHoraExtraRefeicaoResumo['refeicao'],
-    { inicioHE, fimHE }: FolhaHoraExtraRefeicaoResumo,
+    { inicioHE }: FolhaHoraExtraRefeicaoResumo,
   ): string {
     if (refeicao !== 'MARMITEX') {
       return refeicao;
     }
 
-    return this.isWithinDinnerRange(inicioHE) && this.isWithinDinnerRange(fimHE)
-      ? 'MARMITEX (JANTA)'
-      : 'MARMITEX (ALMOÇO)';
+    return this.startsAtDinnerTime(inicioHE) ? 'MARMITEX (JANTA)' : 'MARMITEX (ALMOÇO)';
   }
 
-  private isWithinDinnerRange(time: string): boolean {
-    const [hours, minutes] = time.split(':').map(Number);
-    const totalMinutes = hours * 60 + minutes;
+  private startsAtDinnerTime(inicio: string): boolean {
+    const [hours, minutes] = inicio.split(':').map(Number);
     const dinnerStart = 14 * 60;
-    const dinnerEnd = 1 * 60;
 
-    return totalMinutes >= dinnerStart || totalMinutes <= dinnerEnd;
+    return hours * 60 + minutes >= dinnerStart;
   }
 
   protected isAdmin(): boolean {
