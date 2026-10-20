@@ -1,0 +1,36 @@
+<div class="perfil-page">
+  <header class="perfil-page__header">
+    <span class="perfil-page__eyebrow">Minha conta</span>
+    <h1>Perfil e segurança</h1>
+    <p>Consulte os dados da sua conta e gerencie a autenticação em dois fatores.</p>
+  </header>
+
+  <section class="perfil-page__section" id="conta">
+    <header>
+      <h2>Dados da conta</h2>
+    </header>
+    @if (user(); as current) {
+      <app-account-info-card [user]="current" />
+    } @else {
+      <span class="perfil-page__muted">Carregando dados da conta...</span>
+    }
+  </section>
+
+  <section class="perfil-page__section" id="seguranca">
+    <header>
+      <h2>Segurança</h2>
+      <p>Autenticação em dois fatores (2FA) com app autenticador e códigos de recuperação.</p>
+    </header>
+    <app-two-factor-settings />
+  </section>
+
+  @if (canManageApiKeys()) {
+    <section class="perfil-page__section" id="api-keys">
+      <header>
+        <h2>API keys</h2>
+        <p>Crie, rotacione e revogue chaves de acesso usadas por serviços e integrações, como o chatbot.</p>
+      </header>
+      <app-api-keys-widget />
+    </section>
+  }
+</div>

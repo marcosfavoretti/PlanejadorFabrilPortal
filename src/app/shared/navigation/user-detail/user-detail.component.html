@@ -34,10 +34,15 @@
   </div>
   }
 
-  <div class="d-flex justify-content-end gap-2">
-    <button (click)="logout()" class="btn btn-danger rounded-pill d-flex align-items-center gap-2 px-3">
+  <div class="user-popup-card__actions">
+    <a routerLink="/perfil" (click)="onClose.emit()" aria-label="Meu perfil"
+      class="btn btn-outline-success rounded-pill user-popup-card__action">
+      <i class="pi pi-cog"></i>
+      <span class="user-popup-card__action-label">Meu perfil</span>
+    </a>
+    <button (click)="logout()" aria-label="Logout" class="btn btn-danger rounded-pill user-popup-card__action">
       <i class="pi pi-sign-out"></i>
-      <span>Logout</span>
+      <span class="user-popup-card__action-label">Logout</span>
     </button>
   </div>
   }

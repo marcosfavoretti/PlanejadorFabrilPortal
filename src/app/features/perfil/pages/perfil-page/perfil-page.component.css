@@ -1,0 +1,46 @@
+.perfil-page {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.perfil-page__header h1 {
+  font-size: 1.6rem;
+  margin: 0.25rem 0;
+}
+
+.perfil-page__header p,
+.perfil-page__section > header p,
+.perfil-page__muted {
+  color: var(--text-color-secondary, #64748b);
+  margin: 0;
+}
+
+.perfil-page__eyebrow {
+  color: var(--primary-color, #198754);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.perfil-page__section {
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 1rem;
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+.perfil-page__section > header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.perfil-page__section > header h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}

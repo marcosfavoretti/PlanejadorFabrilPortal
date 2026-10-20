@@ -1,0 +1,40 @@
+<div class="account-info">
+  <div class="account-info__identity">
+    <div class="account-info__avatar">
+      <i class="pi pi-user"></i>
+    </div>
+    <div>
+      <strong>{{ user().name }}</strong>
+      <span>{{ user().email }}</span>
+    </div>
+  </div>
+
+  <dl class="account-info__facts">
+    <div>
+      <dt>Cargos</dt>
+      <dd class="account-info__tags">
+        @for (cargo of user().cargosLista; track cargo) {
+          <p-tag [value]="cargo" severity="success" />
+        } @empty {
+          <span class="account-info__muted">Sem cargo</span>
+        }
+      </dd>
+    </div>
+
+    @if (user().centrosCusto.length) {
+      <div>
+        <dt>Centros de custo vinculados</dt>
+        <dd class="account-info__cost-centers">
+          @for (centroCusto of user().centrosCusto; track centroCusto.id) {
+            <span><strong>{{ centroCusto.centroCustoCodigo }}</strong> {{ centroCusto.centroCustoDescricao }}</span>
+          }
+        </dd>
+      </div>
+    }
+
+    <div>
+      <dt>ID do usuário</dt>
+      <dd><code>{{ user().id }}</code></dd>
+    </div>
+  </dl>
+</div>

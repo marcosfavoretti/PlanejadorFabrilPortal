@@ -1,0 +1,48 @@
+.recovery-codes {
+  display: grid;
+  gap: 1rem;
+}
+
+.recovery-codes__warning {
+  align-items: flex-start;
+  background: color-mix(in srgb, #f59e0b 12%, transparent);
+  border: 1px solid color-mix(in srgb, #f59e0b 35%, transparent);
+  border-radius: 0.75rem;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.recovery-codes__warning > i {
+  color: #d97706;
+  font-size: 1.2rem;
+}
+
+.recovery-codes__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recovery-codes__list li {
+  background: var(--surface-ground, #f8fafc);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  text-align: center;
+}
+
+.recovery-codes__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+  .recovery-codes__list {
+    grid-template-columns: 1fr;
+  }
+}

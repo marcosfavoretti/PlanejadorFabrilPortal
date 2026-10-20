@@ -1,0 +1,21 @@
+<div class="api-keys-widget">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <div class="api-keys-widget__intro">
+    <i class="pi pi-key"></i>
+    <div>
+      <strong>Chaves para integrações e serviços</strong>
+      <span>Os serviços enviam a chave como <code>Authorization: Bearer ak_...</code>. O segredo só é exibido na criação e na rotação.</span>
+    </div>
+  </div>
+
+  <app-api-key-create-form [cargos]="inheritedCargos()" [busy]="saving()" (create)="createApiKey($event)" (invalidSubmit)="showWarning($event)" />
+
+  <app-api-key-table [apiKeys]="apiKeys()" [total]="total()" [loading]="loading()" [busyId]="busyId()"
+    (refresh)="loadApiKeys()" (rotate)="confirmRotate($event)" (revoke)="confirmRevoke($event)" />
+</div>
+
+<app-api-key-secret-dialog [apiKey]="revealedKey()" (closed)="closeSecretDialog()"
+  (copyFailed)="showError('Não foi possível copiar a chave. Selecione e copie manualmente.')" />
+
+<p-confirmDialog [style]="{ width: 'min(32rem, 95vw)' }" />

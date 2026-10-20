@@ -1,0 +1,24 @@
+.two-factor-code-dialog {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.two-factor-code-dialog p {
+  margin: 0 0 0.4rem;
+}
+
+.two-factor-code-dialog label {
+  font-weight: 700;
+}
+
+.two-factor-code-dialog input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  width: 100%;
+}
+
+.two-factor-code-dialog__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
