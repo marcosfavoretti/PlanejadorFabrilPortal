@@ -1,0 +1,64 @@
+<div class="two-factor-settings">
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  @if (status(); as current) {
+    <div class="two-factor-settings__status">
+      <div class="two-factor-settings__status-main">
+        <i class="pi" [class.pi-shield]="current.enabled" [class.pi-lock-open]="!current.enabled"></i>
+        <div>
+          <strong>Autenticação em dois fatores</strong>
+          <p-tag [value]="current.enabled ? 'Ativada' : 'Desativada'" [severity]="current.enabled ? 'success' : 'secondary'" />
+        </div>
+      </div>
+
+      @if (current.enabled) {
+        <dl class="two-factor-settings__facts">
+          <div>
+            <dt>Códigos de recuperação restantes</dt>
+            <dd>{{ current.recoveryCodesRemaining }}</dd>
+          </div>
+          <div>
+            <dt>Ativado em</dt>
+            <dd>{{ current.lastEnrolledAt ? (current.lastEnrolledAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</dd>
+          </div>
+          <div>
+            <dt>Última verificação</dt>
+            <dd>{{ current.lastVerifiedAt ? (current.lastVerifiedAt | date: 'dd/MM/yyyy HH:mm') : '—' }}</dd>
+          </div>
+        </dl>
+      }
+    </div>
+
+    @if (current.enabled) {
+      <div class="two-factor-settings__actions">
+        <button type="button" pButton icon="pi pi-refresh" label="Gerar novos códigos de recuperação" severity="secondary"
+          [disabled]="busy()" (click)="openCodeDialog('rotate')"></button>
+        <button type="button" pButton icon="pi pi-power-off" label="Desativar 2FA" severity="danger" outlined
+          [disabled]="busy()" (click)="openCodeDialog('disable')"></button>
+      </div>
+    } @else if (enrollment()) {
+      <app-totp-enrollment-panel [enrollment]="enrollment()!" [busy]="busy()" (confirm)="completeEnrollment($event)"
+        (cancel)="cancelEnrollment()" />
+    } @else {
+      <div class="two-factor-settings__cta">
+        <span>Proteja sua conta exigindo um código do app autenticador em ações sensíveis.</span>
+        <button type="button" pButton icon="pi pi-shield" label="Ativar 2FA" [loading]="busy()"
+          (click)="startEnrollment()"></button>
+      </div>
+    }
+  } @else if (loading()) {
+    <span class="two-factor-settings__muted">Carregando status...</span>
+  }
+</div>
+
+<app-two-factor-code-dialog [visible]="pendingAction() === 'rotate'" header="Gerar novos códigos de recuperação"
+  message="Informe o código atual do seu app autenticador. Os códigos de recuperação anteriores deixarão de funcionar."
+  confirmLabel="Gerar códigos" [busy]="busy()" (submitCode)="submitCode($event)" (cancel)="closeCodeDialog()" />
+
+<app-two-factor-code-dialog [visible]="pendingAction() === 'disable'" header="Desativar 2FA"
+  message="Para desativar, informe um código do app autenticador ou um código de recuperação."
+  confirmLabel="Desativar" confirmSeverity="danger" [allowRecoveryCode]="true" [busy]="busy()"
+  (submitCode)="submitCode($event)" (cancel)="closeCodeDialog()" />
+
+<app-recovery-codes-dialog [codes]="recoveryCodes()" (closed)="closeRecoveryCodes()"
+  (copyFailed)="showError('Não foi possível copiar os códigos. Use o botão de download.')" />

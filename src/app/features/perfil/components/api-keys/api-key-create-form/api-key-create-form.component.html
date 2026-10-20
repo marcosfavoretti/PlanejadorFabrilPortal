@@ -1,0 +1,35 @@
+<form class="api-key-create-form" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="api-key-create-form__field">
+    <label for="api-key-name">Nome</label>
+    <input id="api-key-name" pInputText formControlName="name" [maxlength]="nameMaxLength"
+      placeholder="Ex: chatbot-producao" />
+    <small>Obrigatório, até {{ nameMaxLength }} caracteres.</small>
+  </div>
+
+  <div class="api-key-create-form__field">
+    <label for="api-key-expires">Expira em</label>
+    <div class="api-key-create-form__date">
+      <input id="api-key-expires" type="datetime-local" pInputText formControlName="expiresAt" [min]="minExpiresAt" />
+      @if (form.controls.expiresAt.value) {
+        <button type="button" pButton icon="pi pi-times" text severity="secondary" aria-label="Remover expiração"
+          (click)="clearExpiresAt()"></button>
+      }
+    </div>
+    <small>Opcional. Vazio significa sem expiração.</small>
+  </div>
+
+  <div class="api-key-create-form__actions">
+    <button type="submit" pButton label="Criar API key" icon="pi pi-plus" [loading]="busy()"
+      [disabled]="form.invalid || !cargos().length"></button>
+  </div>
+
+  @if (!cargos().length) {
+    <div class="api-key-create-form__notice">
+      <i class="pi pi-info-circle"></i>
+      <span>
+        A chave herda os cargos do seu usuário, exceto ADMIN. Como você não tem outros cargos,
+        não é possível criar uma API key. Peça a inclusão do cargo que a integração precisa (ex.: PCP, ESTRUTURA).
+      </span>
+    </div>
+  }
+</form>

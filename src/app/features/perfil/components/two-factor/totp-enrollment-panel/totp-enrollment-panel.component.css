@@ -1,0 +1,70 @@
+.totp-enrollment {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  background: var(--surface-ground, #f8fafc);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.totp-enrollment__qr img {
+  background: #fff;
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 0.5rem;
+  display: block;
+  padding: 0.5rem;
+}
+
+.totp-enrollment__steps {
+  display: grid;
+  gap: 1rem;
+}
+
+.totp-enrollment__steps ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.totp-enrollment__secret {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.totp-enrollment__secret span,
+.totp-enrollment__form label {
+  font-weight: 700;
+}
+
+.totp-enrollment__secret code {
+  overflow-wrap: anywhere;
+}
+
+.totp-enrollment__form {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.totp-enrollment__form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.totp-enrollment__form-row input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.2em;
+  width: 9rem;
+}
+
+.totp-enrollment__form small {
+  color: var(--text-color-secondary, #64748b);
+}
+
+@media (max-width: 760px) {
+  .totp-enrollment {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}

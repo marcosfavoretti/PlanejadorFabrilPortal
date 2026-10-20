@@ -1,0 +1,19 @@
+<p-dialog [header]="header()" [visible]="visible()" [modal]="true" [closable]="!busy()" [draggable]="false"
+  [style]="{ width: 'min(28rem, 95vw)' }" (visibleChange)="onVisibleChange($event)">
+  <form class="two-factor-code-dialog" (ngSubmit)="submit()">
+    <p>{{ message() }}</p>
+
+    <label for="two-factor-code-input">
+      {{ allowRecoveryCode() ? 'Código do autenticador ou de recuperação' : 'Código do autenticador' }}
+    </label>
+    <input id="two-factor-code-input" pInputText [formControl]="code" autocomplete="one-time-code"
+      [attr.inputmode]="allowRecoveryCode() ? null : 'numeric'" [placeholder]="allowRecoveryCode() ? '000000 ou código de recuperação' : '000000'" />
+
+    <div class="two-factor-code-dialog__actions">
+      <button type="button" pButton label="Cancelar" severity="secondary" outlined [disabled]="busy()"
+        (click)="cancel.emit()"></button>
+      <button type="submit" pButton [label]="confirmLabel()" [severity]="confirmSeverity()" [loading]="busy()"
+        [disabled]="code.invalid"></button>
+    </div>
+  </form>
+</p-dialog>

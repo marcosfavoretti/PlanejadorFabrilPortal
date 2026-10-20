@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "example": "Chatbot Estrutura" },
+    "cargos": {
+      "type": "array",
+      "example": ["ESTRUTURA"],
+      "items": {
+        "type": "string",
+        "enum": [
+          "ADMIN",
+          "ESTRUTURA",
+          "PCP",
+          "USER",
+          "MOBILE_USER",
+          "CATERPILLAR_USER",
+          "ALMOX",
+          "PROGRAMADOR_LASER",
+          "PRODUCAO_LASER",
+          "LIDER",
+          "COORDENADOR",
+          "PORTARIA",
+          "DIRETOR",
+          "RH",
+          "SUPORTE",
+          "ADMIN_POWERBI",
+          "ADMIN_POWERBI_VIEW"
+        ]
+      }
+    },
+    "expiresAt": {
+      "format": "date-time",
+      "type": "string",
+      "description": "Data de expiração; ausente significa sem expiração."
+    }
+  },
+  "required": ["name", "cargos"],
+  "x-readme-ref-name": "CreateApiKeyDto"
+}

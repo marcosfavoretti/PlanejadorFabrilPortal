@@ -1,0 +1,29 @@
+.api-keys-widget {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.api-keys-widget__intro {
+  align-items: center;
+  background: color-mix(in srgb, var(--primary-color, #198754) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #198754) 20%, transparent);
+  border-radius: 0.75rem;
+  display: flex;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.api-keys-widget__intro > i {
+  color: var(--primary-color, #198754);
+  font-size: 1.4rem;
+}
+
+.api-keys-widget__intro > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.api-keys-widget__intro span {
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.82rem;
+}

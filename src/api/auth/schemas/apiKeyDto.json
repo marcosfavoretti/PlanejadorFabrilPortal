@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "keyId": { "type": "string" },
+    "name": { "type": "string" },
+    "cargos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ADMIN",
+          "ESTRUTURA",
+          "PCP",
+          "USER",
+          "MOBILE_USER",
+          "CATERPILLAR_USER",
+          "ALMOX",
+          "PROGRAMADOR_LASER",
+          "PRODUCAO_LASER",
+          "LIDER",
+          "COORDENADOR",
+          "PORTARIA",
+          "DIRETOR",
+          "RH",
+          "SUPORTE",
+          "ADMIN_POWERBI",
+          "ADMIN_POWERBI_VIEW"
+        ]
+      }
+    },
+    "expiresAt": { "format": "date-time", "type": "string", "nullable": true },
+    "lastUsedAt": { "format": "date-time", "type": "string", "nullable": true },
+    "revokedAt": { "format": "date-time", "type": "string", "nullable": true },
+    "createdBy": { "type": "object", "nullable": true },
+    "createdAt": { "format": "date-time", "type": "string" }
+  },
+  "required": [
+    "id",
+    "keyId",
+    "name",
+    "cargos",
+    "expiresAt",
+    "lastUsedAt",
+    "revokedAt",
+    "createdBy",
+    "createdAt"
+  ],
+  "x-readme-ref-name": "ApiKeyDto"
+}

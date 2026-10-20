@@ -1,0 +1,69 @@
+:host {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.api-key-table__title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.api-key-table__title > div:first-child {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.api-key-table__title span {
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.82rem;
+}
+
+.api-key-table__tools {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.api-key-table__count {
+  background: var(--surface-ground, #f8fafc);
+  border: 1px solid var(--surface-border, #e2e8f0);
+  border-radius: 999px;
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+}
+
+.api-key-table__tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.api-key-table__row--revoked td {
+  color: var(--text-color-secondary, #64748b);
+}
+
+.api-key-table__action-column {
+  text-align: right;
+  width: 7rem;
+}
+
+.api-key-table__action-buttons {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+
+td small {
+  display: block;
+  color: var(--text-color-secondary);
+  margin-top: 0.15rem;
+}
+
+.api-key-table__empty {
+  color: var(--text-color-secondary, #64748b);
+  padding: 2rem !important;
+  text-align: center;
+}

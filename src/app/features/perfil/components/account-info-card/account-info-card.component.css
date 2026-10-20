@@ -1,0 +1,64 @@
+.account-info {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-info__identity {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.account-info__identity > div:last-child {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.account-info__identity strong {
+  font-size: 1.1rem;
+}
+
+.account-info__identity span,
+.account-info__muted {
+  color: var(--text-color-secondary, #64748b);
+}
+
+.account-info__avatar {
+  align-items: center;
+  background: var(--primary-color, #198754);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 1.4rem;
+  height: 3.25rem;
+  justify-content: center;
+  width: 3.25rem;
+}
+
+.account-info__facts {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.account-info__facts dt {
+  color: var(--text-color-secondary, #64748b);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.account-info__facts dd {
+  margin: 0;
+}
+
+.account-info__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.account-info__cost-centers {
+  display: grid;
+  gap: 0.25rem;
+}

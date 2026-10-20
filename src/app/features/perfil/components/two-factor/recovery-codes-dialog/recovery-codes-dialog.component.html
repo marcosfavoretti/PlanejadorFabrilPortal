@@ -1,0 +1,31 @@
+<p-dialog header="Guarde seus códigos de recuperação" [visible]="!!codes()" [modal]="true" [closable]="true"
+  [draggable]="false" [style]="{ width: 'min(34rem, 95vw)' }" (visibleChange)="onVisibleChange($event)">
+  @if (codes(); as list) {
+    <div class="recovery-codes">
+      <div class="recovery-codes__warning">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>
+          Cada código pode ser usado uma única vez caso você perca o acesso ao autenticador.
+          Eles não serão exibidos novamente.
+        </span>
+      </div>
+
+      <ul class="recovery-codes__list">
+        @for (code of list; track code) {
+          <li><code>{{ code }}</code></li>
+        }
+      </ul>
+
+      <div class="recovery-codes__actions">
+        <button type="button" pButton [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'"
+          [label]="copied() ? 'Copiados' : 'Copiar'" severity="secondary" (click)="copy()"></button>
+        <button type="button" pButton icon="pi pi-download" label="Baixar .txt" severity="secondary"
+          (click)="download()"></button>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button type="button" pButton label="Já guardei, fechar" (click)="closed.emit()"></button>
+  </ng-template>
+</p-dialog>
