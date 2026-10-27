@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "ccid": { "type": "object", "nullable": true },
+    "setor": { "type": "string" },
+    "diasPrevistos": {
+      "type": "number",
+      "description": "Dias-pessoa previstos no período."
+    },
+    "faltas": { "type": "number" },
+    "taxaAbsenteismo": { "type": "number" },
+    "funcionariosComFalta": { "type": "number" }
+  },
+  "required": [
+    "ccid",
+    "setor",
+    "diasPrevistos",
+    "faltas",
+    "taxaAbsenteismo",
+    "funcionariosComFalta"
+  ],
+  "x-readme-ref-name": "ResKpiFaltasSetorDTO"
+}

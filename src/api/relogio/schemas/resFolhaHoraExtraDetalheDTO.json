@@ -112,21 +112,24 @@
               "matricula": { "type": "string", "example": "001" },
               "nome": { "type": "string", "example": "Funcionario Um" },
               "salarioHora": { "type": "number", "example": 10 },
-              "multiplicadorCompensacao": { "type": "number", "example": 1.5 },
+              "multiplicadorAdicionalHE": { "type": "number", "example": 1.5 },
               "adicionalNoturno": { "type": "number", "example": 0.35 },
               "horasDiurnas": { "type": "number", "example": 2.5 },
               "horasNoturnas": { "type": "number", "example": 1 },
-              "valorHoraDiurnaComEncargo": { "type": "number", "example": 15 },
+              "valorHoraDiurnaComEncargo": {
+                "type": "number",
+                "example": 24.75
+              },
               "valorHoraNoturnaComEncargo": {
                 "type": "number",
-                "example": 20.25
+                "example": 33.4125
               },
-              "valorHorasDiurnas": { "type": "number", "example": 37.5 },
-              "valorHorasNoturnas": { "type": "number", "example": 20.25 },
+              "valorHorasDiurnas": { "type": "number", "example": 61.875 },
+              "valorHorasNoturnas": { "type": "number", "example": 33.4125 },
               "encargo": {
                 "type": "number",
                 "example": 22.75,
-                "description": "65% do salario-hora base por hora extra contabilizada."
+                "description": "Parcela de encargo já incluída nos valores finais das horas extras."
               },
               "refeicao": { "type": "number", "example": 0 },
               "transporte": { "type": "number", "example": 0 },
@@ -142,10 +145,14 @@
                     },
                     "baseCalculo": {
                       "type": "string",
-                      "example": "salarioHora * compensacao(1.5)"
+                      "example": "(salarioHora * adicionalHE(1.5)) * (1 + encargo(0.65))"
                     },
                     "quantidade": { "type": "number", "example": 2.5 },
-                    "valorUnitario": { "type": "number", "example": 15 },
+                    "valorUnitario": {
+                      "type": "number",
+                      "example": 24.75,
+                      "description": "Valor unitario final da hora extra, incluindo encargo."
+                    },
                     "subtotal": { "type": "number", "example": 37.5 }
                   },
                   "required": [
@@ -163,7 +170,7 @@
               "matricula",
               "nome",
               "salarioHora",
-              "multiplicadorCompensacao",
+              "multiplicadorAdicionalHE",
               "adicionalNoturno",
               "horasDiurnas",
               "horasNoturnas",
@@ -181,7 +188,7 @@
           }
         },
         "quantidadeFuncionarios": { "type": "number", "example": 2 },
-        "multiplicadorCompensacao": { "type": "number", "example": 1.5 },
+        "multiplicadorAdicionalHE": { "type": "number", "example": 1.5 },
         "adicionalNoturno": { "type": "number", "example": 0.35 },
         "totalRefeicao": { "type": "number", "example": 0 },
         "totalTransporte": { "type": "number", "example": 0 },
@@ -196,7 +203,7 @@
       "required": [
         "funcionarios",
         "quantidadeFuncionarios",
-        "multiplicadorCompensacao",
+        "multiplicadorAdicionalHE",
         "adicionalNoturno",
         "totalRefeicao",
         "totalTransporte",

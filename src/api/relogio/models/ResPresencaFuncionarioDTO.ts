@@ -5,8 +5,11 @@
 
 export enum ResPresencaFuncionarioDTOStatusEnum {
   PRESENTE = 'PRESENTE',
-  NAO_PRESENTE = 'NAO_PRESENTE',
+  SAIU = 'SAIU',
+  AUSENTE = 'AUSENTE',
   FORA_DO_TURNO = 'FORA_DO_TURNO',
+  FOLGA = 'FOLGA',
+  FERIADO = 'FERIADO',
   FERIAS = 'FERIAS',
   AFASTADO = 'AFASTADO',
 }
@@ -39,17 +42,27 @@ export type ResPresencaFuncionarioDTO = {
    */
   saidaTurnoBase: object | null;
   /**
-   * @description Indica se a última marcação válida do dia é uma entrada.
+   * @description Data consultada.
+   * @type string
+   */
+  data: string;
+  /**
+   * @description Quantidade de batidas válidas no dia.
+   * @type number
+   */
+  qtdBatidas: number;
+  /**
+   * @description Indica se o status é PRESENTE.
    * @type boolean
    */
   presente: boolean;
   /**
-   * @description Situação atual calculada a partir da última batida e do turno do dia.
+   * @description Situação calculada a partir das batidas, do turno, de feriados (SP3) e de férias/afastamentos (SR8).
    * @type string
    */
   status: ResPresencaFuncionarioDTOStatusEnum;
   /**
-   * @description Indica se o funcionário está de férias (RA_SITFOLH = F).
+   * @description Indica se o funcionário está de férias no dia.
    * @type boolean
    */
   ferias: boolean;

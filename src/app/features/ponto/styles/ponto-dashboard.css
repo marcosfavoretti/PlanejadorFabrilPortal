@@ -1,0 +1,207 @@
+/* Layout compartilhado com a página de folhas de hora extra (banner, abas, filtros, cards e gráficos de KPI). */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeInUp 0.5s ease-out; }
+
+.ponto-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 100%;
+}
+
+.dashboard-section {
+  padding: 1.5rem 0.25rem 0.25rem;
+  border-top: 1px solid var(--surface-border, #e5e7eb);
+}
+
+.ponto-tabs { width: 100%; }
+
+:host ::ng-deep .ponto-tabs .p-tabpanels,
+:host ::ng-deep .ponto-tabs .p-tabpanel { padding: 0; }
+
+/* Header Banner */
+.header-banner {
+  border-radius: 1rem;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; z-index: 1; }
+.page-title { font-size: 2.5rem; font-weight: 800; margin: 0 0 0.5rem 0; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.page-subtitle { font-size: 1.1rem; margin: 0; opacity: 0.9; font-weight: 400; }
+.header-icon { font-size: 5rem; opacity: 0.2; transform: rotate(-10deg); transition: transform 0.4s ease; }
+.header-banner:hover .header-icon { transform: scale(1.1) rotate(5deg); }
+
+/* Card Containers */
+.card-container {
+  background: var(--surface-card, #ffffff);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid var(--surface-border, #e5e7eb);
+  overflow: hidden;
+}
+
+.no-access-card { display: flex; align-items: center; gap: 1rem; padding: 2rem; color: var(--text-color-secondary, #64748b); }
+.no-access-card > .pi { font-size: 2rem; }
+.no-access-card h2 { color: var(--text-color, #334155); font-size: 1.15rem; margin: 0 0 0.25rem; }
+.no-access-card p { margin: 0; }
+
+/* Filters Panel */
+.filters-panel {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--surface-border, #e5e7eb);
+  background-color: var(--surface-ground, #f8f9fa);
+}
+
+.filters-section-title { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+.filters-section-title h2 { color: var(--text-color, #334155); font-size: 1.1rem; font-weight: 800; margin: 0 0 0.25rem; }
+.filters-section-title span { color: var(--text-color-secondary, #64748b); font-size: 0.9rem; }
+
+.filters-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end; }
+.field { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 0.5rem; }
+.field label { font-weight: 600; color: var(--text-color, #334155); font-size: 0.95rem; display: flex; align-items: center; }
+
+.filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 2;
+  justify-content: flex-end;
+  min-width: 300px;
+}
+
+/* Table Panel */
+.table-panel { padding: 0; }
+.table-dynamic-panel { padding: 1.5rem; min-width: 0; }
+
+/* KPI */
+.kpi-charts-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.kpi-charts-grid > section { min-width: 0; }
+
+.kpi-subsection-heading {
+  align-items: center;
+  border-bottom: 1px solid #dbe5ee;
+  display: flex;
+  gap: .7rem;
+  grid-column: 1 / -1;
+  padding: .8rem .2rem .55rem;
+}
+
+.kpi-subsection-heading > i {
+  align-items: center;
+  background: #dbeafe;
+  border-radius: .55rem;
+  color: #2563eb;
+  display: inline-flex;
+  height: 1.9rem;
+  justify-content: center;
+  width: 1.9rem;
+}
+
+.kpi-subsection-heading div { display: flex; flex-direction: column; gap: .12rem; }
+.kpi-subsection-heading strong { color: #334155; font-size: .9rem; }
+.kpi-subsection-heading span { color: #64748b; font-size: .74rem; }
+.kpi-subsection-heading--audit > i { background: #fee2e2; color: #dc2626; }
+
+.kpi-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  grid-column: 1 / -1;
+}
+
+.kpi-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1rem;
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--surface-border, #e5e7eb);
+  border-radius: 0.75rem;
+}
+
+.kpi-summary span,
+.kpi-scope-note { color: var(--text-color-secondary, #64748b); font-size: 0.85rem; }
+.kpi-summary strong { font-size: 1.35rem; color: var(--text-color, #334155); }
+.kpi-scope-note { margin: 0; line-height: 1.5; }
+
+.kpi-chart {
+  background: #f5f7fa;
+  border: 1px solid #d5dee8;
+  border-radius: .9rem;
+  padding: 1.5rem;
+}
+
+.kpi-chart--full { grid-column: 1 / -1; }
+
+.kpi-chart__header {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.kpi-chart__header h2 { color: var(--text-color, #334155); font-size: 1.1rem; font-weight: 800; margin: 0 0 .25rem; }
+.kpi-chart__header span,
+.kpi-chart__empty { color: var(--text-color-secondary, #64748b); font-size: .9rem; }
+.kpi-chart__empty { margin: 1.5rem 0; text-align: center; }
+
+.kpi-chart__canvas { height: 22rem; min-height: 22rem; margin-top: .25rem; position: relative; width: 100%; }
+
+/* O p-chart envolve o canvas numa div sem altura; sem isso o Chart.js (maintainAspectRatio: false) cresce sem limite. */
+.kpi-chart__canvas { overflow: hidden; }
+:host ::ng-deep .kpi-chart__canvas p-chart { display: block; height: 100%; width: 100%; }
+:host ::ng-deep .kpi-chart__canvas p-chart > div { height: 100%; width: 100%; }
+
+.kpi-table {
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--surface-border, #e5e7eb);
+  border-radius: .9rem;
+  grid-column: 1 / -1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.kpi-table__header { align-items: flex-end; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-bottom: 1rem; }
+.kpi-table__header h2 { color: var(--text-color, #334155); font-size: 1.1rem; font-weight: 800; margin: 0 0 .25rem; }
+.kpi-table__header span { color: var(--text-color-secondary, #64748b); font-size: .9rem; }
+
+@media (max-width: 980px) {
+  .header-banner { padding: 1.5rem; flex-direction: column; text-align: center; }
+  .header-content { flex-direction: column; gap: 1rem; }
+  .header-icon { display: none; }
+  .page-title { font-size: 1.8rem; }
+  .filters-grid { flex-direction: column; align-items: stretch; }
+  .kpi-charts-grid { grid-template-columns: 1fr; }
+  .kpi-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter-actions { justify-content: stretch; flex-direction: column; }
+  .filter-actions > * { width: 100%; }
+}
+
+@media (max-width: 560px) {
+  .ponto-dashboard-container { gap: 1rem; padding: 1rem; }
+  .kpi-summary { grid-template-columns: 1fr; }
+  .table-dynamic-panel,
+  .kpi-chart,
+  .kpi-table { padding: 1rem; }
+}

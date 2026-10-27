@@ -20,3 +20,6 @@ export { funcionarioControllerConsultarPresencaFuncionarios } from './funcionari
 export { funcionarioControllerConsultarTurnoFuncionario } from './funcionarioControllerConsultarTurnoFuncionario';
 export { pontoControllerConsultaMarcacaoMethod } from './pontoControllerConsultaMarcacaoMethod';
 export { pontoKPIControllerConsultarMaisHorasIrregulares } from './pontoKPIControllerConsultarMaisHorasIrregulares';
+export { pontoKPIControllerListarDiasDeFalta } from './pontoKPIControllerListarDiasDeFalta';
+export { pontoKPIControllerRankingFaltas } from './pontoKPIControllerRankingFaltas';
+export { pontoKPIControllerResumirFaltas } from './pontoKPIControllerResumirFaltas';

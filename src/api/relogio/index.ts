@@ -176,6 +176,7 @@ export type { KpiJornadaFolhaHoraExtraFuncionarioDTO } from './models/KpiJornada
 export type { PaginatedResFolhaHoraExtraDTODto } from './models/PaginatedResFolhaHoraExtraDTODto';
 export type { PaginatedResFuncionarioListagemDTODto } from './models/PaginatedResFuncionarioListagemDTODto';
 export type { PaginatedResPresencaFuncionarioDTODto } from './models/PaginatedResPresencaFuncionarioDTODto';
+export type { PaginatedResRankingFaltasDTODto } from './models/PaginatedResRankingFaltasDTODto';
 export type { PaginatedResRefeicaoFuncionarioDTODto } from './models/PaginatedResRefeicaoFuncionarioDTODto';
 export type { PaginatedResRegistroPontoTurnoPontoDTODto } from './models/PaginatedResRegistroPontoTurnoPontoDTODto';
 export type {
@@ -190,6 +191,25 @@ export type {
   PontoKPIControllerConsultarMaisHorasIrregularesQueryParams,
   PontoKPIControllerConsultarMaisHorasIrregularesQueryResponse,
 } from './models/PontoKPIControllerConsultarMaisHorasIrregulares';
+export type {
+  PontoKPIControllerListarDiasDeFaltaError,
+  PontoKPIControllerListarDiasDeFaltaPathParams,
+  PontoKPIControllerListarDiasDeFaltaQuery,
+  PontoKPIControllerListarDiasDeFaltaQueryParams,
+  PontoKPIControllerListarDiasDeFaltaQueryResponse,
+} from './models/PontoKPIControllerListarDiasDeFalta';
+export type {
+  PontoKPIControllerRankingFaltasError,
+  PontoKPIControllerRankingFaltasQuery,
+  PontoKPIControllerRankingFaltasQueryParams,
+  PontoKPIControllerRankingFaltasQueryResponse,
+} from './models/PontoKPIControllerRankingFaltas';
+export type {
+  PontoKPIControllerResumirFaltasError,
+  PontoKPIControllerResumirFaltasQuery,
+  PontoKPIControllerResumirFaltasQueryParams,
+  PontoKPIControllerResumirFaltasQueryResponse,
+} from './models/PontoKPIControllerResumirFaltas';
 export type { RejeitarFolhaHoraExtraDTO } from './models/RejeitarFolhaHoraExtraDTO';
 export type { RelatorioRecursosResumoDTO } from './models/RelatorioRecursosResumoDTO';
 export type { RelatorioSetorDTO } from './models/RelatorioSetorDTO';
@@ -199,6 +219,7 @@ export type { ResEventoHoraExtraNaoAutorizadaDTO } from './models/ResEventoHoraE
 export type { ResExtratoCustoFuncionarioHoraExtraDTO } from './models/ResExtratoCustoFuncionarioHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraDTO } from './models/ResExtratoCustoHoraExtraDTO';
 export type { ResExtratoCustoHoraExtraLinhaDTO } from './models/ResExtratoCustoHoraExtraLinhaDTO';
+export type { ResFaltasFuncionarioDTO } from './models/ResFaltasFuncionarioDTO';
 export type { ResFolhaHoraExtraDTO } from './models/ResFolhaHoraExtraDTO';
 export type { ResFolhaHoraExtraDetalheDTO } from './models/ResFolhaHoraExtraDetalheDTO';
 export type { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO } from './models/ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
@@ -208,9 +229,13 @@ export type { ResHorasIrregularesDTO } from './models/ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './models/ResItemFuncionarioHEDTO';
 export type { ResKpiCumprimentoFolhaHoraExtraDTO } from './models/ResKpiCumprimentoFolhaHoraExtraDTO';
 export type { ResKpiCustoFolhaHoraExtraDTO } from './models/ResKpiCustoFolhaHoraExtraDTO';
+export type { ResKpiFaltasDiaDTO } from './models/ResKpiFaltasDiaDTO';
+export type { ResKpiFaltasResumoDTO } from './models/ResKpiFaltasResumoDTO';
+export type { ResKpiFaltasSetorDTO } from './models/ResKpiFaltasSetorDTO';
 export type { ResKpiJornadaFolhaHoraExtraDTO } from './models/ResKpiJornadaFolhaHoraExtraDTO';
 export type { ResPontoFuncionarioDTO } from './models/ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './models/ResPresencaFuncionarioDTO';
+export type { ResRankingFaltasDTO } from './models/ResRankingFaltasDTO';
 export type { ResRefeicaoFuncionarioDTO } from './models/ResRefeicaoFuncionarioDTO';
 export type { ResRegistroPontoTurnoPontoDTO } from './models/ResRegistroPontoTurnoPontoDTO';
 export type { ResRelatorioHoraExtraDTO } from './models/ResRelatorioHoraExtraDTO';
@@ -241,6 +266,9 @@ export { funcionarioControllerConsultarPresencaFuncionarios } from './client/fun
 export { funcionarioControllerConsultarTurnoFuncionario } from './client/funcionarioControllerConsultarTurnoFuncionario';
 export { pontoControllerConsultaMarcacaoMethod } from './client/pontoControllerConsultaMarcacaoMethod';
 export { pontoKPIControllerConsultarMaisHorasIrregulares } from './client/pontoKPIControllerConsultarMaisHorasIrregulares';
+export { pontoKPIControllerListarDiasDeFalta } from './client/pontoKPIControllerListarDiasDeFalta';
+export { pontoKPIControllerRankingFaltas } from './client/pontoKPIControllerRankingFaltas';
+export { pontoKPIControllerResumirFaltas } from './client/pontoKPIControllerResumirFaltas';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsRefeicaoEnum } from './models/FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerConsultarRefeicoesQueryParamsStatusEnum } from './models/FolhaHoraExtraControllerConsultarRefeicoes';
 export { FolhaHoraExtraControllerHistoricoQueryParamsStatusEnum } from './models/FolhaHoraExtraControllerHistorico';
@@ -251,6 +279,7 @@ export { FolhaHoraExtraKpiControllerCustoQueryParamsViewEnum } from './models/Fo
 export { FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum } from './models/FuncionarioControllerConsultarPresencaFuncionarios';
 export { ItemFuncionarioHEDTORefeicaoEnum } from './models/ItemFuncionarioHEDTO';
 export { ItemFuncionarioHEDTOTransporteEnum } from './models/ItemFuncionarioHEDTO';
+export { PontoKPIControllerRankingFaltasQueryParamsOrdenarPorEnum } from './models/PontoKPIControllerRankingFaltas';
 export { ResAssinaturaAprovacaoDTOAcaoEnum } from './models/ResAssinaturaAprovacaoDTO';
 export { ResEventoHoraExtraNaoAutorizadaDTOOrigemEnum } from './models/ResEventoHoraExtraNaoAutorizadaDTO';
 export { ResFolhaHoraExtraDTOPercentualCustoEnum } from './models/ResFolhaHoraExtraDTO';

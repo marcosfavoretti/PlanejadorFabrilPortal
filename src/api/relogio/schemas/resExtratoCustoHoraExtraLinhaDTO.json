@@ -4,10 +4,14 @@
     "componente": { "type": "string", "example": "Hora extra diurna" },
     "baseCalculo": {
       "type": "string",
-      "example": "salarioHora * compensacao(1.5)"
+      "example": "(salarioHora * adicionalHE(1.5)) * (1 + encargo(0.65))"
     },
     "quantidade": { "type": "number", "example": 2.5 },
-    "valorUnitario": { "type": "number", "example": 15 },
+    "valorUnitario": {
+      "type": "number",
+      "example": 24.75,
+      "description": "Valor unitario final da hora extra, incluindo encargo."
+    },
     "subtotal": { "type": "number", "example": 37.5 }
   },
   "required": [

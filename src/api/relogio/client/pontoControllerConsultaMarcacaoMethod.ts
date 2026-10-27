@@ -19,6 +19,8 @@ function getPontoControllerConsultaMarcacaoMethodUrl() {
 }
 
 /**
+ * @description Retorna, paginadas, as marcações de ponto (entradas e saídas) dos funcionários no período dataInicio a dataFim, agrupadas por turno. Filtre por identificador (nome, matrícula, CPF ou PIS) ou por centro de custo (ccid). Quem não tem acesso amplo vê apenas os centros autorizados.
+ * @summary Lista as marcações de ponto dos funcionários
  * {@link /api/ponto/registro}
  */
 export async function pontoControllerConsultaMarcacaoMethod(

@@ -1,0 +1,173 @@
+@if (filterContextReady()) {
+<section class="dashboard-section" aria-label="KPI de faltas">
+  <div class="card-container">
+    <form class="filters-panel" [formGroup]="filtroForm" (ngSubmit)="aplicarFiltros()">
+      <div class="filters-section-title">
+        <div>
+          <h2><i class="pi pi-filter mr-2"></i>Filtros do KPI de faltas</h2>
+          <span>Falta é um dia previsto de trabalho (dia útil do turno, fora de feriado, sem férias ou afastamento) sem
+            nenhuma batida válida.</span>
+        </div>
+        @if (atualizacaoLabel()) {
+        <span class="faltas-update-note"><i class="pi pi-clock me-1"></i>{{ atualizacaoLabel() }}</span>
+        }
+      </div>
+
+      <div class="filters-grid">
+        <div class="field">
+          <label for="faltasPeriodo"><i class="pi pi-calendar mr-2"></i>Período (máx. 92 dias)</label>
+          <p-datepicker inputId="faltasPeriodo" formControlName="periodo" selectionMode="range" dateFormat="dd/mm/yy"
+            placeholder="Início - Fim" [maxDate]="hoje" [readonlyInput]="true" [showIcon]="true" appendTo="body"
+            styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="field">
+          <label for="faltasCentroCusto"><i class="pi pi-building mr-2"></i>Centros de Custo</label>
+          <p-multiselect inputId="faltasCentroCusto" formControlName="ccid" [options]="centroDeCusto" optionLabel="setor"
+            optionValue="ccid" [filter]="true" filterBy="setor,ccid" [maxSelectedLabels]="2"
+            selectedItemsLabel="{0} centros" placeholder="Todos os permitidos" appendTo="body" styleClass="w-full">
+            <ng-template let-centro pTemplate="item">{{ centro.ccid }} - {{ centro.setor }}</ng-template>
+          </p-multiselect>
+        </div>
+        <div class="field">
+          <label for="faltasDiaSemana"><i class="pi pi-calendar-clock mr-2"></i>Dias da semana</label>
+          <p-multiselect inputId="faltasDiaSemana" formControlName="diaSemana" [options]="diaSemanaOptions"
+            optionLabel="label" optionValue="value" [maxSelectedLabels]="2" selectedItemsLabel="{0} dias"
+            placeholder="Todos" appendTo="body" styleClass="w-full"></p-multiselect>
+        </div>
+        <div class="field">
+          <label for="faltasIdentificador">Funcionário</label>
+          <input pInputText id="faltasIdentificador" formControlName="identificador"
+            placeholder="Matrícula, CPF, PIS ou nome" />
+        </div>
+        <div class="filter-actions">
+          <p-button type="submit" label="Aplicar" icon="pi pi-search" severity="success"></p-button>
+          <p-button label="Limpar" icon="pi pi-filter-slash" severity="secondary" [outlined]="true"
+            (click)="limparFiltros()"></p-button>
+        </div>
+      </div>
+    </form>
+
+    @if (resumoLoading()) {
+    <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+    }
+
+    @if (erro(); as mensagem) {
+    <div class="alert alert-danger m-3 mb-0 py-2" role="alert"><i class="pi pi-exclamation-triangle me-2"></i>{{ mensagem }}</div>
+    }
+
+    @if (semCentroCusto()) {
+    <div class="no-access-card">
+      <i class="pi pi-lock"></i>
+      <div>
+        <h2>Nenhum centro de custo vinculado</h2>
+        <p>Peça ao RH para vincular seus setores e acompanhar as faltas da equipe.</p>
+      </div>
+    </div>
+    } @else {
+    <div class="kpi-charts-grid table-dynamic-panel">
+      @if (resumo()) {
+      @let r = resumo()!;
+      <div class="kpi-subsection-heading kpi-subsection-heading--audit">
+        <i class="pi pi-chart-line"></i>
+        <div><strong>Visão geral</strong><span>Absenteísmo do período e evolução diária</span></div>
+      </div>
+
+      <div class="kpi-summary" aria-label="Resumo de faltas">
+        <div class="faltas-summary__taxa"><span>Taxa de absenteísmo</span><strong>{{ formatPercent(r.taxaAbsenteismo) }}</strong></div>
+        <div><span>Faltas no período</span><strong>{{ r.faltas | number }}</strong></div>
+        <div><span>Dias-pessoa previstos</span><strong>{{ r.diasPrevistos | number }}</strong></div>
+        <div><span>Funcionários com falta</span><strong>{{ r.funcionariosComFalta | number }}</strong></div>
+      </div>
+
+      <section class="kpi-chart kpi-chart--full" aria-labelledby="faltas-por-dia-title">
+        <div class="kpi-chart__header">
+          <div>
+            <h2 id="faltas-por-dia-title"><i class="pi pi-chart-bar me-2"></i>Faltas por dia</h2>
+            <span>Barras mostram as faltas; a linha vermelha mostra a taxa. Domingos e feriados não têm dias
+              previstos.</span>
+          </div>
+        </div>
+        @if (porDiaChartData) {
+        <div class="kpi-chart__canvas">
+          <p-chart type="bar" [data]="porDiaChartData" [options]="porDiaChartOptions" height="100%"></p-chart>
+        </div>
+        } @else {
+        <p class="kpi-chart__empty">Sem dias no período.</p>
+        }
+      </section>
+
+      <div class="kpi-subsection-heading">
+        <i class="pi pi-building"></i>
+        <div><strong>Setores</strong><span>Centros de custo com maior taxa de absenteísmo</span></div>
+      </div>
+      <section class="kpi-table" aria-label="Absenteísmo por setor">
+        <app-table-dynamic [tableModel]="setorTableModel" [data]="r.porSetor" [exportable]="true" [rows]="5"
+          [rowsPerPageOptions]="[5, 10, 20]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"></app-table-dynamic>
+      </section>
+      }
+
+      <div class="kpi-subsection-heading">
+        <i class="pi pi-users"></i>
+        <div><strong>Funcionários</strong><span>Quem mais falta; clique no calendário para ver os dias</span></div>
+      </div>
+      <section class="kpi-table" aria-label="Ranking de faltas">
+        <form class="kpi-table__header" [formGroup]="rankingForm" (ngSubmit)="aplicarOrdenacaoRanking()">
+          <div class="filters-grid faltas-ranking-filters">
+            <div class="field">
+              <label for="faltasOrdenar">Ordenar por</label>
+              <p-select inputId="faltasOrdenar" formControlName="ordenarPor" [options]="ordenarPorOptions"
+                optionLabel="label" optionValue="value" appendTo="body" styleClass="w-full"
+                (onChange)="aplicarOrdenacaoRanking()"></p-select>
+            </div>
+            <div class="field">
+              <label for="faltasMin">Mínimo de faltas</label>
+              <p-inputnumber inputId="faltasMin" formControlName="minFaltas" [min]="1" [showButtons]="true"
+                styleClass="w-full" inputStyleClass="w-full"></p-inputnumber>
+            </div>
+            <div class="filter-actions">
+              <p-button type="submit" label="Atualizar ranking" icon="pi pi-sort-amount-down" severity="success"
+                [outlined]="true"></p-button>
+            </div>
+          </div>
+        </form>
+        <app-table-dynamic [tableModel]="rankingTableModel" [data]="ranking()" [exportable]="false" [lazy]="true"
+          [loading]="rankingLoading()" [first]="rankingFirst" [rows]="rankingPageSize" [totalRecords]="rankingTotal()"
+          [rowsPerPageOptions]="[10, 20, 50]" paginatorDropdownAppendTo="body" responsiveLayout="scroll"
+          (lazyLoad)="onRankingLazyLoad($event)"></app-table-dynamic>
+      </section>
+    </div>
+    }
+  </div>
+</section>
+}
+
+<p-dialog [visible]="detalheVisivel()" (visibleChange)="!$event && fecharDetalhe()" [modal]="true" [dismissableMask]="true"
+  [style]="{ width: '46rem', maxWidth: '95vw' }" appendTo="body"
+  [header]="detalheFuncionario() ? detalheFuncionario()!.matricula + ' - ' + detalheFuncionario()!.nome : 'Dias de falta'">
+  @if (detalheFuncionario(); as func) {
+  <p class="faltas-detail-summary">
+    {{ func.setor }} · <strong>{{ func.faltas }}</strong> falta(s) em {{ func.diasPrevistos }} dias previstos
+    ({{ formatPercent(func.taxa) }}) · maior sequência de <strong>{{ func.maiorSequencia }}</strong>
+  </p>
+  }
+  @if (detalheLoading()) {
+  <p-progressbar mode="indeterminate" [style]="{ height: '6px' }"></p-progressbar>
+  } @else {
+  <div class="faltas-calendar-grid">
+    @for (mes of detalheMeses(); track mes.titulo) {
+    <div class="faltas-calendar">
+      <strong class="faltas-calendar__title">{{ mes.titulo }}</strong>
+      <div class="faltas-calendar__days">
+        @for (label of semanaLabels; track $index) {
+        <span class="faltas-calendar__weekday">{{ label }}</span>
+        }
+        @for (dia of mes.dias; track $index) {
+        <span class="faltas-calendar__day" [class.faltas-calendar__day--falta]="dia.falta"
+          [attr.title]="dia.falta ? 'Falta' : null">{{ dia.data ? (dia.data | date: 'd') : '' }}</span>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+</p-dialog>

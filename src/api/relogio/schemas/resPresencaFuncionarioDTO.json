@@ -17,24 +17,36 @@
       "example": "17:00",
       "description": "Último horário de saída previsto no turno do dia."
     },
+    "data": {
+      "type": "string",
+      "example": "2026-10-23",
+      "description": "Data consultada."
+    },
+    "qtdBatidas": {
+      "type": "number",
+      "description": "Quantidade de batidas válidas no dia."
+    },
     "presente": {
       "type": "boolean",
-      "description": "Indica se a última marcação válida do dia é uma entrada."
+      "description": "Indica se o status é PRESENTE."
     },
     "status": {
       "type": "string",
       "enum": [
         "PRESENTE",
-        "NAO_PRESENTE",
+        "SAIU",
+        "AUSENTE",
         "FORA_DO_TURNO",
+        "FOLGA",
+        "FERIADO",
         "FERIAS",
         "AFASTADO"
       ],
-      "description": "Situação atual calculada a partir da última batida e do turno do dia."
+      "description": "Situação calculada a partir das batidas, do turno, de feriados (SP3) e de férias/afastamentos (SR8)."
     },
     "ferias": {
       "type": "boolean",
-      "description": "Indica se o funcionário está de férias (RA_SITFOLH = F)."
+      "description": "Indica se o funcionário está de férias no dia."
     }
   },
   "required": [
@@ -44,6 +56,8 @@
     "turnoBase",
     "entradaTurnoBase",
     "saidaTurnoBase",
+    "data",
+    "qtdBatidas",
     "presente",
     "status",
     "ferias"

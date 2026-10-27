@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string" },
+    "nome": { "type": "string" },
+    "setor": { "type": "string" },
+    "ccid": { "type": "object", "nullable": true },
+    "diasPrevistos": { "type": "number" },
+    "faltas": { "type": "number" },
+    "taxa": { "type": "number", "description": "faltas / diasPrevistos em %." },
+    "ultimaFalta": {
+      "type": "object",
+      "nullable": true,
+      "example": "2026-10-23"
+    },
+    "maiorSequencia": {
+      "type": "number",
+      "description": "Maior sequência de faltas em dias previstos consecutivos (folgas e feriados não quebram a sequência)."
+    }
+  },
+  "required": [
+    "matricula",
+    "nome",
+    "setor",
+    "ccid",
+    "diasPrevistos",
+    "faltas",
+    "taxa",
+    "ultimaFalta",
+    "maiorSequencia"
+  ],
+  "x-readme-ref-name": "ResRankingFaltasDTO"
+}

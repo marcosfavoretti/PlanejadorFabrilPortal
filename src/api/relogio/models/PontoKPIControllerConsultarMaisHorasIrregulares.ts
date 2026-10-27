@@ -17,10 +17,12 @@ export type PontoKPIControllerConsultarMaisHorasIrregularesQueryParams = {
    */
   ccid?: string[];
   /**
+   * @description Data inicial do período, no formato YYYY-MM-DD.
    * @type string | undefined
    */
   dataInicio?: string;
   /**
+   * @description Data final do período, no formato YYYY-MM-DD.
    * @type string | undefined
    */
   dataFim?: string;
@@ -35,11 +37,13 @@ export type PontoKPIControllerConsultarMaisHorasIrregularesQueryParams = {
    */
   horasTrabalhadasMax?: number;
   /**
+   * @description Número da página, começando em 1.
    * @default 1
    * @type number | undefined
    */
   page?: number;
   /**
+   * @description Quantidade de registros por página, de 1 a 9999.
    * @maxLength 9999
    * @default 20
    * @type number | undefined

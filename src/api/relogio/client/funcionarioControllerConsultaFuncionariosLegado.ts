@@ -19,6 +19,8 @@ function getFuncionarioControllerConsultaFuncionariosLegadoUrl() {
 }
 
 /**
+ * @description Alias legado de GET /funcionario, com os mesmos filtros e regras de acesso. Prefira a rota raiz /funcionario.
+ * @summary Lista os funcionários (alias legado)
  * {@link /api/ponto/funcionario/funcionarios}
  */
 export async function funcionarioControllerConsultaFuncionariosLegado(
