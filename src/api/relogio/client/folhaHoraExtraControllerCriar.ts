@@ -23,7 +23,7 @@ function getFolhaHoraExtraControllerCriarUrl() {
 }
 
 /**
- * @description Cria uma folha HE para um centro de custo vinculado ao usuario operacional autenticado. Valida existencia do CC, funcionarios, demissao, duplicidade de matricula, vinculo funcionario x CC e vinculo usuario x CC. A folha nasce com status RASCUNHO.
+ * @description Cria uma folha HE para um centro de custo vinculado ao usuario operacional autenticado. Valida existencia do CC, funcionarios, demissao, duplicidade de matricula, vinculo funcionario x CC e vinculo usuario x CC. A folha nasce com status RASCUNHO. Operação de escrita.
  * @summary Cria uma folha de hora extra em rascunho
  * {@link /api/ponto/folha-he}
  */

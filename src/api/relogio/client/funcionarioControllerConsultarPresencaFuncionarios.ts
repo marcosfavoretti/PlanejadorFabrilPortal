@@ -19,6 +19,8 @@ function getFuncionarioControllerConsultarPresencaFuncionariosUrl() {
 }
 
 /**
+ * @description Retorna a presença de cada funcionário ativo com um status: PRESENTE (última batida é uma entrada), SAIU (batidas pares: intervalo, saída antecipada ou fim da jornada), AUSENTE (dia útil sem nenhuma batida após o início da jornada, ou seja, falta), FORA_DO_TURNO, FOLGA, FERIADO, FERIAS ou AFASTADO. Use para responder “quem está presente agora?” e “quem faltou hoje?” (status=AUSENTE). Informe data (yyyy-MM-dd) para consultar dias anteriores: nelas qualquer batida conta como PRESENTE e dia útil sem batida é AUSENTE. Filtre por status, nome, matrícula, CPF, PIS ou centro de custo.
+ * @summary Lista a presença dos funcionários em um dia (padrão hoje)
  * {@link /api/ponto/funcionario/presenca}
  */
 export async function funcionarioControllerConsultarPresencaFuncionarios(

@@ -16,6 +16,8 @@ function getFuncionarioControllerConsultarCentroDeCustoMethodUrl() {
 }
 
 /**
+ * @description Retorna os centros de custo (ccid) que o usuário autenticado pode consultar. Quem não tem acesso amplo recebe apenas os centros autorizados. Use o ccid retornado como filtro nas demais consultas de ponto.
+ * @summary Lista os centros de custo disponíveis ao usuário
  * {@link /api/ponto/funcionario/centro-custo}
  */
 export async function funcionarioControllerConsultarCentroDeCustoMethod(

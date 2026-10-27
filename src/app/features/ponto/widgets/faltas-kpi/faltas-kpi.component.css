@@ -1,0 +1,22 @@
+:host { display: block; }
+
+.faltas-update-note { color: var(--text-color-secondary, #64748b); font-size: .85rem; white-space: nowrap; }
+
+.kpi-summary .faltas-summary__taxa { border-color: rgba(220, 38, 38, .35); }
+.kpi-summary .faltas-summary__taxa strong { color: #dc2626; }
+
+.faltas-ranking-filters { flex: 1; }
+.faltas-ranking-filters .field { flex: 0 1 14rem; min-width: 12rem; }
+
+.faltas-detail-summary { color: var(--text-color-secondary, #64748b); font-size: .875rem; }
+.faltas-calendar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1.25rem; }
+.faltas-calendar__title { display: block; font-size: .9rem; margin-bottom: .5rem; text-transform: capitalize; }
+.faltas-calendar__days { display: grid; grid-template-columns: repeat(7, 1fr); gap: .2rem; text-align: center; }
+.faltas-calendar__weekday { color: var(--text-color-secondary, #64748b); font-size: .72rem; font-weight: 700; }
+.faltas-calendar__day { border-radius: .4rem; font-size: .8rem; line-height: 1.9rem; }
+.faltas-calendar__day--falta { background: #dc2626; color: #fff; font-weight: 700; }
+
+@media (max-width: 980px) {
+  .faltas-update-note { white-space: normal; }
+  .filters-section-title { align-items: flex-start; flex-direction: column; }
+}

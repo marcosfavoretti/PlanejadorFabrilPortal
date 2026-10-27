@@ -19,6 +19,8 @@ function getPontoKPIControllerConsultarMaisHorasIrregularesUrl() {
 }
 
 /**
+ * @description Retorna os funcionários com mais horas trabalhadas irregulares no período, com filtros de horasTrabalhadasMin e horasTrabalhadasMax. Atenção à paginação: aqui page começa em 1 e limit vai até 9999, diferente das demais consultas de ponto (page começa em 0 e limit até 100).
+ * @summary Lista os funcionários com mais horas irregulares no período
  * {@link /api/ponto/kpi/mais-horas-irregulares}
  */
 export async function pontoKPIControllerConsultarMaisHorasIrregulares(

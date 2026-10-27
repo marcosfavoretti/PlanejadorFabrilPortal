@@ -1,0 +1,78 @@
+{
+  "type": "object",
+  "properties": {
+    "dataInicio": { "type": "string", "example": "2026-10-01" },
+    "dataFim": { "type": "string", "example": "2026-10-26" },
+    "diasPrevistos": {
+      "type": "number",
+      "description": "Dias-pessoa previstos: dia útil do turno, fora de feriado, sem férias ou afastamento."
+    },
+    "faltas": {
+      "type": "number",
+      "description": "Dias-pessoa previstos sem nenhuma batida."
+    },
+    "taxaAbsenteismo": {
+      "type": "number",
+      "description": "faltas / diasPrevistos em %."
+    },
+    "funcionariosComFalta": { "type": "number" },
+    "porDia": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": { "type": "string", "example": "2026-10-23" },
+          "previstos": {
+            "type": "number",
+            "description": "Funcionários com jornada prevista no dia."
+          },
+          "faltas": { "type": "number" },
+          "taxaAbsenteismo": {
+            "type": "number",
+            "description": "Percentual de faltas sobre os previstos."
+          }
+        },
+        "required": ["data", "previstos", "faltas", "taxaAbsenteismo"],
+        "x-readme-ref-name": "ResKpiFaltasDiaDTO"
+      }
+    },
+    "porSetor": {
+      "description": "Ordenado pela taxa de absenteísmo.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ccid": { "type": "object", "nullable": true },
+          "setor": { "type": "string" },
+          "diasPrevistos": {
+            "type": "number",
+            "description": "Dias-pessoa previstos no período."
+          },
+          "faltas": { "type": "number" },
+          "taxaAbsenteismo": { "type": "number" },
+          "funcionariosComFalta": { "type": "number" }
+        },
+        "required": [
+          "ccid",
+          "setor",
+          "diasPrevistos",
+          "faltas",
+          "taxaAbsenteismo",
+          "funcionariosComFalta"
+        ],
+        "x-readme-ref-name": "ResKpiFaltasSetorDTO"
+      }
+    }
+  },
+  "required": [
+    "dataInicio",
+    "dataFim",
+    "diasPrevistos",
+    "faltas",
+    "taxaAbsenteismo",
+    "funcionariosComFalta",
+    "porDia",
+    "porSetor"
+  ],
+  "x-readme-ref-name": "ResKpiFaltasResumoDTO"
+}

@@ -8,26 +8,36 @@ import type { _Object } from './_Object';
 
 export enum FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum {
   PRESENTE = 'PRESENTE',
-  NAO_PRESENTE = 'NAO_PRESENTE',
+  SAIU = 'SAIU',
+  AUSENTE = 'AUSENTE',
   FORA_DO_TURNO = 'FORA_DO_TURNO',
+  FOLGA = 'FOLGA',
+  FERIADO = 'FERIADO',
   FERIAS = 'FERIAS',
   AFASTADO = 'AFASTADO',
 }
 
 export type FuncionarioControllerConsultarPresencaFuncionariosQueryParams = {
   /**
+   * @description Número da página, começando em 0.
    * @type number | undefined
    */
   page?: number;
   /**
+   * @description Quantidade de itens por página, de 1 a 100 (padrão 10).
    * @type number | undefined
    */
   limit?: number;
   /**
-   * @description PRESENTE quando a última marcação de hoje é uma entrada; NAO_PRESENTE sem presença durante a jornada prevista, inclusive no intervalo de refeição; FORA_DO_TURNO fora dessa jornada; FERIAS quando RA_SITFOLH é F; AFASTADO quando RA_SITFOLH é A. Sem filtro, retorna todos os funcionários ativos.
+   * @description PRESENTE: última batida é uma entrada. SAIU: tem batidas pares (intervalo, saída antecipada ou fim da jornada). AUSENTE: dia útil sem nenhuma batida após o início da jornada (falta). FORA_DO_TURNO: jornada ainda não começou ou sem turno. FOLGA: dia não útil do turno. FERIADO, FERIAS e AFASTADO conforme SP3/SR8. NAO_PRESENTE ainda é aceito como alias de AUSENTE. Sem filtro, retorna todos os funcionários ativos.
    * @type string | undefined
    */
   status?: FuncionarioControllerConsultarPresencaFuncionariosQueryParamsStatusEnum;
+  /**
+   * @description Data consultada (yyyy-MM-dd), padrão hoje. Em datas passadas qualquer batida conta como PRESENTE e dia útil sem batida é AUSENTE (falta). Não aceita datas futuras.
+   * @type string | undefined
+   */
+  data?: string;
   /**
    * @description Filtro parcial por nome
    * @type string | undefined

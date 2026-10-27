@@ -21,6 +21,8 @@ function getFuncionarioControllerConsultarTurnoFuncionarioUrl(
 }
 
 /**
+ * @description Retorna o turno (jornada) cadastrado para a matrícula informada. Obtenha a matrícula em /funcionario.
+ * @summary Consulta o turno de um funcionário
  * {@link /api/ponto/funcionario/:matricula/turno}
  */
 export async function funcionarioControllerConsultarTurnoFuncionario(

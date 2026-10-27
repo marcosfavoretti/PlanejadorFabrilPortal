@@ -19,6 +19,8 @@ function getFuncionarioControllerConsultaFuncionariosUrl() {
 }
 
 /**
+ * @description Retorna os funcionários paginados, filtrando por centro de custo (RA_CC), CPF, PIS, matrícula ou nome. Quem não tem acesso amplo vê apenas os funcionários dos centros de custo autorizados. Use para localizar um funcionário e obter sua matrícula, necessária em /funcionario/:matricula/turno.
+ * @summary Lista os funcionários com filtros e paginação
  * {@link /api/ponto/funcionario}
  */
 export async function funcionarioControllerConsultaFuncionarios(

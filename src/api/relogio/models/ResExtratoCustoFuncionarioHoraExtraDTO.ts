@@ -21,7 +21,7 @@ export type ResExtratoCustoFuncionarioHoraExtraDTO = {
   /**
    * @type number
    */
-  multiplicadorCompensacao: number;
+  multiplicadorAdicionalHE: number;
   /**
    * @type number
    */
@@ -51,7 +51,7 @@ export type ResExtratoCustoFuncionarioHoraExtraDTO = {
    */
   valorHorasNoturnas: number;
   /**
-   * @description 65% do salario-hora base por hora extra contabilizada.
+   * @description Parcela de encargo já incluída nos valores finais das horas extras.
    * @type number
    */
   encargo: number;

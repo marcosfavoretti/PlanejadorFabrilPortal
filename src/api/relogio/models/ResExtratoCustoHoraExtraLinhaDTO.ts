@@ -17,6 +17,7 @@ export type ResExtratoCustoHoraExtraLinhaDTO = {
    */
   quantidade: number;
   /**
+   * @description Valor unitario final da hora extra, incluindo encargo.
    * @type number
    */
   valorUnitario: number;

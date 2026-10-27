@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": { "type": "string" },
+    "dataInicio": { "type": "string", "example": "2026-10-01" },
+    "dataFim": { "type": "string", "example": "2026-10-26" },
+    "dias": {
+      "example": ["2026-10-05", "2026-10-06"],
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["matricula", "dataInicio", "dataFim", "dias"],
+  "x-readme-ref-name": "ResFaltasFuncionarioDTO"
+}

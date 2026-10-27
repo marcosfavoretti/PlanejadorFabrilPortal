@@ -7,10 +7,12 @@ import type { PaginatedResRegistroPontoTurnoPontoDTODto } from './PaginatedResRe
 
 export type PontoControllerConsultaMarcacaoMethodQueryParams = {
   /**
+   * @description Número da página, começando em 0.
    * @type number | undefined
    */
   page?: number;
   /**
+   * @description Quantidade de itens por página, de 1 a 100 (padrão 10).
    * @type number | undefined
    */
   limit?: number;
@@ -25,10 +27,12 @@ export type PontoControllerConsultaMarcacaoMethodQueryParams = {
    */
   ccid?: string[];
   /**
+   * @description Data inicial do período, no formato YYYY-MM-DD.
    * @type string | undefined
    */
   dataInicio?: string;
   /**
+   * @description Data final do período, no formato YYYY-MM-DD.
    * @type string | undefined
    */
   dataFim?: string;

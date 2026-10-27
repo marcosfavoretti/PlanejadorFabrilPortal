@@ -22,10 +22,12 @@ export enum FolhaHoraExtraControllerConsultarRefeicoesQueryParamsStatusEnum {
 
 export type FolhaHoraExtraControllerConsultarRefeicoesQueryParams = {
   /**
+   * @description Número da página, começando em 0.
    * @type number | undefined
    */
   page?: number;
   /**
+   * @description Quantidade de itens por página, de 1 a 100 (padrão 10).
    * @type number | undefined
    */
   limit?: number;

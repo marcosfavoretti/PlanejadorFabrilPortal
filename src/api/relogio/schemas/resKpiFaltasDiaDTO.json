@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "data": { "type": "string", "example": "2026-10-23" },
+    "previstos": {
+      "type": "number",
+      "description": "Funcionários com jornada prevista no dia."
+    },
+    "faltas": { "type": "number" },
+    "taxaAbsenteismo": {
+      "type": "number",
+      "description": "Percentual de faltas sobre os previstos."
+    }
+  },
+  "required": ["data", "previstos", "faltas", "taxaAbsenteismo"],
+  "x-readme-ref-name": "ResKpiFaltasDiaDTO"
+}
