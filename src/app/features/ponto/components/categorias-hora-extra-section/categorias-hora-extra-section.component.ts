@@ -23,7 +23,7 @@ import { TextareaModule } from 'primeng/textarea';
 export const CODIGO_CATEGORIA_PATTERN = /^[A-Z0-9_]{2,40}$/;
 
 @Component({
-  selector: 'app-categorias-hora-extra-page',
+  selector: 'app-categorias-hora-extra-section',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,10 +38,10 @@ export const CODIGO_CATEGORIA_PATTERN = /^[A-Z0-9_]{2,40}$/;
     TagModule,
     TextareaModule,
   ],
-  templateUrl: './categorias-hora-extra-page.component.html',
-  styleUrls: ['../../styles/ponto-dashboard.css', './categorias-hora-extra-page.component.css'],
+  templateUrl: './categorias-hora-extra-section.component.html',
+  styleUrls: ['../../styles/ponto-dashboard.css', './categorias-hora-extra-section.component.css'],
 })
-export class CategoriasHoraExtraPageComponent implements OnInit {
+export class CategoriasHoraExtraSectionComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
 

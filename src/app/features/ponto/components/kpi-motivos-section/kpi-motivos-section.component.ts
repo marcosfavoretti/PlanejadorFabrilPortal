@@ -28,7 +28,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 
 @Component({
-  selector: 'app-kpi-motivos-page',
+  selector: 'app-kpi-motivos-section',
   standalone: true,
   imports: [
     CommonModule,
@@ -43,10 +43,10 @@ import { TagModule } from 'primeng/tag';
     SkeletonModule,
     TagModule,
   ],
-  templateUrl: './kpi-motivos-page.component.html',
-  styleUrls: ['../../styles/ponto-dashboard.css', './kpi-motivos-page.component.css'],
+  templateUrl: './kpi-motivos-section.component.html',
+  styleUrls: ['../../styles/ponto-dashboard.css', './kpi-motivos-section.component.css'],
 })
-export class KpiMotivosPageComponent implements OnInit {
+export class KpiMotivosSectionComponent implements OnInit {
   private readonly folhaService = inject(FolhaHoraExtraAPIService);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);

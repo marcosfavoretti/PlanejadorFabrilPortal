@@ -279,7 +279,7 @@
             <div><strong>Categorias de hora extra</strong><span>Catálogo dos motivos usados nas folhas: criar, editar,
                 ativar e desativar</span></div>
           </div>
-          <app-categorias-hora-extra-page></app-categorias-hora-extra-page>
+          <app-categorias-hora-extra-section></app-categorias-hora-extra-section>
         </section>
         }
 
@@ -916,7 +916,7 @@
               <div><strong>Relatório de recursos</strong><span>Funcionários por setor, com totais por categoria de hora
                   extra</span></div>
             </div>
-            <app-relatorio-recursos-page></app-relatorio-recursos-page>
+            <app-relatorio-recursos-section></app-relatorio-recursos-section>
           </section>
 
           @if (canViewKpiMotivos()) {
@@ -926,7 +926,7 @@
               <div><strong>Motivos de HE</strong><span>Por que as horas extras estão sendo solicitadas, por categoria e
                   justificativa</span></div>
             </div>
-            <app-kpi-motivos-page></app-kpi-motivos-page>
+            <app-kpi-motivos-section></app-kpi-motivos-section>
           </section>
           }
           }

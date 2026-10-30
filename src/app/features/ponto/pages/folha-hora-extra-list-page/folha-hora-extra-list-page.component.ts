@@ -37,9 +37,9 @@ import { TagModule } from 'primeng/tag';
 import { TabsModule } from 'primeng/tabs';
 import { ToastMessageOptions } from 'primeng/api';
 import { FolhaHoraExtraApprovalDialogComponent } from '../../widgets/folha-hora-extra-approval-dialog/folha-hora-extra-approval-dialog.component';
-import { CategoriasHoraExtraPageComponent } from '../categorias-hora-extra-page/categorias-hora-extra-page.component';
-import { KpiMotivosPageComponent } from '../kpi-motivos-page/kpi-motivos-page.component';
-import { RelatorioRecursosPageComponent } from '../relatorio-recursos-page/relatorio-recursos-page.component';
+import { CategoriasHoraExtraSectionComponent } from '../../components/categorias-hora-extra-section/categorias-hora-extra-section.component';
+import { KpiMotivosSectionComponent } from '../../components/kpi-motivos-section/kpi-motivos-section.component';
+import { RelatorioRecursosSectionComponent } from '../../components/relatorio-recursos-section/relatorio-recursos-section.component';
 import { TableDynamicComponent } from '@/app/shared/components/table-dynamic/table-dynamic.component';
 import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 
@@ -161,17 +161,17 @@ function createTodayRange(): Date[] {
     CommonModule,
     ReactiveFormsModule,
     ButtonModule,
-    CategoriasHoraExtraPageComponent,
+    CategoriasHoraExtraSectionComponent,
     ChartModule,
     DatePickerModule,
     DialogModule,
     InputNumberModule,
     InputTextModule,
-    KpiMotivosPageComponent,
+    KpiMotivosSectionComponent,
     MessagesModule,
     MultiSelectModule,
     ProgressBarModule,
-    RelatorioRecursosPageComponent,
+    RelatorioRecursosSectionComponent,
     SelectModule,
     TableDynamicComponent,
     TagModule,

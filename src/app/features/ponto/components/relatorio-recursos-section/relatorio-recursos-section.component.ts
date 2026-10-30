@@ -20,7 +20,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
 @Component({
-  selector: 'app-relatorio-recursos-page',
+  selector: 'app-relatorio-recursos-section',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,10 +35,10 @@ import { TagModule } from 'primeng/tag';
     TableModule,
     TagModule,
   ],
-  templateUrl: './relatorio-recursos-page.component.html',
-  styleUrls: ['../../styles/ponto-dashboard.css', './relatorio-recursos-page.component.css'],
+  templateUrl: './relatorio-recursos-section.component.html',
+  styleUrls: ['../../styles/ponto-dashboard.css', './relatorio-recursos-section.component.css'],
 })
-export class RelatorioRecursosPageComponent implements OnInit {
+export class RelatorioRecursosSectionComponent implements OnInit {
   private readonly folhaService = inject(FolhaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
 
