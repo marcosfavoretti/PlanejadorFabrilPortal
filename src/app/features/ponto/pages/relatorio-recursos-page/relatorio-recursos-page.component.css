@@ -1,0 +1,11 @@
+:host { display: block; }
+
+.header-actions { display: flex; gap: 0.75rem; position: relative; z-index: 1; }
+.card-container h2 { margin: 0 0 1rem; font-size: 1.15rem; }
+.setor-card { margin-top: 1.5rem; }
+.setor-resumo { color: var(--text-color-secondary, #64748b); margin: 0 0 1rem; }
+.setor-grid { display: grid; grid-template-columns: minmax(260px, 1fr) 2fr; gap: 1.5rem; align-items: start; }
+
+@media (max-width: 900px) {
+  .setor-grid { grid-template-columns: 1fr; }
+}

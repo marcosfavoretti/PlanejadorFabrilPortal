@@ -3,6 +3,8 @@ import {
   categoriaLabel,
   justificativaAtendeCategoria,
   linhasCitadasNoErro,
+  montarDadosGraficoCategorias,
+  SEM_CATEGORIA_COR,
   somarTotaisPorCategoria,
   sugerirOrdemCategoria,
   validarLinhaCategoria,
@@ -73,5 +75,18 @@ describe('regras de linha de categoria', () => {
     expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: true, categoriaId: 'x', categoriaOriginalId: null })).toBe('x');
     expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: false, categoriaId: 'x', categoriaOriginalId: 'x' })).toBeUndefined();
     expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: false, categoriaId: 'y', categoriaOriginalId: 'x' })).toBe('y');
+  });
+});
+
+describe('montarDadosGraficoCategorias', () => {
+  it('usa cinza neutro e rotulo "Sem categoria" para codigo nulo', () => {
+    const dados = montarDadosGraficoCategorias([
+      { codigo: 'A', nome: 'Alfa', quantidadeFuncionarios: 4 },
+      { codigo: null, nome: 'qualquer', quantidadeFuncionarios: 1 },
+    ]);
+    expect(dados.labels).toEqual(['Alfa', 'Sem categoria']);
+    expect(dados.data).toEqual([4, 1]);
+    expect(dados.colors[1]).toBe(SEM_CATEGORIA_COR);
+    expect(dados.colors[0]).not.toBe(SEM_CATEGORIA_COR);
   });
 });

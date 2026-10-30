@@ -1097,6 +1097,19 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return this.isAdmin() || roles.includes(SetUserCargoDTOCargoEnum.RH);
   }
 
+  protected canManageCategorias(): boolean {
+    const roles = this.userRoles();
+    return this.isAdmin() || roles.includes(SetUserCargoDTOCargoEnum.RH);
+  }
+
+  protected canViewKpiMotivos(): boolean {
+    return this.canManageCategorias() || this.userRoles().includes(SetUserCargoDTOCargoEnum.DIRETOR);
+  }
+
+  protected goTo(path: string): void {
+    this.router.navigate([path]);
+  }
+
   protected canViewRhTab(): boolean {
     return this.canViewRefeicoes();
   }

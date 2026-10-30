@@ -1,0 +1,92 @@
+<div class="ponto-dashboard-container fade-in">
+  <div class="header-banner bg-dark-green">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">KPI de Motivos de HE</h1>
+        <p class="page-subtitle">Por que as horas extras estão sendo solicitadas</p>
+      </div>
+      <div class="header-actions">
+        <p-button type="button" label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+          (click)="voltar()"></p-button>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <div class="card-container">
+    <div class="filters-panel">
+      <div class="filters-grid">
+        <div class="field">
+          <label for="motivosPeriodo"><i class="pi pi-calendar mr-2"></i>Período</label>
+          <p-datepicker inputId="motivosPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
+            dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" [showClear]="true"
+            styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="field">
+          <label for="motivosCc"><i class="pi pi-building mr-2"></i>Centro de custo</label>
+          <p-select inputId="motivosCc" [formControl]="centroCustoFilter" [options]="centrosCusto"
+            optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
+            styleClass="w-full"></p-select>
+        </div>
+        <div class="field">
+          <label for="motivosCategoria"><i class="pi pi-tag mr-2"></i>Categoria</label>
+          <p-select inputId="motivosCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions"
+            optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
+            styleClass="w-full"></p-select>
+        </div>
+        <div class="field">
+          <label for="motivosTermo"><i class="pi pi-search mr-2"></i>Termo na justificativa</label>
+          <input pInputText id="motivosTermo" [formControl]="termoFilter" placeholder="Buscar"
+            (keyup.enter)="aplicar()" />
+        </div>
+        <div class="filter-actions">
+          <p-button label="Aplicar" icon="pi pi-search" severity="success" [loading]="loading"
+            (click)="aplicar()"></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (resposta) {
+  <div class="card-container">
+    <h2><i class="pi pi-chart-bar mr-2"></i>Funcionários por categoria (folhas desta página)</h2>
+    <app-categoria-totais-chart [totais]="totaisPeriodo"></app-categoria-totais-chart>
+  </div>
+
+  @for (folha of resposta.data; track folha.id) {
+  <div class="card-container folha-card">
+    <h2>{{ folha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} - {{ folha.centroCustoCodigo }} {{ folha.centroCustoDescricao }}</h2>
+    <p class="folha-meta">{{ folha.setor }} &middot; {{ folha.autorNome }} &middot; {{ folha.totalFuncionarios }} funcionário(s)</p>
+    <div class="chips">
+      @for (categoria of folha.categorias; track categoria.codigo ?? 'sem') {
+      <p-tag [value]="totalLabel(categoria) + ': ' + categoria.quantidadeFuncionarios"
+        [severity]="categoria.codigo === null ? 'secondary' : 'info'" [rounded]="true"></p-tag>
+      }
+    </div>
+    @for (motivo of folha.motivos; track motivo.justificativa) {
+    <div class="motivo">
+      <div class="motivo-titulo">
+        <span>{{ motivo.justificativa }}</span>
+        <span>{{ motivo.quantidadeFuncionarios }}</span>
+      </div>
+      <ul class="motivo-funcionarios">
+        @for (funcionario of motivo.funcionarios; track funcionario.matricula) {
+        <li>
+          <span>{{ funcionario.matricula }} - {{ funcionario.nome }}</span>
+          <p-tag [value]="categoriaNome(funcionario.categoria)"
+            [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag>
+        </li>
+        }
+      </ul>
+    </div>
+    }
+  </div>
+  } @empty {
+  <div class="card-container">Nenhuma folha encontrada para os filtros informados.</div>
+  }
+
+  <p-paginator [first]="page * limit" [rows]="limit" [totalRecords]="resposta.total"
+    [rowsPerPageOptions]="[10, 25, 50]" (onPageChange)="onPageChange($event)"></p-paginator>
+  }
+</div>

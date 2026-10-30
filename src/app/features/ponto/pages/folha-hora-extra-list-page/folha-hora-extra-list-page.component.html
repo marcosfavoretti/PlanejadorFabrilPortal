@@ -9,6 +9,20 @@
           gerencie e aprove as solicitações de horas extras da equipe' }}
         </p>
       </div>
+      <div class="header-links">
+        @if (canManageCategorias()) {
+        <p-button label="Categorias" icon="pi pi-tags" severity="secondary" [outlined]="true"
+          (click)="goTo('/ponto/he/categorias')"></p-button>
+        }
+        @if (canViewKpiMotivos()) {
+        <p-button label="KPI de motivos" icon="pi pi-chart-pie" severity="secondary" [outlined]="true"
+          (click)="goTo('/ponto/he/kpi-motivos')"></p-button>
+        }
+        @if (canViewFolhas()) {
+        <p-button label="Relatório de recursos" icon="pi pi-file" severity="secondary" [outlined]="true"
+          (click)="goTo('/ponto/he/relatorio-recursos')"></p-button>
+        }
+      </div>
       <div class="header-icon-container">
         <i class="pi pi-clock header-icon"></i>
       </div>

@@ -1,0 +1,79 @@
+<div class="ponto-dashboard-container fade-in">
+  <div class="header-banner bg-dark-green">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Relatório de Recursos de HE</h1>
+        <p class="page-subtitle">Funcionários por setor e por categoria de hora extra</p>
+      </div>
+      <div class="header-actions">
+        <p-button type="button" label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+          (click)="voltar()"></p-button>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <div class="card-container">
+    <div class="filters-panel">
+      <div class="filters-grid">
+        <div class="field">
+          <label for="relatorioPeriodo"><i class="pi pi-calendar mr-2"></i>Período</label>
+          <p-datepicker inputId="relatorioPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
+            dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" [showClear]="true"
+            styleClass="w-full"></p-datepicker>
+        </div>
+        <div class="field">
+          <label for="relatorioCc"><i class="pi pi-building mr-2"></i>Centro de custo</label>
+          <p-select inputId="relatorioCc" [formControl]="centroCustoFilter" [options]="centrosCusto"
+            optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
+            styleClass="w-full"></p-select>
+        </div>
+        <div class="field">
+          <label for="relatorioCategoria"><i class="pi pi-tag mr-2"></i>Categoria (tabelas)</label>
+          <p-select inputId="relatorioCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions"
+            optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
+            styleClass="w-full"></p-select>
+        </div>
+        <div class="filter-actions">
+          <p-button label="Aplicar" icon="pi pi-search" severity="success" [loading]="loading"
+            (click)="carregar()"></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (relatorio) {
+  <div class="card-container">
+    <h2><i class="pi pi-chart-bar mr-2"></i>Total por categoria</h2>
+    <app-categoria-totais-chart [totais]="relatorio.totaisPorCategoria"></app-categoria-totais-chart>
+  </div>
+
+  @for (setor of relatorio.detalhamentoPorSetor; track setor.setor + setor.dataContexto) {
+  <div class="card-container setor-card">
+    <h2>{{ setor.setor }}</h2>
+    <p class="setor-resumo">{{ setor.totalPessoas }} pessoa(s) &middot; {{ setor.justificativa }}</p>
+    <div class="setor-grid">
+      <app-categoria-totais-chart [totais]="setor.totaisPorCategoria"></app-categoria-totais-chart>
+      <p-table [value]="funcionariosFiltrados(setor)" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr><th>Matrícula</th><th>Nome</th><th>Categoria</th><th>Horário HE</th><th>Justificativa</th></tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-funcionario>
+          <tr>
+            <td>{{ funcionario.matricula }}</td>
+            <td>{{ funcionario.nome }}</td>
+            <td><p-tag [value]="categoriaNome(funcionario.categoria)"
+                [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag></td>
+            <td>{{ funcionario.inicioHE }} - {{ funcionario.fimHE }}</td>
+            <td>{{ funcionario.justificativa }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  } @empty {
+  <div class="card-container">Nenhum registro encontrado para o período.</div>
+  }
+  }
+</div>

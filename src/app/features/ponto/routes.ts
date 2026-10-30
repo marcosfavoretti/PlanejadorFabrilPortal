@@ -18,6 +18,20 @@ const FOLHA_HORA_EXTRA_ROUTES: Routes = [
       .then(m => m.CategoriasHoraExtraPageComponent),
   },
   {
+    path: 'he/relatorio-recursos',
+    loadComponent: () => import('./pages/relatorio-recursos-page/relatorio-recursos-page.component')
+      .then(m => m.RelatorioRecursosPageComponent),
+  },
+  {
+    path: 'he/kpi-motivos',
+    canActivate: [CargoGuard],
+    data: {
+      roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.RH, SetUserCargoDTOCargoEnum.DIRETOR],
+    },
+    loadComponent: () => import('./pages/kpi-motivos-page/kpi-motivos-page.component')
+      .then(m => m.KpiMotivosPageComponent),
+  },
+  {
     path: 'he/criar',
     loadComponent: () => import('./pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component')
       .then(m => m.FolhaHoraExtraFormPageComponent),

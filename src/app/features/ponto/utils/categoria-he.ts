@@ -140,3 +140,29 @@ export function categoriaIdParaEnvio(
   }
   return state.categoriaId !== state.categoriaOriginalId ? state.categoriaId : undefined;
 }
+
+const PALETA_CATEGORIAS = [
+  '#2563eb', '#16a34a', '#d97706', '#9333ea', '#0891b2', '#dc2626',
+  '#4f46e5', '#65a30d', '#db2777', '#0d9488', '#ca8a04', '#7c3aed', '#ea580c',
+];
+
+export interface DadosGraficoCategorias {
+  labels: string[];
+  data: number[];
+  colors: string[];
+}
+
+/** Série para o gráfico: "Sem categoria" (codigo null) sempre em cinza neutro. */
+export function montarDadosGraficoCategorias(
+  totais: ReadonlyArray<CategoriaTotalAgregado> | null | undefined,
+): DadosGraficoCategorias {
+  const lista = totais ?? [];
+  let proximaCor = 0;
+  return {
+    labels: lista.map(total => totalLabel(total)),
+    data: lista.map(total => total.quantidadeFuncionarios),
+    colors: lista.map(total => total.codigo === null
+      ? SEM_CATEGORIA_COR
+      : PALETA_CATEGORIAS[proximaCor++ % PALETA_CATEGORIAS.length]),
+  };
+}
