@@ -1,76 +1,118 @@
 <div class="ponto-dashboard-container ponto-section fade-in">
+  <header class="secao-cabecalho">
+    <h2>Motivos de HE</h2>
+    <p>Por que as horas extras estão sendo solicitadas, por categoria e justificativa</p>
+  </header>
+
   <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
 
-  <div class="card-container">
-    <div class="filters-panel">
-      <div class="filters-grid">
-        <div class="field">
-          <label for="motivosPeriodo"><i class="pi pi-calendar mr-2"></i>Período</label>
-          <p-datepicker inputId="motivosPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
-            dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" [showClear]="true"
-            styleClass="w-full"></p-datepicker>
-        </div>
-        <div class="field">
-          <label for="motivosCc"><i class="pi pi-building mr-2"></i>Centro de custo</label>
-          <p-select inputId="motivosCc" [formControl]="centroCustoFilter" [options]="centrosCusto"
-            optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
-            styleClass="w-full"></p-select>
-        </div>
-        <div class="field">
-          <label for="motivosCategoria"><i class="pi pi-tag mr-2"></i>Categoria</label>
-          <p-select inputId="motivosCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions"
-            optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
-            styleClass="w-full"></p-select>
-        </div>
-        <div class="field">
-          <label for="motivosTermo"><i class="pi pi-search mr-2"></i>Termo na justificativa</label>
-          <input pInputText id="motivosTermo" [formControl]="termoFilter" placeholder="Buscar"
-            (keyup.enter)="aplicar()" />
-        </div>
-        <div class="filter-actions">
-          <p-button label="Aplicar" icon="pi pi-search" severity="success" [loading]="loading"
-            (click)="aplicar()"></p-button>
-        </div>
-      </div>
+  <form class="barra-filtros" (ngSubmit)="aplicar()">
+    <div class="filtro">
+      <label for="motivosPeriodo"><i class="pi pi-calendar"></i>Período</label>
+      <p-datepicker inputId="motivosPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
+        dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" [showClear]="true"
+        appendTo="body"></p-datepicker>
     </div>
+    <div class="filtro">
+      <label for="motivosCc"><i class="pi pi-building"></i>Centro de custo</label>
+      <p-select inputId="motivosCc" [formControl]="centroCustoFilter" [options]="centrosCusto"
+        optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
+        appendTo="body"></p-select>
+    </div>
+    <div class="filtro">
+      <label for="motivosSetor"><i class="pi pi-sitemap"></i>Setor</label>
+      <input pInputText id="motivosSetor" [formControl]="setorFilter" placeholder="Nome do setor" />
+    </div>
+    <div class="filtro">
+      <label for="motivosCategoria"><i class="pi pi-tag"></i>Categoria</label>
+      <p-select inputId="motivosCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions"
+        optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
+        appendTo="body"></p-select>
+    </div>
+    <div class="filtro">
+      <label for="motivosTermo"><i class="pi pi-search"></i>Termo na justificativa</label>
+      <input pInputText id="motivosTermo" [formControl]="termoFilter" placeholder="Buscar" />
+    </div>
+    <p-button type="submit" label="Aplicar" icon="pi pi-search" severity="success" [loading]="loading"></p-button>
+  </form>
+
+  @if (loading && !resposta) {
+  <div class="resumo-cards" aria-busy="true" aria-label="Carregando motivos">
+    @for (item of [1, 2]; track item) {
+    <div class="resumo-card"><p-skeleton width="60%" height="0.8rem"></p-skeleton><p-skeleton width="40%" height="1.8rem"></p-skeleton></div>
+    }
+  </div>
+  <div class="card-container"><p-skeleton width="100%" height="8rem"></p-skeleton></div>
+  } @else if (erro) {
+  <div class="estado estado--erro" role="alert">
+    <i class="pi pi-exclamation-triangle"></i>
+    <div><strong>Não foi possível carregar os motivos</strong><span>{{ erro }}</span></div>
+    <p-button type="button" label="Tentar novamente" icon="pi pi-refresh" severity="secondary" [outlined]="true"
+      (click)="recarregar()"></p-button>
+  </div>
+  } @else if (resposta) {
+  <div class="resumo-cards">
+    <div class="resumo-card"><span>Folhas encontradas</span><strong>{{ resposta.total }}</strong></div>
+    <div class="resumo-card"><span>Funcionários nesta página</span><strong>{{ totalFuncionariosPagina }}</strong></div>
   </div>
 
-  @if (resposta) {
-  <div class="card-container">
-    <h2><i class="pi pi-chart-bar mr-2"></i>Funcionários por categoria (folhas desta página)</h2>
-    <app-categoria-totais-chart [totais]="totaisPeriodo"></app-categoria-totais-chart>
-  </div>
+  <section class="card-container" aria-label="Resumo por categoria">
+    <h3 class="titulo-card"><i class="pi pi-chart-bar"></i>Funcionários por categoria
+      <small>(folhas desta página)</small></h3>
+    <app-categoria-barras [totais]="totaisPeriodo"></app-categoria-barras>
+  </section>
 
   @for (folha of resposta.data; track folha.id) {
-  <div class="card-container folha-card">
-    <h2>{{ folha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} - {{ folha.centroCustoCodigo }} {{ folha.centroCustoDescricao }}</h2>
-    <p class="folha-meta">{{ folha.setor }} &middot; {{ folha.autorNome }} &middot; {{ folha.totalFuncionarios }} funcionário(s)</p>
-    <div class="chips">
+  <section class="card-container folha-card" [attr.aria-label]="'Folha de ' + folha.setor">
+    <header class="folha-card__topo">
+      <div>
+        <h3>{{ folha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} &middot; {{ folha.setor }}</h3>
+        <p>CC {{ folha.centroCustoCodigo }} - {{ folha.centroCustoDescricao }} &middot; {{ folha.autorNome }}</p>
+      </div>
+      <p-tag [value]="folha.totalFuncionarios + ' funcionário(s)'" severity="secondary" [rounded]="true"></p-tag>
+    </header>
+
+    <div class="chips" aria-label="Categorias da folha">
       @for (categoria of folha.categorias; track categoria.codigo ?? 'sem') {
       <p-tag [value]="totalLabel(categoria) + ': ' + categoria.quantidadeFuncionarios"
         [severity]="categoria.codigo === null ? 'secondary' : 'info'" [rounded]="true"></p-tag>
       }
     </div>
-    @for (motivo of folha.motivos; track motivo.justificativa) {
-    <div class="motivo">
-      <div class="motivo-titulo">
-        <span>{{ motivo.justificativa }}</span>
-        <span>{{ motivo.quantidadeFuncionarios }}</span>
-      </div>
-      <ul class="motivo-funcionarios">
-        @for (funcionario of motivo.funcionarios; track funcionario.matricula) {
-        <li>
-          <span>{{ funcionario.matricula }} - {{ funcionario.nome }}</span>
-          <p-tag [value]="categoriaNome(funcionario.categoria)"
-            [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag>
-        </li>
+
+    <ul class="motivos" role="list">
+      @for (motivo of folha.motivos; track motivo.justificativa) {
+      <li class="motivo">
+        <div class="motivo__texto">
+          <blockquote>{{ motivo.justificativa }}</blockquote>
+          <span class="motivo__qtd">{{ motivo.quantidadeFuncionarios }} funcionário(s)</span>
+        </div>
+        <button type="button" class="motivo__toggle"
+          [attr.aria-expanded]="funcionariosVisiveis(folha.id, motivo.justificativa)"
+          (click)="alternarFuncionarios(folha.id, motivo.justificativa)">
+          <i class="pi" [class.pi-chevron-right]="!funcionariosVisiveis(folha.id, motivo.justificativa)"
+            [class.pi-chevron-down]="funcionariosVisiveis(folha.id, motivo.justificativa)"></i>
+          {{ funcionariosVisiveis(folha.id, motivo.justificativa) ? 'Ocultar funcionários' : 'Ver funcionários' }}
+        </button>
+        @if (funcionariosVisiveis(folha.id, motivo.justificativa)) {
+        <ul class="motivo__funcionarios" role="list">
+          @for (funcionario of motivo.funcionarios; track funcionario.matricula) {
+          <li>
+            <span>{{ funcionario.matricula }} - {{ funcionario.nome }}</span>
+            <p-tag [value]="categoriaNome(funcionario.categoria)"
+              [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag>
+          </li>
+          }
+        </ul>
         }
-      </ul>
-    </div>
-    }
-  </div>
+      </li>
+      }
+    </ul>
+  </section>
   } @empty {
-  <div class="card-container">Nenhuma folha encontrada para os filtros informados.</div>
+  <div class="estado">
+    <i class="pi pi-inbox"></i>
+    <div><strong>Nenhuma folha encontrada</strong><span>Ajuste os filtros e tente novamente.</span></div>
+  </div>
   }
 
   <p-paginator [first]="page * limit" [rows]="limit" [totalRecords]="resposta.total"

@@ -16,7 +16,7 @@ import {
   somarTotaisPorCategoria,
   totalLabel,
 } from '@/app/features/ponto/utils/categoria-he';
-import { CategoriaTotaisChartComponent } from '@/app/features/ponto/widgets/categoria-totais-chart/categoria-totais-chart.component';
+import { CategoriaBarrasComponent } from '@/app/features/ponto/widgets/categoria-barras/categoria-barras.component';
 import { ToastMessageOptions } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -24,6 +24,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 
 @Component({
@@ -33,12 +34,13 @@ import { TagModule } from 'primeng/tag';
     CommonModule,
     ReactiveFormsModule,
     ButtonModule,
-    CategoriaTotaisChartComponent,
+    CategoriaBarrasComponent,
     DatePickerModule,
     InputTextModule,
     MessagesModule,
     PaginatorModule,
     SelectModule,
+    SkeletonModule,
     TagModule,
   ],
   templateUrl: './kpi-motivos-page.component.html',
@@ -52,6 +54,7 @@ export class KpiMotivosPageComponent implements OnInit {
   protected readonly dataRangeFilter = new FormControl<Date[] | null>(null);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
   protected readonly termoFilter = new FormControl('', { nonNullable: true });
+  protected readonly setorFilter = new FormControl('', { nonNullable: true });
   protected readonly categoriaFilter = new FormControl<string | null>(null);
   protected readonly categoriaNome = categoriaLabel;
   protected readonly totalLabel = totalLabel;
@@ -66,6 +69,8 @@ export class KpiMotivosPageComponent implements OnInit {
   protected page = 0;
   protected limit = 10;
   protected messages: ToastMessageOptions[] = [];
+  protected erro: string | null = null;
+  private readonly funcionariosAbertos = new Set<string>();
 
   ngOnInit(): void {
     this.funcionariosService.getCentroDeCusto().subscribe({
@@ -91,6 +96,29 @@ export class KpiMotivosPageComponent implements OnInit {
     this.carregar();
   }
 
+  protected get totalFuncionariosPagina(): number {
+    return (this.resposta?.data ?? []).reduce((soma, folha) => soma + folha.totalFuncionarios, 0);
+  }
+
+  protected chaveMotivo(folhaId: string, justificativa: string): string {
+    return `${folhaId}|${justificativa}`;
+  }
+
+  protected funcionariosVisiveis(folhaId: string, justificativa: string): boolean {
+    return this.funcionariosAbertos.has(this.chaveMotivo(folhaId, justificativa));
+  }
+
+  protected alternarFuncionarios(folhaId: string, justificativa: string): void {
+    const chave = this.chaveMotivo(folhaId, justificativa);
+    if (!this.funcionariosAbertos.delete(chave)) {
+      this.funcionariosAbertos.add(chave);
+    }
+  }
+
+  protected recarregar(): void {
+    this.carregar();
+  }
+
   protected onPageChange(event: PaginatorState): void {
     this.page = event.page ?? 0;
     this.limit = event.rows ?? this.limit;
@@ -100,12 +128,15 @@ export class KpiMotivosPageComponent implements OnInit {
   private carregar(): void {
     const [inicio, fim] = this.dataRangeFilter.value ?? [];
     const termo = this.termoFilter.value.trim();
+    const setor = this.setorFilter.value.trim();
     this.loading = true;
+    this.erro = null;
     this.folhaService.getKpiMotivos({
       dataInicio: inicio ? this.formatDate(inicio) : undefined,
       dataFim: (fim ?? inicio) ? this.formatDate((fim ?? inicio) as Date) : undefined,
       centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
       termo: termo || undefined,
+      setor: setor || undefined,
       categoriaCodigo: this.categoriaFilter.value ?? undefined,
       page: this.page,
       limit: this.limit,
@@ -120,7 +151,7 @@ export class KpiMotivosPageComponent implements OnInit {
         this.loading = false;
         this.resposta = null;
         this.totaisPeriodo = [];
-        this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }];
+        this.erro = mapFolhaHoraExtraError(err);
       },
     });
   }
