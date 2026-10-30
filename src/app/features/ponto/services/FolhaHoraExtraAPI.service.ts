@@ -7,7 +7,12 @@ import {
   FolhaHoraExtraControllerListarQueryParams,
   FolhaHoraExtraControllerListarQueryParamsStatusEnum,
   FolhaHoraExtraKpiControllerCustoQueryParams,
+  FolhaHoraExtraControllerRelatorioRecursosQueryParams,
   FolhaHoraExtraKpiControllerHorasExtrasNaoAutorizadasQueryParams,
+  FolhaHoraExtraKpiControllerListarMotivosQueryParams,
+  PaginatedResFolhaMotivosHoraExtraDTO,
+  ResCategoriaHoraExtraResumoDTO,
+  ResRelatorioHoraExtraDTO,
   ItemFuncionarioHEDTO,
   ItemFuncionarioHEDTORefeicaoEnum,
   ItemFuncionarioHEDTOTransporteEnum,
@@ -23,12 +28,14 @@ import {
   folhaHoraExtraControllerEditar,
   folhaHoraExtraControllerHistorico,
   folhaHoraExtraControllerListar,
+  folhaHoraExtraControllerRelatorioRecursos,
   folhaHoraExtraControllerRejeitar,
   folhaHoraExtraControllerSubmeter,
   folhaHoraExtraKpiControllerCumprimento,
   folhaHoraExtraKpiControllerCusto,
   folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas,
   folhaHoraExtraKpiControllerJornada,
+  folhaHoraExtraKpiControllerListarMotivos,
 } from '@/api/relogio';
 import {
   ResLiderCentroCustoDTO,
@@ -94,6 +101,8 @@ export interface FolhaHoraExtraDetalhe extends FolhaHoraExtraResumo {
     lanche?: boolean;
     refeicao?: FolhaHoraExtraRefeicao;
     justificativa?: string;
+    /** `null` em folhas legadas, anteriores às categorias. */
+    categoria?: ResCategoriaHoraExtraResumoDTO | null;
   }>;
   justificativas?: Record<string, string>;
   resumoCustos?: FolhaHoraExtraCusto[];
@@ -143,6 +152,7 @@ export interface FolhaHoraExtraRefeicaoResumo {
   inicioHE: string;
   fimHE: string;
   justificativa: string;
+  categoria?: ResCategoriaHoraExtraResumoDTO | null;
   status: FolhaHoraExtraStatus;
   autorNome: string;
   observacao?: string;
@@ -255,6 +265,18 @@ export class FolhaHoraExtraAPIService {
     return from(folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas(params));
   }
 
+  getRelatorioRecursos(
+    params?: FolhaHoraExtraControllerRelatorioRecursosQueryParams,
+  ): Observable<ResRelatorioHoraExtraDTO> {
+    return from(folhaHoraExtraControllerRelatorioRecursos(params));
+  }
+
+  getKpiMotivos(
+    params?: FolhaHoraExtraKpiControllerListarMotivosQueryParams,
+  ): Observable<PaginatedResFolhaMotivosHoraExtraDTO> {
+    return from(folhaHoraExtraKpiControllerListarMotivos(params));
+  }
+
   getRefeicoes(
     filters: FolhaHoraExtraRefeicaoFilters,
   ): Observable<FolhaHoraExtraRefeicaoListResponse> {
@@ -320,7 +342,7 @@ export function mapFolhaHoraExtraError(error: unknown): string {
   return rawMessage || 'Nao foi possivel concluir a operacao.';
 }
 
-function extractErrorMessage(error: unknown): string {
+export function extractErrorMessage(error: unknown): string {
   if (!error || typeof error !== 'object') {
     return '';
   }

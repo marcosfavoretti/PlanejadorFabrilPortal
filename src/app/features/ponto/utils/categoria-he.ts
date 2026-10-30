@@ -1,0 +1,100 @@
+import { ResCategoriaHoraExtraResumoDTO, ResCategoriaTotalHoraExtraDTO } from '@/api/relogio';
+
+/** Tamanho mínimo da justificativa (após trim) quando a categoria exige detalhe. */
+export const CATEGORIA_DETALHE_MIN_CHARS = 15;
+
+/** Valor aceito pelo filtro `categoriaCodigo` do KPI de motivos para folhas sem categoria. */
+export const SEM_CATEGORIA_CODIGO = 'SEM_CATEGORIA';
+export const SEM_CATEGORIA_LABEL = 'Sem categoria';
+
+/** Cor neutra usada para o item "Sem categoria" nos gráficos. */
+export const SEM_CATEGORIA_COR = '#94a3b8';
+
+/** Ordens >= 99 são reservadas (ex.: categorias residuais) e não entram na sugestão. */
+const ORDEM_LIMITE_SUGESTAO = 99;
+
+export interface CategoriaComNome {
+  nome: string;
+}
+
+export function categoriaLabel(categoria: CategoriaComNome | null | undefined): string {
+  return categoria?.nome?.trim() || SEM_CATEGORIA_LABEL;
+}
+
+export function totalLabel(total: Pick<ResCategoriaTotalHoraExtraDTO, 'codigo' | 'nome'>): string {
+  return total.codigo === null ? SEM_CATEGORIA_LABEL : total.nome;
+}
+
+export function tamanhoJustificativa(justificativa: string | null | undefined): number {
+  return String(justificativa ?? '').trim().length;
+}
+
+/** Espelha a regra do backend: justificativa obrigatória e, com exigeDetalhe, 15+ caracteres (trim). */
+export function justificativaAtendeCategoria(
+  justificativa: string | null | undefined,
+  exigeDetalhe: boolean,
+): boolean {
+  const tamanho = tamanhoJustificativa(justificativa);
+  return exigeDetalhe ? tamanho >= CATEGORIA_DETALHE_MIN_CHARS : tamanho > 0;
+}
+
+/** Maior ordem atual (< 99) mais 1; 1 quando não há categorias. */
+export function sugerirOrdemCategoria(categorias: ReadonlyArray<{ ordem: number }>): number {
+  const ordens = categorias.map(categoria => categoria.ordem).filter(ordem => ordem < ORDEM_LIMITE_SUGESTAO);
+  return ordens.length ? Math.max(...ordens) + 1 : 1;
+}
+
+export interface CategoriaTotalAgregado {
+  codigo: string | null;
+  nome: string;
+  quantidadeFuncionarios: number;
+}
+
+/** Soma `quantidadeFuncionarios` por código, ordenando por quantidade desc e nome. */
+export function somarTotaisPorCategoria(
+  listas: ReadonlyArray<ReadonlyArray<CategoriaTotalAgregado> | null | undefined>,
+): CategoriaTotalAgregado[] {
+  const mapa = new Map<string | null, CategoriaTotalAgregado>();
+  for (const lista of listas) {
+    for (const total of lista ?? []) {
+      const atual = mapa.get(total.codigo);
+      if (atual) {
+        atual.quantidadeFuncionarios += total.quantidadeFuncionarios;
+      } else {
+        mapa.set(total.codigo, { ...total });
+      }
+    }
+  }
+  return [...mapa.values()].sort(
+    (a, b) => b.quantidadeFuncionarios - a.quantidadeFuncionarios
+      || totalLabel(a).localeCompare(totalLabel(b), 'pt-BR'),
+  );
+}
+
+/** Código usado no filtro de categoria no cliente: o da categoria ou SEM_CATEGORIA. */
+export function codigoFiltroCategoria(categoria: ResCategoriaHoraExtraResumoDTO | null | undefined): string {
+  return categoria?.codigo ?? SEM_CATEGORIA_CODIGO;
+}
+
+/**
+ * Descobre quais linhas (por matrícula) são citadas numa mensagem de erro do backend,
+ * ex.: "... (funcionário 12345 - Fulano)". Também entende "funcionarios.2.categoriaId".
+ */
+export function linhasCitadasNoErro(
+  mensagens: string[],
+  matriculas: ReadonlyArray<string>,
+): Set<number> {
+  const indices = new Set<number>();
+  for (const mensagem of mensagens) {
+    matriculas.forEach((matricula, indice) => {
+      const limpa = matricula.trim();
+      if (limpa && mensagem.includes(`${limpa} - `)) {
+        indices.add(indice);
+      }
+    });
+    for (const match of mensagem.matchAll(/funcionarios\.(\d+)\./g)) {
+      indices.add(Number(match[1]));
+    }
+  }
+  return indices;
+}
