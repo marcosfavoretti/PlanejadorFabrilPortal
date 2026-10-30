@@ -267,13 +267,6 @@
 .he-kpi-summary strong { font-size: 1.35rem; color: var(--text-color, #334155); }
 .he-kpi-scope-note { margin: 0 0 1rem; line-height: 1.5; }
 
-.dashboard-section--tables {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
-  align-items: start;
-}
-
 .folha-content-grid {
   display: grid;
   grid-template-columns: minmax(20rem, 0.9fr) minmax(0, 1.4fr);
@@ -386,15 +379,6 @@
 .filters-section-title span {
   color: var(--text-color-secondary, #64748b);
   font-size: 0.9rem;
-}
-
-.refeicoes-status-field {
-  min-width: 320px;
-}
-
-.refeicoes-filter-actions {
-  flex: 1 1 100%;
-  min-width: 100%;
 }
 
 .filters-grid {
@@ -877,37 +861,9 @@
   color: var(--text-color, #334155);
 }
 
-.print-refeicoes-content {
-  display: none;
-}
-
 @media print {
   .printing-refeicoes > :not(.print-refeicoes-content) {
     display: none !important;
-  }
-
-  .printing-refeicoes .print-refeicoes-content {
-    display: block;
-    color: #000;
-    font-family: Arial, sans-serif;
-  }
-
-  .print-refeicoes-content table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 9pt;
-  }
-
-  .print-refeicoes-content th,
-  .print-refeicoes-content td {
-    border: 1px solid #777;
-    padding: 0.4rem;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .print-refeicoes-content th {
-    background: #eee;
   }
 }
 
@@ -1188,7 +1144,6 @@
     align-items: stretch;
   }
 
-  .dashboard-section--tables,
   .folha-content-grid,
   .kpi-charts-grid {
     grid-template-columns: 1fr;
@@ -1226,10 +1181,6 @@
 
   .dashboard-section {
     padding: 1rem 0 0;
-  }
-
-  .dashboard-section--tables {
-    gap: 1rem;
   }
 
   .table-dynamic-panel {
