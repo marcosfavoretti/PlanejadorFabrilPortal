@@ -4,6 +4,7 @@ import { Component, OnInit, inject, NgZone } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
+import { podeSubmeterFolha } from '@/app/features/ponto/ponto-roles';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
@@ -1033,7 +1034,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected canSubmit(folha: FolhaHoraExtraResumo): boolean {
-    return !this.userRoles().includes(SetUserCargoDTOCargoEnum.SUPORTE)
+    return podeSubmeterFolha(this.userRoles())
       && ['RASCUNHO', 'REJEITADO_COORDENACAO', 'REJEITADO_DIRETORIA'].includes(folha.status);
   }
 
