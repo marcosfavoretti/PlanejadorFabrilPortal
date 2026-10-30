@@ -1,4 +1,4 @@
-<div class="ponto-dashboard-container ponto-section fade-in">
+<div class="ponto-section fade-in">
   <div class="categorias-toolbar">
     <p-button type="button" label="Nova categoria" icon="pi pi-plus" severity="success"
       (click)="abrirCriacao()"></p-button>
@@ -6,8 +6,8 @@
 
   <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
 
-  <div class="card-container">
-    <div class="table-dynamic-panel">
+  <div class="secao-card">
+    <div class="tabela-scroll">
       <p-table [value]="categorias" [loading]="loading" dataKey="id" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
@@ -41,6 +41,7 @@
                 <p-button type="button" icon="pi pi-pencil" label="Editar" severity="secondary" [outlined]="true"
                   size="small" (click)="abrirEdicao(categoria)"></p-button>
                 <p-button type="button" size="small" [outlined]="true"
+                  [loading]="alternando() === categoria.id" [disabled]="alternando() !== null"
                   [icon]="categoria.ativo ? 'pi pi-ban' : 'pi pi-check'"
                   [label]="categoria.ativo ? 'Desativar' : 'Ativar'"
                   [severity]="categoria.ativo ? 'danger' : 'success'" (click)="alternarAtivo(categoria)"></p-button>
@@ -55,6 +56,8 @@
     </div>
   </div>
 </div>
+
+<p-confirmDialog [style]="{ width: 'min(32rem, 95vw)' }"></p-confirmDialog>
 
 <p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '34rem' }"
   [header]="editando ? 'Editar categoria' : 'Nova categoria'">

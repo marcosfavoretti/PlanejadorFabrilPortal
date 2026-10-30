@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CriarCategoriaHoraExtraDTO } from '@/api/relogio';
 import {
@@ -8,9 +9,10 @@ import {
   mapCategoriaHoraExtraError,
 } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
 import { sugerirOrdemCategoria } from '@/app/features/ponto/utils/categoria-he';
-import { ToastMessageOptions } from 'primeng/api';
+import { ConfirmationService, ToastMessageOptions } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,6 +32,7 @@ export const CODIGO_CATEGORIA_PATTERN = /^[A-Z0-9_]{2,40}$/;
     ReactiveFormsModule,
     ButtonModule,
     CheckboxModule,
+    ConfirmDialogModule,
     DialogModule,
     InputNumberModule,
     InputTextModule,
@@ -39,15 +42,20 @@ export const CODIGO_CATEGORIA_PATTERN = /^[A-Z0-9_]{2,40}$/;
     TextareaModule,
   ],
   templateUrl: './categorias-hora-extra-section.component.html',
-  styleUrls: ['../../styles/ponto-dashboard.css', './categorias-hora-extra-section.component.css'],
+  providers: [ConfirmationService],
+  styleUrls: ['../../styles/ponto-secao.css', './categorias-hora-extra-section.component.css'],
 })
 export class CategoriasHoraExtraSectionComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected categorias: CategoriaHoraExtra[] = [];
   protected loading = false;
   protected saving = false;
+  /** Id da categoria cujo ativar/desativar está em andamento (bloqueia duplo clique). */
+  protected readonly alternando = signal<string | null>(null);
   protected dialogVisible = false;
   protected editando: CategoriaHoraExtra | null = null;
   protected messages: ToastMessageOptions[] = [];
@@ -135,8 +143,33 @@ export class CategoriasHoraExtraSectionComponent implements OnInit {
   }
 
   protected alternarAtivo(categoria: CategoriaHoraExtra): void {
+    if (this.alternando() !== null) {
+      return;
+    }
+    if (!categoria.ativo) {
+      this.executarAlternancia(categoria);
+      return;
+    }
+    // Desativar some das listas de novas folhas: pede confirmação.
+    this.confirmationService.confirm({
+      header: 'Desativar categoria',
+      message: `Desativar a categoria "${categoria.nome}"? Ela deixa de aparecer para novas folhas; folhas existentes não mudam.`,
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Desativar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => this.executarAlternancia(categoria),
+    });
+  }
+
+  private executarAlternancia(categoria: CategoriaHoraExtra): void {
+    if (this.alternando() !== null) {
+      return;
+    }
+    this.alternando.set(categoria.id);
     this.categoriasService.atualizar(categoria.id, { ativo: !categoria.ativo }).subscribe({
       next: () => {
+        this.alternando.set(null);
         this.messages = [{
           severity: 'success',
           summary: 'Sucesso',
@@ -144,13 +177,16 @@ export class CategoriasHoraExtraSectionComponent implements OnInit {
         }];
         this.carregar();
       },
-      error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapCategoriaHoraExtraError(err) }],
+      error: err => {
+        this.alternando.set(null);
+        this.messages = [{ severity: 'error', summary: 'Erro', detail: mapCategoriaHoraExtraError(err) }];
+      },
     });
   }
 
   private carregar(): void {
     this.loading = true;
-    this.categoriasService.getTodas().subscribe({
+    this.categoriasService.getTodas(true).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: categorias => {
         this.categorias = categorias;
         this.loading = false;
