@@ -8,6 +8,7 @@ import {
   opcoesFiltroCategoria,
   paginarLocal,
   podeLimparCategoria,
+  resolverCategoria,
   SEM_CATEGORIA_COR,
   somarTotaisPorCategoria,
   sugerirOrdemCategoria,
@@ -86,6 +87,15 @@ describe('categoria-he utils', () => {
       { label: 'Ativa', value: 'A' },
       { label: 'Velha (inativa)', value: 'B' },
     ]);
+  });
+
+  it('resolve categoria nos catalogos na ordem e devolve null sem id', () => {
+    const ativas = [{ id: '1', exigeDetalhe: false }];
+    const todas = [{ id: '1', exigeDetalhe: true }, { id: '2', exigeDetalhe: true }];
+    expect(resolverCategoria('1', ativas, todas)?.exigeDetalhe).toBeFalse();
+    expect(resolverCategoria('2', ativas, todas)?.exigeDetalhe).toBeTrue();
+    expect(resolverCategoria('9', ativas, todas)).toBeNull();
+    expect(resolverCategoria(null, ativas)).toBeNull();
   });
 
   it('limpar categoria so onde ja nao ha categoria gravada nem obrigatoriedade', () => {

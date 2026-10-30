@@ -89,6 +89,23 @@ export function paginarLocal<T>(itens: ReadonlyArray<T>, first: number, rows: nu
   return itens.slice(Math.max(0, first), Math.max(0, first) + rows);
 }
 
+/** Acha a categoria pelo id nos catálogos (ativas primeiro, depois o completo com inativas). */
+export function resolverCategoria<T extends { id: string }>(
+  id: string | null | undefined,
+  ...catalogos: ReadonlyArray<ReadonlyArray<T>>
+): T | null {
+  if (!id) {
+    return null;
+  }
+  for (const catalogo of catalogos) {
+    const encontrada = catalogo.find(categoria => categoria.id === id);
+    if (encontrada) {
+      return encontrada;
+    }
+  }
+  return null;
+}
+
 export interface OpcaoCategoria {
   label: string;
   value: string;

@@ -21,6 +21,7 @@ import {
   categoriaIdParaEnvio,
   linhasCitadasNoErro,
   podeLimparCategoria,
+  resolverCategoria,
   tamanhoJustificativa,
   validarLinhaCategoria,
 } from '@/app/features/ponto/utils/categoria-he';
@@ -182,10 +183,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   protected exigeDetalhe(control: AbstractControl): boolean {
     const id = control.get('categoriaId')?.value
       ?? (this.isLinhaNova(control) ? null : control.get('categoriaOriginalId')?.value);
-    if (!id) {
-      return false;
-    }
-    return [...this.categorias, ...this.catalogoCompleto].find(categoria => categoria.id === id)?.exigeDetalhe ?? false;
+    return resolverCategoria(id, this.categorias, this.catalogoCompleto)?.exigeDetalhe ?? false;
   }
 
   /** Categorias ativas + a categoria (possivelmente inativa) já gravada na linha. */
