@@ -4,6 +4,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
+import { categoriaLabel } from '@/app/features/ponto/utils/categoria-he';
 import { podeSubmeterFolha } from '@/app/features/ponto/ponto-roles';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { ResExtratoCustoFuncionarioHoraExtraDTO } from '@/api/relogio';
@@ -127,6 +128,8 @@ export class FolhaHoraExtraDetailPageComponent implements OnInit {
   protected toggleCostDetails(): void {
     this.showCostDetails = !this.showCostDetails;
   }
+
+  protected readonly categoriaNome = categoriaLabel;
 
   protected canSubmit(): boolean {
     return podeSubmeterFolha(this.userStore.item()?.cargosLista)

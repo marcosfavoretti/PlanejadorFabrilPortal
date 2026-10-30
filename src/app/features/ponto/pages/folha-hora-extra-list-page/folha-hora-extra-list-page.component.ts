@@ -7,7 +7,9 @@ import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
 import { podeSubmeterFolha } from '@/app/features/ponto/ponto-roles';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
-import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
+import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCategoriaHoraExtraResumoDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
+import { CategoriaHoraExtraAPIService } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
+import { SEM_CATEGORIA_CODIGO, SEM_CATEGORIA_LABEL, categoriaLabel, codigoFiltroCategoria } from '@/app/features/ponto/utils/categoria-he';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
   FolhaHoraExtraAPIService,
@@ -52,8 +54,22 @@ const FOLHA_HE_STATUS_TODOS: FolhaHoraExtraStatus[] = [
   ...FOLHA_HE_STATUS_OPERACIONAL.slice(3),
 ];
 
+/** Coluna "Categoria" (chip) compartilhada entre as tabelas; `null` vira "Sem categoria". */
+function categoriaColumn(): TableModel['columns'][number] {
+  return {
+    alias: 'Categoria',
+    field: 'categoria',
+    isTag: true,
+    filterable: false,
+    sortable: false,
+    tagLabelFn: value => categoriaLabel(value as { nome: string } | null),
+    tagSeverityFn: value => value ? 'info' : 'secondary',
+  };
+}
+
 interface FuncionarioFolhaHEAprovada {
   id: string;
+  categoria: ResCategoriaHoraExtraResumoDTO | null;
   nome: string;
   matricula: string;
   dataFolha: string;
@@ -163,6 +179,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private static lastNavigationState: FolhaHeListNavigationState | null = null;
   private readonly folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
+  private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
   private readonly userStore = inject(UserstoreService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -200,6 +217,11 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   );
   protected readonly aprovadasRefeicaoFilter = new FormControl<string[] | null>(null);
   protected readonly aprovadasTransporteFilter = new FormControl<string[] | null>(null);
+  protected readonly refeicoesCategoriaFilter = new FormControl<string | null>(null);
+  protected readonly aprovadasCategoriaFilter = new FormControl<string | null>(null);
+  protected categoriaFilterOptions: Array<{ label: string; value: string }> = [
+    { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
+  ];
   protected readonly transporteOptions = ['UBER', 'TAXI', 'FRETADO', 'N/A'].map(value => ({ label: value, value }));
   protected readonly refeicaoOptions = [
     { label: 'Marmitex', value: 'MARMITEX' as const },
@@ -226,6 +248,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected folhas: FolhaHoraExtraResumo[] = [];
   protected historicoFolhas: FolhaHoraExtraResumo[] = [];
   protected refeicoesHoje: FolhaHoraExtraRefeicaoResumo[] = [];
+  private refeicoesCarregadas: FolhaHoraExtraRefeicaoResumo[] = [];
   protected funcionariosFolhasAprovadas: FuncionarioFolhaHEAprovada[] = [];
   protected centrosCusto: ResCentroDeCustoDTO[] = [];
   protected loading = false;
@@ -238,6 +261,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected selectedFolha: FolhaHoraExtraResumo | null = null;
   protected selectedKpi: ResKpiCumprimentoFolhaHoraExtraDTO | null = null;
   protected readonly temExcecaoHE = temExcecaoHE;
+  protected readonly categoriaNome = categoriaLabel;
   protected printingRefeicoes = false;
   private historicoSortField: keyof FolhaHoraExtraResumo | null = null;
   private historicoSortOrder: 1 | -1 = 1;
@@ -480,6 +504,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     columns: [
       { alias: 'Funcionário', field: 'nome', filterable: false, sortable: false },
       { alias: 'Matrícula', field: 'matricula', filterable: false, sortable: false },
+      categoriaColumn(),
       {
         alias: 'Refeição',
         field: 'refeicao',
@@ -560,6 +585,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     columns: [
       { alias: 'Funcionário', field: 'nome', filterable: false },
       { alias: 'Matrícula', field: 'matricula', filterable: false },
+      categoriaColumn(),
       {
         alias: 'Data da folha',
         field: 'dataFolha',
@@ -651,6 +677,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     columns: [
       { alias: 'Matrícula', field: 'matricula' },
       { alias: 'Funcionário', field: 'nome' },
+      { ...categoriaColumn(), sortable: undefined },
       {
         alias: 'HE prevista',
         field: 'inicioHEPrevisto',
@@ -822,6 +849,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     }
 
     if (this.canViewRefeicoes()) {
+      this.loadCategoriasFiltro();
+      this.refeicoesCategoriaFilter.valueChanges.subscribe(() => this.filtrarRefeicoesPorCategoria());
       this.loadFuncionariosFolhasAprovadas();
     }
 
@@ -929,6 +958,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.refeicoesMatriculaFilter.setValue('');
     this.refeicoesNomeFilter.setValue('');
     this.refeicoesTipoFilter.setValue(null);
+    this.refeicoesCategoriaFilter.setValue(null);
     this.refeicoesStatusFilter.setValue(['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
     this.applyRefeicoesFilters();
   }
@@ -945,6 +975,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     this.aprovadasStatusFilter.setValue(['AGUARDANDO_COORDENACAO', 'AGUARDANDO_DIRETORIA', 'APROVADO']);
     this.aprovadasRefeicaoFilter.setValue(null);
     this.aprovadasTransporteFilter.setValue(null);
+    this.aprovadasCategoriaFilter.setValue(null);
     this.applyAprovadasFilters();
   }
 
@@ -2163,8 +2194,31 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       }),
       finalize(() => this.refeicoesLoading = false),
     ).subscribe(response => {
-      this.refeicoesHoje = response.data;
+      this.refeicoesCarregadas = response.data;
+      this.filtrarRefeicoesPorCategoria();
       this.refeicoesTotalRecords = response.total;
+    });
+  }
+
+  /** Filtro de categoria aplicado no cliente sobre a página de refeições já carregada. */
+  private filtrarRefeicoesPorCategoria(): void {
+    const codigo = this.refeicoesCategoriaFilter.value;
+    this.refeicoesHoje = codigo
+      ? this.refeicoesCarregadas.filter(refeicao => codigoFiltroCategoria(refeicao.categoria) === codigo)
+      : this.refeicoesCarregadas;
+  }
+
+  /** Inclui categorias inativas: folhas antigas ainda podem usá-las. */
+  private loadCategoriasFiltro(): void {
+    this.categoriasService.getTodas().subscribe({
+      next: categorias => this.categoriaFilterOptions = [
+        { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
+        ...categorias.map(categoria => ({
+          label: categoria.ativo ? categoria.nome : `${categoria.nome} (inativa)`,
+          value: categoria.codigo,
+        })),
+      ],
+      error: () => { /* o filtro segue apenas com "Sem categoria" */ },
     });
   }
 
@@ -2177,6 +2231,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     const status = this.aprovadasStatusFilter.value;
     const refeicoes = this.aprovadasRefeicaoFilter.value ?? [];
     const transportes = this.aprovadasTransporteFilter.value ?? [];
+    const categoriaCodigo = this.aprovadasCategoriaFilter.value;
     const filters = {
       dataInicio: range?.[0] ? this.formatLocalDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatLocalDate(range[1]) : undefined,
@@ -2215,6 +2270,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         mergeMap(folha => this.folhaHoraExtraService.getFolhaById(folha.id), 8),
         map(folha => folha.funcionarios.map(funcionario => ({
           id: `${folha.id}-${funcionario.matricula}`,
+          categoria: funcionario.categoria ?? null,
           nome: funcionario.nome,
           matricula: funcionario.matricula,
           dataFolha: folha.dataContexto,
@@ -2235,7 +2291,8 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         return funcionariosPorFolha
           .flat()
           .filter(funcionario => (!refeicoes.length || refeicoes.includes(funcionario.refeicao))
-            && (!transportes.length || transportes.includes(funcionario.transporte)))
+            && (!transportes.length || transportes.includes(funcionario.transporte))
+            && (!categoriaCodigo || codigoFiltroCategoria(funcionario.categoria) === categoriaCodigo))
           .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
       }),
       catchError(err => {

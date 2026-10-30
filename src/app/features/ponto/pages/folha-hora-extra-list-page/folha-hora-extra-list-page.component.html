@@ -104,6 +104,15 @@
                     [showClear]="true" styleClass="w-full"></p-select>
                 </div>
 
+                <div class="field">
+                  <label for="refeicoesCategoriaFilter">
+                    <i class="pi pi-tag mr-2"></i>Categoria
+                  </label>
+                  <p-select inputId="refeicoesCategoriaFilter" [formControl]="refeicoesCategoriaFilter"
+                    [options]="categoriaFilterOptions" optionLabel="label" optionValue="value"
+                    placeholder="Todas as categorias" [showClear]="true" styleClass="w-full"></p-select>
+                </div>
+
                 <div class="field refeicoes-status-field">
                   <label for="refeicoesStatusFilter">
                     <i class="pi pi-list-check mr-2"></i>Status
@@ -140,6 +149,7 @@
                 <tr>
                   <th>Funcionário</th>
                   <th>Matrícula</th>
+                  <th>Categoria</th>
                   <th>Refeição</th>
                   <th>Horário HE</th>
                   <th>CC - Setor</th>
@@ -152,6 +162,7 @@
                 <tr [class.he-excecao]="temExcecaoHE(refeicao)">
                   <td>{{ refeicao.nome }}</td>
                   <td>{{ refeicao.matricula }}</td>
+                  <td>{{ categoriaNome(refeicao.categoria) }}</td>
                   <td>{{ getRefeicaoLabel(refeicao.refeicao, refeicao) }}</td>
                   <td>{{ refeicao.inicioHE }} - {{ refeicao.fimHE }}</td>
                   <td>{{ refeicao.centroCustoCodigo }} - {{ refeicao.setor }}</td>
@@ -227,6 +238,12 @@
                   <p-multiSelect inputId="aprovadasRefeicaoFilter" [formControl]="aprovadasRefeicaoFilter"
                     [options]="refeicaoOptions" optionLabel="label" optionValue="value" placeholder="Todas as refeições"
                     display="chip" [showClear]="true" styleClass="w-full"></p-multiSelect>
+                </div>
+                <div class="field">
+                  <label for="aprovadasCategoriaFilter">Categoria</label>
+                  <p-select inputId="aprovadasCategoriaFilter" [formControl]="aprovadasCategoriaFilter"
+                    [options]="categoriaFilterOptions" optionLabel="label" optionValue="value"
+                    placeholder="Todas as categorias" [showClear]="true" styleClass="w-full"></p-select>
                 </div>
                 <div class="field">
                   <label for="aprovadasTransporteFilter">Transporte</label>
