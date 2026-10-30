@@ -1,0 +1,116 @@
+<div class="ponto-dashboard-container fade-in">
+  <div class="header-banner bg-dark-green">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Categorias de Hora Extra</h1>
+        <p class="page-subtitle">Catálogo dos motivos usados nas folhas de hora extra</p>
+      </div>
+      <div class="header-actions">
+        <p-button type="button" label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+          (click)="voltar()"></p-button>
+        <p-button type="button" label="Nova categoria" icon="pi pi-plus" severity="success"
+          (click)="abrirCriacao()"></p-button>
+      </div>
+    </div>
+  </div>
+
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+
+  <div class="card-container">
+    <div class="table-dynamic-panel">
+      <p-table [value]="categorias" [loading]="loading" dataKey="id" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Ordem</th>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Exige detalhe</th>
+            <th>Situação</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-categoria>
+          <tr [class.categoria-inativa]="!categoria.ativo">
+            <td>{{ categoria.ordem }}</td>
+            <td><code>{{ categoria.codigo }}</code></td>
+            <td>
+              <div class="categoria-nome">
+                <strong>{{ categoria.nome }}</strong>
+                @if (categoria.descricao) {
+                <span class="categoria-descricao">{{ categoria.descricao }}</span>
+                }
+              </div>
+            </td>
+            <td>{{ categoria.exigeDetalhe ? 'Sim' : 'Não' }}</td>
+            <td>
+              <p-tag [value]="categoria.ativo ? 'Ativa' : 'Inativa'"
+                [severity]="categoria.ativo ? 'success' : 'secondary'"></p-tag>
+            </td>
+            <td>
+              <div class="row-actions">
+                <p-button type="button" icon="pi pi-pencil" label="Editar" severity="secondary" [outlined]="true"
+                  size="small" (click)="abrirEdicao(categoria)"></p-button>
+                <p-button type="button" size="small" [outlined]="true"
+                  [icon]="categoria.ativo ? 'pi pi-ban' : 'pi pi-check'"
+                  [label]="categoria.ativo ? 'Desativar' : 'Ativar'"
+                  [severity]="categoria.ativo ? 'danger' : 'success'" (click)="alternarAtivo(categoria)"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr><td colspan="6">Nenhuma categoria cadastrada.</td></tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '34rem' }"
+  [header]="editando ? 'Editar categoria' : 'Nova categoria'">
+  <form class="categoria-form" [formGroup]="form" (ngSubmit)="salvar()">
+    <p-messages [(value)]="dialogMessages" [enableService]="false" [closable]="true"></p-messages>
+
+    <div class="field">
+      <label for="categoria-codigo">Código</label>
+      <input id="categoria-codigo" pInputText formControlName="codigo" placeholder="EX: PEDIDO_URGENTE"
+        [readonly]="!!editando" (input)="form.controls.codigo.setValue($any($event.target).value.toUpperCase(), { emitEvent: false })" />
+      @if (editando) {
+      <small>O código não pode ser alterado.</small>
+      } @else if (form.controls.codigo.touched && form.controls.codigo.invalid) {
+      <small class="error-text">Use apenas letras maiúsculas, números e _ (2 a 40 caracteres).</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="categoria-nome">Nome</label>
+      <input id="categoria-nome" pInputText formControlName="nome" maxlength="80" />
+      @if (form.controls.nome.touched && form.controls.nome.invalid) {
+      <small class="error-text">Informe o nome (até 80 caracteres).</small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="categoria-descricao">Descrição</label>
+      <textarea id="categoria-descricao" pTextarea rows="3" maxlength="300" formControlName="descricao"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="categoria-ordem">Ordem</label>
+      <p-inputnumber inputId="categoria-ordem" formControlName="ordem" [min]="0" [useGrouping]="false"
+        [showButtons]="true"></p-inputnumber>
+    </div>
+
+    <span class="check-item">
+      <p-checkbox inputId="categoria-exige-detalhe" formControlName="exigeDetalhe" [binary]="true"></p-checkbox>
+      <label for="categoria-exige-detalhe">Exige detalhe (justificativa com no mínimo 15 caracteres)</label>
+    </span>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button type="button" label="Cancelar" severity="secondary" [outlined]="true"
+      (click)="dialogVisible = false"></p-button>
+    <p-button type="button" label="Salvar" icon="pi pi-check" severity="success" [loading]="saving"
+      (click)="salvar()"></p-button>
+  </ng-template>
+</p-dialog>

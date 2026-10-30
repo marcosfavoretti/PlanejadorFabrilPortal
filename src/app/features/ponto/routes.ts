@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { AuthGuard } from '@/app/guard/Auth.guard';
 import { CargoGuard } from '@/app/guard/Cargo.guard';
 import { ContentLayoutComponent } from '@/app/shared/layouts/content-layout/content-layout.component';
@@ -7,6 +8,15 @@ import { PresencaPageComponent } from '@/app/features/ponto/pages/presenca-page/
 import { PONTO_ROLES } from '@/app/features/ponto/ponto-roles';
 
 const FOLHA_HORA_EXTRA_ROUTES: Routes = [
+  {
+    path: 'he/categorias',
+    canActivate: [CargoGuard],
+    data: {
+      roles: [SetUserCargoDTOCargoEnum.ADMIN, SetUserCargoDTOCargoEnum.RH],
+    },
+    loadComponent: () => import('./pages/categorias-hora-extra-page/categorias-hora-extra-page.component')
+      .then(m => m.CategoriasHoraExtraPageComponent),
+  },
   {
     path: 'he/criar',
     loadComponent: () => import('./pages/folha-hora-extra-form-page/folha-hora-extra-form-page.component')
