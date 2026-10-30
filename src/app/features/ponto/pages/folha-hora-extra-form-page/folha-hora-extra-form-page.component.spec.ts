@@ -137,6 +137,46 @@ describe('FolhaHoraExtraFormPageComponent categorias', () => {
     expect(component.buildPayload().funcionarios[0].categoriaId).toBe(simples.id);
   });
 
+  it('nao oferece "limpar" em linha que ja tem categoria gravada, so em legado e fora da criacao', () => {
+    component.isEditMode = true;
+    const comOriginal = linha({ matriculaOriginal: '001', categoriaId: simples.id, categoriaOriginalId: simples.id });
+    const legado = linha({ matricula: '002', matriculaOriginal: '002' });
+    const nova = linha({ matricula: '003', matriculaOriginal: '' });
+    expect(component.podeLimparCategoria(comOriginal)).toBeFalse();
+    expect(component.podeLimparCategoria(legado)).toBeTrue();
+    expect(component.podeLimparCategoria(nova)).toBeFalse();
+    component.isEditMode = false;
+    expect(component.podeLimparCategoria(legado)).toBeFalse();
+  });
+
+  it('trocar a matricula A -> B -> A preserva o snapshot e a regra de detalhe da linha original', () => {
+    component.isEditMode = true;
+    component.catalogoCompleto = [detalhe];
+    const row = linha({
+      matricula: '001', matriculaOriginal: '001', categoriaId: detalhe.id,
+      categoriaOriginalId: detalhe.id, categoriaOriginalNome: detalhe.nome, justificativa: 'curta',
+    });
+
+    component.clearFuncionario(0);
+    expect(row.get('categoriaOriginalId').value).toBe(detalhe.id);
+    expect(row.get('categoriaOriginalNome').value).toBe(detalhe.nome);
+    expect(row.get('categoriaId').value).toBeNull();
+
+    // B: linha nova, sem herdar a regra de detalhe da categoria da matricula A.
+    row.patchValue({ matricula: '002', nome: 'Bruno', justificativa: 'ok' });
+    expect(component.isLinhaNova(row)).toBeTrue();
+    expect(component.exigeDetalhe(row)).toBeFalse();
+    expect(row.hasError('categoriaObrigatoria')).toBeTrue();
+    expect(component.categoriaOptions(row).some((opcao: { id: string }) => opcao.id === detalhe.id)).toBeTrue();
+
+    // Volta para A: o snapshot continua valendo e o backend exigiria 15 caracteres.
+    row.patchValue({ matricula: '001', nome: 'Ana' });
+    expect(component.isLinhaNova(row)).toBeFalse();
+    expect(component.exigeDetalhe(row)).toBeTrue();
+    expect(row.hasError('justificativaCurta')).toBeTrue();
+    expect(component.buildPayload().funcionarios[0].categoriaId).toBeUndefined();
+  });
+
   it('aplica a categoria padrao a todas as linhas e expoe o tooltip de ajuda acessivel', () => {
     const primeira = linha({ categoriaId: simples.id });
     const segunda = linha({ matricula: '002' });

@@ -232,7 +232,7 @@
             <p-select [inputId]="'categoria-' + i" formControlName="categoriaId"
               [options]="categoriaOptions(funcionarioGroup)" optionLabel="nome" optionValue="id"
               placeholder="Selecione o motivo" appendTo="body" [loading]="loadingCategorias"
-              [showClear]="!categoriaObrigatoriaNaLinha(funcionarioGroup)" styleClass="w-full">
+              [showClear]="podeLimparCategoria(funcionarioGroup)" styleClass="w-full">
               <ng-template let-categoria pTemplate="item">
                 <span [pTooltip]="categoria.descricao || ''" tooltipPosition="left">{{ categoria.nome }}</span>
               </ng-template>

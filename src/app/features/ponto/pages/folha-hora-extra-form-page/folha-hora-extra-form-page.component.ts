@@ -20,9 +20,11 @@ import {
   CATEGORIA_DETALHE_MIN_CHARS,
   categoriaIdParaEnvio,
   linhasCitadasNoErro,
+  podeLimparCategoria,
   tamanhoJustificativa,
   validarLinhaCategoria,
 } from '@/app/features/ponto/utils/categoria-he';
+import { extractErrorMessage } from '@/app/features/ponto/utils/error-message';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
@@ -178,7 +180,8 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
 
   /** Categoria efetiva da linha (escolhida ou mantida do snapshot) quando exige detalhe. */
   protected exigeDetalhe(control: AbstractControl): boolean {
-    const id = control.get('categoriaId')?.value ?? control.get('categoriaOriginalId')?.value;
+    const id = control.get('categoriaId')?.value
+      ?? (this.isLinhaNova(control) ? null : control.get('categoriaOriginalId')?.value);
     if (!id) {
       return false;
     }
@@ -187,7 +190,8 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
 
   /** Categorias ativas + a categoria (possivelmente inativa) já gravada na linha. */
   protected categoriaOptions(control: AbstractControl): Array<Pick<CategoriaHoraExtra, 'id' | 'nome' | 'descricao'>> {
-    const originalId = control.get('categoriaOriginalId')?.value as string | null;
+    // O snapshot só aparece na linha original; linha nova (matrícula trocada) escolhe entre as ativas.
+    const originalId = this.isLinhaNova(control) ? null : control.get('categoriaOriginalId')?.value as string | null;
     if (!originalId || this.categorias.some(categoria => categoria.id === originalId)) {
       return this.categorias;
     }
@@ -198,6 +202,15 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   protected descricaoCategoria(control: AbstractControl): string {
     const id = control.get('categoriaId')?.value;
     return this.categorias.find(categoria => categoria.id === id)?.descricao ?? '';
+  }
+
+  /** Limpar só onde tem efeito (linha existente sem categoria gravada). */
+  protected podeLimparCategoria(control: AbstractControl): boolean {
+    return podeLimparCategoria({
+      modoEdicao: this.isEditMode,
+      linhaNova: this.isLinhaNova(control),
+      categoriaOriginalId: control.get('categoriaOriginalId')?.value ?? null,
+    });
   }
 
   /** Linha antiga (legado) sem categoria: aviso discreto, sem bloquear. */
@@ -308,9 +321,9 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       matriculaBloqueada: false,
       turnoFuncionario: null,
       turnoDescricao: '',
+      // categoriaOriginal* é o snapshot gravado da matrícula original (o PUT decide por matriculaOriginal);
+      // zerar aqui o perderia se o usuário voltasse à matrícula original.
       categoriaId: null,
-      categoriaOriginalId: null,
-      categoriaOriginalNome: '',
     });
     row.controls['matricula'].updateValueAndValidity();
   }
@@ -398,8 +411,9 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       error: err => {
         this.saving = false;
         const detail = mapFolhaHoraExtraError(err);
+        // Usa a mensagem bruta do backend: o texto traduzido pode perder a matrícula citada.
         this.linhasComErro = linhasCitadasNoErro(
-          [detail],
+          [extractErrorMessage(err)],
           this.funcionarios.controls.map(control => String(control.get('matricula')?.value ?? '')),
         );
         const catalogoDesatualizado = this.normalizeText(detail).includes('invalida ou inativa');

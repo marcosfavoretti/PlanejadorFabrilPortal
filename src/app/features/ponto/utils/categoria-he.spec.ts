@@ -1,9 +1,13 @@
 import {
   categoriaIdParaEnvio,
   categoriaLabel,
+  filtrarPorCategoria,
   justificativaAtendeCategoria,
   linhasCitadasNoErro,
   montarDadosGraficoCategorias,
+  opcoesFiltroCategoria,
+  paginarLocal,
+  podeLimparCategoria,
   SEM_CATEGORIA_COR,
   somarTotaisPorCategoria,
   sugerirOrdemCategoria,
@@ -47,6 +51,54 @@ describe('categoria-he utils', () => {
       'funcionarios.0.categoriaId must be a mongodb id',
     ];
     expect([...linhasCitadasNoErro(mensagens, ['111', '222', '333'])].sort()).toEqual([0, 1]);
+  });
+
+  it('nao confunde matriculas por sufixo e escapa caracteres especiais', () => {
+    const mensagem = 'Funcionario 0123 - Fulano esta fora do centro de custo.';
+    expect([...linhasCitadasNoErro([mensagem], ['123', '0123'])]).toEqual([1]);
+    expect([...linhasCitadasNoErro(['(funcionario 123 - Ana)'], ['123'])]).toEqual([0]);
+    expect([...linhasCitadasNoErro(['x 1.3 - Ana'], ['1.3', '1a3'])]).toEqual([0]);
+  });
+
+  it('filtra por categoria (SEM_CATEGORIA casa com null) e pagina no cliente', () => {
+    const itens = [
+      { id: 1, categoria: { id: 'a', codigo: 'A', nome: 'A' } },
+      { id: 2, categoria: null },
+      { id: 3, categoria: { id: 'a', codigo: 'A', nome: 'A' } },
+      { id: 4 },
+    ];
+    expect(filtrarPorCategoria(itens, 'A').map(i => i.id)).toEqual([1, 3]);
+    expect(filtrarPorCategoria(itens, 'SEM_CATEGORIA').map(i => i.id)).toEqual([2, 4]);
+    expect(filtrarPorCategoria(itens, null).length).toBe(4);
+
+    const filtrados = filtrarPorCategoria(itens, 'SEM_CATEGORIA');
+    expect(filtrados.length).toBe(2);
+    expect(paginarLocal([1, 2, 3, 4, 5], 2, 2)).toEqual([3, 4]);
+    expect(paginarLocal([1, 2, 3], 4, 2)).toEqual([]);
+  });
+
+  it('monta opcoes do filtro marcando categorias inativas', () => {
+    expect(opcoesFiltroCategoria([
+      { codigo: 'A', nome: 'Ativa', ativo: true },
+      { codigo: 'B', nome: 'Velha', ativo: false },
+    ])).toEqual([
+      { label: 'Sem categoria', value: 'SEM_CATEGORIA' },
+      { label: 'Ativa', value: 'A' },
+      { label: 'Velha (inativa)', value: 'B' },
+    ]);
+  });
+
+  it('limpar categoria so onde ja nao ha categoria gravada nem obrigatoriedade', () => {
+    expect(podeLimparCategoria({ modoEdicao: true, linhaNova: false, categoriaOriginalId: null })).toBeTrue();
+    expect(podeLimparCategoria({ modoEdicao: true, linhaNova: false, categoriaOriginalId: 'x' })).toBeFalse();
+    expect(podeLimparCategoria({ modoEdicao: true, linhaNova: true, categoriaOriginalId: null })).toBeFalse();
+    expect(podeLimparCategoria({ modoEdicao: false, linhaNova: true, categoriaOriginalId: null })).toBeFalse();
+  });
+
+  it('linha nova nao herda o detalhe exigido pela categoria original', () => {
+    const base = { modoEdicao: true, categoriaId: null, categoriaOriginalId: 'x', exigeDetalhe: true, justificativa: 'curta' };
+    expect(validarLinhaCategoria({ ...base, linhaNova: false })).toEqual({ justificativaCurta: true });
+    expect(validarLinhaCategoria({ ...base, linhaNova: true })).toEqual({ categoriaObrigatoria: true });
   });
 });
 

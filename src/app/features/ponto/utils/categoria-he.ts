@@ -76,10 +76,45 @@ export function codigoFiltroCategoria(categoria: ResCategoriaHoraExtraResumoDTO 
   return categoria?.codigo ?? SEM_CATEGORIA_CODIGO;
 }
 
+/** Mantém só os itens cuja categoria tem o código informado (SEM_CATEGORIA casa com `null`); sem código, devolve tudo. */
+export function filtrarPorCategoria<T extends { categoria?: ResCategoriaHoraExtraResumoDTO | null }>(
+  itens: ReadonlyArray<T>,
+  codigo: string | null | undefined,
+): T[] {
+  return codigo ? itens.filter(item => codigoFiltroCategoria(item.categoria) === codigo) : [...itens];
+}
+
+/** Fatia `rows` itens a partir de `first` (paginação no cliente, como o `first` do p-table). */
+export function paginarLocal<T>(itens: ReadonlyArray<T>, first: number, rows: number): T[] {
+  return itens.slice(Math.max(0, first), Math.max(0, first) + rows);
+}
+
+export interface OpcaoCategoria {
+  label: string;
+  value: string;
+}
+
+/** Opções dos filtros de categoria: "Sem categoria" + catálogo completo (inativas marcadas, folhas antigas as usam). */
+export function opcoesFiltroCategoria(
+  categorias: ReadonlyArray<{ codigo: string; nome: string; ativo: boolean }>,
+): OpcaoCategoria[] {
+  return [
+    { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
+    ...categorias.map(categoria => ({
+      label: categoria.ativo ? categoria.nome : `${categoria.nome} (inativa)`,
+      value: categoria.codigo,
+    })),
+  ];
+}
+
 /**
  * Descobre quais linhas (por matrícula) são citadas numa mensagem de erro do backend,
  * ex.: "... (funcionário 12345 - Fulano)". Também entende "funcionarios.2.categoriaId".
  */
+function escaparRegex(texto: string): string {
+  return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function linhasCitadasNoErro(
   mensagens: string[],
   matriculas: ReadonlyArray<string>,
@@ -88,7 +123,8 @@ export function linhasCitadasNoErro(
   for (const mensagem of mensagens) {
     matriculas.forEach((matricula, indice) => {
       const limpa = matricula.trim();
-      if (limpa && mensagem.includes(`${limpa} - `)) {
+      // Fronteira antes da matrícula: "123 - " não pode casar dentro de "0123 - X".
+      if (limpa && new RegExp(`(^|\\D)${escaparRegex(limpa)} - `).test(mensagem)) {
         indices.add(indice);
       }
     });
@@ -115,13 +151,24 @@ export function categoriaObrigatoria(state: Pick<LinhaCategoriaState, 'modoEdica
   return !state.modoEdicao || state.linhaNova;
 }
 
+/**
+ * "Limpar" só faz sentido onde o envio de `null` teria efeito: linhas que já têm categoria gravada
+ * não podem ficar sem (o backend mantém o snapshot) e linhas novas/criação exigem categoria.
+ */
+export function podeLimparCategoria(
+  state: Pick<LinhaCategoriaState, 'modoEdicao' | 'linhaNova' | 'categoriaOriginalId'>,
+): boolean {
+  return !categoriaObrigatoria(state) && !state.categoriaOriginalId;
+}
+
 /** Espelha as validações do backend para uma linha de funcionário. */
 export function validarLinhaCategoria(state: LinhaCategoriaState): { categoriaObrigatoria?: true; justificativaCurta?: true } | null {
   const erros: { categoriaObrigatoria?: true; justificativaCurta?: true } = {};
   if (categoriaObrigatoria(state) && !state.categoriaId) {
     erros.categoriaObrigatoria = true;
   }
-  const categoriaEfetiva = state.categoriaId ?? state.categoriaOriginalId;
+  // O snapshot só vale para a linha original; linha nova (matrícula trocada) depende da categoria escolhida.
+  const categoriaEfetiva = state.categoriaId ?? (state.linhaNova ? null : state.categoriaOriginalId);
   if (categoriaEfetiva && state.exigeDetalhe && tamanhoJustificativa(state.justificativa) < CATEGORIA_DETALHE_MIN_CHARS) {
     erros.justificativaCurta = true;
   }
