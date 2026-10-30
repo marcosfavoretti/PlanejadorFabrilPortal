@@ -54,6 +54,11 @@ export type FolhaHoraExtraControllerConsultarRefeicoesQueryParams = {
    */
   nome?: string;
   /**
+   * @description Código da categoria de hora extra do funcionário (ex.: MANUTENCAO). Use SEM_CATEGORIA para funcionários de folhas antigas, sem categoria. Quando informado, retorna só as refeições dos funcionários da categoria (lista e total). Quando omitido, não filtra.
+   * @type string | undefined
+   */
+  categoriaCodigo?: string;
+  /**
    * @type string | undefined
    */
   refeicao?: FolhaHoraExtraControllerConsultarRefeicoesQueryParamsRefeicaoEnum;
