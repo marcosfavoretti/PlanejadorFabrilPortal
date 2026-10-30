@@ -1,9 +1,11 @@
 import {
+  categoriaIdParaEnvio,
   categoriaLabel,
   justificativaAtendeCategoria,
   linhasCitadasNoErro,
   somarTotaisPorCategoria,
   sugerirOrdemCategoria,
+  validarLinhaCategoria,
 } from './categoria-he';
 
 describe('categoria-he utils', () => {
@@ -43,5 +45,33 @@ describe('categoria-he utils', () => {
       'funcionarios.0.categoriaId must be a mongodb id',
     ];
     expect([...linhasCitadasNoErro(mensagens, ['111', '222', '333'])].sort()).toEqual([0, 1]);
+  });
+});
+
+describe('regras de linha de categoria', () => {
+  const base = { modoEdicao: false, linhaNova: true, categoriaId: null, categoriaOriginalId: null, exigeDetalhe: false, justificativa: 'ok' };
+
+  it('criacao exige categoria', () => {
+    expect(validarLinhaCategoria(base)).toEqual({ categoriaObrigatoria: true });
+  });
+
+  it('edicao de linha antiga sem categoria nao bloqueia', () => {
+    expect(validarLinhaCategoria({ ...base, modoEdicao: true, linhaNova: false })).toBeNull();
+  });
+
+  it('categoria nula fica isenta de exigeDetalhe', () => {
+    expect(validarLinhaCategoria({ ...base, modoEdicao: true, linhaNova: false, exigeDetalhe: true })).toBeNull();
+  });
+
+  it('categoria mantida na edicao aplica exigeDetalhe', () => {
+    const erro = validarLinhaCategoria({ ...base, modoEdicao: true, linhaNova: false, categoriaOriginalId: 'x', exigeDetalhe: true });
+    expect(erro).toEqual({ justificativaCurta: true });
+  });
+
+  it('envia categoriaId na criacao, em linhas novas e quando alterada', () => {
+    expect(categoriaIdParaEnvio({ ...base, categoriaId: 'x' })).toBe('x');
+    expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: true, categoriaId: 'x', categoriaOriginalId: null })).toBe('x');
+    expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: false, categoriaId: 'x', categoriaOriginalId: 'x' })).toBeUndefined();
+    expect(categoriaIdParaEnvio({ modoEdicao: true, linhaNova: false, categoriaId: 'y', categoriaOriginalId: 'x' })).toBe('y');
   });
 });

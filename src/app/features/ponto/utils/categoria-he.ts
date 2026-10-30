@@ -98,3 +98,45 @@ export function linhasCitadasNoErro(
   }
   return indices;
 }
+
+export interface LinhaCategoriaState {
+  modoEdicao: boolean;
+  /** Linha criada nesta edição (matrícula que não veio do GET). Sempre true na criação. */
+  linhaNova: boolean;
+  categoriaId: string | null;
+  categoriaOriginalId: string | null;
+  /** exigeDetalhe da categoria efetiva da linha (escolhida ou mantida); false para categoria nula. */
+  exigeDetalhe: boolean;
+  justificativa: string | null | undefined;
+}
+
+/** Criação: toda linha. Edição: só linhas novas (linhas legadas sem categoria seguem livres). */
+export function categoriaObrigatoria(state: Pick<LinhaCategoriaState, 'modoEdicao' | 'linhaNova'>): boolean {
+  return !state.modoEdicao || state.linhaNova;
+}
+
+/** Espelha as validações do backend para uma linha de funcionário. */
+export function validarLinhaCategoria(state: LinhaCategoriaState): { categoriaObrigatoria?: true; justificativaCurta?: true } | null {
+  const erros: { categoriaObrigatoria?: true; justificativaCurta?: true } = {};
+  if (categoriaObrigatoria(state) && !state.categoriaId) {
+    erros.categoriaObrigatoria = true;
+  }
+  const categoriaEfetiva = state.categoriaId ?? state.categoriaOriginalId;
+  if (categoriaEfetiva && state.exigeDetalhe && tamanhoJustificativa(state.justificativa) < CATEGORIA_DETALHE_MIN_CHARS) {
+    erros.justificativaCurta = true;
+  }
+  return Object.keys(erros).length ? erros : null;
+}
+
+/** Na edição só envia categoriaId quando a linha é nova ou o usuário trocou a categoria. */
+export function categoriaIdParaEnvio(
+  state: Pick<LinhaCategoriaState, 'modoEdicao' | 'linhaNova' | 'categoriaId' | 'categoriaOriginalId'>,
+): string | undefined {
+  if (!state.categoriaId) {
+    return undefined;
+  }
+  if (!state.modoEdicao || state.linhaNova) {
+    return state.categoriaId;
+  }
+  return state.categoriaId !== state.categoriaOriginalId ? state.categoriaId : undefined;
+}
