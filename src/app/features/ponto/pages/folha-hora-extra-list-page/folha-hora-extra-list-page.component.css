@@ -46,7 +46,7 @@
   display: grid;
   gap: .65rem;
   grid-column: 1 / -1;
-  grid-template-columns: auto repeat(3, minmax(14rem, 1fr));
+  grid-template-columns: auto repeat(auto-fit, minmax(14rem, 1fr));
   order: -2;
   padding: .65rem;
   position: sticky;
@@ -136,6 +136,18 @@
 .kpi-subsection-heading--financial { order: 0; }
 .kpi-subsection-heading--operations { order: 1; margin-top: .35rem; }
 .kpi-subsection-heading--audit { order: 4; margin-top: .35rem; }
+
+/* Seções embutidas (relatório de recursos e motivos): ocupam a linha toda, depois da auditoria. */
+.kpi-embedded {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.kpi-embedded--relatorio { order: 6; }
+.kpi-embedded--motivos { order: 7; }
+.kpi-embedded .kpi-subsection-heading { margin-top: .35rem; order: 0; }
 .kpi-subsection-heading--audit > i { background: #fee2e2; color: #dc2626; }
 .he-kpi-summary--operations { order: 1; }
 

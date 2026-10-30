@@ -910,20 +910,24 @@
 
 
           @if (activeTab === 'kpi') {
-          <div id="kpi-relatorio-recursos" class="kpi-subsection-heading kpi-subsection-heading--operations">
-            <i class="pi pi-file"></i>
-            <div><strong>Relatório de recursos</strong><span>Funcionários por setor, com totais por categoria de hora
-                extra</span></div>
-          </div>
-          <app-relatorio-recursos-page></app-relatorio-recursos-page>
+          <section id="kpi-relatorio-recursos" class="kpi-embedded kpi-embedded--relatorio">
+            <div class="kpi-subsection-heading kpi-subsection-heading--operations">
+              <i class="pi pi-file"></i>
+              <div><strong>Relatório de recursos</strong><span>Funcionários por setor, com totais por categoria de hora
+                  extra</span></div>
+            </div>
+            <app-relatorio-recursos-page></app-relatorio-recursos-page>
+          </section>
 
           @if (canViewKpiMotivos()) {
-          <div id="kpi-motivos" class="kpi-subsection-heading kpi-subsection-heading--financial">
-            <i class="pi pi-chart-pie"></i>
-            <div><strong>Motivos de HE</strong><span>Por que as horas extras estão sendo solicitadas, por categoria e
-                justificativa</span></div>
-          </div>
-          <app-kpi-motivos-page></app-kpi-motivos-page>
+          <section id="kpi-motivos" class="kpi-embedded kpi-embedded--motivos">
+            <div class="kpi-subsection-heading kpi-subsection-heading--financial">
+              <i class="pi pi-chart-pie"></i>
+              <div><strong>Motivos de HE</strong><span>Por que as horas extras estão sendo solicitadas, por categoria e
+                  justificativa</span></div>
+            </div>
+            <app-kpi-motivos-page></app-kpi-motivos-page>
+          </section>
           }
           }
         </section>
