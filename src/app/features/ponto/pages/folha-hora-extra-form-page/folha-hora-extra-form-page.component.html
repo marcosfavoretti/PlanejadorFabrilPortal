@@ -227,6 +227,7 @@
           </div>
 
           <div class="employee-justification">
+            <div class="field">
             <label [for]="'categoria-' + i">Categoria @if (categoriaObrigatoriaNaLinha(funcionarioGroup)) {<span class="required-mark">*</span>}</label>
             <p-select [inputId]="'categoria-' + i" formControlName="categoriaId"
               [options]="categoriaOptions(funcionarioGroup)" optionLabel="nome" optionValue="id"
@@ -246,14 +247,18 @@
             <small class="categoria-aviso">Informe a categoria (folha anterior às categorias).</small>
             }
 
+            </div>
+
+            <div class="field field-justificativa">
             <label [for]="'justificativa-' + i">{{ exigeDetalhe(funcionarioGroup) ? 'Descreva o motivo (mín. ' + categoriaDetalheMinChars + ' caracteres)' : 'Justificativa' }}</label>
-            <textarea [id]="'justificativa-' + i" pTextarea rows="4" formControlName="justificativa"
+            <textarea [id]="'justificativa-' + i" pTextarea rows="3" formControlName="justificativa"
               placeholder="Descreva o motivo desta hora extra..."></textarea>
             @if (exigeDetalhe(funcionarioGroup)) {
             <small class="justificativa-contador" [class.error-text]="funcionarioGroup.hasError('justificativaCurta')">
               {{ tamanhoJustificativa(funcionarioGroup) }}/{{ categoriaDetalheMinChars }}
             </small>
             }
+            </div>
           </div>
 
           <div class="employee-actions">

@@ -674,8 +674,18 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
+
+.categoria-lote > label {
+  font-weight: 600;
+  color: var(--text-color, #334155);
+  font-size: 0.95rem;
+}
+
+.employee-justification { gap: 0.75rem; }
+.employee-justification .field-justificativa { flex: 1; }
+.employee-justification .field-justificativa textarea { flex: 1; min-height: 5.5rem; }
 
 .employee-justification .required-mark { color: var(--red-500, #ef4444); }
 .employee-justification .categoria-hint { color: var(--text-color-secondary, #64748b); }
