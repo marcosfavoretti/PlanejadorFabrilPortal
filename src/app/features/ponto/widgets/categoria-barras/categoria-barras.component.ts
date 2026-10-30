@@ -5,7 +5,7 @@ interface LinhaBarra {
   chave: string;
   label: string;
   quantidade: number;
-  percentual: number;
+  percentual: string;
   largura: number;
   cor: string;
 }
@@ -61,11 +61,20 @@ export class CategoriaBarrasComponent {
       label: dados.labels[indice],
       quantidade: total.quantidadeFuncionarios,
       // O texto mostra a participação no total; a barra é proporcional ao maior valor.
-      percentual: soma ? Math.round((total.quantidadeFuncionarios / soma) * 100) : 0,
+      percentual: this.formatarPercentual(total.quantidadeFuncionarios, soma),
       largura: (total.quantidadeFuncionarios / maximo) * 100,
       cor: dados.colors[indice],
     }));
   });
+
+  /** Participação arredondada; valores positivos abaixo de 0,5% aparecem como "<1" em vez de 0. */
+  private formatarPercentual(quantidade: number, soma: number): string {
+    if (!soma || quantidade <= 0) {
+      return '0';
+    }
+    const valor = Math.round((quantidade / soma) * 100);
+    return valor === 0 ? '<1' : String(valor);
+  }
 
   protected readonly ariaLabel = computed(() =>
     'Funcionários por categoria: ' + this.linhas().map(l => `${l.label} ${l.quantidade}`).join(', '));
