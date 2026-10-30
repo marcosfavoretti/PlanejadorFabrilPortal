@@ -1,14 +1,5 @@
-<div class="ponto-dashboard-container ponto-section fade-in">
-  <header class="secao-cabecalho">
-    <div>
-      <h2>Relatório de recursos</h2>
-      <p>Funcionários por setor, com totais por categoria de hora extra</p>
-    </div>
-  </header>
-
-  <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
-
-  <form class="barra-filtros" (ngSubmit)="carregar()">
+<div class="ponto-section fade-in">
+  <app-barra-filtros [loading]="loading()" (aplicar)="carregar()">
     <div class="filtro">
       <label for="relatorioPeriodo"><i class="pi pi-calendar"></i>Período</label>
       <p-datepicker inputId="relatorioPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
@@ -17,106 +8,98 @@
     </div>
     <div class="filtro">
       <label for="relatorioCc"><i class="pi pi-building"></i>Centro de custo</label>
-      <p-select inputId="relatorioCc" [formControl]="centroCustoFilter" [options]="centrosCusto"
+      <p-select inputId="relatorioCc" [formControl]="centroCustoFilter" [options]="centrosCusto()"
         optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
         appendTo="body"></p-select>
     </div>
     <div class="filtro">
       <label for="relatorioCategoria"><i class="pi pi-tag"></i>Categoria (tabelas)</label>
-      <p-select inputId="relatorioCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions"
+      <p-select inputId="relatorioCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions()"
         optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
         appendTo="body"></p-select>
     </div>
-    <p-button type="submit" label="Aplicar" icon="pi pi-search" severity="success"
-      [loading]="loading"></p-button>
-  </form>
+  </app-barra-filtros>
 
-  @if (loading && !relatorio) {
+  @if (loading() && !relatorio()) {
   <div class="resumo-cards" aria-busy="true" aria-label="Carregando relatório">
     @for (item of [1, 2, 3]; track item) {
-    <div class="resumo-card"><p-skeleton width="60%" height="0.8rem"></p-skeleton><p-skeleton width="40%" height="1.8rem"></p-skeleton></div>
+    <div class="skeleton-card"><p-skeleton width="60%" height="0.8rem"></p-skeleton><p-skeleton width="40%" height="1.8rem"></p-skeleton></div>
     }
   </div>
-  <div class="card-container"><p-skeleton width="100%" height="10rem"></p-skeleton></div>
-  } @else if (erro) {
-  <div class="estado estado--erro" role="alert">
-    <i class="pi pi-exclamation-triangle"></i>
-    <div><strong>Não foi possível carregar o relatório</strong><span>{{ erro }}</span></div>
-    <p-button type="button" label="Tentar novamente" icon="pi pi-refresh" severity="secondary" [outlined]="true"
-      (click)="carregar()"></p-button>
-  </div>
-  } @else if (relatorio) {
-  <div class="resumo-cards">
-    <div class="resumo-card">
-      <span>Total de funcionários</span>
-      <strong>{{ totalFuncionarios }}</strong>
-    </div>
-    <div class="resumo-card">
-      <span>Setores</span>
-      <strong>{{ relatorio.detalhamentoPorSetor.length }}</strong>
-    </div>
-    <div class="resumo-card">
-      <span>Categoria mais frequente</span>
-      @if (categoriaTop; as top) {
-      <strong class="resumo-card__texto">{{ top.nome }}</strong>
-      <small>{{ top.quantidade }} funcionário(s)</small>
+  <div class="secao-card"><p-skeleton width="100%" height="10rem"></p-skeleton></div>
+  } @else if (erro()) {
+  <app-estado-vazio-erro tipo="erro" titulo="Não foi possível carregar o relatório" [detalhe]="erro()"
+    (retry)="carregar()"></app-estado-vazio-erro>
+  } @else {
+  @if (relatorio(); as dados) {
+  @if (loading()) {
+  <div class="recarga-barra" role="status" aria-label="Atualizando relatório"></div>
+  }
+  <div class="conteudo" [class.conteudo--recarregando]="loading()" [attr.aria-busy]="loading()">
+    <div class="resumo-cards">
+      <app-resumo-card label="Total de funcionários" [valor]="totalFuncionarios()"></app-resumo-card>
+      <app-resumo-card label="Setores" [valor]="dados.detalhamentoPorSetor.length"></app-resumo-card>
+      @if (categoriaTop(); as top) {
+      <app-resumo-card label="Categoria mais frequente" [valor]="top.nome" [texto]="true"
+        [detalhe]="top.quantidade + ' funcionário(s)'"></app-resumo-card>
       } @else {
-      <strong>-</strong>
+      <app-resumo-card label="Categoria mais frequente" valor="-" [texto]="true"></app-resumo-card>
       }
     </div>
-  </div>
 
-  <section class="card-container" aria-label="Total por categoria">
-    <h3 class="titulo-card"><i class="pi pi-chart-bar"></i>Total por categoria</h3>
-    <app-categoria-totais-chart [totais]="relatorio.totaisPorCategoria"></app-categoria-totais-chart>
-  </section>
-
-  @for (setor of relatorio.detalhamentoPorSetor; track chaveSetor(setor)) {
-  <section class="card-container setor-card" [attr.aria-label]="'Setor ' + setor.setor">
-    <header class="setor-card__topo">
-      <div>
-        <h3>{{ setor.setor }}</h3>
-        <p>{{ setor.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} &middot; {{ setor.justificativa }}</p>
-      </div>
-      <p-tag [value]="setor.totalPessoas + ' pessoa(s)'" severity="secondary" [rounded]="true"></p-tag>
-    </header>
-
-    <app-categoria-barras [totais]="setor.totaisPorCategoria"></app-categoria-barras>
-
-    <button type="button" class="setor-card__toggle" [attr.aria-expanded]="setorAberto(setor)"
-      (click)="alternarSetor(setor)">
-      <i class="pi" [class.pi-chevron-right]="!setorAberto(setor)" [class.pi-chevron-down]="setorAberto(setor)"></i>
-      {{ setorAberto(setor) ? 'Ocultar funcionários' : 'Ver funcionários' }}
-      ({{ funcionariosFiltrados(setor).length }})
-    </button>
-
-    @if (setorAberto(setor)) {
-    <div class="tabela-scroll">
-      <p-table [value]="funcionariosFiltrados(setor)" size="small" responsiveLayout="scroll">
-        <ng-template pTemplate="header">
-          <tr><th>Matrícula</th><th>Nome</th><th>Categoria</th><th>Horário HE</th><th>Justificativa</th></tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-funcionario>
-          <tr>
-            <td>{{ funcionario.matricula }}</td>
-            <td>{{ funcionario.nome }}</td>
-            <td><p-tag [value]="categoriaNome(funcionario.categoria)"
-                [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag></td>
-            <td class="nowrap">{{ funcionario.inicioHE }} - {{ funcionario.fimHE }}</td>
-            <td>{{ funcionario.justificativa }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr><td colspan="5">Nenhum funcionário para a categoria selecionada.</td></tr>
-        </ng-template>
-      </p-table>
-    </div>
+    @if (dados.totaisPorCategoria.length) {
+    <section class="secao-card" aria-label="Total por categoria">
+      <h3 class="titulo-card"><i class="pi pi-chart-bar"></i>Total por categoria</h3>
+      <app-categoria-barras [totais]="dados.totaisPorCategoria"></app-categoria-barras>
+    </section>
     }
-  </section>
-  } @empty {
-  <div class="estado">
-    <i class="pi pi-inbox"></i>
-    <div><strong>Nenhum registro encontrado</strong><span>Ajuste o período ou o centro de custo e tente novamente.</span></div>
+
+    @for (setor of dados.detalhamentoPorSetor; track chaveSetor(setor)) {
+    <section class="secao-card setor-card" [attr.aria-label]="'Setor ' + setor.setor">
+      <header class="setor-card__topo">
+        <div>
+          <h3>{{ setor.setor }}</h3>
+          <p>{{ setor.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} &middot; {{ setor.justificativa }}</p>
+        </div>
+        <p-tag [value]="setor.totalPessoas + ' pessoa(s)'" severity="secondary" [rounded]="true"></p-tag>
+      </header>
+
+      <app-categoria-barras [totais]="setor.totaisPorCategoria"></app-categoria-barras>
+
+      <button type="button" class="setor-card__toggle" [attr.aria-expanded]="setorAberto(setor)"
+        (click)="alternarSetor(setor)">
+        <i class="pi" [class.pi-chevron-right]="!setorAberto(setor)" [class.pi-chevron-down]="setorAberto(setor)"></i>
+        {{ setorAberto(setor) ? 'Ocultar funcionários' : 'Ver funcionários' }}
+        ({{ funcionariosFiltrados(setor).length }})
+      </button>
+
+      @if (setorAberto(setor)) {
+      <div class="tabela-scroll">
+        <p-table [value]="funcionariosFiltrados(setor)" size="small" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr><th>Matrícula</th><th>Nome</th><th>Categoria</th><th>Horário HE</th><th>Justificativa</th></tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-funcionario>
+            <tr>
+              <td>{{ funcionario.matricula }}</td>
+              <td>{{ funcionario.nome }}</td>
+              <td><p-tag [value]="categoriaNome(funcionario.categoria)"
+                  [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag></td>
+              <td class="nowrap">{{ funcionario.inicioHE }} - {{ funcionario.fimHE }}</td>
+              <td>{{ funcionario.justificativa }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr><td colspan="5">Nenhum funcionário para a categoria selecionada.</td></tr>
+          </ng-template>
+        </p-table>
+      </div>
+      }
+    </section>
+    } @empty {
+    <app-estado-vazio-erro titulo="Nenhum registro encontrado"
+      detalhe="Ajuste o período ou o centro de custo e tente novamente."></app-estado-vazio-erro>
+    }
   </div>
   }
   }

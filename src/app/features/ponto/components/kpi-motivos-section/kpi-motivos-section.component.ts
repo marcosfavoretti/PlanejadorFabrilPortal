@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, input, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { PaginatedResFolhaMotivosHoraExtraDTO, ResCentroDeCustoDTO } from '@/api/relogio';
 import { CategoriaHoraExtraAPIService } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
@@ -7,25 +8,26 @@ import {
   FolhaHoraExtraAPIService,
   mapFolhaHoraExtraError,
 } from '@/app/features/ponto/services/FolhaHoraExtraAPI.service';
-import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
-  CategoriaTotalAgregado,
   SEM_CATEGORIA_CODIGO,
   SEM_CATEGORIA_LABEL,
   categoriaLabel,
+  opcoesFiltroCategoria,
   somarTotaisPorCategoria,
   totalLabel,
 } from '@/app/features/ponto/utils/categoria-he';
+import { intervaloParaParams } from '@/app/features/ponto/utils/data-iso';
 import { CategoriaBarrasComponent } from '@/app/features/ponto/widgets/categoria-barras/categoria-barras.component';
-import { ToastMessageOptions } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { DatePickerModule } from 'primeng/datepicker';
+import { Subject, catchError, map, merge, of, switchMap, tap } from 'rxjs';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessagesModule } from 'primeng/messages';
+import { DatePickerModule } from 'primeng/datepicker';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
+import { BarraFiltrosComponent } from '../barra-filtros/barra-filtros.component';
+import { EstadoVazioErroComponent } from '../estado-vazio-erro/estado-vazio-erro.component';
+import { ResumoCardComponent } from '../resumo-card/resumo-card.component';
 
 @Component({
   selector: 'app-kpi-motivos-section',
@@ -33,23 +35,28 @@ import { TagModule } from 'primeng/tag';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ButtonModule,
+    BarraFiltrosComponent,
     CategoriaBarrasComponent,
     DatePickerModule,
+    EstadoVazioErroComponent,
     InputTextModule,
-    MessagesModule,
     PaginatorModule,
+    ResumoCardComponent,
     SelectModule,
     SkeletonModule,
     TagModule,
   ],
   templateUrl: './kpi-motivos-section.component.html',
-  styleUrls: ['../../styles/ponto-dashboard.css', './kpi-motivos-section.component.css'],
+  styleUrls: ['../../styles/ponto-secao.css', './kpi-motivos-section.component.css'],
 })
 export class KpiMotivosSectionComponent implements OnInit {
   private readonly folhaService = inject(FolhaHoraExtraAPIService);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
-  private readonly funcionariosService = inject(FuncionariosAPIService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly consulta$ = new Subject<void>();
+
+  /** Centros de custo carregados uma vez pela lista de folhas. */
+  readonly centrosCusto = input<ResCentroDeCustoDTO[]>([]);
 
   protected readonly dataRangeFilter = new FormControl<Date[] | null>(null);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
@@ -59,45 +66,62 @@ export class KpiMotivosSectionComponent implements OnInit {
   protected readonly categoriaNome = categoriaLabel;
   protected readonly totalLabel = totalLabel;
 
-  protected centrosCusto: ResCentroDeCustoDTO[] = [];
-  protected categoriaOptions: Array<{ label: string; value: string }> = [
+  protected readonly categoriaOptions = signal<Array<{ label: string; value: string }>>([
     { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
-  ];
-  protected resposta: PaginatedResFolhaMotivosHoraExtraDTO | null = null;
-  protected totaisPeriodo: CategoriaTotalAgregado[] = [];
-  protected loading = false;
-  protected page = 0;
-  protected limit = 10;
-  protected messages: ToastMessageOptions[] = [];
-  protected erro: string | null = null;
+  ]);
+  protected readonly resposta = signal<PaginatedResFolhaMotivosHoraExtraDTO | null>(null);
+  /** Agregado das folhas exibidas: soma quantidadeFuncionarios por código. */
+  protected readonly totaisPeriodo = computed(() =>
+    somarTotaisPorCategoria((this.resposta()?.data ?? []).map(folha => folha.categorias)));
+  protected readonly totalFuncionariosPagina = computed(() =>
+    (this.resposta()?.data ?? []).reduce((soma, folha) => soma + folha.totalFuncionarios, 0));
+  protected readonly loading = signal(false);
+  protected readonly erro = signal<string | null>(null);
+  protected readonly page = signal(0);
+  protected readonly limit = signal(10);
   private readonly funcionariosAbertos = new Set<string>();
 
   ngOnInit(): void {
-    this.funcionariosService.getCentroDeCusto().subscribe({
-      next: centros => this.centrosCusto = centros,
-      error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
+    // Catálogo com inativas (folhas antigas podem usar categorias desativadas), recarregado quando o cadastro muda.
+    merge(of(false), this.categoriasService.catalogoAlterado$.pipe(map(() => true))).pipe(
+      switchMap(forcar => this.categoriasService.getTodas(forcar).pipe(catchError(() => of(null)))),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(categorias => {
+      if (categorias) {
+        this.categoriaOptions.set(opcoesFiltroCategoria(categorias));
+      }
     });
-    // incluirInativas=true: folhas antigas podem usar categorias já desativadas.
-    this.categoriasService.getTodas().subscribe({
-      next: categorias => this.categoriaOptions = [
-        { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
-        ...categorias.map(categoria => ({
-          label: categoria.ativo ? categoria.nome : `${categoria.nome} (inativa)`,
-          value: categoria.codigo,
-        })),
-      ],
-      error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
+
+    // switchMap descarta a resposta de pedidos antigos (page/limit divergentes dos filtros atuais).
+    this.consulta$.pipe(
+      tap(() => {
+        this.loading.set(true);
+        this.erro.set(null);
+      }),
+      switchMap(() => this.folhaService.getKpiMotivos({
+        ...intervaloParaParams(this.dataRangeFilter.value),
+        centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
+        termo: this.termoFilter.value.trim() || undefined,
+        setor: this.setorFilter.value.trim() || undefined,
+        categoriaCodigo: this.categoriaFilter.value ?? undefined,
+        page: this.page(),
+        limit: this.limit(),
+      }).pipe(
+        map(resposta => ({ resposta, erro: null as string | null })),
+        catchError(err => of({ resposta: null, erro: mapFolhaHoraExtraError(err) })),
+      )),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(({ resposta, erro }) => {
+      this.resposta.set(resposta);
+      this.erro.set(erro);
+      this.loading.set(false);
     });
     this.carregar();
   }
 
   protected aplicar(): void {
-    this.page = 0;
+    this.page.set(0);
     this.carregar();
-  }
-
-  protected get totalFuncionariosPagina(): number {
-    return (this.resposta?.data ?? []).reduce((soma, folha) => soma + folha.totalFuncionarios, 0);
   }
 
   protected chaveMotivo(folhaId: string, justificativa: string): string {
@@ -115,50 +139,13 @@ export class KpiMotivosSectionComponent implements OnInit {
     }
   }
 
-  protected recarregar(): void {
-    this.carregar();
-  }
-
   protected onPageChange(event: PaginatorState): void {
-    this.page = event.page ?? 0;
-    this.limit = event.rows ?? this.limit;
+    this.page.set(event.page ?? 0);
+    this.limit.set(event.rows ?? this.limit());
     this.carregar();
   }
 
-  private carregar(): void {
-    const [inicio, fim] = this.dataRangeFilter.value ?? [];
-    const termo = this.termoFilter.value.trim();
-    const setor = this.setorFilter.value.trim();
-    this.loading = true;
-    this.erro = null;
-    this.folhaService.getKpiMotivos({
-      dataInicio: inicio ? this.formatDate(inicio) : undefined,
-      dataFim: (fim ?? inicio) ? this.formatDate((fim ?? inicio) as Date) : undefined,
-      centroCustoCodigo: this.centroCustoFilter.value ?? undefined,
-      termo: termo || undefined,
-      setor: setor || undefined,
-      categoriaCodigo: this.categoriaFilter.value ?? undefined,
-      page: this.page,
-      limit: this.limit,
-    }).subscribe({
-      next: resposta => {
-        this.resposta = resposta;
-        // Agregado das folhas exibidas: soma quantidadeFuncionarios por codigo.
-        this.totaisPeriodo = somarTotaisPorCategoria(resposta.data.map(folha => folha.categorias));
-        this.loading = false;
-      },
-      error: err => {
-        this.loading = false;
-        this.resposta = null;
-        this.totaisPeriodo = [];
-        this.erro = mapFolhaHoraExtraError(err);
-      },
-    });
-  }
-
-  private formatDate(date: Date): string {
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${date.getFullYear()}-${month}-${day}`;
+  protected carregar(): void {
+    this.consulta$.next();
   }
 }

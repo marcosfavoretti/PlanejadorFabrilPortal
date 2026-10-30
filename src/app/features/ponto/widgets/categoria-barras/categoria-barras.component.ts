@@ -35,7 +35,7 @@ interface LinhaBarra {
   styles: [`
     :host { display: block; min-width: 0; }
     .barras { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
-    li { display: grid; grid-template-columns: minmax(7rem, 1.2fr) minmax(4rem, 2fr) 5.5rem; gap: .75rem; align-items: center; }
+    li { display: grid; grid-template-columns: minmax(7rem, 1.2fr) minmax(4rem, 2fr) minmax(5.5rem, max-content); gap: .75rem; align-items: center; }
     .rotulo { color: #334155; font-size: .82rem; font-weight: 600; overflow-wrap: anywhere; }
     .trilho { background: #e8eef4; border-radius: 999px; height: .6rem; overflow: hidden; }
     .barra { border-radius: 999px; display: block; height: 100%; min-width: 2px; }
@@ -43,7 +43,7 @@ interface LinhaBarra {
     .valor small { color: #64748b; font-weight: 500; }
     .vazio { color: var(--text-color-secondary, #64748b); font-size: .85rem; margin: 0; }
     @media (max-width: 520px) {
-      li { grid-template-columns: 1fr auto; }
+      li { grid-template-columns: minmax(0, 1fr) max-content; }
       .trilho { grid-column: 1 / -1; grid-row: 2; }
     }
   `],
