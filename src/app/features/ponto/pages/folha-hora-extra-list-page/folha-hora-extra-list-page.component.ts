@@ -37,6 +37,9 @@ import { TagModule } from 'primeng/tag';
 import { TabsModule } from 'primeng/tabs';
 import { ToastMessageOptions } from 'primeng/api';
 import { FolhaHoraExtraApprovalDialogComponent } from '../../widgets/folha-hora-extra-approval-dialog/folha-hora-extra-approval-dialog.component';
+import { CategoriasHoraExtraPageComponent } from '../categorias-hora-extra-page/categorias-hora-extra-page.component';
+import { KpiMotivosPageComponent } from '../kpi-motivos-page/kpi-motivos-page.component';
+import { RelatorioRecursosPageComponent } from '../relatorio-recursos-page/relatorio-recursos-page.component';
 import { TableDynamicComponent } from '@/app/shared/components/table-dynamic/table-dynamic.component';
 import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
 
@@ -158,14 +161,17 @@ function createTodayRange(): Date[] {
     CommonModule,
     ReactiveFormsModule,
     ButtonModule,
+    CategoriasHoraExtraPageComponent,
     ChartModule,
     DatePickerModule,
     DialogModule,
     InputNumberModule,
     InputTextModule,
+    KpiMotivosPageComponent,
     MessagesModule,
     MultiSelectModule,
     ProgressBarModule,
+    RelatorioRecursosPageComponent,
     SelectModule,
     TableDynamicComponent,
     TagModule,
@@ -1104,10 +1110,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected canViewKpiMotivos(): boolean {
     return this.canManageCategorias() || this.userRoles().includes(SetUserCargoDTOCargoEnum.DIRETOR);
-  }
-
-  protected goTo(path: string): void {
-    this.router.navigate([path]);
   }
 
   protected canViewRhTab(): boolean {

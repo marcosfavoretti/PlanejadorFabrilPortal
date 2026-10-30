@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RelatorioSetorDTO, ResCentroDeCustoDTO, ResItemFuncionarioHEDTO, ResRelatorioHoraExtraDTO } from '@/api/relogio';
 import {
   FolhaHoraExtraAPIService,
@@ -38,7 +37,6 @@ import { TagModule } from 'primeng/tag';
 export class RelatorioRecursosPageComponent implements OnInit {
   private readonly folhaService = inject(FolhaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
-  private readonly router = inject(Router);
 
   protected readonly dataRangeFilter = new FormControl<Date[] | null>([new Date(), new Date()]);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
@@ -71,10 +69,6 @@ export class RelatorioRecursosPageComponent implements OnInit {
     return codigo
       ? setor.funcionarios.filter(funcionario => codigoFiltroCategoria(funcionario.categoria) === codigo)
       : setor.funcionarios;
-  }
-
-  protected voltar(): void {
-    this.router.navigate(['/ponto/he']);
   }
 
   protected carregar(): void {

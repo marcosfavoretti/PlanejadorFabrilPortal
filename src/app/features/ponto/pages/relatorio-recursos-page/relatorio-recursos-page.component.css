@@ -9,3 +9,6 @@
 @media (max-width: 900px) {
   .setor-grid { grid-template-columns: 1fr; }
 }
+
+/* Seção embutida em uma aba da lista de folhas: sem o respiro da página inteira. */
+.ponto-section { padding: 0; }

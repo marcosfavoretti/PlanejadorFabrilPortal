@@ -1,17 +1,7 @@
-<div class="ponto-dashboard-container fade-in">
-  <div class="header-banner bg-dark-green">
-    <div class="header-content">
-      <div class="header-text">
-        <h1 class="page-title">Categorias de Hora Extra</h1>
-        <p class="page-subtitle">Catálogo dos motivos usados nas folhas de hora extra</p>
-      </div>
-      <div class="header-actions">
-        <p-button type="button" label="Voltar" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
-          (click)="voltar()"></p-button>
-        <p-button type="button" label="Nova categoria" icon="pi pi-plus" severity="success"
-          (click)="abrirCriacao()"></p-button>
-      </div>
-    </div>
+<div class="ponto-dashboard-container ponto-section fade-in">
+  <div class="categorias-toolbar">
+    <p-button type="button" label="Nova categoria" icon="pi pi-plus" severity="success"
+      (click)="abrirCriacao()"></p-button>
   </div>
 
   <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>

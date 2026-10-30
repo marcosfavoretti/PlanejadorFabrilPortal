@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PaginatedResFolhaMotivosHoraExtraDTO, ResCentroDeCustoDTO } from '@/api/relogio';
 import { CategoriaHoraExtraAPIService } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
 import {
@@ -49,7 +48,6 @@ export class KpiMotivosPageComponent implements OnInit {
   private readonly folhaService = inject(FolhaHoraExtraAPIService);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
-  private readonly router = inject(Router);
 
   protected readonly dataRangeFilter = new FormControl<Date[] | null>(null);
   protected readonly centroCustoFilter = new FormControl<number | null>(null);
@@ -86,10 +84,6 @@ export class KpiMotivosPageComponent implements OnInit {
       error: err => this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }],
     });
     this.carregar();
-  }
-
-  protected voltar(): void {
-    this.router.navigate(['/ponto/he']);
   }
 
   protected aplicar(): void {

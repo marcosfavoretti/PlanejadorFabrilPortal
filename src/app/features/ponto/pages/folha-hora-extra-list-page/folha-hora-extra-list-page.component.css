@@ -1343,11 +1343,3 @@
   -webkit-print-color-adjust: exact;
 }
 .excecao-legend { font-size: 0.875rem; color: #854d0e; }
-
-.header-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-right: 1.5rem;
-  z-index: 1;
-}

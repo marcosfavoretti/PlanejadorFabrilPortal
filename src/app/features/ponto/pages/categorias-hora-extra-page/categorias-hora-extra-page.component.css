@@ -10,3 +10,8 @@
 .categoria-form .field { display: flex; flex-direction: column; gap: 0.35rem; }
 .categoria-form .check-item { display: flex; align-items: center; gap: 0.5rem; }
 .error-text { color: var(--red-500, #ef4444); }
+
+.categorias-toolbar { display: flex; justify-content: flex-end; }
+
+/* Seção embutida em uma aba da lista de folhas: sem o respiro da página inteira. */
+.ponto-section { padding: 0; }

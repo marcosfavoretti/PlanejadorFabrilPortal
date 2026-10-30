@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { CriarCategoriaHoraExtraDTO } from '@/api/relogio';
 import {
   CategoriaHoraExtra,
@@ -44,7 +43,6 @@ export const CODIGO_CATEGORIA_PATTERN = /^[A-Z0-9_]{2,40}$/;
 })
 export class CategoriasHoraExtraPageComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
   private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
 
   protected categorias: CategoriaHoraExtra[] = [];
@@ -65,10 +63,6 @@ export class CategoriasHoraExtraPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregar();
-  }
-
-  protected voltar(): void {
-    this.router.navigate(['/ponto/he']);
   }
 
   protected abrirCriacao(): void {

@@ -9,20 +9,6 @@
           gerencie e aprove as solicitações de horas extras da equipe' }}
         </p>
       </div>
-      <div class="header-links">
-        @if (canManageCategorias()) {
-        <p-button label="Categorias" icon="pi pi-tags" severity="secondary" [outlined]="true"
-          (click)="goTo('/ponto/he/categorias')"></p-button>
-        }
-        @if (canViewKpiMotivos()) {
-        <p-button label="KPI de motivos" icon="pi pi-chart-pie" severity="secondary" [outlined]="true"
-          (click)="goTo('/ponto/he/kpi-motivos')"></p-button>
-        }
-        @if (canViewFolhas()) {
-        <p-button label="Relatório de recursos" icon="pi pi-file" severity="secondary" [outlined]="true"
-          (click)="goTo('/ponto/he/relatorio-recursos')"></p-button>
-        }
-      </div>
       <div class="header-icon-container">
         <i class="pi pi-clock header-icon"></i>
       </div>
@@ -286,6 +272,17 @@
         </section>
         }
 
+        @if (canManageCategorias()) {
+        <section class="dashboard-section" id="rh-categorias" aria-label="Categorias de hora extra">
+          <div class="kpi-subsection-heading kpi-subsection-heading--financial">
+            <i class="pi pi-tags"></i>
+            <div><strong>Categorias de hora extra</strong><span>Catálogo dos motivos usados nas folhas: criar, editar,
+                ativar e desativar</span></div>
+          </div>
+          <app-categorias-hora-extra-page></app-categorias-hora-extra-page>
+        </section>
+        }
+
       </p-tabpanel>
       <p-tabpanel value="folhas">
 
@@ -465,6 +462,18 @@
               <i class="pi pi-shield"></i><span><strong>Auditoria de apontamentos</strong><small>Horas sem folha
                   autorizada</small></span><i class="pi pi-arrow-down-right"></i>
             </button>
+            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--operations"
+              (click)="scrollToKpiSection('kpi-relatorio-recursos')">
+              <i class="pi pi-file"></i><span><strong>Relatório de recursos</strong><small>Funcionários por setor e
+                  categoria</small></span><i class="pi pi-arrow-down-right"></i>
+            </button>
+            @if (canViewKpiMotivos()) {
+            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--authorized"
+              (click)="scrollToKpiSection('kpi-motivos')">
+              <i class="pi pi-chart-pie"></i><span><strong>Motivos de HE</strong><small>Categorias e
+                  justificativas</small></span><i class="pi pi-arrow-down-right"></i>
+            </button>
+            }
           </nav>
           <div id="kpi-visao-financeira" class="kpi-subsection-heading kpi-subsection-heading--financial">
             <i class="pi pi-wallet"></i>
@@ -899,6 +908,24 @@
             }
           </section>
 
+
+          @if (activeTab === 'kpi') {
+          <div id="kpi-relatorio-recursos" class="kpi-subsection-heading kpi-subsection-heading--operations">
+            <i class="pi pi-file"></i>
+            <div><strong>Relatório de recursos</strong><span>Funcionários por setor, com totais por categoria de hora
+                extra</span></div>
+          </div>
+          <app-relatorio-recursos-page></app-relatorio-recursos-page>
+
+          @if (canViewKpiMotivos()) {
+          <div id="kpi-motivos" class="kpi-subsection-heading kpi-subsection-heading--financial">
+            <i class="pi pi-chart-pie"></i>
+            <div><strong>Motivos de HE</strong><span>Por que as horas extras estão sendo solicitadas, por categoria e
+                justificativa</span></div>
+          </div>
+          <app-kpi-motivos-page></app-kpi-motivos-page>
+          }
+          }
         </section>
         }
       </p-tabpanel>

@@ -9,3 +9,6 @@
 .motivo-titulo { display: flex; justify-content: space-between; gap: 1rem; font-weight: 600; }
 .motivo-funcionarios { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
 .motivo-funcionarios li { display: flex; align-items: center; gap: 0.5rem; }
+
+/* Seção embutida em uma aba da lista de folhas: sem o respiro da página inteira. */
+.ponto-section { padding: 0; }
