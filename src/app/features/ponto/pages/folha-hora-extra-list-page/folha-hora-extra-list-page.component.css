@@ -43,10 +43,12 @@
   background: #eef2f6;
   border: 1px solid #d5dee8;
   border-radius: .9rem;
-  display: grid;
+  display: flex;
+  flex-wrap: nowrap;
   gap: .65rem;
   grid-column: 1 / -1;
-  grid-template-columns: auto repeat(auto-fit, minmax(14rem, 1fr));
+  overflow-x: auto;
+  scrollbar-width: thin;
   order: -2;
   padding: .65rem;
   position: sticky;
@@ -57,6 +59,7 @@
 .kpi-section-nav__title {
   color: #64748b;
   font-size: .72rem;
+  flex: 0 0 auto;
   font-weight: 800;
   letter-spacing: .05em;
   padding: 0 .5rem;
@@ -72,8 +75,9 @@
   cursor: pointer;
   display: grid;
   gap: .65rem;
+  flex: 1 0 auto;
   grid-template-columns: auto 1fr auto;
-  min-width: 0;
+  min-width: 14rem;
   padding: .65rem .8rem;
   text-align: left;
   transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
@@ -766,8 +770,6 @@
 .pessoas-por-dia-list__row--unauthorized .pessoas-por-dia-list__badge i { background: #ef4444; }
 
 @media (max-width: 900px) {
-  .kpi-section-nav { grid-template-columns: 1fr 1fr; }
-  .kpi-section-nav__title { grid-column: 1 / -1; }
   .pessoas-por-dia-chart__header,
   .pessoas-por-dia-table__header { align-items: stretch; flex-direction: column; gap: 1rem; }
   .pessoas-por-dia-table__actions { justify-content: space-between; }
@@ -778,7 +780,6 @@
 }
 
 @media (max-width: 560px) {
-  .kpi-section-nav { grid-template-columns: 1fr; }
   .kpi-section-nav__item { grid-template-columns: auto 1fr auto; }
   .pessoas-por-dia-workspace { padding: 1rem; }
   .pessoas-por-dia-table,
