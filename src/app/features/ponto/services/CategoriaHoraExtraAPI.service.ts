@@ -7,8 +7,8 @@ import {
   categoriaHoraExtraControllerCriar,
   categoriaHoraExtraControllerListar,
 } from '@/api/relogio';
-import { Observable, from, of, tap } from 'rxjs';
-import { extractErrorMessage } from './FolhaHoraExtraAPI.service';
+import { Observable, Subject, from, of, tap } from 'rxjs';
+import { extractErrorMessage, extractErrorStatus } from '../utils/error-message';
 
 export type CategoriaHoraExtra = ResCategoriaHoraExtraDTO;
 
@@ -16,6 +16,11 @@ export type CategoriaHoraExtra = ResCategoriaHoraExtraDTO;
 @Injectable({ providedIn: 'root' })
 export class CategoriaHoraExtraAPIService {
   private ativasCache: CategoriaHoraExtra[] | null = null;
+  private todasCache: CategoriaHoraExtra[] | null = null;
+  private readonly catalogoAlteradoSubject = new Subject<void>();
+
+  /** Emite depois de criar/atualizar uma categoria, para filtros recarregarem o catálogo. */
+  readonly catalogoAlterado$ = this.catalogoAlteradoSubject.asObservable();
 
   /** Lista só as categorias ativas, com cache em memória para não recarregar por linha. */
   getAtivas(forceReload = false): Observable<CategoriaHoraExtra[]> {
@@ -25,24 +30,33 @@ export class CategoriaHoraExtraAPIService {
     return from(categoriaHoraExtraControllerListar()).pipe(tap(categorias => this.ativasCache = categorias));
   }
 
-  /** Lista todas, inclusive inativas (tela admin e filtro do KPI de motivos). */
-  getTodas(): Observable<CategoriaHoraExtra[]> {
-    return from(categoriaHoraExtraControllerListar({ incluirInativas: true }));
+  /** Lista todas, inclusive inativas (tela admin e filtros), com cache invalidado em criar/atualizar. */
+  getTodas(forceReload = false): Observable<CategoriaHoraExtra[]> {
+    if (this.todasCache && !forceReload) {
+      return of(this.todasCache);
+    }
+    return from(categoriaHoraExtraControllerListar({ incluirInativas: true }))
+      .pipe(tap(categorias => this.todasCache = categorias));
   }
 
   criar(dto: CriarCategoriaHoraExtraDTO): Observable<CategoriaHoraExtra> {
-    return from(categoriaHoraExtraControllerCriar(dto)).pipe(tap(() => this.ativasCache = null));
+    return from(categoriaHoraExtraControllerCriar(dto)).pipe(tap(() => this.catalogoMudou()));
   }
 
   atualizar(id: string, dto: AtualizarCategoriaHoraExtraDTO): Observable<CategoriaHoraExtra> {
-    return from(categoriaHoraExtraControllerAtualizar(id, dto)).pipe(tap(() => this.ativasCache = null));
+    return from(categoriaHoraExtraControllerAtualizar(id, dto)).pipe(tap(() => this.catalogoMudou()));
+  }
+
+  private catalogoMudou(): void {
+    this.ativasCache = null;
+    this.todasCache = null;
+    this.catalogoAlteradoSubject.next();
   }
 }
 
 /** Traduz os erros do cadastro (400, 403, 404, 409) para mensagens de tela. */
 export function mapCategoriaHoraExtraError(error: unknown): string {
-  const status = (error as { response?: { status?: number }; status?: number })?.response?.status
-    ?? (error as { status?: number })?.status;
+  const status = extractErrorStatus(error);
   const mensagem = extractErrorMessage(error);
 
   if (status === 403) {
