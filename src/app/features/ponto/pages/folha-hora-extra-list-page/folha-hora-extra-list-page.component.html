@@ -445,36 +445,7 @@
       <p-tabpanel value="kpi">
         @if (canViewGastoFolhaPorDia()) {
         <section class="kpi-charts-grid" aria-label="Indicadores de horas extras">
-          <nav class="kpi-section-nav" aria-label="Navegação dos indicadores">
-            <span class="kpi-section-nav__title">Explorar indicadores</span>
-            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--authorized"
-              (click)="scrollToKpiSection('kpi-visao-financeira')">
-              <i class="pi pi-wallet"></i><span><strong>Visão financeira</strong><small>Custos e centros de
-                  custo</small></span><i class="pi pi-arrow-down-right"></i>
-            </button>
-            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--operations"
-              (click)="scrollToKpiSection('kpi-visao-operacional')">
-              <i class="pi pi-chart-bar"></i><span><strong>Visão operacional</strong><small>Cumprimento e
-                  desvios</small></span><i class="pi pi-arrow-down-right"></i>
-            </button>
-            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--audit"
-              (click)="scrollToKpiSection('kpi-he-nao-autorizadas')">
-              <i class="pi pi-shield"></i><span><strong>Auditoria de apontamentos</strong><small>Horas sem folha
-                  autorizada</small></span><i class="pi pi-arrow-down-right"></i>
-            </button>
-            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--operations"
-              (click)="scrollToKpiSection('kpi-relatorio-recursos')">
-              <i class="pi pi-file"></i><span><strong>Relatório de recursos</strong><small>Funcionários por setor e
-                  categoria</small></span><i class="pi pi-arrow-down-right"></i>
-            </button>
-            @if (canViewKpiMotivos()) {
-            <button type="button" class="kpi-section-nav__item kpi-section-nav__item--authorized"
-              (click)="scrollToKpiSection('kpi-motivos')">
-              <i class="pi pi-chart-pie"></i><span><strong>Motivos de HE</strong><small>Categorias e
-                  justificativas</small></span><i class="pi pi-arrow-down-right"></i>
-            </button>
-            }
-          </nav>
+          <app-kpi-section-nav [secoes]="kpiSecoesNav()" (secao)="scrollToKpiSection($event)"></app-kpi-section-nav>
           <div id="kpi-visao-financeira" class="kpi-subsection-heading kpi-subsection-heading--financial">
             <i class="pi pi-wallet"></i>
             <div><strong>Visão financeira</strong><span>Custos aprovados e distribuição por centro de custo</span></div>
@@ -910,14 +881,16 @@
 
 
           @if (activeTab === 'kpi') {
+          @if (canViewRelatorioRecursos()) {
           <section id="kpi-relatorio-recursos" class="kpi-embedded kpi-embedded--relatorio">
             <div class="kpi-subsection-heading kpi-subsection-heading--operations">
               <i class="pi pi-file"></i>
               <div><strong>Relatório de recursos</strong><span>Funcionários por setor, com totais por categoria de hora
                   extra</span></div>
             </div>
-            <app-relatorio-recursos-section></app-relatorio-recursos-section>
+            <app-relatorio-recursos-section [centrosCusto]="centrosCusto"></app-relatorio-recursos-section>
           </section>
+          }
 
           @if (canViewKpiMotivos()) {
           <section id="kpi-motivos" class="kpi-embedded kpi-embedded--motivos">
@@ -926,7 +899,7 @@
               <div><strong>Motivos de HE</strong><span>Por que as horas extras estão sendo solicitadas, por categoria e
                   justificativa</span></div>
             </div>
-            <app-kpi-motivos-section></app-kpi-motivos-section>
+            <app-kpi-motivos-section [centrosCusto]="centrosCusto"></app-kpi-motivos-section>
           </section>
           }
           }

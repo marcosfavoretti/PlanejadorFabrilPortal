@@ -1,15 +1,17 @@
 import { temExcecaoHE } from '../../utils/horarios-he';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, OnInit, inject, NgZone } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, NgZone } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LIDERES_ROLES } from '@/app/core/auth/role-groups';
 import { podeSubmeterFolha } from '@/app/features/ponto/ponto-roles';
+import * as acesso from '../../utils/ponto-acesso';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCategoriaHoraExtraResumoDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
 import { CategoriaHoraExtraAPIService } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
-import { SEM_CATEGORIA_CODIGO, SEM_CATEGORIA_LABEL, categoriaLabel, codigoFiltroCategoria } from '@/app/features/ponto/utils/categoria-he';
+import { SEM_CATEGORIA_CODIGO, SEM_CATEGORIA_LABEL, categoriaLabel, codigoFiltroCategoria, filtrarPorCategoria, opcoesFiltroCategoria, paginarLocal } from '@/app/features/ponto/utils/categoria-he';
+import { KpiSecaoNav, KpiSectionNavComponent } from '../../components/kpi-section-nav/kpi-section-nav.component';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
   FolhaHoraExtraAPIService,
@@ -20,7 +22,7 @@ import {
   mapFolhaHoraExtraError,
   normalizeFolhasResponse,
 } from '@/app/features/ponto/services/FolhaHoraExtraAPI.service';
-import { BehaviorSubject, catchError, finalize, forkJoin, from, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, forkJoin, from, map, merge, mergeMap, Observable, of, Subject, switchMap, tap, toArray } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -162,6 +164,7 @@ function createTodayRange(): Date[] {
     ReactiveFormsModule,
     ButtonModule,
     CategoriasHoraExtraSectionComponent,
+    KpiSectionNavComponent,
     ChartModule,
     DatePickerModule,
     DialogModule,
@@ -192,6 +195,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private readonly dialogService = inject(DialogService);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly statusOptions = FOLHA_HE_STATUS_OPERACIONAL
     .map(status => ({ label: status, value: status }));
@@ -254,7 +258,9 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected folhas: FolhaHoraExtraResumo[] = [];
   protected historicoFolhas: FolhaHoraExtraResumo[] = [];
   protected refeicoesHoje: FolhaHoraExtraRefeicaoResumo[] = [];
-  private refeicoesCarregadas: FolhaHoraExtraRefeicaoResumo[] = [];
+  private readonly refeicoesConsulta$ = new Subject<void>();
+  /** Refeições já filtradas por categoria no cliente (o endpoint não filtra por categoria), por consulta. */
+  private refeicoesPorCategoriaCache: { chave: string; itens: FolhaHoraExtraRefeicaoResumo[] } | null = null;
   protected funcionariosFolhasAprovadas: FuncionarioFolhaHEAprovada[] = [];
   protected centrosCusto: ResCentroDeCustoDTO[] = [];
   protected loading = false;
@@ -855,8 +861,12 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     }
 
     if (this.canViewRefeicoes()) {
+      this.observarConsultaRefeicoes();
       this.loadCategoriasFiltro();
-      this.refeicoesCategoriaFilter.valueChanges.subscribe(() => this.filtrarRefeicoesPorCategoria());
+      // O filtro de categoria muda o conjunto de linhas e o total: volta para a primeira página.
+      this.refeicoesCategoriaFilter.valueChanges
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.applyRefeicoesFilters());
       this.loadFuncionariosFolhasAprovadas();
     }
 
@@ -943,6 +953,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected applyRefeicoesFilters(): void {
     this.refeicoesFirst = 0;
+    this.refeicoesPorCategoriaCache = null;
     this.loadRefeicoesHoje();
   }
 
@@ -1090,26 +1101,38 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected canViewFolhas(): boolean {
-    const roles = this.userRoles();
-    return this.isAdmin()
-      || this.hasLeaderRole(roles)
-      || roles.includes(SetUserCargoDTOCargoEnum.SUPORTE)
-      || this.hasCoordinatorRole(roles)
-      || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR);
+    return acesso.canViewFolhas(this.userRoles());
   }
 
   protected canViewRefeicoes(): boolean {
-    const roles = this.userRoles();
-    return this.isAdmin() || roles.includes(SetUserCargoDTOCargoEnum.RH);
+    return acesso.canViewRefeicoes(this.userRoles());
   }
 
   protected canManageCategorias(): boolean {
-    const roles = this.userRoles();
-    return this.isAdmin() || roles.includes(SetUserCargoDTOCargoEnum.RH);
+    return acesso.canManageCategorias(this.userRoles());
   }
 
   protected canViewKpiMotivos(): boolean {
-    return this.canManageCategorias() || this.userRoles().includes(SetUserCargoDTOCargoEnum.DIRETOR);
+    return acesso.canViewKpiMotivos(this.userRoles());
+  }
+
+  protected canViewRelatorioRecursos(): boolean {
+    return acesso.canViewRelatorioRecursos(this.userRoles());
+  }
+
+  /** Itens do menu "Explorar indicadores" conforme o acesso do usuário. */
+  protected kpiSecoesNav(): KpiSecaoNav[] {
+    return [
+      { id: 'kpi-visao-financeira', titulo: 'Visão financeira', descricao: 'Custos e centros de custo', icone: 'pi-wallet', tom: 'authorized' },
+      { id: 'kpi-visao-operacional', titulo: 'Visão operacional', descricao: 'Cumprimento e desvios', icone: 'pi-chart-bar', tom: 'operations' },
+      { id: 'kpi-he-nao-autorizadas', titulo: 'Auditoria de apontamentos', descricao: 'Horas sem folha autorizada', icone: 'pi-shield', tom: 'audit' },
+      ...(this.canViewRelatorioRecursos()
+        ? [{ id: 'kpi-relatorio-recursos', titulo: 'Relatório de recursos', descricao: 'Funcionários por setor e categoria', icone: 'pi-file', tom: 'operations' } satisfies KpiSecaoNav]
+        : []),
+      ...(this.canViewKpiMotivos()
+        ? [{ id: 'kpi-motivos', titulo: 'Motivos de HE', descricao: 'Categorias e justificativas', icone: 'pi-chart-pie', tom: 'authorized' } satisfies KpiSecaoNav]
+        : []),
+    ];
   }
 
   protected canViewRhTab(): boolean {
@@ -1162,24 +1185,15 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected usesHistoricoDashboard(): boolean {
-    const roles = this.userRoles();
-    return !this.hasCombinedLeaderCoordinatorRoles(roles)
-      && (this.hasCoordinatorRole(roles)
-      || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR)
-      || this.isAdmin());
+    return acesso.usesHistoricoDashboard(this.userRoles());
   }
 
   protected canAuditHistorico(): boolean {
-    const roles = this.userRoles();
-    return this.usesHistoricoDashboard() || this.hasLeaderRole(roles);
+    return acesso.canAuditHistorico(this.userRoles());
   }
 
   protected canViewGastoFolhaPorDia(): boolean {
-    const roles = this.userRoles();
-    return this.isAdmin()
-      || roles.includes(SetUserCargoDTOCargoEnum.RH)
-      || this.hasCoordinatorRole(roles)
-      || roles.includes(SetUserCargoDTOCargoEnum.DIRETOR);
+    return acesso.canViewGastoFolhaPorDia(this.userRoles());
   }
 
   protected getStatusSeverity(status: FolhaHoraExtraStatus): 'secondary' | 'info' | 'warn' | 'success' | 'danger' {
@@ -1251,7 +1265,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   protected isAdmin(): boolean {
-    return this.userRoles().includes(SetUserCargoDTOCargoEnum.ADMIN);
+    return acesso.isAdmin(this.userRoles());
   }
 
   private createFolhasColumns(historico: boolean, hideSetor = historico): TableModel['columns'] {
@@ -2178,11 +2192,35 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   private loadRefeicoesHoje(): void {
-    this.refeicoesLoading = true;
+    this.refeicoesConsulta$.next();
+  }
+
+  /** switchMap: uma resposta antiga nunca sobrescreve a da consulta mais recente. */
+  private observarConsultaRefeicoes(): void {
+    this.refeicoesConsulta$.pipe(
+      tap(() => this.refeicoesLoading = true),
+      switchMap(() => this.consultarRefeicoes().pipe(
+        catchError(err => {
+          this.messages = [{
+            severity: 'error',
+            summary: 'Erro',
+            detail: `Nao foi possivel carregar as refeicoes de hoje. ${mapFolhaHoraExtraError(err)}`,
+          }];
+          return of({ data: [] as FolhaHoraExtraRefeicaoResumo[], total: 0 });
+        }),
+      )),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(({ data, total }) => {
+      this.refeicoesHoje = data;
+      this.refeicoesTotalRecords = total;
+      this.refeicoesLoading = false;
+    });
+  }
+
+  private consultarRefeicoes(): Observable<{ data: FolhaHoraExtraRefeicaoResumo[]; total: number }> {
     const range = this.refeicoesDataRangeFilter.value;
     const statuses = this.refeicoesStatusFilter.value ?? [];
-
-    this.folhaHoraExtraService.getRefeicoes({
+    const filtros = {
       dataInicio: range?.[0] ? this.formatRefeicoesDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatRefeicoesDate(range[1]) : undefined,
       centroCustoCodigo: this.refeicoesCentroCustoFilter.value ?? undefined,
@@ -2190,50 +2228,61 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       nome: this.refeicoesNomeFilter.value.trim() || undefined,
       refeicao: this.refeicoesTipoFilter.value ?? undefined,
       status: statuses.length ? statuses : undefined,
-      page: Math.floor(this.refeicoesFirst / this.refeicoesPageSize),
-      limit: this.refeicoesPageSize,
-    }).pipe(
-      catchError(err => {
-        this.messages = [{
-          severity: 'error',
-          summary: 'Erro',
-          detail: `Nao foi possivel carregar as refeicoes de hoje. ${mapFolhaHoraExtraError(err)}`,
-        }];
-        return of({
-          data: [],
-          total: 0,
-          page: 0,
-          limit: this.refeicoesPageSize,
-          totalPages: 0,
-        });
-      }),
-      finalize(() => this.refeicoesLoading = false),
-    ).subscribe(response => {
-      this.refeicoesCarregadas = response.data;
-      this.filtrarRefeicoesPorCategoria();
-      this.refeicoesTotalRecords = response.total;
-    });
-  }
-
-  /** Filtro de categoria aplicado no cliente sobre a página de refeições já carregada. */
-  private filtrarRefeicoesPorCategoria(): void {
+    };
     const codigo = this.refeicoesCategoriaFilter.value;
-    this.refeicoesHoje = codigo
-      ? this.refeicoesCarregadas.filter(refeicao => codigoFiltroCategoria(refeicao.categoria) === codigo)
-      : this.refeicoesCarregadas;
+
+    if (!codigo) {
+      this.refeicoesPorCategoriaCache = null;
+      return this.folhaHoraExtraService.getRefeicoes({
+        ...filtros,
+        page: Math.floor(this.refeicoesFirst / this.refeicoesPageSize),
+        limit: this.refeicoesPageSize,
+      }).pipe(map(response => ({ data: response.data, total: response.total })));
+    }
+
+    // O endpoint não aceita categoria: carrega todas as páginas, filtra aqui e pagina no cliente,
+    // para que linhas, total e paginador concordem (e a impressão use o conjunto filtrado da página).
+    const chave = JSON.stringify([filtros, codigo]);
+    const filtradas$ = this.refeicoesPorCategoriaCache?.chave === chave
+      ? of(this.refeicoesPorCategoriaCache.itens)
+      : this.carregarTodasRefeicoes(filtros).pipe(
+        map(todas => filtrarPorCategoria(todas, codigo)),
+        tap(itens => this.refeicoesPorCategoriaCache = { chave, itens }),
+      );
+    return filtradas$.pipe(map(itens => ({
+      data: paginarLocal(itens, this.refeicoesFirst, this.refeicoesPageSize),
+      total: itens.length,
+    })));
   }
 
-  /** Inclui categorias inativas: folhas antigas ainda podem usá-las. */
+  private carregarTodasRefeicoes(
+    filtros: Omit<Parameters<FolhaHoraExtraAPIService['getRefeicoes']>[0], 'page' | 'limit'>,
+  ): Observable<FolhaHoraExtraRefeicaoResumo[]> {
+    const limit = 100;
+    return this.folhaHoraExtraService.getRefeicoes({ ...filtros, page: 0, limit }).pipe(
+      switchMap(primeira => {
+        const totalPaginas = Math.ceil(primeira.total / limit);
+        if (totalPaginas <= 1) {
+          return of(primeira.data);
+        }
+        return forkJoin(
+          Array.from({ length: totalPaginas - 1 }, (_, indice) =>
+            this.folhaHoraExtraService.getRefeicoes({ ...filtros, page: indice + 1, limit }).pipe(map(r => r.data))),
+        ).pipe(map(paginas => primeira.data.concat(...paginas)));
+      }),
+    );
+  }
+
+  /** Inclui categorias inativas (folhas antigas as usam) e recarrega quando o cadastro de categorias muda. */
   private loadCategoriasFiltro(): void {
-    this.categoriasService.getTodas().subscribe({
-      next: categorias => this.categoriaFilterOptions = [
-        { label: SEM_CATEGORIA_LABEL, value: SEM_CATEGORIA_CODIGO },
-        ...categorias.map(categoria => ({
-          label: categoria.ativo ? categoria.nome : `${categoria.nome} (inativa)`,
-          value: categoria.codigo,
-        })),
-      ],
-      error: () => { /* o filtro segue apenas com "Sem categoria" */ },
+    merge(of(false), this.categoriasService.catalogoAlterado$.pipe(map(() => true))).pipe(
+      switchMap(forcar => this.categoriasService.getTodas(forcar).pipe(catchError(() => of(null)))),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(categorias => {
+      // Em erro o filtro segue com as opções atuais.
+      if (categorias) {
+        this.categoriaFilterOptions = opcoesFiltroCategoria(categorias);
+      }
     });
   }
 
@@ -2442,17 +2491,15 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   }
 
   private hasLeaderRole(roles = this.userRoles()): boolean {
-    return LIDERES_ROLES
-      .filter(role => role !== SetUserCargoDTOCargoEnum.ADMIN)
-      .some(role => roles.includes(role));
+    return acesso.hasLeaderRole(roles);
   }
 
   private hasCoordinatorRole(roles = this.userRoles()): boolean {
-    return roles.includes(SetUserCargoDTOCargoEnum.COORDENADOR);
+    return acesso.hasCoordinatorRole(roles);
   }
 
   private hasCombinedLeaderCoordinatorRoles(roles = this.userRoles()): boolean {
-    return this.hasLeaderRole(roles) && this.hasCoordinatorRole(roles);
+    return acesso.hasCombinedLeaderCoordinatorRoles(roles);
   }
 
   private getApprovalStatusesForUser(): FolhaHoraExtraStatus[] {
