@@ -136,4 +136,21 @@ describe('FolhaHoraExtraFormPageComponent categorias', () => {
     row.patchValue({ categoriaId: simples.id });
     expect(component.buildPayload().funcionarios[0].categoriaId).toBe(simples.id);
   });
+
+  it('aplica a categoria padrao a todas as linhas e expoe o tooltip de ajuda acessivel', () => {
+    const primeira = linha({ categoriaId: simples.id });
+    const segunda = linha({ matricula: '002' });
+    component.categoriaEmLote = detalhe.id;
+    component.aplicarCategoriaATodos();
+    expect(primeira.get('categoriaId').value).toBe(detalhe.id);
+    expect(segunda.get('categoriaId').value).toBe(detalhe.id);
+
+    fixture.detectChanges();
+    const botao = fixture.nativeElement.querySelector('.categoria-lote p-button');
+    expect(botao.textContent).toContain('Aplicar como padrão');
+    const ajuda = fixture.nativeElement.querySelector('.categoria-lote-ajuda');
+    expect(ajuda.getAttribute('tabindex')).toBe('0');
+    expect(ajuda.getAttribute('aria-label')).toBeTruthy();
+    expect(component.aplicarPadraoAjuda).toContain('substituindo');
+  });
 });

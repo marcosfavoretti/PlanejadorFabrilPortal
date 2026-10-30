@@ -98,6 +98,11 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   protected loadingCategorias = false;
   protected readonly categoriaDetalheMinChars = CATEGORIA_DETALHE_MIN_CHARS;
   protected categoriaEmLote: string | null = null;
+  protected readonly aplicarPadraoAjuda =
+    'Define a categoria escolhida como padrão para todos os funcionários da folha, substituindo a categoria '
+    + 'que já estiver selecionada em cada linha. Você ainda pode alterar a categoria de cada linha '
+    + 'individualmente. Categorias que exigem detalhe continuam pedindo uma justificativa própria de pelo '
+    + 'menos 15 caracteres em cada linha.';
   protected linhasComErro = new Set<number>();
   /** Catálogo completo (inclui inativas) para resolver exigeDetalhe de categorias mantidas na edição. */
   private catalogoCompleto: CategoriaHoraExtra[] = [];

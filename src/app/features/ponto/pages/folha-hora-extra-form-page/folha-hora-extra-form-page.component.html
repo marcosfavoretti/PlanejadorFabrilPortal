@@ -77,12 +77,15 @@
       </div>
 
       <div class="categoria-lote">
-        <label for="categoriaEmLote">Aplicar categoria a todos</label>
+        <label for="categoriaEmLote">Categoria padrão</label>
         <p-select inputId="categoriaEmLote" [options]="categorias" [(ngModel)]="categoriaEmLote"
           [ngModelOptions]="{ standalone: true }" optionLabel="nome" optionValue="id"
           placeholder="Selecione o motivo" appendTo="body" [disabled]="folhaForm.disabled"></p-select>
-        <p-button type="button" label="Aplicar" icon="pi pi-check" severity="secondary" [outlined]="true"
+        <p-button type="button" label="Aplicar como padrão" icon="pi pi-check" severity="secondary" [outlined]="true"
           [disabled]="!categoriaEmLote || folhaForm.disabled" (click)="aplicarCategoriaATodos()"></p-button>
+        <i class="pi pi-question-circle categoria-lote-ajuda" tabindex="0" role="img"
+          aria-label="Ajuda: o que faz Aplicar como padrão"
+          [pTooltip]="aplicarPadraoAjuda" tooltipPosition="top"></i>
       </div>
 
       <div formArrayName="funcionarios" class="employee-table">
