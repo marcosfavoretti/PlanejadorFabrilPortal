@@ -44,20 +44,7 @@ import { KpiMotivosSectionComponent } from '../../components/kpi-motivos-section
 import { RelatorioRecursosSectionComponent } from '../../components/relatorio-recursos-section/relatorio-recursos-section.component';
 import { TableDynamicComponent } from '@/app/shared/components/table-dynamic/table-dynamic.component';
 import { TableModel } from '@/app/shared/components/table-dynamic/table.model';
-
-const FOLHA_HE_STATUS_OPERACIONAL: FolhaHoraExtraStatus[] = [
-  'RASCUNHO',
-  'AGUARDANDO_COORDENACAO',
-  'AGUARDANDO_DIRETORIA',
-  'REJEITADO_COORDENACAO',
-  'REJEITADO_DIRETORIA',
-];
-
-const FOLHA_HE_STATUS_TODOS: FolhaHoraExtraStatus[] = [
-  ...FOLHA_HE_STATUS_OPERACIONAL.slice(0, 3),
-  'APROVADO',
-  ...FOLHA_HE_STATUS_OPERACIONAL.slice(3),
-];
+import { FOLHA_HE_STATUS_OPERACIONAL, FOLHA_HE_STATUS_TODOS, severidadeStatusFolhaHE } from '@/app/features/ponto/utils/folha-he-status';
 
 /** Coluna "Categoria" (chip) compartilhada entre as tabelas; `null` vira "Sem categoria". */
 function categoriaColumn(): TableModel['columns'][number] {
@@ -1193,17 +1180,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
     return acesso.canViewGastoFolhaPorDia(this.userRoles());
   }
 
-  protected getStatusSeverity(status: FolhaHoraExtraStatus): 'secondary' | 'info' | 'warn' | 'success' | 'danger' {
-    switch (status) {
-      case 'RASCUNHO': return 'secondary';
-      case 'AGUARDANDO_COORDENACAO': return 'info';
-      case 'AGUARDANDO_DIRETORIA': return 'warn';
-      case 'APROVADO': return 'success';
-      case 'REJEITADO_COORDENACAO':
-      case 'REJEITADO_DIRETORIA':
-        return 'danger';
-    }
-  }
+  protected readonly getStatusSeverity = severidadeStatusFolhaHE;
 
   protected getCumprimentoLabel(funcionario: ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO): string {
     return this.getCumprimentoStatusLabel(funcionario.statusCumprimentoHE ?? 'CUMPRIU');
