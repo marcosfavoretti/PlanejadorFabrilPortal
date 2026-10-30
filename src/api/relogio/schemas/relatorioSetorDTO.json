@@ -30,6 +30,35 @@
           "justificativa": {
             "type": "string",
             "example": "Finalizacao de lote urgente"
+          },
+          "categoria": {
+            "nullable": true,
+            "description": "Categoria da hora extra do funcionario. Null em folhas legadas.",
+            "type": "object",
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID MongoDB da categoria.",
+                    "example": "6651f3f0f0f0f0f0f0f0f0f0"
+                  },
+                  "codigo": {
+                    "type": "string",
+                    "description": "Código único da categoria.",
+                    "example": "DEMANDA_URGENTE"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "description": "Nome exibido da categoria.",
+                    "example": "Demanda urgente"
+                  }
+                },
+                "required": ["id", "codigo", "nome"],
+                "x-readme-ref-name": "ResCategoriaHoraExtraResumoDTO"
+              }
+            ]
           }
         },
         "required": [
@@ -43,6 +72,24 @@
         ],
         "x-readme-ref-name": "ResItemFuncionarioHEDTO"
       }
+    },
+    "totaisPorCategoria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Codigo da categoria. Null para itens de folhas legadas (Sem categoria).",
+            "example": "DEMANDA_URGENTE"
+          },
+          "nome": { "type": "string", "example": "Demanda urgente" },
+          "quantidadeFuncionarios": { "type": "number", "example": 3 }
+        },
+        "required": ["codigo", "nome", "quantidadeFuncionarios"],
+        "x-readme-ref-name": "ResTotalCategoriaRelatorioDTO"
+      }
     }
   },
   "required": [
@@ -50,7 +97,8 @@
     "justificativa",
     "dataContexto",
     "totalPessoas",
-    "funcionarios"
+    "funcionarios",
+    "totaisPorCategoria"
   ],
   "x-readme-ref-name": "RelatorioSetorDTO"
 }

@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ResCategoriaHoraExtraResumoDTO } from './ResCategoriaHoraExtraResumoDTO';
+
 export enum ResItemFuncionarioHEDTOTransporteEnum {
   UBER = 'UBER',
   TAXI = 'TAXI',
@@ -45,4 +47,9 @@ export type ResItemFuncionarioHEDTO = {
    * @type string
    */
   justificativa: string;
+  /**
+   * @description Categoria da hora extra do funcionario. Null em folhas legadas.
+   * @type object
+   */
+  categoria?: ResCategoriaHoraExtraResumoDTO | null;
 };

@@ -16,7 +16,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFolhaHoraExtraControllerRelatorioRecursosUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/folha-he/relatorio-recursos` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/folha-he/relatorio-recursos` as const,
   };
   return res;
 }

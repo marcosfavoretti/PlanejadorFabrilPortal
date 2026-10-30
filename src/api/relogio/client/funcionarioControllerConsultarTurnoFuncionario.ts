@@ -15,7 +15,7 @@ function getFuncionarioControllerConsultarTurnoFuncionarioUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/funcionario/${matricula}/turno` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/funcionario/${matricula}/turno` as const,
   };
   return res;
 }

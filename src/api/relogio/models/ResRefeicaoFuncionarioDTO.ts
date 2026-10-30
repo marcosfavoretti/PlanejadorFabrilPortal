@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ResCategoriaHoraExtraResumoDTO } from './ResCategoriaHoraExtraResumoDTO';
+
 export enum ResRefeicaoFuncionarioDTORefeicaoEnum {
   MARMITEX = 'MARMITEX',
   LANCHE = 'LANCHE',
@@ -63,6 +65,11 @@ export type ResRefeicaoFuncionarioDTO = {
    * @type string
    */
   justificativa: string;
+  /**
+   * @description Categoria da hora extra do funcionario. Null em folhas legadas.
+   * @type object
+   */
+  categoria?: ResCategoriaHoraExtraResumoDTO | null;
   /**
    * @type string
    */

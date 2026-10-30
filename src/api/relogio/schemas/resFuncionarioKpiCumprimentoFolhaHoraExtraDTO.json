@@ -3,6 +3,35 @@
   "properties": {
     "matricula": { "type": "string" },
     "nome": { "type": "string" },
+    "categoria": {
+      "nullable": true,
+      "description": "Categoria da hora extra do funcionario. Null em folhas legadas.",
+      "type": "object",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "ID MongoDB da categoria.",
+              "example": "6651f3f0f0f0f0f0f0f0f0f0"
+            },
+            "codigo": {
+              "type": "string",
+              "description": "Código único da categoria.",
+              "example": "DEMANDA_URGENTE"
+            },
+            "nome": {
+              "type": "string",
+              "description": "Nome exibido da categoria.",
+              "example": "Demanda urgente"
+            }
+          },
+          "required": ["id", "codigo", "nome"],
+          "x-readme-ref-name": "ResCategoriaHoraExtraResumoDTO"
+        }
+      ]
+    },
     "temporario": {
       "type": "boolean",
       "description": "Indica que o funcionario e temporario e nao entra no calculo de batidas."

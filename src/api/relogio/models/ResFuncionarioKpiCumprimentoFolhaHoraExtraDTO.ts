@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import type { ResCategoriaHoraExtraResumoDTO } from './ResCategoriaHoraExtraResumoDTO';
 import type { ResTipoMarcacaoDTO } from './ResTipoMarcacaoDTO';
 
 export enum ResFuncionarioKpiCumprimentoFolhaHoraExtraDTOStatusCumprimentoHEEnum {
@@ -20,6 +21,11 @@ export type ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO = {
    * @type string
    */
   nome: string;
+  /**
+   * @description Categoria da hora extra do funcionario. Null em folhas legadas.
+   * @type object
+   */
+  categoria?: ResCategoriaHoraExtraResumoDTO | null;
   /**
    * @description Indica que o funcionario e temporario e nao entra no calculo de batidas.
    * @type boolean

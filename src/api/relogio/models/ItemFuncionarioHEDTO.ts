@@ -47,4 +47,9 @@ export type ItemFuncionarioHEDTO = {
    * @type string
    */
   justificativa: string;
+  /**
+   * @description ID da categoria de hora extra (GET /folha-he-categorias). Obrigatório para todo funcionário em uma folha nova e para funcionários adicionados ao editar.
+   * @type string | undefined
+   */
+  categoriaId?: string;
 };

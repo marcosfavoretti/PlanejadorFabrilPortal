@@ -1,3 +1,35 @@
+export type { AtualizarCategoriaHoraExtraDTO } from './AtualizarCategoriaHoraExtraDTO';
+export type {
+  CategoriaHoraExtraControllerAtualizar200,
+  CategoriaHoraExtraControllerAtualizar400,
+  CategoriaHoraExtraControllerAtualizar401,
+  CategoriaHoraExtraControllerAtualizar403,
+  CategoriaHoraExtraControllerAtualizar404,
+  CategoriaHoraExtraControllerAtualizarMutation,
+  CategoriaHoraExtraControllerAtualizarMutationRequest,
+  CategoriaHoraExtraControllerAtualizarMutationResponse,
+  CategoriaHoraExtraControllerAtualizarPathParams,
+} from './CategoriaHoraExtraControllerAtualizar';
+export type {
+  CategoriaHoraExtraControllerCriar201,
+  CategoriaHoraExtraControllerCriar400,
+  CategoriaHoraExtraControllerCriar401,
+  CategoriaHoraExtraControllerCriar403,
+  CategoriaHoraExtraControllerCriar409,
+  CategoriaHoraExtraControllerCriarMutation,
+  CategoriaHoraExtraControllerCriarMutationRequest,
+  CategoriaHoraExtraControllerCriarMutationResponse,
+} from './CategoriaHoraExtraControllerCriar';
+export type {
+  CategoriaHoraExtraControllerListar200,
+  CategoriaHoraExtraControllerListar400,
+  CategoriaHoraExtraControllerListar401,
+  CategoriaHoraExtraControllerListar403,
+  CategoriaHoraExtraControllerListarQuery,
+  CategoriaHoraExtraControllerListarQueryParams,
+  CategoriaHoraExtraControllerListarQueryResponse,
+} from './CategoriaHoraExtraControllerListar';
+export type { CriarCategoriaHoraExtraDTO } from './CriarCategoriaHoraExtraDTO';
 export type { CriarFolhaHoraExtraDTO } from './CriarFolhaHoraExtraDTO';
 export type { EditarFolhaHoraExtraDTO } from './EditarFolhaHoraExtraDTO';
 export type {
@@ -139,6 +171,15 @@ export type {
   FolhaHoraExtraKpiControllerJornadaQueryResponse,
 } from './FolhaHoraExtraKpiControllerJornada';
 export type {
+  FolhaHoraExtraKpiControllerListarMotivos200,
+  FolhaHoraExtraKpiControllerListarMotivos400,
+  FolhaHoraExtraKpiControllerListarMotivos401,
+  FolhaHoraExtraKpiControllerListarMotivos403,
+  FolhaHoraExtraKpiControllerListarMotivosQuery,
+  FolhaHoraExtraKpiControllerListarMotivosQueryParams,
+  FolhaHoraExtraKpiControllerListarMotivosQueryResponse,
+} from './FolhaHoraExtraKpiControllerListarMotivos';
+export type {
   FuncionarioControllerConsultaFuncionariosError,
   FuncionarioControllerConsultaFuncionariosQuery,
   FuncionarioControllerConsultaFuncionariosQueryParams,
@@ -174,6 +215,7 @@ export type { KpiJornadaFolhaHoraExtraCentroCustoDTO } from './KpiJornadaFolhaHo
 export type { KpiJornadaFolhaHoraExtraDiaDTO } from './KpiJornadaFolhaHoraExtraDiaDTO';
 export type { KpiJornadaFolhaHoraExtraFuncionarioDTO } from './KpiJornadaFolhaHoraExtraFuncionarioDTO';
 export type { PaginatedResFolhaHoraExtraDTODto } from './PaginatedResFolhaHoraExtraDTODto';
+export type { PaginatedResFolhaMotivosHoraExtraDTO } from './PaginatedResFolhaMotivosHoraExtraDTO';
 export type { PaginatedResFuncionarioListagemDTODto } from './PaginatedResFuncionarioListagemDTODto';
 export type { PaginatedResPresencaFuncionarioDTODto } from './PaginatedResPresencaFuncionarioDTODto';
 export type { PaginatedResRankingFaltasDTODto } from './PaginatedResRankingFaltasDTODto';
@@ -214,6 +256,9 @@ export type { RejeitarFolhaHoraExtraDTO } from './RejeitarFolhaHoraExtraDTO';
 export type { RelatorioRecursosResumoDTO } from './RelatorioRecursosResumoDTO';
 export type { RelatorioSetorDTO } from './RelatorioSetorDTO';
 export type { ResAssinaturaAprovacaoDTO } from './ResAssinaturaAprovacaoDTO';
+export type { ResCategoriaHoraExtraDTO } from './ResCategoriaHoraExtraDTO';
+export type { ResCategoriaHoraExtraResumoDTO } from './ResCategoriaHoraExtraResumoDTO';
+export type { ResCategoriaTotalHoraExtraDTO } from './ResCategoriaTotalHoraExtraDTO';
 export type { ResCentroDeCustoDTO } from './ResCentroDeCustoDTO';
 export type { ResEventoHoraExtraNaoAutorizadaDTO } from './ResEventoHoraExtraNaoAutorizadaDTO';
 export type { ResExtratoCustoFuncionarioHoraExtraDTO } from './ResExtratoCustoFuncionarioHoraExtraDTO';
@@ -222,8 +267,10 @@ export type { ResExtratoCustoHoraExtraLinhaDTO } from './ResExtratoCustoHoraExtr
 export type { ResFaltasFuncionarioDTO } from './ResFaltasFuncionarioDTO';
 export type { ResFolhaHoraExtraDTO } from './ResFolhaHoraExtraDTO';
 export type { ResFolhaHoraExtraDetalheDTO } from './ResFolhaHoraExtraDetalheDTO';
+export type { ResFolhaMotivosHoraExtraDTO } from './ResFolhaMotivosHoraExtraDTO';
 export type { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO } from './ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
 export type { ResFuncionarioListagemDTO } from './ResFuncionarioListagemDTO';
+export type { ResFuncionarioMotivoHoraExtraDTO } from './ResFuncionarioMotivoHoraExtraDTO';
 export type { ResHorasExtrasNaoAutorizadasDTO } from './ResHorasExtrasNaoAutorizadasDTO';
 export type { ResHorasIrregularesDTO } from './ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './ResItemFuncionarioHEDTO';
@@ -233,6 +280,7 @@ export type { ResKpiFaltasDiaDTO } from './ResKpiFaltasDiaDTO';
 export type { ResKpiFaltasResumoDTO } from './ResKpiFaltasResumoDTO';
 export type { ResKpiFaltasSetorDTO } from './ResKpiFaltasSetorDTO';
 export type { ResKpiJornadaFolhaHoraExtraDTO } from './ResKpiJornadaFolhaHoraExtraDTO';
+export type { ResMotivoHoraExtraDTO } from './ResMotivoHoraExtraDTO';
 export type { ResPontoFuncionarioDTO } from './ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './ResPresencaFuncionarioDTO';
 export type { ResRankingFaltasDTO } from './ResRankingFaltasDTO';
@@ -240,6 +288,7 @@ export type { ResRefeicaoFuncionarioDTO } from './ResRefeicaoFuncionarioDTO';
 export type { ResRegistroPontoTurnoPontoDTO } from './ResRegistroPontoTurnoPontoDTO';
 export type { ResRelatorioHoraExtraDTO } from './ResRelatorioHoraExtraDTO';
 export type { ResTipoMarcacaoDTO } from './ResTipoMarcacaoDTO';
+export type { ResTotalCategoriaRelatorioDTO } from './ResTotalCategoriaRelatorioDTO';
 export type { ResTurnoDTO } from './ResTurnoDTO';
 export type { ResTurnoFuncionarioDTO } from './ResTurnoFuncionarioDTO';
 export type { ResponsePaginatorDTO } from './ResponsePaginatorDTO';

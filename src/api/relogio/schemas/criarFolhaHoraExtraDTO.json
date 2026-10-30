@@ -23,7 +23,11 @@
             "enum": ["MARMITEX", "LANCHE", "N/A"],
             "default": "N/A"
           },
-          "justificativa": { "type": "string" }
+          "justificativa": { "type": "string" },
+          "categoriaId": {
+            "type": "string",
+            "description": "ID da categoria de hora extra (GET /folha-he-categorias). Obrigatório para todo funcionário em uma folha nova e para funcionários adicionados ao editar."
+          }
         },
         "required": ["matricula", "nome", "inicioHE", "fimHE", "justificativa"],
         "x-readme-ref-name": "ItemFuncionarioHEDTO"

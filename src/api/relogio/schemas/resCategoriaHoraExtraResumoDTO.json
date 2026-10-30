@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID MongoDB da categoria.",
+      "example": "6651f3f0f0f0f0f0f0f0f0f0"
+    },
+    "codigo": {
+      "type": "string",
+      "description": "Código único da categoria.",
+      "example": "DEMANDA_URGENTE"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome exibido da categoria.",
+      "example": "Demanda urgente"
+    }
+  },
+  "required": ["id", "codigo", "nome"],
+  "x-readme-ref-name": "ResCategoriaHoraExtraResumoDTO"
+}

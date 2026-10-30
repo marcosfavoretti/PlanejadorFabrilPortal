@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "string",
+      "nullable": true,
+      "description": "Código da categoria. Nulo no grupo \"Sem categoria\" (folhas antigas).",
+      "example": "FALTA_MAO_DE_OBRA"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome da categoria.",
+      "example": "Falta de mão de obra"
+    },
+    "quantidadeFuncionarios": {
+      "type": "number",
+      "description": "Quantidade de funcionários da folha nesta categoria.",
+      "example": 3
+    }
+  },
+  "required": ["codigo", "nome", "quantidadeFuncionarios"],
+  "x-readme-ref-name": "ResCategoriaTotalHoraExtraDTO"
+}

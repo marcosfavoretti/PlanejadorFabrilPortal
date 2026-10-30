@@ -5,6 +5,7 @@
 
 import type { RelatorioRecursosResumoDTO } from './RelatorioRecursosResumoDTO';
 import type { RelatorioSetorDTO } from './RelatorioSetorDTO';
+import type { ResTotalCategoriaRelatorioDTO } from './ResTotalCategoriaRelatorioDTO';
 
 export type ResRelatorioHoraExtraDTO = {
   /**
@@ -15,4 +16,8 @@ export type ResRelatorioHoraExtraDTO = {
    * @type array
    */
   detalhamentoPorSetor: RelatorioSetorDTO[];
+  /**
+   * @type array
+   */
+  totaisPorCategoria: ResTotalCategoriaRelatorioDTO[];
 };

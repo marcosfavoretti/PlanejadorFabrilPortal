@@ -19,7 +19,7 @@ function getFolhaHoraExtraKpiControllerCumprimentoUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/folha-he/${id}/kpi-cumprimento` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/folha-he/${id}/kpi-cumprimento` as const,
   };
   return res;
 }

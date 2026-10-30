@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPontoKPIControllerResumirFaltasUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/kpi/faltas/resumo` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/kpi/faltas/resumo` as const,
   };
   return res;
 }

@@ -1,3 +1,6 @@
+export { categoriaHoraExtraControllerAtualizar } from './categoriaHoraExtraControllerAtualizar';
+export { categoriaHoraExtraControllerCriar } from './categoriaHoraExtraControllerCriar';
+export { categoriaHoraExtraControllerListar } from './categoriaHoraExtraControllerListar';
 export { folhaHoraExtraControllerAprovar } from './folhaHoraExtraControllerAprovar';
 export { folhaHoraExtraControllerConsultarRefeicoes } from './folhaHoraExtraControllerConsultarRefeicoes';
 export { folhaHoraExtraControllerCriar } from './folhaHoraExtraControllerCriar';
@@ -13,6 +16,7 @@ export { folhaHoraExtraKpiControllerCumprimentoPorPeriodo } from './folhaHoraExt
 export { folhaHoraExtraKpiControllerCusto } from './folhaHoraExtraKpiControllerCusto';
 export { folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas } from './folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export { folhaHoraExtraKpiControllerJornada } from './folhaHoraExtraKpiControllerJornada';
+export { folhaHoraExtraKpiControllerListarMotivos } from './folhaHoraExtraKpiControllerListarMotivos';
 export { funcionarioControllerConsultaFuncionarios } from './funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './funcionarioControllerConsultaFuncionariosLegado';
 export { funcionarioControllerConsultarCentroDeCustoMethod } from './funcionarioControllerConsultarCentroDeCustoMethod';

@@ -15,7 +15,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFolhaHoraExtraControllerConsultarRefeicoesUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/folha-he/refeicoes` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/folha-he/refeicoes` as const,
   };
   return res;
 }

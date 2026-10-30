@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "properties": {
+    "matricula": {
+      "type": "string",
+      "description": "Matrícula do funcionário.",
+      "example": "001309"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome do funcionário.",
+      "example": "ANA SOUZA"
+    },
+    "categoria": {
+      "nullable": true,
+      "description": "Categoria padronizada da hora extra deste funcionário. Nula em folhas antigas, anteriores às categorias.",
+      "type": "object",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "ID MongoDB da categoria.",
+              "example": "6651f3f0f0f0f0f0f0f0f0f0"
+            },
+            "codigo": {
+              "type": "string",
+              "description": "Código único da categoria.",
+              "example": "DEMANDA_URGENTE"
+            },
+            "nome": {
+              "type": "string",
+              "description": "Nome exibido da categoria.",
+              "example": "Demanda urgente"
+            }
+          },
+          "required": ["id", "codigo", "nome"],
+          "x-readme-ref-name": "ResCategoriaHoraExtraResumoDTO"
+        }
+      ]
+    }
+  },
+  "required": ["matricula", "nome", "categoria"],
+  "x-readme-ref-name": "ResFuncionarioMotivoHoraExtraDTO"
+}

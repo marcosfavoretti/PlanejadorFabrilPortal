@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "example": "6651f3f0f0f0f0f0f0f0f0f0" },
+    "codigo": { "type": "string", "example": "DEMANDA_URGENTE" },
+    "nome": { "type": "string", "example": "Demanda urgente" },
+    "descricao": { "type": "string", "nullable": true },
+    "exigeDetalhe": { "type": "boolean" },
+    "ativo": { "type": "boolean" },
+    "ordem": { "type": "number" },
+    "criadoEm": { "format": "date-time", "type": "string" },
+    "atualizadoEm": { "format": "date-time", "type": "string" }
+  },
+  "required": [
+    "id",
+    "codigo",
+    "nome",
+    "exigeDetalhe",
+    "ativo",
+    "ordem",
+    "criadoEm",
+    "atualizadoEm"
+  ],
+  "x-readme-ref-name": "ResCategoriaHoraExtraDTO"
+}

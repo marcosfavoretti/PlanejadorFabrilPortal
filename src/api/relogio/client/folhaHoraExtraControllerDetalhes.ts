@@ -19,7 +19,7 @@ function getFolhaHoraExtraControllerDetalhesUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/folha-he/${id}` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/folha-he/${id}` as const,
   };
   return res;
 }

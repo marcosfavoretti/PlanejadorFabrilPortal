@@ -4,6 +4,7 @@
  */
 
 import type { ResItemFuncionarioHEDTO } from './ResItemFuncionarioHEDTO';
+import type { ResTotalCategoriaRelatorioDTO } from './ResTotalCategoriaRelatorioDTO';
 
 export type RelatorioSetorDTO = {
   /**
@@ -26,4 +27,8 @@ export type RelatorioSetorDTO = {
    * @type array
    */
   funcionarios: ResItemFuncionarioHEDTO[];
+  /**
+   * @type array
+   */
+  totaisPorCategoria: ResTotalCategoriaRelatorioDTO[];
 };

@@ -15,7 +15,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFolhaHoraExtraKpiControllerCumprimentoPorPeriodoUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/folha-he/kpi-cumprimento/periodo` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/folha-he/kpi-cumprimento/periodo` as const,
   };
   return res;
 }

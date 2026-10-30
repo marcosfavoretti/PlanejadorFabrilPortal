@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getPontoControllerConsultaMarcacaoMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/registro` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/registro` as const,
   };
   return res;
 }

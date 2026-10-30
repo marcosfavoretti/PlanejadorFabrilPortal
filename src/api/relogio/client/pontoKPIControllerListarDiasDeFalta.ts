@@ -16,7 +16,7 @@ function getPontoKPIControllerListarDiasDeFaltaUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/ponto/kpi/faltas/${matricula}/dias` as const,
+    url: `https://dev.ethos.ind.br/api/ponto/kpi/faltas/${matricula}/dias` as const,
   };
   return res;
 }

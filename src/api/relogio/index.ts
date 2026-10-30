@@ -1,3 +1,35 @@
+export type { AtualizarCategoriaHoraExtraDTO } from './models/AtualizarCategoriaHoraExtraDTO';
+export type {
+  CategoriaHoraExtraControllerAtualizar200,
+  CategoriaHoraExtraControllerAtualizar400,
+  CategoriaHoraExtraControllerAtualizar401,
+  CategoriaHoraExtraControllerAtualizar403,
+  CategoriaHoraExtraControllerAtualizar404,
+  CategoriaHoraExtraControllerAtualizarMutation,
+  CategoriaHoraExtraControllerAtualizarMutationRequest,
+  CategoriaHoraExtraControllerAtualizarMutationResponse,
+  CategoriaHoraExtraControllerAtualizarPathParams,
+} from './models/CategoriaHoraExtraControllerAtualizar';
+export type {
+  CategoriaHoraExtraControllerCriar201,
+  CategoriaHoraExtraControllerCriar400,
+  CategoriaHoraExtraControllerCriar401,
+  CategoriaHoraExtraControllerCriar403,
+  CategoriaHoraExtraControllerCriar409,
+  CategoriaHoraExtraControllerCriarMutation,
+  CategoriaHoraExtraControllerCriarMutationRequest,
+  CategoriaHoraExtraControllerCriarMutationResponse,
+} from './models/CategoriaHoraExtraControllerCriar';
+export type {
+  CategoriaHoraExtraControllerListar200,
+  CategoriaHoraExtraControllerListar400,
+  CategoriaHoraExtraControllerListar401,
+  CategoriaHoraExtraControllerListar403,
+  CategoriaHoraExtraControllerListarQuery,
+  CategoriaHoraExtraControllerListarQueryParams,
+  CategoriaHoraExtraControllerListarQueryResponse,
+} from './models/CategoriaHoraExtraControllerListar';
+export type { CriarCategoriaHoraExtraDTO } from './models/CriarCategoriaHoraExtraDTO';
 export type { CriarFolhaHoraExtraDTO } from './models/CriarFolhaHoraExtraDTO';
 export type { EditarFolhaHoraExtraDTO } from './models/EditarFolhaHoraExtraDTO';
 export type {
@@ -139,6 +171,15 @@ export type {
   FolhaHoraExtraKpiControllerJornadaQueryResponse,
 } from './models/FolhaHoraExtraKpiControllerJornada';
 export type {
+  FolhaHoraExtraKpiControllerListarMotivos200,
+  FolhaHoraExtraKpiControllerListarMotivos400,
+  FolhaHoraExtraKpiControllerListarMotivos401,
+  FolhaHoraExtraKpiControllerListarMotivos403,
+  FolhaHoraExtraKpiControllerListarMotivosQuery,
+  FolhaHoraExtraKpiControllerListarMotivosQueryParams,
+  FolhaHoraExtraKpiControllerListarMotivosQueryResponse,
+} from './models/FolhaHoraExtraKpiControllerListarMotivos';
+export type {
   FuncionarioControllerConsultaFuncionariosError,
   FuncionarioControllerConsultaFuncionariosQuery,
   FuncionarioControllerConsultaFuncionariosQueryParams,
@@ -174,6 +215,7 @@ export type { KpiJornadaFolhaHoraExtraCentroCustoDTO } from './models/KpiJornada
 export type { KpiJornadaFolhaHoraExtraDiaDTO } from './models/KpiJornadaFolhaHoraExtraDiaDTO';
 export type { KpiJornadaFolhaHoraExtraFuncionarioDTO } from './models/KpiJornadaFolhaHoraExtraFuncionarioDTO';
 export type { PaginatedResFolhaHoraExtraDTODto } from './models/PaginatedResFolhaHoraExtraDTODto';
+export type { PaginatedResFolhaMotivosHoraExtraDTO } from './models/PaginatedResFolhaMotivosHoraExtraDTO';
 export type { PaginatedResFuncionarioListagemDTODto } from './models/PaginatedResFuncionarioListagemDTODto';
 export type { PaginatedResPresencaFuncionarioDTODto } from './models/PaginatedResPresencaFuncionarioDTODto';
 export type { PaginatedResRankingFaltasDTODto } from './models/PaginatedResRankingFaltasDTODto';
@@ -214,6 +256,9 @@ export type { RejeitarFolhaHoraExtraDTO } from './models/RejeitarFolhaHoraExtraD
 export type { RelatorioRecursosResumoDTO } from './models/RelatorioRecursosResumoDTO';
 export type { RelatorioSetorDTO } from './models/RelatorioSetorDTO';
 export type { ResAssinaturaAprovacaoDTO } from './models/ResAssinaturaAprovacaoDTO';
+export type { ResCategoriaHoraExtraDTO } from './models/ResCategoriaHoraExtraDTO';
+export type { ResCategoriaHoraExtraResumoDTO } from './models/ResCategoriaHoraExtraResumoDTO';
+export type { ResCategoriaTotalHoraExtraDTO } from './models/ResCategoriaTotalHoraExtraDTO';
 export type { ResCentroDeCustoDTO } from './models/ResCentroDeCustoDTO';
 export type { ResEventoHoraExtraNaoAutorizadaDTO } from './models/ResEventoHoraExtraNaoAutorizadaDTO';
 export type { ResExtratoCustoFuncionarioHoraExtraDTO } from './models/ResExtratoCustoFuncionarioHoraExtraDTO';
@@ -222,8 +267,10 @@ export type { ResExtratoCustoHoraExtraLinhaDTO } from './models/ResExtratoCustoH
 export type { ResFaltasFuncionarioDTO } from './models/ResFaltasFuncionarioDTO';
 export type { ResFolhaHoraExtraDTO } from './models/ResFolhaHoraExtraDTO';
 export type { ResFolhaHoraExtraDetalheDTO } from './models/ResFolhaHoraExtraDetalheDTO';
+export type { ResFolhaMotivosHoraExtraDTO } from './models/ResFolhaMotivosHoraExtraDTO';
 export type { ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO } from './models/ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO';
 export type { ResFuncionarioListagemDTO } from './models/ResFuncionarioListagemDTO';
+export type { ResFuncionarioMotivoHoraExtraDTO } from './models/ResFuncionarioMotivoHoraExtraDTO';
 export type { ResHorasExtrasNaoAutorizadasDTO } from './models/ResHorasExtrasNaoAutorizadasDTO';
 export type { ResHorasIrregularesDTO } from './models/ResHorasIrregularesDTO';
 export type { ResItemFuncionarioHEDTO } from './models/ResItemFuncionarioHEDTO';
@@ -233,6 +280,7 @@ export type { ResKpiFaltasDiaDTO } from './models/ResKpiFaltasDiaDTO';
 export type { ResKpiFaltasResumoDTO } from './models/ResKpiFaltasResumoDTO';
 export type { ResKpiFaltasSetorDTO } from './models/ResKpiFaltasSetorDTO';
 export type { ResKpiJornadaFolhaHoraExtraDTO } from './models/ResKpiJornadaFolhaHoraExtraDTO';
+export type { ResMotivoHoraExtraDTO } from './models/ResMotivoHoraExtraDTO';
 export type { ResPontoFuncionarioDTO } from './models/ResPontoFuncionarioDTO';
 export type { ResPresencaFuncionarioDTO } from './models/ResPresencaFuncionarioDTO';
 export type { ResRankingFaltasDTO } from './models/ResRankingFaltasDTO';
@@ -240,10 +288,14 @@ export type { ResRefeicaoFuncionarioDTO } from './models/ResRefeicaoFuncionarioD
 export type { ResRegistroPontoTurnoPontoDTO } from './models/ResRegistroPontoTurnoPontoDTO';
 export type { ResRelatorioHoraExtraDTO } from './models/ResRelatorioHoraExtraDTO';
 export type { ResTipoMarcacaoDTO } from './models/ResTipoMarcacaoDTO';
+export type { ResTotalCategoriaRelatorioDTO } from './models/ResTotalCategoriaRelatorioDTO';
 export type { ResTurnoDTO } from './models/ResTurnoDTO';
 export type { ResTurnoFuncionarioDTO } from './models/ResTurnoFuncionarioDTO';
 export type { ResponsePaginatorDTO } from './models/ResponsePaginatorDTO';
 export type { _Object } from './models/_Object';
+export { categoriaHoraExtraControllerAtualizar } from './client/categoriaHoraExtraControllerAtualizar';
+export { categoriaHoraExtraControllerCriar } from './client/categoriaHoraExtraControllerCriar';
+export { categoriaHoraExtraControllerListar } from './client/categoriaHoraExtraControllerListar';
 export { folhaHoraExtraControllerAprovar } from './client/folhaHoraExtraControllerAprovar';
 export { folhaHoraExtraControllerConsultarRefeicoes } from './client/folhaHoraExtraControllerConsultarRefeicoes';
 export { folhaHoraExtraControllerCriar } from './client/folhaHoraExtraControllerCriar';
@@ -259,6 +311,7 @@ export { folhaHoraExtraKpiControllerCumprimentoPorPeriodo } from './client/folha
 export { folhaHoraExtraKpiControllerCusto } from './client/folhaHoraExtraKpiControllerCusto';
 export { folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas } from './client/folhaHoraExtraKpiControllerHorasExtrasNaoAutorizadas';
 export { folhaHoraExtraKpiControllerJornada } from './client/folhaHoraExtraKpiControllerJornada';
+export { folhaHoraExtraKpiControllerListarMotivos } from './client/folhaHoraExtraKpiControllerListarMotivos';
 export { funcionarioControllerConsultaFuncionarios } from './client/funcionarioControllerConsultaFuncionarios';
 export { funcionarioControllerConsultaFuncionariosLegado } from './client/funcionarioControllerConsultaFuncionariosLegado';
 export { funcionarioControllerConsultarCentroDeCustoMethod } from './client/funcionarioControllerConsultarCentroDeCustoMethod';
