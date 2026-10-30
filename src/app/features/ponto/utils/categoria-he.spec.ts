@@ -1,12 +1,10 @@
 import {
   categoriaIdParaEnvio,
   categoriaLabel,
-  filtrarPorCategoria,
   justificativaAtendeCategoria,
   linhasCitadasNoErro,
   montarDadosGraficoCategorias,
   opcoesFiltroCategoria,
-  paginarLocal,
   podeLimparCategoria,
   resolverCategoria,
   SEM_CATEGORIA_COR,
@@ -59,23 +57,6 @@ describe('categoria-he utils', () => {
     expect([...linhasCitadasNoErro([mensagem], ['123', '0123'])]).toEqual([1]);
     expect([...linhasCitadasNoErro(['(funcionario 123 - Ana)'], ['123'])]).toEqual([0]);
     expect([...linhasCitadasNoErro(['x 1.3 - Ana'], ['1.3', '1a3'])]).toEqual([0]);
-  });
-
-  it('filtra por categoria (SEM_CATEGORIA casa com null) e pagina no cliente', () => {
-    const itens = [
-      { id: 1, categoria: { id: 'a', codigo: 'A', nome: 'A' } },
-      { id: 2, categoria: null },
-      { id: 3, categoria: { id: 'a', codigo: 'A', nome: 'A' } },
-      { id: 4 },
-    ];
-    expect(filtrarPorCategoria(itens, 'A').map(i => i.id)).toEqual([1, 3]);
-    expect(filtrarPorCategoria(itens, 'SEM_CATEGORIA').map(i => i.id)).toEqual([2, 4]);
-    expect(filtrarPorCategoria(itens, null).length).toBe(4);
-
-    const filtrados = filtrarPorCategoria(itens, 'SEM_CATEGORIA');
-    expect(filtrados.length).toBe(2);
-    expect(paginarLocal([1, 2, 3, 4, 5], 2, 2)).toEqual([3, 4]);
-    expect(paginarLocal([1, 2, 3], 4, 2)).toEqual([]);
   });
 
   it('monta opcoes do filtro marcando categorias inativas', () => {

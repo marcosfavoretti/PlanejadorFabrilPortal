@@ -8,21 +8,16 @@ import { FolhaHoraExtraAPIService } from '../../services/FolhaHoraExtraAPI.servi
 import { FuncionariosAPIService } from '../../services/FuncionariosAPI.service';
 import { FolhaHoraExtraListPageComponent } from './folha-hora-extra-list-page.component';
 
-describe('FolhaHoraExtraListPageComponent refeicoes x categoria', () => {
-  const cat = (codigo: string | null) => codigo ? { id: codigo, codigo, nome: codigo } : null;
-  const linha = (n: number, codigo: string | null) => ({ folhaId: 'f', matricula: String(n), nome: 'N' + n, categoria: cat(codigo) });
-  // 250 linhas no servidor: A nas posicoes multiplas de 5, o resto B.
-  const todas = Array.from({ length: 250 }, (_, i) => linha(i, i % 5 === 0 ? 'A' : 'B'));
-
+describe('FolhaHoraExtraListPageComponent refeicoes x categoria (servidor)', () => {
   let component: any;
   let getRefeicoes: jasmine.Spy;
-  let categoria$: Subject<void>;
 
   beforeEach(async () => {
-    categoria$ = new Subject<void>();
-    getRefeicoes = jasmine.createSpy('getRefeicoes').and.callFake((filtros: { page: number; limit: number }) => of({
-      data: todas.slice(filtros.page * filtros.limit, (filtros.page + 1) * filtros.limit),
-      total: todas.length, page: filtros.page, limit: filtros.limit, totalPages: Math.ceil(todas.length / filtros.limit),
+    getRefeicoes = jasmine.createSpy('getRefeicoes').and.callFake((filtros: { page: number; limit: number; categoriaCodigo?: string }) => of({
+      // O servidor filtra: 30 linhas com categoria, 7 sem; total acompanha o filtro.
+      total: filtros.categoriaCodigo === 'SEM_CATEGORIA' ? 7 : filtros.categoriaCodigo ? 30 : 37,
+      page: filtros.page, limit: filtros.limit, totalPages: 1,
+      data: [{ folhaId: 'f', matricula: String(filtros.page), nome: 'N', categoria: null }],
     }));
     await TestBed.configureTestingModule({
       imports: [FolhaHoraExtraListPageComponent],
@@ -32,11 +27,8 @@ describe('FolhaHoraExtraListPageComponent refeicoes x categoria', () => {
         { provide: Router, useValue: { navigate: () => Promise.resolve(true), getCurrentNavigation: () => null } },
         { provide: UserstoreService, useValue: { item: () => ({ cargosLista: ['RH'] }) } },
         { provide: FuncionariosAPIService, useValue: { getCentroDeCusto: () => of([]) } },
-        { provide: CategoriaHoraExtraAPIService, useValue: { getTodas: () => of([]), catalogoAlterado$: categoria$ } },
-        {
-          provide: FolhaHoraExtraAPIService,
-          useValue: { getRefeicoes, getFolhas: () => of({ data: [], total: 0 }), getFolhaById: () => of({ funcionarios: [] }) },
-        },
+        { provide: CategoriaHoraExtraAPIService, useValue: { getTodas: () => of([]), catalogoAlterado$: new Subject<void>() } },
+        { provide: FolhaHoraExtraAPIService, useValue: { getRefeicoes, getFolhas: () => of({ data: [], total: 0 }), getFolhaById: () => of({ funcionarios: [] }) } },
       ],
     }).compileComponents();
     component = TestBed.createComponent(FolhaHoraExtraListPageComponent).componentInstance;
@@ -44,39 +36,31 @@ describe('FolhaHoraExtraListPageComponent refeicoes x categoria', () => {
     component.onRefeicoesLazyLoad({ first: 0, rows: 50 });
   });
 
-  it('sem filtro de categoria pagina no servidor', () => {
-    expect(component.refeicoesHoje.length).toBe(50);
-    expect(component.refeicoesTotalRecords).toBe(250);
+  const ultimaChamada = () => getRefeicoes.calls.mostRecent().args[0];
+
+  it('sem categoria nao envia categoriaCodigo e usa o total do servidor', () => {
+    expect(ultimaChamada().categoriaCodigo).toBeUndefined();
+    expect(component.refeicoesTotalRecords).toBe(37);
   });
 
-  it('com categoria carrega tudo, filtra e pagina no cliente: linhas, total e paginador concordem', () => {
-    getRefeicoes.calls.reset();
-    component.refeicoesCategoriaFilter.setValue('A');
-
-    // 250 / 100 por pagina = 3 requisicoes; 50 linhas da categoria A, todas na primeira pagina de 50.
-    expect(getRefeicoes).toHaveBeenCalledTimes(3);
-    expect(component.refeicoesTotalRecords).toBe(50);
-    expect(component.refeicoesHoje.length).toBe(50);
-    expect(component.refeicoesHoje.every((r: any) => r.categoria.codigo === 'A')).toBeTrue();
-    expect(component.refeicoesFirst).toBe(0);
+  it('envia o codigo da categoria e usa linhas e total do servidor', () => {
+    component.refeicoesCategoriaFilter.setValue('PEDIDO');
+    expect(ultimaChamada().categoriaCodigo).toBe('PEDIDO');
+    expect(component.refeicoesTotalRecords).toBe(30);
   });
 
-  it('mudar de pagina com a categoria ativa reaproveita as linhas ja carregadas', () => {
-    component.refeicoesPageSize = 20;
-    component.refeicoesCategoriaFilter.setValue('A');
-    getRefeicoes.calls.reset();
-
-    component.onRefeicoesLazyLoad({ first: 40, rows: 20 });
-    expect(getRefeicoes).not.toHaveBeenCalled();
-    expect(component.refeicoesHoje.length).toBe(10);
-    expect(component.refeicoesTotalRecords).toBe(50);
+  it('envia SEM_CATEGORIA para folhas antigas', () => {
+    component.refeicoesCategoriaFilter.setValue('SEM_CATEGORIA');
+    expect(ultimaChamada().categoriaCodigo).toBe('SEM_CATEGORIA');
+    expect(component.refeicoesTotalRecords).toBe(7);
   });
 
-  it('voltar a primeira pagina ao trocar o filtro', () => {
+  it('volta para a primeira pagina ao mudar o filtro e pagina no servidor', () => {
     component.onRefeicoesLazyLoad({ first: 100, rows: 50 });
-    component.refeicoesCategoriaFilter.setValue('B');
+    expect(ultimaChamada().page).toBe(2);
+    component.refeicoesCategoriaFilter.setValue('PEDIDO');
     expect(component.refeicoesFirst).toBe(0);
-    expect(component.refeicoesTotalRecords).toBe(200);
-    expect(component.refeicoesHoje.length).toBe(50);
+    expect(ultimaChamada().page).toBe(0);
+    expect(ultimaChamada().limit).toBe(50);
   });
 });

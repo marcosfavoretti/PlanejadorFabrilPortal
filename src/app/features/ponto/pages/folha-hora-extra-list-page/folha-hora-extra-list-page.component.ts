@@ -10,7 +10,7 @@ import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import { KpiCustoFolhaHoraExtraCentroCustoDTO, KpiCustoFolhaHoraExtraPeriodoDTO, KpiJornadaFolhaHoraExtraDiaDTO, ResCategoriaHoraExtraResumoDTO, ResCentroDeCustoDTO, ResFuncionarioKpiCumprimentoFolhaHoraExtraDTO, ResKpiCumprimentoFolhaHoraExtraDTO } from '@/api/relogio';
 import { CategoriaHoraExtraAPIService } from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
-import { SEM_CATEGORIA_CODIGO, SEM_CATEGORIA_LABEL, categoriaLabel, codigoFiltroCategoria, filtrarPorCategoria, opcoesFiltroCategoria, paginarLocal } from '@/app/features/ponto/utils/categoria-he';
+import { SEM_CATEGORIA_CODIGO, SEM_CATEGORIA_LABEL, categoriaLabel, codigoFiltroCategoria, opcoesFiltroCategoria } from '@/app/features/ponto/utils/categoria-he';
 import { KpiSecaoNav, KpiSectionNavComponent } from '../../components/kpi-section-nav/kpi-section-nav.component';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
@@ -259,8 +259,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   protected historicoFolhas: FolhaHoraExtraResumo[] = [];
   protected refeicoesHoje: FolhaHoraExtraRefeicaoResumo[] = [];
   private readonly refeicoesConsulta$ = new Subject<void>();
-  /** Refeições já filtradas por categoria no cliente (o endpoint não filtra por categoria), por consulta. */
-  private refeicoesPorCategoriaCache: { chave: string; itens: FolhaHoraExtraRefeicaoResumo[] } | null = null;
   protected funcionariosFolhasAprovadas: FuncionarioFolhaHEAprovada[] = [];
   protected centrosCusto: ResCentroDeCustoDTO[] = [];
   protected loading = false;
@@ -953,7 +951,6 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
 
   protected applyRefeicoesFilters(): void {
     this.refeicoesFirst = 0;
-    this.refeicoesPorCategoriaCache = null;
     this.loadRefeicoesHoje();
   }
 
@@ -2220,7 +2217,7 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
   private consultarRefeicoes(): Observable<{ data: FolhaHoraExtraRefeicaoResumo[]; total: number }> {
     const range = this.refeicoesDataRangeFilter.value;
     const statuses = this.refeicoesStatusFilter.value ?? [];
-    const filtros = {
+    return this.folhaHoraExtraService.getRefeicoes({
       dataInicio: range?.[0] ? this.formatRefeicoesDate(range[0]) : undefined,
       dataFim: range?.[1] ? this.formatRefeicoesDate(range[1]) : undefined,
       centroCustoCodigo: this.refeicoesCentroCustoFilter.value ?? undefined,
@@ -2228,49 +2225,11 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
       nome: this.refeicoesNomeFilter.value.trim() || undefined,
       refeicao: this.refeicoesTipoFilter.value ?? undefined,
       status: statuses.length ? statuses : undefined,
-    };
-    const codigo = this.refeicoesCategoriaFilter.value;
-
-    if (!codigo) {
-      this.refeicoesPorCategoriaCache = null;
-      return this.folhaHoraExtraService.getRefeicoes({
-        ...filtros,
-        page: Math.floor(this.refeicoesFirst / this.refeicoesPageSize),
-        limit: this.refeicoesPageSize,
-      }).pipe(map(response => ({ data: response.data, total: response.total })));
-    }
-
-    // O endpoint não aceita categoria: carrega todas as páginas, filtra aqui e pagina no cliente,
-    // para que linhas, total e paginador concordem (e a impressão use o conjunto filtrado da página).
-    const chave = JSON.stringify([filtros, codigo]);
-    const filtradas$ = this.refeicoesPorCategoriaCache?.chave === chave
-      ? of(this.refeicoesPorCategoriaCache.itens)
-      : this.carregarTodasRefeicoes(filtros).pipe(
-        map(todas => filtrarPorCategoria(todas, codigo)),
-        tap(itens => this.refeicoesPorCategoriaCache = { chave, itens }),
-      );
-    return filtradas$.pipe(map(itens => ({
-      data: paginarLocal(itens, this.refeicoesFirst, this.refeicoesPageSize),
-      total: itens.length,
-    })));
-  }
-
-  private carregarTodasRefeicoes(
-    filtros: Omit<Parameters<FolhaHoraExtraAPIService['getRefeicoes']>[0], 'page' | 'limit'>,
-  ): Observable<FolhaHoraExtraRefeicaoResumo[]> {
-    const limit = 100;
-    return this.folhaHoraExtraService.getRefeicoes({ ...filtros, page: 0, limit }).pipe(
-      switchMap(primeira => {
-        const totalPaginas = Math.ceil(primeira.total / limit);
-        if (totalPaginas <= 1) {
-          return of(primeira.data);
-        }
-        return forkJoin(
-          Array.from({ length: totalPaginas - 1 }, (_, indice) =>
-            this.folhaHoraExtraService.getRefeicoes({ ...filtros, page: indice + 1, limit }).pipe(map(r => r.data))),
-        ).pipe(map(paginas => primeira.data.concat(...paginas)));
-      }),
-    );
+      // SEM_CATEGORIA também é aceito pelo servidor (folhas antigas).
+      categoriaCodigo: this.refeicoesCategoriaFilter.value ?? undefined,
+      page: Math.floor(this.refeicoesFirst / this.refeicoesPageSize),
+      limit: this.refeicoesPageSize,
+    }).pipe(map(response => ({ data: response.data, total: response.total })));
   }
 
   /** Inclui categorias inativas (folhas antigas as usam) e recarrega quando o cadastro de categorias muda. */

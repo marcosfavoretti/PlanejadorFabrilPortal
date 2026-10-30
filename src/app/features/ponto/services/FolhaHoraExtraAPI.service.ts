@@ -169,6 +169,8 @@ export interface FolhaHoraExtraRefeicaoFilters {
   nome?: string;
   refeicao?: FolhaHoraExtraRefeicaoTipo;
   status?: FolhaHoraExtraStatus[];
+  /** Código da categoria ou SEM_CATEGORIA (folhas antigas); filtrado no servidor. */
+  categoriaCodigo?: string;
 }
 
 export interface FolhaHoraExtraRefeicaoListResponse {

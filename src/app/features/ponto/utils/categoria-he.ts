@@ -76,19 +76,6 @@ export function codigoFiltroCategoria(categoria: ResCategoriaHoraExtraResumoDTO 
   return categoria?.codigo ?? SEM_CATEGORIA_CODIGO;
 }
 
-/** Mantém só os itens cuja categoria tem o código informado (SEM_CATEGORIA casa com `null`); sem código, devolve tudo. */
-export function filtrarPorCategoria<T extends { categoria?: ResCategoriaHoraExtraResumoDTO | null }>(
-  itens: ReadonlyArray<T>,
-  codigo: string | null | undefined,
-): T[] {
-  return codigo ? itens.filter(item => codigoFiltroCategoria(item.categoria) === codigo) : [...itens];
-}
-
-/** Fatia `rows` itens a partir de `first` (paginação no cliente, como o `first` do p-table). */
-export function paginarLocal<T>(itens: ReadonlyArray<T>, first: number, rows: number): T[] {
-  return itens.slice(Math.max(0, first), Math.max(0, first) + rows);
-}
-
 /** Acha a categoria pelo id nos catálogos (ativas primeiro, depois o completo com inativas). */
 export function resolverCategoria<T extends { id: string }>(
   id: string | null | undefined,
