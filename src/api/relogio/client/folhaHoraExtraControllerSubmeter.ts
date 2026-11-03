@@ -19,7 +19,7 @@ function getFolhaHoraExtraControllerSubmeterUrl(
 ) {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he/${id}/submeter` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he/${id}/submeter` as const,
   };
   return res;
 }

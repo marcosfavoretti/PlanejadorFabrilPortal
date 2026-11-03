@@ -14,7 +14,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFolhaHoraExtraKpiControllerJornadaUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he/kpi/jornada` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he/kpi/jornada` as const,
   };
   return res;
 }

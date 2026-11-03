@@ -17,7 +17,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getCategoriaHoraExtraControllerCriarUrl() {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he-categorias` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he-categorias` as const,
   };
   return res;
 }

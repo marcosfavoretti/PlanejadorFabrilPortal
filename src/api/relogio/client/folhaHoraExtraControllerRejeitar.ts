@@ -20,7 +20,7 @@ function getFolhaHoraExtraControllerRejeitarUrl(
 ) {
   const res = {
     method: 'POST',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he/${id}/rejeitar` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he/${id}/rejeitar` as const,
   };
   return res;
 }

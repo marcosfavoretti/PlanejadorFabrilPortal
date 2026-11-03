@@ -13,7 +13,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFuncionarioControllerConsultarPresencaFuncionariosUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/ponto/funcionario/presenca` as const,
+    url: `https://app.ethos.ind.br/api/ponto/funcionario/presenca` as const,
   };
   return res;
 }

@@ -20,7 +20,7 @@ function getCategoriaHoraExtraControllerAtualizarUrl(
 ) {
   const res = {
     method: 'PATCH',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he-categorias/${id}` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he-categorias/${id}` as const,
   };
   return res;
 }

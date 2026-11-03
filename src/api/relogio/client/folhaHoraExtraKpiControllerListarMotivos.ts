@@ -16,7 +16,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getFolhaHoraExtraKpiControllerListarMotivosUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/ponto/folha-he/kpi/motivos` as const,
+    url: `https://app.ethos.ind.br/api/ponto/folha-he/kpi/motivos` as const,
   };
   return res;
 }
