@@ -76,17 +76,30 @@
           severity="success" (click)="addFuncionario()" [disabled]="folhaForm.disabled"></p-button>
       </div>
 
+      <div class="categoria-lote">
+        <label for="categoriaEmLote">Categoria padrão</label>
+        <p-select inputId="categoriaEmLote" [options]="categorias" [(ngModel)]="categoriaEmLote"
+          [ngModelOptions]="{ standalone: true }" optionLabel="nome" optionValue="id"
+          placeholder="Selecione o motivo" appendTo="body" [disabled]="folhaForm.disabled"></p-select>
+        <p-button type="button" label="Aplicar como padrão" icon="pi pi-check" severity="secondary" [outlined]="true"
+          [disabled]="!categoriaEmLote || folhaForm.disabled" (click)="aplicarCategoriaATodos()"></p-button>
+        <i class="pi pi-question-circle categoria-lote-ajuda" tabindex="0" role="img"
+          aria-label="Ajuda: o que faz Aplicar como padrão"
+          [pTooltip]="aplicarPadraoAjuda" tooltipPosition="top"></i>
+      </div>
+
       <div formArrayName="funcionarios" class="employee-table">
         <div class="employee-table-header">
           <span>Colaborador</span>
           <span>Horário HE</span>
           <span>Benefícios Extras</span>
-          <span>Justificativa da HE</span>
+          <span>Categoria e justificativa da HE</span>
           <span class="text-center">Ações</span>
         </div>
 
         @for (funcionarioGroup of funcionarios.controls; track funcionarioGroup; let i = $index) {
-        <div class="employee-table-row fade-in-up" [formGroupName]="i" [class.he-excecao]="temExcecao(funcionarioGroup)">
+        <div class="employee-table-row fade-in-up" [formGroupName]="i" [class.he-excecao]="temExcecao(funcionarioGroup)"
+          [class.row-erro]="linhasComErro.has(i)">
           <div class="employee-person">
             <label [for]="'nome-' + i">Nome / Busca</label>
             <p-autocomplete [inputId]="'nome-' + i" formControlName="nome" [suggestions]="funcionarioSuggestions"
@@ -214,9 +227,38 @@
           </div>
 
           <div class="employee-justification">
-            <label [for]="'justificativa-' + i" class="hide-mobile">&nbsp;</label>
-            <textarea [id]="'justificativa-' + i" pTextarea rows="4" formControlName="justificativa"
+            <div class="field">
+            <label [for]="'categoria-' + i">Categoria @if (categoriaObrigatoriaNaLinha(funcionarioGroup)) {<span class="required-mark">*</span>}</label>
+            <p-select [inputId]="'categoria-' + i" formControlName="categoriaId"
+              [options]="categoriaOptions(funcionarioGroup)" optionLabel="nome" optionValue="id"
+              placeholder="Selecione o motivo" appendTo="body" [loading]="loadingCategorias"
+              [showClear]="podeLimparCategoria(funcionarioGroup)" styleClass="w-full">
+              <ng-template let-categoria pTemplate="item">
+                <span [pTooltip]="categoria.descricao || ''" tooltipPosition="left">{{ categoria.nome }}</span>
+              </ng-template>
+            </p-select>
+            @if (descricaoCategoria(funcionarioGroup)) {
+            <small class="categoria-hint">{{ descricaoCategoria(funcionarioGroup) }}</small>
+            }
+            @if (funcionarioGroup.hasError('categoriaObrigatoria') && funcionarioGroup.get('categoriaId')?.touched) {
+            <small class="error-text"><i class="pi pi-exclamation-circle icon-label"></i>Informe a categoria.</small>
+            }
+            @if (mostrarAvisoCategoria(funcionarioGroup)) {
+            <small class="categoria-aviso">Informe a categoria (folha anterior às categorias).</small>
+            }
+
+            </div>
+
+            <div class="field field-justificativa">
+            <label [for]="'justificativa-' + i">{{ exigeDetalhe(funcionarioGroup) ? 'Descreva o motivo (mín. ' + categoriaDetalheMinChars + ' caracteres)' : 'Justificativa' }}</label>
+            <textarea [id]="'justificativa-' + i" pTextarea rows="3" formControlName="justificativa"
               placeholder="Descreva o motivo desta hora extra..."></textarea>
+            @if (exigeDetalhe(funcionarioGroup)) {
+            <small class="justificativa-contador" [class.error-text]="funcionarioGroup.hasError('justificativaCurta')">
+              {{ tamanhoJustificativa(funcionarioGroup) }}/{{ categoriaDetalheMinChars }}
+            </small>
+            }
+            </div>
           </div>
 
           <div class="employee-actions">

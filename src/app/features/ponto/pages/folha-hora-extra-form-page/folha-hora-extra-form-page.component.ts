@@ -1,7 +1,7 @@
 import { HORARIOS_HE, HORARIO_HE_PATTERN, isHorarioHEExcecao, temExcecaoHE } from '../../utils/horarios-he';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SetUserCargoDTOCargoEnum } from '@/api/auth';
 import {
@@ -12,6 +12,20 @@ import {
   ResTurnoDTO,
   ResTurnoFuncionarioDTO,
 } from '@/api/relogio';
+import {
+  CategoriaHoraExtra,
+  CategoriaHoraExtraAPIService,
+} from '@/app/features/ponto/services/CategoriaHoraExtraAPI.service';
+import {
+  CATEGORIA_DETALHE_MIN_CHARS,
+  categoriaIdParaEnvio,
+  linhasCitadasNoErro,
+  podeLimparCategoria,
+  resolverCategoria,
+  tamanhoJustificativa,
+  validarLinhaCategoria,
+} from '@/app/features/ponto/utils/categoria-he';
+import { extractErrorMessage } from '@/app/features/ponto/utils/error-message';
 import { UserstoreService } from '@/app/core/user/stores/user-store.service';
 import { FuncionariosAPIService } from '@/app/features/ponto/services/FuncionariosAPI.service';
 import {
@@ -44,6 +58,7 @@ type HorarioHE = (typeof HORARIOS_HE)[number];
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     AutoCompleteModule,
     ButtonModule,
@@ -62,6 +77,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly folhaHoraExtraService = inject(FolhaHoraExtraAPIService);
   private readonly funcionariosService = inject(FuncionariosAPIService);
+  private readonly categoriasService = inject(CategoriaHoraExtraAPIService);
   private readonly userStore = inject(UserstoreService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -81,6 +97,18 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
   protected saving = false;
   protected messages: ToastMessageOptions[] = [];
   protected funcionarioSuggestions: ResFuncionarioListagemDTO[] = [];
+  protected categorias: CategoriaHoraExtra[] = [];
+  protected loadingCategorias = false;
+  protected readonly categoriaDetalheMinChars = CATEGORIA_DETALHE_MIN_CHARS;
+  protected categoriaEmLote: string | null = null;
+  protected readonly aplicarPadraoAjuda =
+    'Define a categoria escolhida como padrão para todos os funcionários da folha, substituindo a categoria '
+    + 'que já estiver selecionada em cada linha. Você ainda pode alterar a categoria de cada linha '
+    + 'individualmente. Categorias que exigem detalhe continuam pedindo uma justificativa própria de pelo '
+    + 'menos 15 caracteres em cada linha.';
+  protected linhasComErro = new Set<number>();
+  /** Catálogo completo (inclui inativas) para resolver exigeDetalhe de categorias mantidas na edição. */
+  private catalogoCompleto: CategoriaHoraExtra[] = [];
   protected readonly horariosHE: { label: HorarioHE; value: HorarioHE }[] = HORARIOS_HE.map(horario => ({ label: horario, value: horario }));
   private loadedFolha: FolhaHoraExtraDetalhe | null = null;
   private readonly funcionarioRuleSubscriptions = new WeakMap<AbstractControl, Subscription>();
@@ -89,6 +117,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
     this.folhaId = this.route.snapshot.paramMap.get('idFolha');
     this.isEditMode = !!this.folhaId;
     this.loadCentrosCusto();
+    this.loadCategorias();
 
     if (this.isEditMode && this.folhaId) {
       this.loadFolha(this.folhaId);
@@ -122,11 +151,80 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       marmitex: [false],
       lanche: [false],
       justificativa: ['', Validators.required],
-    }, { validators: this.horarioHEValidator.bind(this) });
+      categoriaId: [null as string | null],
+      categoriaOriginalId: [null as string | null],
+      categoriaOriginalNome: [''],
+      matriculaOriginal: [''],
+    }, { validators: [this.horarioHEValidator.bind(this), this.categoriaValidator.bind(this)] });
 
     this.funcionarios.push(funcionarioGroup);
     this.setupFuncionarioRules(funcionarioGroup);
     this.applyRulesToFuncionario(funcionarioGroup);
+  }
+
+  protected tamanhoJustificativa(control: AbstractControl): number {
+    return tamanhoJustificativa(control.get('justificativa')?.value);
+  }
+
+  /** Linha criada nesta edição: sem matrícula original ou com matrícula trocada. */
+  protected isLinhaNova(control: AbstractControl): boolean {
+    if (!this.isEditMode) {
+      return true;
+    }
+    const original = String(control.get('matriculaOriginal')?.value ?? '').trim();
+    return !original || original !== String(control.get('matricula')?.value ?? '').trim();
+  }
+
+  protected categoriaObrigatoriaNaLinha(control: AbstractControl): boolean {
+    return !this.isEditMode || this.isLinhaNova(control);
+  }
+
+  /** Categoria efetiva da linha (escolhida ou mantida do snapshot) quando exige detalhe. */
+  protected exigeDetalhe(control: AbstractControl): boolean {
+    const id = control.get('categoriaId')?.value
+      ?? (this.isLinhaNova(control) ? null : control.get('categoriaOriginalId')?.value);
+    return resolverCategoria(id, this.categorias, this.catalogoCompleto)?.exigeDetalhe ?? false;
+  }
+
+  /** Categorias ativas + a categoria (possivelmente inativa) já gravada na linha. */
+  protected categoriaOptions(control: AbstractControl): Array<Pick<CategoriaHoraExtra, 'id' | 'nome' | 'descricao'>> {
+    // O snapshot só aparece na linha original; linha nova (matrícula trocada) escolhe entre as ativas.
+    const originalId = this.isLinhaNova(control) ? null : control.get('categoriaOriginalId')?.value as string | null;
+    if (!originalId || this.categorias.some(categoria => categoria.id === originalId)) {
+      return this.categorias;
+    }
+    const nome = control.get('categoriaOriginalNome')?.value || 'Categoria atual';
+    return [...this.categorias, { id: originalId, nome: `${nome} (inativa)`, descricao: null }];
+  }
+
+  protected descricaoCategoria(control: AbstractControl): string {
+    const id = control.get('categoriaId')?.value;
+    return this.categorias.find(categoria => categoria.id === id)?.descricao ?? '';
+  }
+
+  /** Limpar só onde tem efeito (linha existente sem categoria gravada). */
+  protected podeLimparCategoria(control: AbstractControl): boolean {
+    return podeLimparCategoria({
+      modoEdicao: this.isEditMode,
+      linhaNova: this.isLinhaNova(control),
+      categoriaOriginalId: control.get('categoriaOriginalId')?.value ?? null,
+    });
+  }
+
+  /** Linha antiga (legado) sem categoria: aviso discreto, sem bloquear. */
+  protected mostrarAvisoCategoria(control: AbstractControl): boolean {
+    return this.isEditMode && !this.categoriaObrigatoriaNaLinha(control)
+      && !control.get('categoriaId')?.value;
+  }
+
+  protected aplicarCategoriaATodos(): void {
+    if (!this.categoriaEmLote) {
+      return;
+    }
+    this.funcionarios.controls.forEach(control => {
+      control.get('categoriaId')?.setValue(this.categoriaEmLote);
+      control.updateValueAndValidity();
+    });
   }
 
   protected removeFuncionario(index: number): void {
@@ -221,6 +319,9 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       matriculaBloqueada: false,
       turnoFuncionario: null,
       turnoDescricao: '',
+      // categoriaOriginal* é o snapshot gravado da matrícula original (o PUT decide por matriculaOriginal);
+      // zerar aqui o perderia se o usuário voltasse à matrícula original.
+      categoriaId: null,
     });
     row.controls['matricula'].updateValueAndValidity();
   }
@@ -297,6 +398,7 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
     }
 
     this.saving = true;
+    this.linhasComErro = new Set<number>();
     const payload = this.buildPayload();
     const request = this.isEditMode && this.folhaId
       ? this.folhaHoraExtraService.updateFolha(this.folhaId, payload)
@@ -306,7 +408,21 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       next: folha => this.router.navigate(['/ponto/he/view', folha.id], { replaceUrl: true }),
       error: err => {
         this.saving = false;
-        this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }];
+        const detail = mapFolhaHoraExtraError(err);
+        // Usa a mensagem bruta do backend: o texto traduzido pode perder a matrícula citada.
+        this.linhasComErro = linhasCitadasNoErro(
+          [extractErrorMessage(err)],
+          this.funcionarios.controls.map(control => String(control.get('matricula')?.value ?? '')),
+        );
+        const catalogoDesatualizado = this.normalizeText(detail).includes('invalida ou inativa');
+        if (catalogoDesatualizado) {
+          this.loadCategorias(true);
+        }
+        this.messages = [{
+          severity: 'error',
+          summary: 'Erro',
+          detail: catalogoDesatualizado ? `${detail} O catalogo de categorias foi recarregado; revise a selecao.` : detail,
+        }];
       },
     });
   }
@@ -319,6 +435,46 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       return;
     }
     this.router.navigate(['/ponto/he']);
+  }
+
+  private loadCategorias(forceReload = false): void {
+    this.loadingCategorias = true;
+    this.categoriasService.getAtivas(forceReload).subscribe({
+      next: categorias => {
+        this.categorias = categorias;
+        this.loadingCategorias = false;
+        this.funcionarios.controls.forEach(control => control.updateValueAndValidity());
+      },
+      error: err => {
+        this.loadingCategorias = false;
+        this.messages = [{ severity: 'error', summary: 'Erro', detail: mapFolhaHoraExtraError(err) }];
+      },
+    });
+
+    if (this.isEditMode) {
+      // Folhas antigas podem usar categorias desativadas; precisamos do exigeDetalhe delas.
+      this.categoriasService.getTodas().subscribe({
+        next: categorias => {
+          this.catalogoCompleto = categorias;
+          this.funcionarios.controls.forEach(control => control.updateValueAndValidity());
+        },
+        error: () => { /* sem o catálogo completo, categorias inativas ficam sem exigeDetalhe no cliente */ },
+      });
+    }
+  }
+
+  private categoriaValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.get('categoriaId')) {
+      return null;
+    }
+    return validarLinhaCategoria({
+      modoEdicao: this.isEditMode,
+      linhaNova: this.isLinhaNova(control),
+      categoriaId: control.get('categoriaId')?.value ?? null,
+      categoriaOriginalId: control.get('categoriaOriginalId')?.value ?? null,
+      exigeDetalhe: this.exigeDetalhe(control),
+      justificativa: control.get('justificativa')?.value,
+    });
   }
 
   private loadCentrosCusto(): void {
@@ -441,7 +597,11 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
         marmitex: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.MARMITEX],
         lanche: [refeicao === ItemFuncionarioHEDTORefeicaoEnum.LANCHE],
         justificativa: [funcionario.justificativa ?? folha.justificativas?.[funcionario.matricula] ?? '', Validators.required],
-      }, { validators: this.horarioHEValidator.bind(this) });
+        categoriaId: [funcionario.categoria?.id ?? null],
+        categoriaOriginalId: [funcionario.categoria?.id ?? null],
+        categoriaOriginalNome: [funcionario.categoria?.nome ?? ''],
+        matriculaOriginal: [funcionario.matricula],
+      }, { validators: [this.horarioHEValidator.bind(this), this.categoriaValidator.bind(this)] });
 
       this.funcionarios.push(funcionarioGroup);
       this.setupFuncionarioRules(funcionarioGroup);
@@ -466,11 +626,13 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
         marmitex: boolean;
         lanche: boolean;
         justificativa: string;
+        categoriaId: string | null;
+        categoriaOriginalId: string | null;
       }>;
       observacao: string | null;
     };
 
-    const funcionarios = value.funcionarios.map(funcionario => ({
+    const funcionarios = value.funcionarios.map((funcionario, index) => ({
       matricula: String(funcionario.matricula ?? '').trim(),
       nome: String(funcionario.nome ?? '').trim(),
       transporte: this.buildTransporte(funcionario.precisaUber, funcionario.fimHE),
@@ -478,6 +640,12 @@ export class FolhaHoraExtraFormPageComponent implements OnInit {
       fimHE: funcionario.fimHE,
       refeicao: this.buildRefeicao(funcionario.marmitex, funcionario.lanche),
       justificativa: String(funcionario.justificativa ?? '').trim(),
+      categoriaId: categoriaIdParaEnvio({
+        modoEdicao: this.isEditMode,
+        linhaNova: this.isLinhaNova(this.funcionarios.at(index)),
+        categoriaId: funcionario.categoriaId,
+        categoriaOriginalId: funcionario.categoriaOriginalId,
+      }),
     }));
     const observacao = String(value.observacao ?? '').trim();
 

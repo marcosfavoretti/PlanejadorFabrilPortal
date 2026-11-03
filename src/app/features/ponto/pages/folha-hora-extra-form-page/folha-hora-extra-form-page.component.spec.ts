@@ -71,3 +71,126 @@ describe('FolhaHoraExtraFormPageComponent employee removal', () => {
     expect(visibleMatriculas()).toEqual(['001', '004']);
   });
 });
+
+describe('FolhaHoraExtraFormPageComponent categorias', () => {
+  let fixture: ComponentFixture<FolhaHoraExtraFormPageComponent>;
+  let component: any;
+  const detalhe = { id: 'a'.repeat(24), codigo: 'OUTRO', nome: 'Pedido urgente', descricao: 'Pedido', exigeDetalhe: true, ativo: true, ordem: 1 };
+  const simples = { id: 'b'.repeat(24), codigo: 'INVENTARIO', nome: 'Inventario', descricao: null, exigeDetalhe: false, ativo: true, ordem: 2 };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FolhaHoraExtraFormPageComponent],
+      providers: [
+        provideNoopAnimations(),
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: Router, useValue: {} },
+        { provide: UserstoreService, useValue: {} },
+        { provide: FuncionariosAPIService, useValue: {} },
+        { provide: FolhaHoraExtraAPIService, useValue: {} },
+      ],
+    }).compileComponents();
+    spyOn(FolhaHoraExtraFormPageComponent.prototype, 'ngOnInit');
+    fixture = TestBed.createComponent(FolhaHoraExtraFormPageComponent);
+    component = fixture.componentInstance;
+    component.categorias = [detalhe, simples];
+  });
+
+  function linha(valores: Record<string, unknown> = {}) {
+    component.addFuncionario();
+    const row = component.funcionarios.at(component.funcionarios.length - 1);
+    row.patchValue({ matricula: '001', nome: 'Ana', justificativa: 'motivo', ...valores });
+    return row;
+  }
+
+  it('exige categoria em toda linha na criacao', () => {
+    const row = linha();
+    expect(row.hasError('categoriaObrigatoria')).toBeTrue();
+    row.patchValue({ categoriaId: simples.id });
+    expect(row.hasError('categoriaObrigatoria')).toBeFalse();
+  });
+
+  it('bloqueia justificativa com menos de 15 caracteres (trim) quando a categoria exige detalhe', () => {
+    const row = linha({ categoriaId: detalhe.id, justificativa: '  curta demais   ' });
+    expect(row.hasError('justificativaCurta')).toBeTrue();
+    expect(component.tamanhoJustificativa(row)).toBe(12);
+    row.patchValue({ justificativa: 'justificativa com mais de quinze' });
+    expect(row.hasError('justificativaCurta')).toBeFalse();
+  });
+
+  it('na edicao nao exige categoria em linha antiga, mas exige em linha nova', () => {
+    component.isEditMode = true;
+    const antiga = linha({ matriculaOriginal: '001' });
+    const nova = linha({ matricula: '002', matriculaOriginal: '' });
+    expect(antiga.hasError('categoriaObrigatoria')).toBeFalse();
+    expect(component.mostrarAvisoCategoria(antiga)).toBeTrue();
+    expect(nova.hasError('categoriaObrigatoria')).toBeTrue();
+  });
+
+  it('na edicao reaplica exigeDetalhe a categoria mantida e so envia categoriaId quando alterada', () => {
+    component.isEditMode = true;
+    const row = linha({ matriculaOriginal: '001', categoriaId: detalhe.id, categoriaOriginalId: detalhe.id, justificativa: 'curta' });
+    expect(row.hasError('justificativaCurta')).toBeTrue();
+    row.patchValue({ justificativa: 'justificativa longa o bastante' });
+    expect(component.buildPayload().funcionarios[0].categoriaId).toBeUndefined();
+    row.patchValue({ categoriaId: simples.id });
+    expect(component.buildPayload().funcionarios[0].categoriaId).toBe(simples.id);
+  });
+
+  it('nao oferece "limpar" em linha que ja tem categoria gravada, so em legado e fora da criacao', () => {
+    component.isEditMode = true;
+    const comOriginal = linha({ matriculaOriginal: '001', categoriaId: simples.id, categoriaOriginalId: simples.id });
+    const legado = linha({ matricula: '002', matriculaOriginal: '002' });
+    const nova = linha({ matricula: '003', matriculaOriginal: '' });
+    expect(component.podeLimparCategoria(comOriginal)).toBeFalse();
+    expect(component.podeLimparCategoria(legado)).toBeTrue();
+    expect(component.podeLimparCategoria(nova)).toBeFalse();
+    component.isEditMode = false;
+    expect(component.podeLimparCategoria(legado)).toBeFalse();
+  });
+
+  it('trocar a matricula A -> B -> A preserva o snapshot e a regra de detalhe da linha original', () => {
+    component.isEditMode = true;
+    component.catalogoCompleto = [detalhe];
+    const row = linha({
+      matricula: '001', matriculaOriginal: '001', categoriaId: detalhe.id,
+      categoriaOriginalId: detalhe.id, categoriaOriginalNome: detalhe.nome, justificativa: 'curta',
+    });
+
+    component.clearFuncionario(0);
+    expect(row.get('categoriaOriginalId').value).toBe(detalhe.id);
+    expect(row.get('categoriaOriginalNome').value).toBe(detalhe.nome);
+    expect(row.get('categoriaId').value).toBeNull();
+
+    // B: linha nova, sem herdar a regra de detalhe da categoria da matricula A.
+    row.patchValue({ matricula: '002', nome: 'Bruno', justificativa: 'ok' });
+    expect(component.isLinhaNova(row)).toBeTrue();
+    expect(component.exigeDetalhe(row)).toBeFalse();
+    expect(row.hasError('categoriaObrigatoria')).toBeTrue();
+    expect(component.categoriaOptions(row).some((opcao: { id: string }) => opcao.id === detalhe.id)).toBeTrue();
+
+    // Volta para A: o snapshot continua valendo e o backend exigiria 15 caracteres.
+    row.patchValue({ matricula: '001', nome: 'Ana' });
+    expect(component.isLinhaNova(row)).toBeFalse();
+    expect(component.exigeDetalhe(row)).toBeTrue();
+    expect(row.hasError('justificativaCurta')).toBeTrue();
+    expect(component.buildPayload().funcionarios[0].categoriaId).toBeUndefined();
+  });
+
+  it('aplica a categoria padrao a todas as linhas e expoe o tooltip de ajuda acessivel', () => {
+    const primeira = linha({ categoriaId: simples.id });
+    const segunda = linha({ matricula: '002' });
+    component.categoriaEmLote = detalhe.id;
+    component.aplicarCategoriaATodos();
+    expect(primeira.get('categoriaId').value).toBe(detalhe.id);
+    expect(segunda.get('categoriaId').value).toBe(detalhe.id);
+
+    fixture.detectChanges();
+    const botao = fixture.nativeElement.querySelector('.categoria-lote p-button');
+    expect(botao.textContent).toContain('Aplicar como padrão');
+    const ajuda = fixture.nativeElement.querySelector('.categoria-lote-ajuda');
+    expect(ajuda.getAttribute('tabindex')).toBe('0');
+    expect(ajuda.getAttribute('aria-label')).toBeTruthy();
+    expect(component.aplicarPadraoAjuda).toContain('substituindo');
+  });
+});

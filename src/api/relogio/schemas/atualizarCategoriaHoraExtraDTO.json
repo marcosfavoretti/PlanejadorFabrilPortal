@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome exibido da categoria.",
+      "maxLength": 80
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Descrição da categoria.",
+      "maxLength": 300
+    },
+    "exigeDetalhe": {
+      "type": "boolean",
+      "description": "Indica se a categoria exige detalhamento do motivo."
+    },
+    "ativo": {
+      "type": "boolean",
+      "description": "Ativa ou desativa a categoria (categorias não são excluídas)."
+    },
+    "ordem": {
+      "type": "number",
+      "description": "Posição de ordenação na listagem (menor aparece primeiro).",
+      "minimum": 0
+    }
+  },
+  "x-readme-ref-name": "AtualizarCategoriaHoraExtraDTO"
+}

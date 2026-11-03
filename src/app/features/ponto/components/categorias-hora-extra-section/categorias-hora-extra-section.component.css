@@ -1,0 +1,12 @@
+:host { display: block; }
+
+.categoria-nome { display: flex; flex-direction: column; gap: 0.15rem; }
+.categoria-descricao { color: var(--text-color-secondary, #64748b); font-size: 0.85rem; }
+.row-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+.categoria-form { display: flex; flex-direction: column; gap: 1rem; }
+.categoria-form .field { display: flex; flex-direction: column; gap: 0.35rem; }
+.categoria-form .check-item { display: flex; align-items: center; gap: 0.5rem; }
+.error-text { color: var(--red-500, #ef4444); }
+
+.categorias-toolbar { display: flex; justify-content: flex-end; }

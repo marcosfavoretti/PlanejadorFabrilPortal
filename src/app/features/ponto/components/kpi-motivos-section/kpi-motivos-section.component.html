@@ -1,0 +1,116 @@
+<div class="ponto-section fade-in">
+  <app-barra-filtros [loading]="loading()" (aplicar)="aplicar()">
+    <div class="filtro">
+      <label for="motivosPeriodo"><i class="pi pi-calendar"></i>Período</label>
+      <p-datepicker inputId="motivosPeriodo" selectionMode="range" [formControl]="dataRangeFilter"
+        dateFormat="dd/mm/yy" placeholder="Início - Fim" [showIcon]="true" [showClear]="true"
+        appendTo="body"></p-datepicker>
+    </div>
+    <div class="filtro">
+      <label for="motivosCc"><i class="pi pi-building"></i>Centro de custo</label>
+      <p-select inputId="motivosCc" [formControl]="centroCustoFilter" [options]="centrosCusto()"
+        optionLabel="setor" optionValue="ccid" placeholder="Todos os centros" [showClear]="true"
+        appendTo="body"></p-select>
+    </div>
+    <div class="filtro">
+      <label for="motivosSetor"><i class="pi pi-sitemap"></i>Setor</label>
+      <input pInputText id="motivosSetor" [formControl]="setorFilter" placeholder="Nome do setor" />
+    </div>
+    <div class="filtro">
+      <label for="motivosCategoria"><i class="pi pi-tag"></i>Categoria</label>
+      <p-select inputId="motivosCategoria" [formControl]="categoriaFilter" [options]="categoriaOptions()"
+        optionLabel="label" optionValue="value" placeholder="Todas as categorias" [showClear]="true"
+        appendTo="body"></p-select>
+    </div>
+    <div class="filtro">
+      <label for="motivosTermo"><i class="pi pi-search"></i>Termo na justificativa</label>
+      <input pInputText id="motivosTermo" [formControl]="termoFilter" placeholder="Buscar" />
+    </div>
+  </app-barra-filtros>
+
+  @if (loading() && !resposta()) {
+  <div class="resumo-cards" aria-busy="true" aria-label="Carregando motivos">
+    @for (item of [1, 2]; track item) {
+    <div class="skeleton-card"><p-skeleton width="60%" height="0.8rem"></p-skeleton><p-skeleton width="40%" height="1.8rem"></p-skeleton></div>
+    }
+  </div>
+  <div class="secao-card"><p-skeleton width="100%" height="8rem"></p-skeleton></div>
+  } @else if (erro()) {
+  <app-estado-vazio-erro tipo="erro" titulo="Não foi possível carregar os motivos" [detalhe]="erro()"
+    (retry)="carregar()"></app-estado-vazio-erro>
+  } @else {
+  @if (resposta(); as dados) {
+  @if (loading()) {
+  <div class="recarga-barra" role="status" aria-label="Atualizando motivos"></div>
+  }
+  <div class="conteudo" [class.conteudo--recarregando]="loading()" [attr.aria-busy]="loading()">
+    <div class="resumo-cards">
+      <app-resumo-card label="Folhas encontradas" [valor]="dados.total"></app-resumo-card>
+      <app-resumo-card label="Funcionários nesta página" [valor]="totalFuncionariosPagina()"></app-resumo-card>
+    </div>
+
+    @if (totaisPeriodo().length) {
+    <section class="secao-card" aria-label="Resumo por categoria">
+      <h3 class="titulo-card"><i class="pi pi-chart-bar"></i>Funcionários por categoria
+        <small>(folhas desta página)</small></h3>
+      <app-categoria-barras [totais]="totaisPeriodo()"></app-categoria-barras>
+    </section>
+    }
+
+    @for (folha of dados.data; track folha.id) {
+    <section class="secao-card folha-card" [attr.aria-label]="'Folha de ' + folha.setor">
+      <header class="folha-card__topo">
+        <div>
+          <h3>{{ folha.dataContexto | date: 'dd/MM/yyyy' : 'UTC' }} &middot; {{ folha.setor }}</h3>
+          <p>CC {{ folha.centroCustoCodigo }} - {{ folha.centroCustoDescricao }} &middot; {{ folha.autorNome }}</p>
+        </div>
+        <p-tag [value]="folha.totalFuncionarios + ' funcionário(s)'" severity="secondary" [rounded]="true"></p-tag>
+      </header>
+
+      <div class="chips" aria-label="Categorias da folha">
+        @for (categoria of folha.categorias; track categoria.codigo ?? 'sem') {
+        <p-tag [value]="totalLabel(categoria) + ': ' + categoria.quantidadeFuncionarios"
+          [severity]="categoria.codigo === null ? 'secondary' : 'info'" [rounded]="true"></p-tag>
+        }
+      </div>
+
+      <ul class="motivos" role="list">
+        @for (motivo of folha.motivos; track motivo.justificativa) {
+        <li class="motivo">
+          <div class="motivo__texto">
+            <blockquote>{{ motivo.justificativa }}</blockquote>
+            <span class="motivo__qtd">{{ motivo.quantidadeFuncionarios }} funcionário(s)</span>
+          </div>
+          <button type="button" class="motivo__toggle"
+            [attr.aria-expanded]="funcionariosVisiveis(folha.id, motivo.justificativa)"
+            (click)="alternarFuncionarios(folha.id, motivo.justificativa)">
+            <i class="pi" [class.pi-chevron-right]="!funcionariosVisiveis(folha.id, motivo.justificativa)"
+              [class.pi-chevron-down]="funcionariosVisiveis(folha.id, motivo.justificativa)"></i>
+            {{ funcionariosVisiveis(folha.id, motivo.justificativa) ? 'Ocultar funcionários' : 'Ver funcionários' }}
+          </button>
+          @if (funcionariosVisiveis(folha.id, motivo.justificativa)) {
+          <ul class="motivo__funcionarios" role="list">
+            @for (funcionario of motivo.funcionarios; track funcionario.matricula) {
+            <li>
+              <span>{{ funcionario.matricula }} - {{ funcionario.nome }}</span>
+              <p-tag [value]="categoriaNome(funcionario.categoria)"
+                [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag>
+            </li>
+            }
+          </ul>
+          }
+        </li>
+        }
+      </ul>
+    </section>
+    } @empty {
+    <app-estado-vazio-erro titulo="Nenhuma folha encontrada"
+      detalhe="Ajuste os filtros e tente novamente."></app-estado-vazio-erro>
+    }
+
+    <p-paginator [first]="page() * limit()" [rows]="limit()" [totalRecords]="dados.total"
+      [rowsPerPageOptions]="[10, 25, 50]" (onPageChange)="onPageChange($event)"></p-paginator>
+  </div>
+  }
+  }
+</div>

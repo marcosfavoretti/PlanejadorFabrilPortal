@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "string",
+      "nullable": true,
+      "description": "Codigo da categoria. Null para itens de folhas legadas (Sem categoria).",
+      "example": "DEMANDA_URGENTE"
+    },
+    "nome": { "type": "string", "example": "Demanda urgente" },
+    "quantidadeFuncionarios": { "type": "number", "example": 3 }
+  },
+  "required": ["codigo", "nome", "quantidadeFuncionarios"],
+  "x-readme-ref-name": "ResTotalCategoriaRelatorioDTO"
+}

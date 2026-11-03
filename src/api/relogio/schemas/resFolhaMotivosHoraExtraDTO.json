@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID da folha de hora extra.",
+      "example": "6651f3f0f0f0f0f0f0f0f0f0"
+    },
+    "dataContexto": {
+      "type": "string",
+      "description": "Data da hora extra (YYYY-MM-DD).",
+      "example": "2026-10-20"
+    },
+    "setor": {
+      "type": "string",
+      "description": "Setor da folha.",
+      "example": "PINTURA"
+    },
+    "centroCustoCodigo": {
+      "type": "number",
+      "description": "Código do centro de custo.",
+      "example": 9227
+    },
+    "centroCustoDescricao": {
+      "type": "string",
+      "description": "Descrição do centro de custo.",
+      "example": "PINTURA LINHA 1"
+    },
+    "autorNome": {
+      "type": "string",
+      "description": "Nome de quem criou a folha.",
+      "example": "CARLOS LIMA"
+    },
+    "observacao": {
+      "type": "string",
+      "nullable": true,
+      "description": "Observação livre da folha. Nula quando vazia ou quando apenas repete as justificativas dos funcionários.",
+      "example": "Cliente pediu urgência no pedido"
+    },
+    "totalFuncionarios": {
+      "type": "number",
+      "description": "Total de funcionários na folha (considerando apenas a categoria, quando `categoriaCodigo` é informado).",
+      "example": 6
+    },
+    "categorias": {
+      "description": "Totais de funcionários por categoria na folha, do maior para o menor. Funcionários de folhas antigas ficam em \"Sem categoria\" (codigo nulo).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true,
+            "description": "Código da categoria. Nulo no grupo \"Sem categoria\" (folhas antigas).",
+            "example": "FALTA_MAO_DE_OBRA"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome da categoria.",
+            "example": "Falta de mão de obra"
+          },
+          "quantidadeFuncionarios": {
+            "type": "number",
+            "description": "Quantidade de funcionários da folha nesta categoria.",
+            "example": 3
+          }
+        },
+        "required": ["codigo", "nome", "quantidadeFuncionarios"],
+        "x-readme-ref-name": "ResCategoriaTotalHoraExtraDTO"
+      }
+    },
+    "motivos": {
+      "description": "Justificativas agrupadas (mesmo texto, ignorando maiúsculas, acentos e espaços extras).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "justificativa": {
+            "type": "string",
+            "description": "Justificativa em texto livre escrita pelo líder (texto original da primeira ocorrência do grupo).",
+            "example": "FINALIZAR 5 CABINES FECHADAS (AUSENCIA DE COLABORADOR)"
+          },
+          "quantidadeFuncionarios": {
+            "type": "number",
+            "description": "Quantidade de funcionários com esta justificativa na folha.",
+            "example": 4
+          },
+          "funcionarios": {
+            "description": "Funcionários que informaram esta justificativa.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "matricula": {
+                  "type": "string",
+                  "description": "Matrícula do funcionário.",
+                  "example": "001309"
+                },
+                "nome": {
+                  "type": "string",
+                  "description": "Nome do funcionário.",
+                  "example": "ANA SOUZA"
+                },
+                "categoria": {
+                  "nullable": true,
+                  "description": "Categoria padronizada da hora extra deste funcionário. Nula em folhas antigas, anteriores às categorias.",
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "ID MongoDB da categoria.",
+                          "example": "6651f3f0f0f0f0f0f0f0f0f0"
+                        },
+                        "codigo": {
+                          "type": "string",
+                          "description": "Código único da categoria.",
+                          "example": "DEMANDA_URGENTE"
+                        },
+                        "nome": {
+                          "type": "string",
+                          "description": "Nome exibido da categoria.",
+                          "example": "Demanda urgente"
+                        }
+                      },
+                      "required": ["id", "codigo", "nome"],
+                      "x-readme-ref-name": "ResCategoriaHoraExtraResumoDTO"
+                    }
+                  ]
+                }
+              },
+              "required": ["matricula", "nome", "categoria"],
+              "x-readme-ref-name": "ResFuncionarioMotivoHoraExtraDTO"
+            }
+          }
+        },
+        "required": ["justificativa", "quantidadeFuncionarios", "funcionarios"],
+        "x-readme-ref-name": "ResMotivoHoraExtraDTO"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "dataContexto",
+    "setor",
+    "centroCustoCodigo",
+    "centroCustoDescricao",
+    "autorNome",
+    "observacao",
+    "totalFuncionarios",
+    "categorias",
+    "motivos"
+  ],
+  "x-readme-ref-name": "ResFolhaMotivosHoraExtraDTO"
+}

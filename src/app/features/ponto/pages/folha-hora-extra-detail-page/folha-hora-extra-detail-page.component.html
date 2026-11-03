@@ -43,6 +43,7 @@
           <tr>
             <th>Matricula</th>
             <th>Nome</th>
+            <th>Categoria</th>
             <th>Inicio</th>
             <th>Fim</th>
             <th>Total</th>
@@ -55,6 +56,10 @@
           <tr [class.he-excecao]="funcionarioTemExcecao(funcionario.matricula)" [attr.title]="funcionarioTemExcecao(funcionario.matricula) ? 'Exceção: horário informado manualmente' : null">
             <td>{{ funcionario.matricula }}</td>
             <td>{{ funcionario.nome }}</td>
+            <td>
+              <p-tag [value]="categoriaNome(funcionario.categoria)"
+                [severity]="funcionario.categoria ? 'info' : 'secondary'" [rounded]="true"></p-tag>
+            </td>
             <td>{{ funcionario.inicioHE }}</td>
             <td>{{ funcionario.fimHE }}</td>
             <td>{{ totalHE(funcionario) }}</td>

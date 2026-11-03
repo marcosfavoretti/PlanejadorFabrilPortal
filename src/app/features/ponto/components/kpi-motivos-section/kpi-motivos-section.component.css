@@ -1,0 +1,38 @@
+/* Card de folha */
+.folha-card { display: flex; flex-direction: column; gap: .9rem; }
+.folha-card__topo { align-items: flex-start; display: flex; gap: 1rem; justify-content: space-between; }
+.folha-card__topo h3 { color: #0f172a; font-size: 1.05rem; margin: 0; }
+.folha-card__topo p { color: var(--text-color-secondary, #64748b); font-size: .8rem; margin: .15rem 0 0; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+.motivos { display: flex; flex-direction: column; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+.motivo {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #2563eb;
+  border-radius: .6rem;
+  padding: .7rem .9rem;
+}
+.motivo__texto { align-items: baseline; display: flex; gap: 1rem; justify-content: space-between; }
+.motivo blockquote { color: #0f172a; font-size: .95rem; font-weight: 600; line-height: 1.4; margin: 0; overflow-wrap: anywhere; }
+.motivo__qtd { color: #64748b; font-size: .75rem; white-space: nowrap; }
+.motivo__toggle {
+  background: transparent;
+  border: 0;
+  border-radius: .4rem;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 700;
+  margin-top: .35rem;
+  padding: .2rem .3rem;
+}
+.motivo__toggle:hover { background: #eff6ff; }
+.motivo__toggle:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+.motivo__toggle i { font-size: .7rem; margin-right: .35rem; }
+.motivo__funcionarios { border-top: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: .35rem; list-style: none; margin: .5rem 0 0; padding: .5rem 0 0; }
+.motivo__funcionarios li { align-items: center; display: flex; flex-wrap: wrap; font-size: .85rem; gap: .5rem; justify-content: space-between; }
+
+@media (max-width: 640px) {
+  .folha-card__topo, .motivo__texto { flex-direction: column; gap: .25rem; }
+}
