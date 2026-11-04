@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContagemBufferPageComponent } from './contagem-buffer-page.component';
+import { MessageService } from 'primeng/api';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('ContagemBufferPageComponent', () => {
   let component: ContagemBufferPageComponent;
@@ -8,7 +12,8 @@ describe('ContagemBufferPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContagemBufferPageComponent]
+      imports: [ContagemBufferPageComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), MessageService, provideRouter([])]
     })
     .compileComponents();
 
