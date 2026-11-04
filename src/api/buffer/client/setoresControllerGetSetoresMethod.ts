@@ -10,12 +10,14 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getSetoresControllerGetSetoresMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/buffer/setores` as const,
+    url: `https://dev.ethos.ind.br/api/buffer/setores` as const,
   };
   return res;
 }
 
 /**
+ * @description Retorna todos os setores cadastrados, com seus identificadores. Use para obter o setorId exigido em /setores/:setorId/mercados/:dia.
+ * @summary Lista os setores do buffer
  * {@link /api/buffer/setores}
  */
 export async function setoresControllerGetSetoresMethod(

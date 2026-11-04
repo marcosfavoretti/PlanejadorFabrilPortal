@@ -13,12 +13,14 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getBufferControllerConsultBufferMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://app.ethos.ind.br/api/buffer` as const,
+    url: `https://dev.ethos.ind.br/api/buffer` as const,
   };
   return res;
 }
 
 /**
+ * @description Retorna o buffer compactado entre startDate e endDate (formato dd-MM-yyyy). Sem endDate, a consulta vai até o fim do dia atual. Use para ver o buffer de um período.
+ * @summary Consulta o buffer compactado por período
  * {@link /api/buffer}
  */
 export async function bufferControllerConsultBufferMethod(

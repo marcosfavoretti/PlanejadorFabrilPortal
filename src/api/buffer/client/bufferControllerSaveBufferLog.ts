@@ -13,12 +13,14 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getBufferControllerSaveBufferLogUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/buffer` as const,
+    url: `https://dev.ethos.ind.br/api/buffer` as const,
   };
   return res;
 }
 
 /**
+ * @description Grava um registro do buffer no histórico (SaveBufferLogDto). Operação de escrita.
+ * @summary Salva um registro do buffer no histórico
  * {@link /api/buffer}
  */
 export async function bufferControllerSaveBufferLog(

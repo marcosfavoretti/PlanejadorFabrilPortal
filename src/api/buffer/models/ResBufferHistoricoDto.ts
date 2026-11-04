@@ -3,6 +3,11 @@
  * Do not edit manually.
  */
 
+export enum ResBufferHistoricoDtoLadoEnum {
+  E = 'E',
+  D = 'D',
+}
+
 export type ResBufferHistoricoDto = {
   /**
    * @description ID do histórico de buffer
@@ -19,6 +24,10 @@ export type ResBufferHistoricoDto = {
    * @type number
    */
   buffer: number;
+  /**
+   * @type string
+   */
+  lado?: ResBufferHistoricoDtoLadoEnum | null;
   /**
    * @description Identificador do item
    * @type string | undefined

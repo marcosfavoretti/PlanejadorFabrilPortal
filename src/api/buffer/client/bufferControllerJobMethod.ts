@@ -10,12 +10,14 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getBufferControllerJobMethodUrl() {
   const res = {
     method: 'POST',
-    url: `https://app.ethos.ind.br/api/buffer/dev` as const,
+    url: `https://dev.ethos.ind.br/api/buffer/dev` as const,
   };
   return res;
 }
 
 /**
+ * @description Dispara manualmente o job que cria a tabela de buffer. Operação de escrita. Pensado para desenvolvimento.
+ * @summary Executa o job de criação da tabela do buffer
  * {@link /api/buffer/dev}
  */
 export async function bufferControllerJobMethod(

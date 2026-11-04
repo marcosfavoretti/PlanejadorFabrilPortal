@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "idMercadosIntermediario": { "type": "number", "example": 101 },
+    "nome": { "type": "string", "example": "MERCADO BANHO" },
+    "totalBuffer": {
+      "type": "number",
+      "description": "Soma do buffer dos itens no mercado",
+      "example": 320
+    },
+    "itens": {
+      "type": "number",
+      "description": "Quantidade de itens no mercado",
+      "example": 42
+    }
+  },
+  "required": ["idMercadosIntermediario", "nome", "totalBuffer", "itens"],
+  "x-readme-ref-name": "ResContagemMercadoDTO"
+}

@@ -17,6 +17,7 @@
       "example": 50,
       "description": "Valor do buffer"
     },
+    "lado": { "type": "string", "enum": ["E", "D"], "nullable": true },
     "itemId": {
       "type": "string",
       "example": "ITEM_XYZ",

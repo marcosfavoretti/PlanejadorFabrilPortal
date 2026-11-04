@@ -3,7 +3,12 @@
   "properties": {
     "item": { "type": "string" },
     "qtd": { "type": "number" },
-    "mercadoName": { "type": "string" }
+    "mercadoName": { "type": "string" },
+    "lado": {
+      "type": "string",
+      "enum": ["E", "D"],
+      "description": "Lado da porta (obrigatório só para portas)"
+    }
   },
   "required": ["item", "qtd", "mercadoName"],
   "x-readme-ref-name": "SaveBufferLogDto"

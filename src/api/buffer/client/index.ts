@@ -2,6 +2,8 @@ export { bufferControllerConsultBufferMethod } from './bufferControllerConsultBu
 export { bufferControllerJobMethod } from './bufferControllerJobMethod';
 export { bufferControllerSaveBufferLog } from './bufferControllerSaveBufferLog';
 export { excelControllerCompactBuffer2ExcelMethod } from './excelControllerCompactBuffer2ExcelMethod';
+export { excelControllerStatusMethod } from './excelControllerStatusMethod';
 export { healthControllerCheck } from './healthControllerCheck';
+export { setoresControllerGetContagensMethod } from './setoresControllerGetContagensMethod';
 export { setoresControllerGetSetorMercadoMethod } from './setoresControllerGetSetorMercadoMethod';
 export { setoresControllerGetSetoresMethod } from './setoresControllerGetSetoresMethod';

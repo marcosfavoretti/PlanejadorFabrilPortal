@@ -7,12 +7,12 @@ import type { CompactBuffer } from './CompactBuffer';
 
 export type BufferControllerConsultBufferMethodQueryParams = {
   /**
-   * @description Data inicial (obrigatória)
+   * @description Data inicial no formato dd-MM-yyyy (obrigatória).
    * @type string
    */
   startDate: string;
   /**
-   * @description Data final (opcional)
+   * @description Data final no formato dd-MM-yyyy (opcional). Se omitida, considera até hoje.
    * @type string | undefined
    */
   endDate?: string;
