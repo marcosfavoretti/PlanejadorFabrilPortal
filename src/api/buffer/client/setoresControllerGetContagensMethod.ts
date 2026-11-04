@@ -15,7 +15,7 @@ function getSetoresControllerGetContagensMethodUrl(
 ) {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/buffer/setores/contagens/${dia}` as const,
+    url: `https://app.ethos.ind.br/api/buffer/setores/contagens/${dia}` as const,
   };
   return res;
 }

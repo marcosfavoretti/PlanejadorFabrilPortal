@@ -10,7 +10,7 @@ import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 function getExcelControllerStatusMethodUrl() {
   const res = {
     method: 'GET',
-    url: `https://dev.ethos.ind.br/api/buffer/excel/status` as const,
+    url: `https://app.ethos.ind.br/api/buffer/excel/status` as const,
   };
   return res;
 }
