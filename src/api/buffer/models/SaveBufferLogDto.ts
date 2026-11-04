@@ -3,6 +3,11 @@
  * Do not edit manually.
  */
 
+export enum SaveBufferLogDtoLadoEnum {
+  E = 'E',
+  D = 'D',
+}
+
 export type SaveBufferLogDto = {
   /**
    * @type string
@@ -16,4 +21,9 @@ export type SaveBufferLogDto = {
    * @type string
    */
   mercadoName: string;
+  /**
+   * @description Lado da porta (obrigatório só para portas)
+   * @type string | undefined
+   */
+  lado?: SaveBufferLogDtoLadoEnum;
 };

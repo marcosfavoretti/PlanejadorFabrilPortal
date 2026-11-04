@@ -1,0 +1,4 @@
+/* a página não rola: só a tabela rola, ocupando o espaço restante da viewport */
+.buffer-page { height: 100%; display: flex; flex-direction: column; }
+.buffer-nav { flex: none; }
+.buffer-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }

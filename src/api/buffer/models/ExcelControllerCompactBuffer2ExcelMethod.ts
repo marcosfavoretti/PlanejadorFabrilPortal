@@ -8,10 +8,15 @@
  */
 export type ExcelControllerCompactBuffer2ExcelMethod201 = any;
 
+/**
+ * @description Fora da janela de sincronização (a partir das 11h, horário de Brasília). Corpo traz code=SINCRONIZACAO_FORA_DA_JANELA, message, horaLimite, fuso e proximaLiberacao.
+ */
+export type ExcelControllerCompactBuffer2ExcelMethod409 = any;
+
 export type ExcelControllerCompactBuffer2ExcelMethodMutationResponse =
   ExcelControllerCompactBuffer2ExcelMethod201;
 
 export type ExcelControllerCompactBuffer2ExcelMethodMutation = {
   Response: ExcelControllerCompactBuffer2ExcelMethod201;
-  Errors: any;
+  Errors: ExcelControllerCompactBuffer2ExcelMethod409;
 };

@@ -1,11 +1,13 @@
 <app-page-layout>
-    <div class="p-2 border-0 border-bottom sticky-top bg-white" style="z-index: 1;">
-        <div class="container">
-            <app-tool-bar></app-tool-bar>
-            <app-setores-dir></app-setores-dir>
+    <div class="buffer-page">
+        <div #navbar class="buffer-nav p-2 border-0 border-bottom bg-white">
+            <div class="container-fluid px-3 px-lg-4">
+                <app-tool-bar></app-tool-bar>
+                <app-setores-dir></app-setores-dir>
+            </div>
         </div>
-    </div>
-    <div class="container">
-        <app-setores-tables />
+        <div class="buffer-body container-fluid px-3 px-lg-4">
+            <app-setores-tables />
+        </div>
     </div>
 </app-page-layout>

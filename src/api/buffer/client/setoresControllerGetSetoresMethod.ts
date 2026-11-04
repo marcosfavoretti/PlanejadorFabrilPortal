@@ -16,6 +16,8 @@ function getSetoresControllerGetSetoresMethodUrl() {
 }
 
 /**
+ * @description Retorna todos os setores cadastrados, com seus identificadores. Use para obter o setorId exigido em /setores/:setorId/mercados/:dia.
+ * @summary Lista os setores do buffer
  * {@link /api/buffer/setores}
  */
 export async function setoresControllerGetSetoresMethod(

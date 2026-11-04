@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SetoresTablesComponent } from './setores-tables.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('SetoresTablesComponent', () => {
   let component: SetoresTablesComponent;
@@ -8,7 +10,8 @@ describe('SetoresTablesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SetoresTablesComponent]
+      imports: [SetoresTablesComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
 

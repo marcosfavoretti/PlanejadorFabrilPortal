@@ -19,6 +19,8 @@ function getBufferControllerConsultBufferMethodUrl() {
 }
 
 /**
+ * @description Retorna o buffer compactado entre startDate e endDate (formato dd-MM-yyyy). Sem endDate, a consulta vai até o fim do dia atual. Use para ver o buffer de um período.
+ * @summary Consulta o buffer compactado por período
  * {@link /api/buffer}
  */
 export async function bufferControllerConsultBufferMethod(

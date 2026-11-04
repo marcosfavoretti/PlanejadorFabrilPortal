@@ -22,6 +22,8 @@ function getSetoresControllerGetSetorMercadoMethodUrl(
 }
 
 /**
+ * @description Retorna os mercados intermediários do setor (setorId) na data dia, no formato dd-MM-yyyy. Use depois de /setores para obter o setorId.
+ * @summary Lista os mercados intermediários de um setor em um dia
  * {@link /api/buffer/setores/:setorId/mercados/:dia}
  */
 export async function setoresControllerGetSetorMercadoMethod(

@@ -1,7 +1,12 @@
 <div class="d-flex justify-content-between px-2">
-    <h1 class="title text-success">Mercados entre setores</h1>
-    <div class="d-flex gap-2 p-3">
-        <button (click)="syncExcel()" pTooltip="sincronizar com excel" tooltipPosition="bottom" class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center" style="width:48px; height:48px;">
+    <div class="d-flex flex-column justify-content-center py-2">
+        <h1 class="title text-success m-0 fs-4">Mercados entre setores</h1>
+        @if (setor(); as s) {
+        <p class="m-0 text-secondary small text-capitalize"><strong class="text-dark">{{ s.setor }}</strong> · {{ hoje }}</p>
+        }
+    </div>
+    <div class="d-flex gap-2 py-2">
+        <button (click)="syncExcel()" pTooltip="sincronizar com excel" tooltipPosition="bottom" class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
             <i class="pi pi-file-import"></i>
         </button>
     </div>

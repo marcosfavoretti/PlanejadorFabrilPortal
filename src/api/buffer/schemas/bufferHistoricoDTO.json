@@ -48,6 +48,12 @@
       "type": "number",
       "description": "Valor do buffer",
       "example": 123
+    },
+    "lado": {
+      "type": "string",
+      "enum": ["E", "D"],
+      "nullable": true,
+      "description": "Lado da porta; null para demais itens"
     }
   },
   "required": ["serverTime", "item", "buffer"],

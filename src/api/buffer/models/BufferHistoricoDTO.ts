@@ -5,6 +5,11 @@
 
 import type { BufferItemDto } from './BufferItemDto';
 
+export enum BufferHistoricoDTOLadoEnum {
+  E = 'E',
+  D = 'D',
+}
+
 export type BufferHistoricoDTO = {
   /**
    * @description ID do histórico de buffer (gerado automaticamente)
@@ -25,4 +30,9 @@ export type BufferHistoricoDTO = {
    * @type number
    */
   buffer: number;
+  /**
+   * @description Lado da porta; null para demais itens
+   * @type string
+   */
+  lado?: BufferHistoricoDTOLadoEnum | null;
 };

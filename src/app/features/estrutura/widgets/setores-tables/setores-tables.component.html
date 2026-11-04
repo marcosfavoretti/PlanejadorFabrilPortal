@@ -1,6 +1,46 @@
-@if (data2Display.length) {
-<app-table-dynamic [data]="data2Display" (OnChecked)="updateRequire($event)"
-    [tableModel]="tableSchema"></app-table-dynamic>
+@if (grupos().length) {
+<section class="buffer" [attr.aria-label]="titulo()">
+  <div class="buffer__busca">
+    <i class="pi pi-search" aria-hidden="true"></i>
+    <input type="search" placeholder="Filtrar por item, descrição ou cliente" aria-label="Filtrar itens"
+      [value]="busca()" (input)="busca.set($any($event.target).value)" />
+  </div>
+  <div class="buffer__scroll">
+    <table class="buffer__table">
+      <thead>
+        <tr>
+          <th scope="col" class="col-item">Item</th>
+          @if (showLinha()) { <th scope="col">Linha</th> }
+          @for (m of mercados(); track m) { <th scope="col" class="col-qtd">{{ m }}</th> }
+        </tr>
+      </thead>
+      @for (g of gruposFiltrados(); track g.item) {
+      <tbody class="grupo">
+        <tr>
+          <th scope="row" class="col-item">
+            <app-buffer-item-cell [image]="g.image" [item]="g.item" [apelido]="g.apelido" [itemCliente]="g.itemCliente" />
+          </th>
+          @if (showLinha()) { <td class="col-linha" data-label="Linha">{{ g.linha }}</td> }
+          @for (m of mercados(); track m) {
+          <td class="col-qtd" [attr.data-label]="m">
+            <div class="qtd-par">
+              @for (row of g.rows; track row.lado) {
+              <app-buffer-qty-input [value]="row.qtd[m]" [state]="estado(g.item, row.lado, m)"
+                [prefixo]="row.lado ?? ''" [label]="g.item + (row.nomeLado ? ', ' + row.nomeLado : '') + ', ' + m"
+                [title]="row.nomeLado" (commit)="salvar(g.item, row, m, $event)" />
+              }
+            </div>
+          </td>
+          }
+        </tr>
+      </tbody>
+      }
+      @empty {
+      <tbody><tr><td [attr.colspan]="mercados().length + 1" class="text-center text-secondary py-4">Nenhum item encontrado</td></tr></tbody>
+      }
+    </table>
+  </div>
+</section>
 }
 @else {
 <div class="flex-1 p-5">

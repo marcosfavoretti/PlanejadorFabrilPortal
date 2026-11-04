@@ -4,7 +4,10 @@
  */
 
 import fetch from '@/client';
-import type { ExcelControllerCompactBuffer2ExcelMethodMutationResponse } from '../models/ExcelControllerCompactBuffer2ExcelMethod';
+import type {
+  ExcelControllerCompactBuffer2ExcelMethodMutationResponse,
+  ExcelControllerCompactBuffer2ExcelMethod409,
+} from '../models/ExcelControllerCompactBuffer2ExcelMethod';
 import type { Client, RequestConfig, ResponseErrorConfig } from '@/client';
 
 function getExcelControllerCompactBuffer2ExcelMethodUrl() {
@@ -16,6 +19,8 @@ function getExcelControllerCompactBuffer2ExcelMethodUrl() {
 }
 
 /**
+ * @description Inicia o processo que adiciona o buffer compactado à planilha Excel. Operação de escrita. Só é permitida antes das 11h (horário de Brasília).
+ * @summary Adiciona o buffer compactado ao Excel
  * {@link /api/buffer/excel}
  */
 export async function excelControllerCompactBuffer2ExcelMethod(
@@ -25,7 +30,7 @@ export async function excelControllerCompactBuffer2ExcelMethod(
 
   const res = await request<
     ExcelControllerCompactBuffer2ExcelMethodMutationResponse,
-    ResponseErrorConfig<Error>,
+    ResponseErrorConfig<ExcelControllerCompactBuffer2ExcelMethod409>,
     unknown
   >({
     method: 'POST',

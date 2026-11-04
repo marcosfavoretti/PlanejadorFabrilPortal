@@ -19,6 +19,8 @@ function getBufferControllerSaveBufferLogUrl() {
 }
 
 /**
+ * @description Grava um registro do buffer no histórico (SaveBufferLogDto). Operação de escrita.
+ * @summary Salva um registro do buffer no histórico
  * {@link /api/buffer}
  */
 export async function bufferControllerSaveBufferLog(
