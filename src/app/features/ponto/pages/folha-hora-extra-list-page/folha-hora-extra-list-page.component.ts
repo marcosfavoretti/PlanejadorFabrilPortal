@@ -973,13 +973,13 @@ export class FolhaHoraExtraListPageComponent implements OnInit {
         tagSeverityFn: value => this.getStatusSeverity(value as FolhaHoraExtraStatus),
       },
       { alias: 'Funcionários', field: 'totalFuncionarios', isNumber: true, filterable: false, sortable: historico },
-      ...(historico ? [{
+      {
         alias: 'Valor total',
         field: 'valorTotal',
         isCurrency: true,
         filterable: false,
-        sortable: true,
-      }] : []),
+        sortable: historico,
+      },
       { alias: 'Autor', field: 'autorNome', filterable: false, sortable: historico },
       {
         alias: 'Atualizado em',
