@@ -46,6 +46,27 @@ interface FuncionarioFolhaHEAprovada {
   status: FolhaHoraExtraStatus;
 }
 
+interface FuncionarioTrocaTurno {
+  id: string;
+  matricula: string;
+  nome: string;
+  centroCusto: string;
+  totalHoras: number;
+  ocorrencias: number;
+}
+
+/** Total de horas extras não autorizadas (por funcionário) a partir do qual há possível necessidade de troca de turno. */
+const LIMITE_HORAS_TROCA_TURNO = 3;
+
+/** Último dia útil (segunda a sexta) anterior a hoje. shortcut: feriados não são descontados, incluir o calendário de feriados quando houver fonte. */
+function ultimoDiaUtil(hoje = new Date()): Date {
+  const dia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  do {
+    dia.setDate(dia.getDate() - 1);
+  } while (dia.getDay() === 0 || dia.getDay() === 6);
+  return dia;
+}
+
 function createTodayRange(): Date[] {
   const today = new Date();
   return [today, today];
@@ -124,6 +145,8 @@ export class FolhaHeRhTabComponent implements OnInit {
   protected funcionariosFolhasAprovadas: FuncionarioFolhaHEAprovada[] = [];
   protected refeicoesLoading = false;
   protected funcionariosFolhasAprovadasLoading = false;
+  protected trocaTurnoFuncionarios: FuncionarioTrocaTurno[] = [];
+  protected trocaTurnoLoading = false;
   private readonly refeicoesConsulta$ = new Subject<void>();
   protected readonly temExcecaoHE = temExcecaoHE;
   protected readonly categoriaNome = categoriaLabel;
@@ -269,6 +292,22 @@ export class FolhaHeRhTabComponent implements OnInit {
     ],
     ghostControll: [{ field: 'inicioHE', desc: 'Exceção de horário', ifRowFunction: row => temExcecaoHE(row), color: '#fef9c3' }],
   };
+  protected readonly trocaTurnoTableModel: TableModel = {
+    title: 'Possível necessidade de troca de turno',
+    subtitle: `Funcionários com ${LIMITE_HORAS_TROCA_TURNO} horas ou mais de horas extras não autorizadas no último dia útil`,
+    paginator: true,
+    totalize: false,
+    dataKey: 'id',
+    sortField: 'totalHoras',
+    sortOrder: -1,
+    columns: [
+      { alias: 'Matrícula', field: 'matricula', filterable: false },
+      { alias: 'Funcionário', field: 'nome', filterable: false },
+      { alias: 'CC - Setor', field: 'centroCusto', filterable: false },
+      { alias: 'Horas não autorizadas', field: 'totalHoras', filterable: false, valueFormatter: value => this.formatHoras(Number(value)) },
+      { alias: 'Ocorrências', field: 'ocorrencias', filterable: false },
+    ],
+  };
 
   ngOnInit(): void {
     if (this.canViewRefeicoes()) {
@@ -279,6 +318,7 @@ export class FolhaHeRhTabComponent implements OnInit {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.applyRefeicoesFilters());
       this.loadFuncionariosFolhasAprovadas();
+      this.loadPossivelTrocaTurno();
     }
   }
 
@@ -416,6 +456,41 @@ export class FolhaHeRhTabComponent implements OnInit {
         this.categoriaFilterOptions = opcoesFiltroCategoria(categorias);
       }
     });
+  }
+
+  private loadPossivelTrocaTurno(): void {
+    this.trocaTurnoLoading = true;
+    const dia = formatDateIso(ultimoDiaUtil());
+    this.folhaHoraExtraService.getHorasExtrasNaoAutorizadas({ dataInicio: dia, dataFim: dia }).pipe(
+      map(registros => registros
+        .filter(registro => registro.totalHoras >= LIMITE_HORAS_TROCA_TURNO)
+        .map(registro => {
+          const ccid = typeof registro.ccid === 'number' ? registro.ccid : null;
+          return {
+            id: registro.matricula,
+            matricula: registro.matricula,
+            nome: registro.nome,
+            centroCusto: ccid == null ? registro.setor : `${ccid} - ${registro.setor}`,
+            totalHoras: registro.totalHoras,
+            ocorrencias: registro.eventos.length,
+          };
+        })),
+      catchError(err => {
+        this.mensagensChange.emit([{
+          severity: 'error',
+          summary: 'Erro',
+          detail: `Não foi possível carregar a possível necessidade de troca de turno. ${mapFolhaHoraExtraError(err)}`,
+        }]);
+        return of([] as FuncionarioTrocaTurno[]);
+      }),
+      finalize(() => this.trocaTurnoLoading = false),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe(funcionarios => this.trocaTurnoFuncionarios = funcionarios);
+  }
+
+  private formatHoras(value: number): string {
+    const minutos = Math.max(0, Math.round((value || 0) * 60));
+    return `${Math.floor(minutos / 60)}h ${String(minutos % 60).padStart(2, '0')}min`;
   }
 
   private loadFuncionariosFolhasAprovadas(): void {
