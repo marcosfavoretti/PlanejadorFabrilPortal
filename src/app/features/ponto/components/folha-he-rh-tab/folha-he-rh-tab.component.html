@@ -226,6 +226,16 @@
             </div>
           </div>
         </section>
+
+        <section class="dashboard-section" aria-label="Possível necessidade de troca de turno">
+          <div class="card-container">
+            <div class="table-panel table-dynamic-panel">
+              <app-table-dynamic [data]="trocaTurnoFuncionarios" [tableModel]="trocaTurnoTableModel" [exportable]="true"
+                [loading]="trocaTurnoLoading" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+                paginatorDropdownAppendTo="body" responsiveLayout="scroll"></app-table-dynamic>
+            </div>
+          </div>
+        </section>
         }
 
         @if (canManageCategorias()) {

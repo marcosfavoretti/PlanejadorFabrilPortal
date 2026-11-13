@@ -9,9 +9,16 @@ describe('FolhaHeRhTabComponent refeicoes x categoria (servidor)', () => {
   let component: any;
   let fixture: ComponentFixture<FolhaHeRhTabComponent>;
   let getRefeicoes: jasmine.Spy;
+  let getHorasExtrasNaoAutorizadas: jasmine.Spy;
+  const horasNaoAutorizadas = [
+    { matricula: 'A', nome: 'Ana', setor: 'Corte', ccid: 10, totalHoras: 4, eventos: [{}, {}] },
+    { matricula: 'B', nome: 'Bia', setor: 'Corte', ccid: 10, totalHoras: 2.9, eventos: [{}] },
+    { matricula: 'C', nome: 'Caio', setor: 'Solda', ccid: 20, totalHoras: 3, eventos: [{}] },
+  ];
 
   beforeEach(async () => {
-    getRefeicoes = jasmine.createSpy('getRefeicoes').and.callFake((filtros: { page: number; limit: number; categoriaCodigo?: string }) => of({
+    getHorasExtrasNaoAutorizadas = jasmine.createSpy('getHorasExtrasNaoAutorizadas').and.returnValue(of(horasNaoAutorizadas));
+    getRefeicoes =jasmine.createSpy('getRefeicoes').and.callFake((filtros: { page: number; limit: number; categoriaCodigo?: string }) => of({
       // O servidor filtra: 30 linhas com categoria, 7 sem; total acompanha o filtro.
       total: filtros.categoriaCodigo === 'SEM_CATEGORIA' ? 7 : filtros.categoriaCodigo ? 30 : 37,
       page: filtros.page, limit: filtros.limit, totalPages: 1,
@@ -22,7 +29,7 @@ describe('FolhaHeRhTabComponent refeicoes x categoria (servidor)', () => {
       providers: [
         provideNoopAnimations(),
         { provide: CategoriaHoraExtraAPIService, useValue: { getTodas: () => of([]), catalogoAlterado$: new Subject<void>() } },
-        { provide: FolhaHoraExtraAPIService, useValue: { getRefeicoes, getFolhas: () => of({ data: [], total: 0 }), getFolhaById: () => of({ funcionarios: [] }) } },
+        { provide: FolhaHoraExtraAPIService, useValue: { getRefeicoes, getFolhas: () => of({ data: [], total: 0 }), getFolhaById: () => of({ funcionarios: [] }), getHorasExtrasNaoAutorizadas } },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(FolhaHeRhTabComponent);
@@ -66,6 +73,15 @@ describe('FolhaHeRhTabComponent refeicoes x categoria (servidor)', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('section[aria-label="Refeições e equipe"]')).not.toBeNull();
     expect(el.querySelector('#rh-categorias app-categorias-hora-extra-section')).not.toBeNull();
+  });
+
+  it('troca de turno consulta somente o ultimo dia util e lista quem tem 3 horas ou mais', () => {
+    const params = getHorasExtrasNaoAutorizadas.calls.mostRecent().args[0];
+    expect(params.dataInicio).toBe(params.dataFim);
+    const diaSemana = new Date(`${params.dataInicio}T12:00:00`).getDay();
+    expect([1, 2, 3, 4, 5]).toContain(diaSemana);
+    expect(component.trocaTurnoFuncionarios.map((f: { matricula: string }) => f.matricula)).toEqual(['A', 'C']);
+    expect(fixture.nativeElement.querySelector('section[aria-label="Possível necessidade de troca de turno"]')).not.toBeNull();
   });
 
   it('nao renderiza nenhuma secao sem permissao', () => {
